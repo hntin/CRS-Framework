@@ -26,21 +26,105 @@ public class CRSPreProcessingFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel1 = new javax.swing.JLabel();
+        jPanelDBExtraction = new javax.swing.JPanel();
+        jLabelFrom = new javax.swing.JLabel();
+        jLabelTo = new javax.swing.JLabel();
+        jFormattedTextFieldYearFrom = new javax.swing.JFormattedTextField();
+        jFormattedTextFieldYearTo = new javax.swing.JFormattedTextField();
+        jButtonDBExtractProcess = new javax.swing.JButton();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jLabel1.setText("PRE PROCESSING");
+
+        jPanelDBExtraction.setBorder(javax.swing.BorderFactory.createTitledBorder("Extract Researchers, Tilte, Abstract of publications"));
+
+        jLabelFrom.setText("From");
+
+        jLabelTo.setText("To:");
+
+        jFormattedTextFieldYearFrom.setText("1995");
+        jFormattedTextFieldYearFrom.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jFormattedTextFieldYearFromActionPerformed(evt);
+            }
+        });
+
+        jFormattedTextFieldYearTo.setText("2005");
+        jFormattedTextFieldYearTo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jFormattedTextFieldYearToActionPerformed(evt);
+            }
+        });
+
+        jButtonDBExtractProcess.setText("Process");
+
+        javax.swing.GroupLayout jPanelDBExtractionLayout = new javax.swing.GroupLayout(jPanelDBExtraction);
+        jPanelDBExtraction.setLayout(jPanelDBExtractionLayout);
+        jPanelDBExtractionLayout.setHorizontalGroup(
+            jPanelDBExtractionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelDBExtractionLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanelDBExtractionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabelFrom)
+                    .addComponent(jLabelTo))
+                .addGap(18, 18, 18)
+                .addGroup(jPanelDBExtractionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jButtonDBExtractProcess, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jFormattedTextFieldYearTo)
+                    .addComponent(jFormattedTextFieldYearFrom))
+                .addContainerGap(249, Short.MAX_VALUE))
+        );
+        jPanelDBExtractionLayout.setVerticalGroup(
+            jPanelDBExtractionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelDBExtractionLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanelDBExtractionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabelFrom)
+                    .addComponent(jFormattedTextFieldYearFrom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanelDBExtractionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabelTo)
+                    .addComponent(jFormattedTextFieldYearTo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(jButtonDBExtractProcess)
+                .addContainerGap(27, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 436, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(27, 27, 27)
+                .addComponent(jPanelDBExtraction, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(37, 37, 37))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(180, 180, 180))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 327, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(15, 15, 15)
+                .addComponent(jLabel1)
+                .addGap(18, 18, 18)
+                .addComponent(jPanelDBExtraction, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(230, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jFormattedTextFieldYearFromActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFormattedTextFieldYearFromActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jFormattedTextFieldYearFromActionPerformed
+
+    private void jFormattedTextFieldYearToActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFormattedTextFieldYearToActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jFormattedTextFieldYearToActionPerformed
 
     /**
      * @param args the command line arguments
@@ -77,5 +161,12 @@ public class CRSPreProcessingFrame extends javax.swing.JFrame {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButtonDBExtractProcess;
+    private javax.swing.JFormattedTextField jFormattedTextFieldYearFrom;
+    private javax.swing.JFormattedTextField jFormattedTextFieldYearTo;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabelFrom;
+    private javax.swing.JLabel jLabelTo;
+    private javax.swing.JPanel jPanelDBExtraction;
     // End of variables declaration//GEN-END:variables
 }
