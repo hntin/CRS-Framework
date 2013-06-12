@@ -42,6 +42,36 @@ public class CRSMainFrame extends javax.swing.JFrame {
         jButtonApplyDBSetting = new javax.swing.JButton();
         jButtonChangeDBSetting = new javax.swing.JButton();
         jPanelPreProcessing = new javax.swing.JPanel();
+        jLabelPreProcessing = new javax.swing.JLabel();
+        jPanelDBExtraction = new javax.swing.JPanel();
+        jLabelFrom = new javax.swing.JLabel();
+        jLabelTo = new javax.swing.JLabel();
+        jFormattedTextFieldYearFrom = new javax.swing.JFormattedTextField();
+        jFormattedTextFieldYearTo = new javax.swing.JFormattedTextField();
+        jButtonDBExtract = new javax.swing.JButton();
+        jLabelDirPath = new javax.swing.JLabel();
+        jTextFieldPathDataExtraction = new javax.swing.JTextField();
+        jButtonBrowse1 = new javax.swing.JButton();
+        jPanelRemoveStopwordStemming = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jTextFieldSourceFileStemming = new javax.swing.JTextField();
+        jButtonBrowse2 = new javax.swing.JButton();
+        jTextField1 = new javax.swing.JTextField();
+        jButtonBrowse3 = new javax.swing.JButton();
+        jCheckBoxStopword = new javax.swing.JCheckBox();
+        jCheckBoxStemming = new javax.swing.JCheckBox();
+        jButtonStemming = new javax.swing.JButton();
+        jPanel1 = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jTextField2 = new javax.swing.JTextField();
+        jButtonBrowse4 = new javax.swing.JButton();
+        jTextField3 = new javax.swing.JTextField();
+        jButtonBrowse5 = new javax.swing.JButton();
+        jLabel_LDALib = new javax.swing.JLabel();
+        jComboBoxLDALib = new javax.swing.JComboBox();
+        jButtonFormatInputLDA = new javax.swing.JButton();
         jPanelLinkPrediction = new javax.swing.JPanel();
         mainMenuBar = new javax.swing.JMenuBar();
         jMenuExperiment = new javax.swing.JMenu();
@@ -54,6 +84,7 @@ public class CRSMainFrame extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("CRS Framework");
 
+        jLabelDBSetting.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabelDBSetting.setText("DATABASE CONNECTION SETTING");
 
         jLabelHostName.setText("Host name:");
@@ -124,7 +155,7 @@ public class CRSMainFrame extends javax.swing.JFrame {
                             .addComponent(jTextFieldDBPassword)
                             .addComponent(jTextFieldDBMSPort)
                             .addComponent(jLabelDBSetting, javax.swing.GroupLayout.DEFAULT_SIZE, 285, Short.MAX_VALUE))))
-                .addContainerGap(251, Short.MAX_VALUE))
+                .addContainerGap(290, Short.MAX_VALUE))
         );
         jPanelSettingLayout.setVerticalGroup(
             jPanelSettingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -160,15 +191,241 @@ public class CRSMainFrame extends javax.swing.JFrame {
 
         jTabbedPaneCRS.addTab("Setting", jPanelSetting);
 
+        jLabelPreProcessing.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabelPreProcessing.setText("PRE-PROCESSING");
+
+        jPanelDBExtraction.setBorder(javax.swing.BorderFactory.createTitledBorder("Extract Researchers, Tilte, Abstract of publications"));
+
+        jLabelFrom.setText("From");
+
+        jLabelTo.setText("To:");
+
+        jFormattedTextFieldYearFrom.setText("1995");
+        jFormattedTextFieldYearFrom.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jFormattedTextFieldYearFromActionPerformed(evt);
+            }
+        });
+
+        jFormattedTextFieldYearTo.setText("2005");
+        jFormattedTextFieldYearTo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jFormattedTextFieldYearToActionPerformed(evt);
+            }
+        });
+
+        jButtonDBExtract.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jButtonDBExtract.setText("Process");
+
+        jLabelDirPath.setText("Save to:");
+
+        jButtonBrowse1.setText("Browse");
+
+        javax.swing.GroupLayout jPanelDBExtractionLayout = new javax.swing.GroupLayout(jPanelDBExtraction);
+        jPanelDBExtraction.setLayout(jPanelDBExtractionLayout);
+        jPanelDBExtractionLayout.setHorizontalGroup(
+            jPanelDBExtractionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelDBExtractionLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanelDBExtractionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabelFrom)
+                    .addComponent(jLabelDirPath))
+                .addGap(14, 14, 14)
+                .addGroup(jPanelDBExtractionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButtonDBExtract)
+                    .addGroup(jPanelDBExtractionLayout.createSequentialGroup()
+                        .addComponent(jFormattedTextFieldYearFrom, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabelTo)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jFormattedTextFieldYearTo, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanelDBExtractionLayout.createSequentialGroup()
+                        .addComponent(jTextFieldPathDataExtraction, javax.swing.GroupLayout.PREFERRED_SIZE, 564, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButtonBrowse1)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanelDBExtractionLayout.setVerticalGroup(
+            jPanelDBExtractionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelDBExtractionLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanelDBExtractionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabelFrom)
+                    .addComponent(jFormattedTextFieldYearFrom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jFormattedTextFieldYearTo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabelTo))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanelDBExtractionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabelDirPath)
+                    .addComponent(jButtonBrowse1)
+                    .addComponent(jTextFieldPathDataExtraction))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButtonDBExtract)
+                .addGap(5, 5, 5))
+        );
+
+        jPanelRemoveStopwordStemming.setBorder(javax.swing.BorderFactory.createTitledBorder("Remove Stopword and Stemming"));
+
+        jLabel1.setText("Source File:");
+
+        jLabel2.setText("Save to:");
+
+        jButtonBrowse2.setText("Browse");
+
+        jButtonBrowse3.setText("Brwose");
+
+        jCheckBoxStopword.setText("Remove stopword");
+
+        jCheckBoxStemming.setText("Stemming");
+
+        jButtonStemming.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jButtonStemming.setText("Process");
+
+        javax.swing.GroupLayout jPanelRemoveStopwordStemmingLayout = new javax.swing.GroupLayout(jPanelRemoveStopwordStemming);
+        jPanelRemoveStopwordStemming.setLayout(jPanelRemoveStopwordStemmingLayout);
+        jPanelRemoveStopwordStemmingLayout.setHorizontalGroup(
+            jPanelRemoveStopwordStemmingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelRemoveStopwordStemmingLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanelRemoveStopwordStemmingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanelRemoveStopwordStemmingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButtonStemming)
+                    .addGroup(jPanelRemoveStopwordStemmingLayout.createSequentialGroup()
+                        .addComponent(jCheckBoxStopword)
+                        .addGap(18, 18, 18)
+                        .addComponent(jCheckBoxStemming))
+                    .addGroup(jPanelRemoveStopwordStemmingLayout.createSequentialGroup()
+                        .addGroup(jPanelRemoveStopwordStemmingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 564, Short.MAX_VALUE)
+                            .addComponent(jTextFieldSourceFileStemming))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanelRemoveStopwordStemmingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jButtonBrowse2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jButtonBrowse3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanelRemoveStopwordStemmingLayout.setVerticalGroup(
+            jPanelRemoveStopwordStemmingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelRemoveStopwordStemmingLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanelRemoveStopwordStemmingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(jTextFieldSourceFileStemming, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonBrowse2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanelRemoveStopwordStemmingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonBrowse3))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanelRemoveStopwordStemmingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jCheckBoxStopword)
+                    .addComponent(jCheckBoxStemming))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButtonStemming))
+        );
+
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Format The InputData for Learning LDA"));
+
+        jLabel3.setText("Source File:");
+
+        jLabel4.setText("Save to:");
+
+        jButtonBrowse4.setText("Browse");
+
+        jButtonBrowse5.setText("Browse");
+
+        jLabel_LDALib.setText("LDA-Lib");
+
+        jComboBoxLDALib.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "JGibbLDA", "MALLET-LDA" }));
+
+        jButtonFormatInputLDA.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jButtonFormatInputLDA.setText("Process");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 564, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel_LDALib))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jTextField3)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jComboBoxLDALib, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jButtonFormatInputLDA, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(0, 0, Short.MAX_VALUE)))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jButtonBrowse4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButtonBrowse5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonBrowse4))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonBrowse5))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel_LDALib)
+                    .addComponent(jComboBoxLDALib, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
+                .addComponent(jButtonFormatInputLDA))
+        );
+
         javax.swing.GroupLayout jPanelPreProcessingLayout = new javax.swing.GroupLayout(jPanelPreProcessing);
         jPanelPreProcessing.setLayout(jPanelPreProcessingLayout);
         jPanelPreProcessingLayout.setHorizontalGroup(
             jPanelPreProcessingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 742, Short.MAX_VALUE)
+            .addGroup(jPanelPreProcessingLayout.createSequentialGroup()
+                .addGroup(jPanelPreProcessingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jPanelPreProcessingLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jPanelDBExtraction, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanelPreProcessingLayout.createSequentialGroup()
+                        .addGap(276, 276, 276)
+                        .addComponent(jLabelPreProcessing, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanelPreProcessingLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jPanelRemoveStopwordStemming, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanelPreProcessingLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addContainerGap(42, Short.MAX_VALUE))
         );
         jPanelPreProcessingLayout.setVerticalGroup(
             jPanelPreProcessingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 483, Short.MAX_VALUE)
+            .addGroup(jPanelPreProcessingLayout.createSequentialGroup()
+                .addComponent(jLabelPreProcessing)
+                .addGap(8, 8, 8)
+                .addComponent(jPanelDBExtraction, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jPanelRemoveStopwordStemming, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         jTabbedPaneCRS.addTab("PreProcessing", jPanelPreProcessing);
@@ -177,7 +434,7 @@ public class CRSMainFrame extends javax.swing.JFrame {
         jPanelLinkPrediction.setLayout(jPanelLinkPredictionLayout);
         jPanelLinkPredictionLayout.setHorizontalGroup(
             jPanelLinkPredictionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 742, Short.MAX_VALUE)
+            .addGap(0, 781, Short.MAX_VALUE)
         );
         jPanelLinkPredictionLayout.setVerticalGroup(
             jPanelLinkPredictionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -269,6 +526,14 @@ public class CRSMainFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButtonChangeDBSettingActionPerformed
 
+    private void jFormattedTextFieldYearToActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFormattedTextFieldYearToActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jFormattedTextFieldYearToActionPerformed
+
+    private void jFormattedTextFieldYearFromActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFormattedTextFieldYearFromActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jFormattedTextFieldYearFromActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -305,28 +570,58 @@ public class CRSMainFrame extends javax.swing.JFrame {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonApplyDBSetting;
+    private javax.swing.JButton jButtonBrowse1;
+    private javax.swing.JButton jButtonBrowse2;
+    private javax.swing.JButton jButtonBrowse3;
+    private javax.swing.JButton jButtonBrowse4;
+    private javax.swing.JButton jButtonBrowse5;
     private javax.swing.JButton jButtonChangeDBSetting;
+    private javax.swing.JButton jButtonDBExtract;
+    private javax.swing.JButton jButtonFormatInputLDA;
+    private javax.swing.JButton jButtonStemming;
+    private javax.swing.JCheckBox jCheckBoxStemming;
+    private javax.swing.JCheckBox jCheckBoxStopword;
+    private javax.swing.JComboBox jComboBoxLDALib;
+    private javax.swing.JFormattedTextField jFormattedTextFieldYearFrom;
+    private javax.swing.JFormattedTextField jFormattedTextFieldYearTo;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabelDBMSPort;
     private javax.swing.JLabel jLabelDBName;
     private javax.swing.JLabel jLabelDBSetting;
+    private javax.swing.JLabel jLabelDirPath;
+    private javax.swing.JLabel jLabelFrom;
     private javax.swing.JLabel jLabelHostName;
     private javax.swing.JLabel jLabelPassword;
+    private javax.swing.JLabel jLabelPreProcessing;
+    private javax.swing.JLabel jLabelTo;
     private javax.swing.JLabel jLabelUserName;
+    private javax.swing.JLabel jLabel_LDALib;
     private javax.swing.JMenu jMenuDBLP;
     private javax.swing.JMenu jMenuExperiment;
     private javax.swing.JMenu jMenuHelp;
     private javax.swing.JMenuItem jMenuItemAbout;
     private javax.swing.JMenuItem jMenuItemLinkPrediction;
     private javax.swing.JMenuItem jMenuItemPreProcessing;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanelDBExtraction;
     private javax.swing.JPanel jPanelLinkPrediction;
     private javax.swing.JPanel jPanelPreProcessing;
+    private javax.swing.JPanel jPanelRemoveStopwordStemming;
     private javax.swing.JPanel jPanelSetting;
     private javax.swing.JTabbedPane jTabbedPaneCRS;
+    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField2;
+    private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextFieldDBMSPort;
     private javax.swing.JTextField jTextFieldDBName;
     private javax.swing.JTextField jTextFieldDBPassword;
     private javax.swing.JTextField jTextFieldDBUserName;
     private javax.swing.JTextField jTextFieldHostName;
+    private javax.swing.JTextField jTextFieldPathDataExtraction;
+    private javax.swing.JTextField jTextFieldSourceFileStemming;
     private javax.swing.JMenuBar mainMenuBar;
     // End of variables declaration//GEN-END:variables
 }
