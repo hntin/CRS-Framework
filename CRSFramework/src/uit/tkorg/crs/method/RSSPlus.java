@@ -14,7 +14,7 @@ import java.util.concurrent.Executors;
  *
  * @author daolv
  */
-public class RTBVS {
+public class RSSPlus {
 
     private void Run(int authorId1) {
         Set<Integer> listAuthorFirstHop = _graph.get(authorId1).keySet();

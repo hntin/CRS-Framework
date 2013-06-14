@@ -54,14 +54,14 @@ public class AuthorPaperMapper extends MapperDB {
      * Year < 2005 for selecting paper before 2005 for training data 2006 - 2011
      * for testing data @throws Exception
      */
-    public void getAllPaperForEachAuthorOutToTextFile(String pathDir, int year) throws Exception {
+    public void getAllPaperForEachAuthorOutToTextFile(String pathDir, int yearFrom, int yearTo) throws Exception {
         ArrayList<String> authorIdList = new ArrayList<String>();
         StringBuffer outStringBuffer = null;
         try {
             Statement st = getConnection().createStatement();
             StringBuffer sqlString = new StringBuffer();
             sqlString.append(" SELECT DISTINCT ap.idAuthor FROM paper p, author_paper ap");
-            sqlString.append(" WHERE p.idPaper = ap.idPaper AND p.year >= 1995 AND p.year <= " + year);
+            sqlString.append(" WHERE p.idPaper = ap.idPaper AND p.year >= " + yearFrom + " AND p.year <= " + yearTo);
             sqlString.append(" ORDER BY idAuthor");
             ResultSet rs = st.executeQuery(sqlString.toString());
             while (rs != null && rs.next()) {
@@ -74,7 +74,7 @@ public class AuthorPaperMapper extends MapperDB {
                 sqlString = new StringBuffer();
                 sqlString.append(" SELECT ap.idPaper, p.title, p.abstract ");
                 sqlString.append(" FROM mas.author_paper ap join mas.paper p on ap.idPaper = p.idPaper");
-                sqlString.append(" WHERE p.year <= " + year + " AND ap.idAuthor = '" + idAuthor + "'");
+                sqlString.append(" WHERE p.year <= " + yearTo + " AND ap.idAuthor = '" + idAuthor + "'");
                 System.out.println(sqlString.toString());
                 rs = st.executeQuery(sqlString.toString());
 

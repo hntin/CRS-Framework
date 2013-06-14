@@ -28,7 +28,7 @@ public class TextParallelProcessor {
      * @param pathDir
      * @param fileName
      */
-    private void process(String pathDir, String fileName, String pathStemmingResult) {
+    private void process(String pathDir, String fileName, String pathStemmingResult, boolean isStem) {
         System.out.println(fileName);
 
         String fileContent = null;
@@ -41,27 +41,39 @@ public class TextParallelProcessor {
             bufferReader.readLine(); // skip the header file
             String line = null;
             int lineCount = 0;
-            while ((line = bufferReader.readLine()) != null) {
-                processedWordList = removeStopWord(line);
-                //processedWordList = removeStopWord(line);
-                for (String word : processedWordList) {
-                    strBuffer.append(word + " ");
+            if (isStem == true) {
+                while ((line = bufferReader.readLine()) != null) {
+                    processedWordList = removeStopWordAndStemming(line);
+                    for (String word : processedWordList) {
+                        strBuffer.append(word + " ");
+                    }
+                    strBuffer.append("\n");
+                    lineCount++;
                 }
-                strBuffer.append("\n");
-                lineCount++;
+            }
+            else {
+                while ((line = bufferReader.readLine()) != null) {
+                    processedWordList = removeStopWord(line);
+                    for (String word : processedWordList) {
+                        strBuffer.append(word + " ");
+                    }
+                    strBuffer.append("\n");
+                    lineCount++;
+                }
             }
 
+
             strBuffer = strBuffer.insert(0, lineCount + "\n");
-            TextFileProcessor.writeTextFile(pathStemmingResult + "\\OutStem_" + 
-                    fileName + ".dat", strBuffer.toString());
-            
+            TextFileProcessor.writeTextFile(pathStemmingResult + "\\OutStem_"
+                    + fileName + ".dat", strBuffer.toString());
+
             bufferReader.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void parallelProcess(String rootPath, final String pathDir, String subFolderName) {
+    public void parallelProcess(String rootPath, final String pathDir, String subFolderName, final boolean isStem) {
         Runtime runtime = Runtime.getRuntime();
         int numOfProcessors = runtime.availableProcessors();
         ExecutorService executor = Executors.newFixedThreadPool(numOfProcessors - 1);
@@ -69,7 +81,7 @@ public class TextParallelProcessor {
         (new File(rootPath + "\\" + "OutStem")).mkdir();
         (new File(rootPath + "\\" + "OutStem" + "\\" + subFolderName)).mkdir();
         final String pathStemmingResult = rootPath + "\\" + "OutStem" + "\\" + subFolderName;
-        
+
         File mainFolder = new File(pathDir);
         System.out.println(mainFolder.getAbsolutePath());
         File[] fList = mainFolder.listFiles();
@@ -79,7 +91,7 @@ public class TextParallelProcessor {
                 executor.submit(new Runnable() {
                     @Override
                     public void run() {
-                        process(pathDir, fileName, pathStemmingResult);
+                        process(pathDir, fileName, pathStemmingResult, isStem);
                     }
                 });
             }
@@ -100,8 +112,8 @@ public class TextParallelProcessor {
             String token;
             while (wordTokenizer.hasMoreElements()) {
                 token = wordTokenizer.nextElement().toString();
-                if (!Stopwords.isStopword(token.toLowerCase()) && token.length() > 1 && 
-                        token.length() < 15) {
+                if (!Stopwords.isStopword(token.toLowerCase()) && token.length() > 1
+                        && token.length() < 15) {
                     result.add(token);
                 }
             }
@@ -122,8 +134,8 @@ public class TextParallelProcessor {
             String token;
             while (wordTokenizer.hasMoreElements()) {
                 token = wordTokenizer.nextElement().toString();
-                if (!Stopwords.isStopword(token.toLowerCase()) && token.length() > 1 && 
-                        token.length() < 15) {
+                if (!Stopwords.isStopword(token.toLowerCase()) && token.length() > 1
+                        && token.length() < 15) {
                     token = stemmerLovin.stem(token);
                     result.add(token);
                 }
