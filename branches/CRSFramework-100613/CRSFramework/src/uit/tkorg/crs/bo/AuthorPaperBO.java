@@ -12,11 +12,11 @@ import uit.tkorg.crs.dbaccess.AuthorPaperMapper;
  */
 public class AuthorPaperBO {
 
-    public void getAllPaperForEachAuthorOutToTextFile(String pathDir, int year) throws Exception {
+    public void getAllPaperForEachAuthorOutToTextFile(String pathDir, int yearFrom, int yearTo) throws Exception {
         AuthorPaperMapper mapper = null;
         try {
             mapper = new AuthorPaperMapper();
-            mapper.getAllPaperForEachAuthorOutToTextFile(pathDir, year);
+            mapper.getAllPaperForEachAuthorOutToTextFile(pathDir, yearFrom, yearTo);
         } catch (Exception e) {
             throw e;
         } finally {

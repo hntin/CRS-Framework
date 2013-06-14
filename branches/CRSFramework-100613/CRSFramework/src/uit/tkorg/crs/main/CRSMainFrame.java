@@ -1,15 +1,40 @@
 package uit.tkorg.crs.main;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileFilter;
+import uit.tkorg.crs.bo.AuthorPaperBO;
 import uit.tkorg.crs.dbconnection.ConnectionService;
+import uit.tkorg.crs.experiment.Experiment;
+import uit.tkorg.utility.TextParallelProcessor;
 
 /**
  *
- * @author Tin Huynh
+ * @author daolv
  */
 public class CRSMainFrame extends javax.swing.JFrame {
 
     public CRSMainFrame() {
         initComponents();
+        jTextFieldPathDataExtraction.setText("C:\\CRS-Experiment\\CRS-Output");
+        jTextFieldStemmingSourcePath.setText("C:\\CRS-Experiment\\OutStem");
+        jTextFieldStemOutPath.setText("C:\\CRS-Experiment\\OutStem");
+
+        jCheckBoxStopword.setSelected(true);
+        jCheckBoxStopword.setEnabled(false);
+
+        jTextFieldFormatLDAPath.setText(null);
     }
 
     /**
@@ -50,20 +75,18 @@ public class CRSMainFrame extends javax.swing.JFrame {
         jPanelRemoveStopwordStemming = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jTextFieldSourceFileStemming = new javax.swing.JTextField();
+        jTextFieldStemmingSourcePath = new javax.swing.JTextField();
         jButtonBrowse2 = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
-        jButtonBrowse3 = new javax.swing.JButton();
+        jTextFieldStemOutPath = new javax.swing.JTextField();
         jCheckBoxStopword = new javax.swing.JCheckBox();
         jCheckBoxStemming = new javax.swing.JCheckBox();
         jButtonStemming = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
+        jTextFieldFormatLDAPath = new javax.swing.JTextField();
         jButtonBrowse4 = new javax.swing.JButton();
-        jTextField3 = new javax.swing.JTextField();
-        jButtonBrowse5 = new javax.swing.JButton();
+        jTextFieldFormatLDAOutFile = new javax.swing.JTextField();
         jLabel_LDALib = new javax.swing.JLabel();
         jComboBoxLDALib = new javax.swing.JComboBox();
         jButtonFormatInputLDA = new javax.swing.JButton();
@@ -73,45 +96,45 @@ public class CRSMainFrame extends javax.swing.JFrame {
         jPanel3 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
-        jTextField5 = new javax.swing.JTextField();
+        txtTrainingAuthorPaperPath = new javax.swing.JTextField();
+        txtTrainingPaperYearPath = new javax.swing.JTextField();
         jButtonBrowse6 = new javax.swing.JButton();
         jButtonBrowse7 = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
-        jTextField6 = new javax.swing.JTextField();
-        jTextField7 = new javax.swing.JTextField();
+        txtNFAuthorPaperPath = new javax.swing.JTextField();
+        txtFFAuthorPaperPath = new javax.swing.JTextField();
         jButtonBrowse8 = new javax.swing.JButton();
         jButtonBrowse9 = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
         jLabel10 = new javax.swing.JLabel();
-        jTextField8 = new javax.swing.JTextField();
+        txtListAuthorPath = new javax.swing.JTextField();
         jButtonBrowse10 = new javax.swing.JButton();
-        jRadioButton1 = new javax.swing.JRadioButton();
-        jRadioButton2 = new javax.swing.JRadioButton();
+        radbtnUseListAuthor = new javax.swing.JRadioButton();
+        radbtnRadomAuthors = new javax.swing.JRadioButton();
         jLabel11 = new javax.swing.JLabel();
-        jTextField9 = new javax.swing.JTextField();
+        txtNumberOfRandomAuthor = new javax.swing.JTextField();
         jPanel6 = new javax.swing.JPanel();
         jPanel7 = new javax.swing.JPanel();
-        jCheckBox1 = new javax.swing.JCheckBox();
-        jCheckBox2 = new javax.swing.JCheckBox();
-        jCheckBox3 = new javax.swing.JCheckBox();
-        jCheckBox4 = new javax.swing.JCheckBox();
-        jCheckBox5 = new javax.swing.JCheckBox();
+        jCheckBoxCosine = new javax.swing.JCheckBox();
+        jCheckBoxJaccard = new javax.swing.JCheckBox();
+        jCheckBoxAdamicAdar = new javax.swing.JCheckBox();
+        jCheckBoxRSS = new javax.swing.JCheckBox();
+        jCheckBoxMPVS = new javax.swing.JCheckBox();
         jPanel8 = new javax.swing.JPanel();
-        jCheckBox6 = new javax.swing.JCheckBox();
-        jCheckBox7 = new javax.swing.JCheckBox();
+        jCheckBoxRSSPlus = new javax.swing.JCheckBox();
+        jCheckBoxMPVSPlus = new javax.swing.JCheckBox();
         jLabel12 = new javax.swing.JLabel();
-        jTextField10 = new javax.swing.JTextField();
+        txtValueK = new javax.swing.JTextField();
         jLabel13 = new javax.swing.JLabel();
-        jTextField11 = new javax.swing.JTextField();
+        txtValueYear = new javax.swing.JTextField();
         jPanel9 = new javax.swing.JPanel();
-        jCheckBox8 = new javax.swing.JCheckBox();
+        jCheckBoxKLDivergence = new javax.swing.JCheckBox();
         jLabel14 = new javax.swing.JLabel();
-        jTextField12 = new javax.swing.JTextField();
+        txtResultPath = new javax.swing.JTextField();
         jButtonBrowse11 = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        jButtonRun = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
         mainMenuBar = new javax.swing.JMenuBar();
         jMenuExperiment = new javax.swing.JMenu();
@@ -200,7 +223,7 @@ public class CRSMainFrame extends javax.swing.JFrame {
                             .addComponent(jTextFieldDBPassword)
                             .addComponent(jTextFieldDBMSPort)
                             .addComponent(jLabelDBSetting, javax.swing.GroupLayout.DEFAULT_SIZE, 285, Short.MAX_VALUE))))
-                .addContainerGap(361, Short.MAX_VALUE))
+                .addContainerGap(521, Short.MAX_VALUE))
         );
         jPanelSettingLayout.setVerticalGroup(
             jPanelSettingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -261,10 +284,20 @@ public class CRSMainFrame extends javax.swing.JFrame {
 
         jButtonDBExtract.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jButtonDBExtract.setText("Process");
+        jButtonDBExtract.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonDBExtractActionPerformed(evt);
+            }
+        });
 
-        jLabelDirPath.setText("Save to:");
+        jLabelDirPath.setText("Output Path :");
 
         jButtonBrowse1.setText("Browse");
+        jButtonBrowse1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonBrowse1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanelDBExtractionLayout = new javax.swing.GroupLayout(jPanelDBExtraction);
         jPanelDBExtraction.setLayout(jPanelDBExtractionLayout);
@@ -312,13 +345,16 @@ public class CRSMainFrame extends javax.swing.JFrame {
 
         jPanelRemoveStopwordStemming.setBorder(javax.swing.BorderFactory.createTitledBorder("Remove Stopword and Stemming"));
 
-        jLabel1.setText("Source File:");
+        jLabel1.setText("Source Dir:");
 
-        jLabel2.setText("Save to:");
+        jLabel2.setText("Output Path:");
 
         jButtonBrowse2.setText("Browse");
-
-        jButtonBrowse3.setText("Brwose");
+        jButtonBrowse2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonBrowse2ActionPerformed(evt);
+            }
+        });
 
         jCheckBoxStopword.setText("Remove stopword");
 
@@ -326,6 +362,11 @@ public class CRSMainFrame extends javax.swing.JFrame {
 
         jButtonStemming.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jButtonStemming.setText("Process");
+        jButtonStemming.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonStemmingActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanelRemoveStopwordStemmingLayout = new javax.swing.GroupLayout(jPanelRemoveStopwordStemming);
         jPanelRemoveStopwordStemming.setLayout(jPanelRemoveStopwordStemmingLayout);
@@ -345,12 +386,10 @@ public class CRSMainFrame extends javax.swing.JFrame {
                         .addComponent(jCheckBoxStemming))
                     .addGroup(jPanelRemoveStopwordStemmingLayout.createSequentialGroup()
                         .addGroup(jPanelRemoveStopwordStemmingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 564, Short.MAX_VALUE)
-                            .addComponent(jTextFieldSourceFileStemming))
+                            .addComponent(jTextFieldStemOutPath, javax.swing.GroupLayout.DEFAULT_SIZE, 564, Short.MAX_VALUE)
+                            .addComponent(jTextFieldStemmingSourcePath))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanelRemoveStopwordStemmingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jButtonBrowse2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButtonBrowse3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addComponent(jButtonBrowse2)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanelRemoveStopwordStemmingLayout.setVerticalGroup(
@@ -359,13 +398,12 @@ public class CRSMainFrame extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanelRemoveStopwordStemmingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jTextFieldSourceFileStemming, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextFieldStemmingSourcePath, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButtonBrowse2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanelRemoveStopwordStemmingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButtonBrowse3))
+                    .addComponent(jTextFieldStemOutPath, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanelRemoveStopwordStemmingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jCheckBoxStopword)
@@ -376,13 +414,16 @@ public class CRSMainFrame extends javax.swing.JFrame {
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Format The InputData for Learning LDA"));
 
-        jLabel3.setText("Source File:");
+        jLabel3.setText("Source Dir:");
 
-        jLabel4.setText("Save to:");
+        jLabel4.setText("Output Path:");
 
         jButtonBrowse4.setText("Browse");
-
-        jButtonBrowse5.setText("Browse");
+        jButtonBrowse4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonBrowse4ActionPerformed(evt);
+            }
+        });
 
         jLabel_LDALib.setText("LDA-Lib");
 
@@ -390,6 +431,11 @@ public class CRSMainFrame extends javax.swing.JFrame {
 
         jButtonFormatInputLDA.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jButtonFormatInputLDA.setText("Process");
+        jButtonFormatInputLDA.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonFormatInputLDAActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -397,28 +443,22 @@ public class CRSMainFrame extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 564, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel_LDALib)
+                    .addComponent(jLabel3))
+                .addGap(28, 28, 28)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jTextFieldFormatLDAPath)
+                    .addComponent(jTextFieldFormatLDAOutFile)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel_LDALib))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField3)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jComboBoxLDALib, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jButtonFormatInputLDA, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(0, 0, Short.MAX_VALUE)))))
+                            .addComponent(jButtonFormatInputLDA, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jComboBoxLDALib, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButtonBrowse4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButtonBrowse5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jButtonBrowse4)
+                .addGap(18, 18, 18))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -426,18 +466,17 @@ public class CRSMainFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextFieldFormatLDAPath, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButtonBrowse4))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButtonBrowse5))
+                    .addComponent(jTextFieldFormatLDAOutFile, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel_LDALib)
                     .addComponent(jComboBoxLDALib, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
                 .addComponent(jButtonFormatInputLDA))
         );
 
@@ -459,7 +498,7 @@ public class CRSMainFrame extends javax.swing.JFrame {
                     .addGroup(jPanelPreProcessingLayout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addContainerGap(113, Short.MAX_VALUE))
+                .addContainerGap(189, Short.MAX_VALUE))
         );
         jPanelPreProcessingLayout.setVerticalGroup(
             jPanelPreProcessingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -480,11 +519,11 @@ public class CRSMainFrame extends javax.swing.JFrame {
         jPanel10.setLayout(jPanel10Layout);
         jPanel10Layout.setHorizontalGroup(
             jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 852, Short.MAX_VALUE)
+            .addGap(0, 1012, Short.MAX_VALUE)
         );
         jPanel10Layout.setVerticalGroup(
             jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 496, Short.MAX_VALUE)
+            .addGap(0, 609, Short.MAX_VALUE)
         );
 
         jTabbedPaneCRS.addTab("Topic Model Learning", jPanel10);
@@ -512,8 +551,8 @@ public class CRSMainFrame extends javax.swing.JFrame {
                     .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jTextField4)
-                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 521, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtTrainingAuthorPaperPath)
+                    .addComponent(txtTrainingPaperYearPath, javax.swing.GroupLayout.PREFERRED_SIZE, 521, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jButtonBrowse7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -525,14 +564,14 @@ public class CRSMainFrame extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtTrainingAuthorPaperPath, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButtonBrowse6))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jButtonBrowse7)
                     .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel7)
-                        .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(txtTrainingPaperYearPath, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(0, 1, Short.MAX_VALUE))
         );
 
@@ -558,8 +597,8 @@ public class CRSMainFrame extends javax.swing.JFrame {
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGap(1, 1, 1)
-                        .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 519, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, 520, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(txtNFAuthorPaperPath, javax.swing.GroupLayout.PREFERRED_SIZE, 519, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtFFAuthorPaperPath, javax.swing.GroupLayout.PREFERRED_SIZE, 520, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jButtonBrowse9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -571,12 +610,12 @@ public class CRSMainFrame extends javax.swing.JFrame {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
-                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtNFAuthorPaperPath, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButtonBrowse8))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel9)
-                    .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtFFAuthorPaperPath, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButtonBrowse9)))
         );
 
@@ -586,13 +625,24 @@ public class CRSMainFrame extends javax.swing.JFrame {
 
         jButtonBrowse10.setText("Browse");
 
-        jRadioButton1.setText("Using Existing List");
+        radbtnUseListAuthor.setText("Using Existing List");
+        radbtnUseListAuthor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                radbtnUseListAuthorActionPerformed(evt);
+            }
+        });
 
-        jRadioButton2.setText("Random Authors");
+        radbtnRadomAuthors.setSelected(true);
+        radbtnRadomAuthors.setText("Random Authors");
+        radbtnRadomAuthors.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                radbtnRadomAuthorsActionPerformed(evt);
+            }
+        });
 
         jLabel11.setText("Number of Random Authors");
 
-        jTextField9.setText("300");
+        txtNumberOfRandomAuthor.setText("300");
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -604,47 +654,57 @@ public class CRSMainFrame extends javax.swing.JFrame {
                     .addComponent(jLabel11))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtNumberOfRandomAuthor, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, 517, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtListAuthorPath, javax.swing.GroupLayout.PREFERRED_SIZE, 517, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButtonBrowse10))
                     .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addComponent(jRadioButton1)
+                        .addComponent(radbtnUseListAuthor)
                         .addGap(10, 10, 10)
-                        .addComponent(jRadioButton2)))
+                        .addComponent(radbtnRadomAuthors)))
                 .addContainerGap())
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jRadioButton1)
-                    .addComponent(jRadioButton2))
+                    .addComponent(radbtnUseListAuthor)
+                    .addComponent(radbtnRadomAuthors))
                 .addGap(4, 4, 4)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtListAuthorPath, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel10)
                     .addComponent(jButtonBrowse10))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel11)
-                    .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(txtNumberOfRandomAuthor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
 
         jPanel6.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Run Experiment", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 10))); // NOI18N
 
         jPanel7.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Link Based Methods", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 10))); // NOI18N
 
-        jCheckBox1.setText("Cosine");
+        jCheckBoxCosine.setSelected(true);
+        jCheckBoxCosine.setText("Cosine");
+        jCheckBoxCosine.setEnabled(false);
 
-        jCheckBox2.setText("Jaccard");
+        jCheckBoxJaccard.setSelected(true);
+        jCheckBoxJaccard.setText("Jaccard");
+        jCheckBoxJaccard.setEnabled(false);
 
-        jCheckBox3.setText("Adamic-Adar");
+        jCheckBoxAdamicAdar.setSelected(true);
+        jCheckBoxAdamicAdar.setText("Adamic-Adar");
+        jCheckBoxAdamicAdar.setEnabled(false);
 
-        jCheckBox4.setText("RSS");
+        jCheckBoxRSS.setSelected(true);
+        jCheckBoxRSS.setText("RSS");
+        jCheckBoxRSS.setEnabled(false);
 
-        jCheckBox5.setText("MPVS");
+        jCheckBoxMPVS.setSelected(true);
+        jCheckBoxMPVS.setText("MPVS");
+        jCheckBoxMPVS.setEnabled(false);
 
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
@@ -655,15 +715,15 @@ public class CRSMainFrame extends javax.swing.JFrame {
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel7Layout.createSequentialGroup()
                         .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jCheckBox1)
-                            .addComponent(jCheckBox2))
+                            .addComponent(jCheckBoxCosine)
+                            .addComponent(jCheckBoxJaccard))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
                         .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jCheckBox4)
-                            .addComponent(jCheckBox5))
+                            .addComponent(jCheckBoxRSS)
+                            .addComponent(jCheckBoxMPVS))
                         .addGap(17, 17, 17))
                     .addGroup(jPanel7Layout.createSequentialGroup()
-                        .addComponent(jCheckBox3)
+                        .addComponent(jCheckBoxAdamicAdar)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         jPanel7Layout.setVerticalGroup(
@@ -671,21 +731,25 @@ public class CRSMainFrame extends javax.swing.JFrame {
             .addGroup(jPanel7Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jCheckBox1)
-                    .addComponent(jCheckBox4))
+                    .addComponent(jCheckBoxCosine)
+                    .addComponent(jCheckBoxRSS))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jCheckBox2)
-                    .addComponent(jCheckBox5))
+                    .addComponent(jCheckBoxJaccard)
+                    .addComponent(jCheckBoxMPVS))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jCheckBox3))
+                .addComponent(jCheckBoxAdamicAdar))
         );
 
         jPanel8.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Trend Based Methods", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 10))); // NOI18N
 
-        jCheckBox6.setText("RSS+");
+        jCheckBoxRSSPlus.setSelected(true);
+        jCheckBoxRSSPlus.setText("RSS+");
+        jCheckBoxRSSPlus.setEnabled(false);
 
-        jCheckBox7.setText("MPVS+");
+        jCheckBoxMPVSPlus.setSelected(true);
+        jCheckBoxMPVSPlus.setText("MPVS+");
+        jCheckBoxMPVSPlus.setEnabled(false);
 
         jLabel12.setText("Trend Coefficient (K):");
 
@@ -700,9 +764,9 @@ public class CRSMainFrame extends javax.swing.JFrame {
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel8Layout.createSequentialGroup()
                         .addGap(0, 109, Short.MAX_VALUE)
-                        .addComponent(jCheckBox6)
+                        .addComponent(jCheckBoxRSSPlus)
                         .addGap(18, 18, 18)
-                        .addComponent(jCheckBox7)
+                        .addComponent(jCheckBoxMPVSPlus)
                         .addGap(85, 85, 85))
                     .addGroup(jPanel8Layout.createSequentialGroup()
                         .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -710,29 +774,31 @@ public class CRSMainFrame extends javax.swing.JFrame {
                             .addComponent(jLabel13))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField10)
-                            .addComponent(jTextField11)))))
+                            .addComponent(txtValueK)
+                            .addComponent(txtValueYear)))))
         );
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel8Layout.createSequentialGroup()
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jCheckBox6)
-                    .addComponent(jCheckBox7))
+                    .addComponent(jCheckBoxRSSPlus)
+                    .addComponent(jCheckBoxMPVSPlus))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel12)
-                    .addComponent(jTextField10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtValueK, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel13)
-                    .addComponent(jTextField11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtValueYear, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(0, 2, Short.MAX_VALUE))
         );
 
         jPanel9.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Topic Model Methods", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 10))); // NOI18N
 
-        jCheckBox8.setText("KL Divergence");
+        jCheckBoxKLDivergence.setSelected(true);
+        jCheckBoxKLDivergence.setText("KL Divergence");
+        jCheckBoxKLDivergence.setEnabled(false);
 
         javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
         jPanel9.setLayout(jPanel9Layout);
@@ -740,14 +806,14 @@ public class CRSMainFrame extends javax.swing.JFrame {
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel9Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jCheckBox8)
+                .addComponent(jCheckBoxKLDivergence)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel9Layout.setVerticalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel9Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jCheckBox8)
+                .addComponent(jCheckBoxKLDivergence)
                 .addContainerGap(49, Short.MAX_VALUE))
         );
 
@@ -755,8 +821,13 @@ public class CRSMainFrame extends javax.swing.JFrame {
 
         jButtonBrowse11.setText("Browse");
 
-        jButton1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jButton1.setText("RUN EXPERIMENTS");
+        jButtonRun.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jButtonRun.setText("RUN EXPERIMENTS");
+        jButtonRun.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonRunActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -773,13 +844,13 @@ public class CRSMainFrame extends javax.swing.JFrame {
                         .addGap(8, 8, 8)
                         .addComponent(jLabel14)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jTextField12)))
+                        .addComponent(txtResultPath)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addComponent(jButtonBrowse11)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE))
+                        .addComponent(jButtonRun, javax.swing.GroupLayout.DEFAULT_SIZE, 176, Short.MAX_VALUE))
                     .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(14, 14, 14))
         );
@@ -794,9 +865,9 @@ public class CRSMainFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jTextField12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtResultPath, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jButtonBrowse11)
-                        .addComponent(jButton1))
+                        .addComponent(jButtonRun, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jLabel14)))
         );
 
@@ -818,7 +889,7 @@ public class CRSMainFrame extends javax.swing.JFrame {
                 .addGap(1, 1, 1)
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -902,7 +973,10 @@ public class CRSMainFrame extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPaneCRS, javax.swing.GroupLayout.DEFAULT_SIZE, 524, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(8, 8, 8)
+                .addComponent(jTabbedPaneCRS, javax.swing.GroupLayout.PREFERRED_SIZE, 643, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
@@ -910,7 +984,6 @@ public class CRSMainFrame extends javax.swing.JFrame {
 
     private void jMenuItemPreProcessingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemPreProcessingActionPerformed
         // TODO add your handling code here:
-        
     }//GEN-LAST:event_jMenuItemPreProcessingActionPerformed
 
     private void jMenuItemLinkPredictionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemLinkPredictionActionPerformed
@@ -918,7 +991,6 @@ public class CRSMainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItemLinkPredictionActionPerformed
 
     private void jMenuHelpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuHelpActionPerformed
-        
     }//GEN-LAST:event_jMenuHelpActionPerformed
 
     private void jMenuItemAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemAboutActionPerformed
@@ -956,14 +1028,222 @@ public class CRSMainFrame extends javax.swing.JFrame {
         jTextFieldDBPassword.setEnabled(false);
         jButtonApplyDBSetting.setEnabled(false);
         jButtonChangeDBSetting.setEnabled(true);
-        
+
         ConnectionService.dbUserName = jTextFieldDBUserName.getText();
         ConnectionService.dbPassword = jTextFieldDBPassword.getName();
         ConnectionService.dbURL = "jdbc:mysql://" + jTextFieldHostName.getText() + ":"
                 + jTextFieldDBMSPort.getText() + "/" + jTextFieldDBName.getText()
                 + "?useUnicode=true&characterEncoding=UTF-8";
-                
+
     }//GEN-LAST:event_jButtonApplyDBSettingActionPerformed
+
+    private void jButtonBrowse1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBrowse1ActionPerformed
+        final JFileChooser fc = new JFileChooser();
+        fc.setFileFilter(new FileFilter() {
+            @Override
+            public boolean accept(File file) {
+                String extension = file.getName().toLowerCase();
+                return extension.endsWith(".txt") || extension.endsWith("");
+            }
+
+            @Override
+            public String getDescription() {
+                return "Text file formatted by PubGuru Recommend";
+            }
+        });
+
+        int returnValue = fc.showOpenDialog(this);
+        if (returnValue == JFileChooser.APPROVE_OPTION) {
+            File file = fc.getSelectedFile();
+            jTextFieldPathDataExtraction.setText(file.getPath());
+        }
+    }//GEN-LAST:event_jButtonBrowse1ActionPerformed
+
+    private void jButtonBrowse2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBrowse2ActionPerformed
+        final JFileChooser fc = new JFileChooser();
+        fc.setFileFilter(new FileFilter() {
+            @Override
+            public boolean accept(File file) {
+                String extension = file.getName().toLowerCase();
+                return extension.endsWith(".txt") || extension.endsWith("");
+            }
+
+            @Override
+            public String getDescription() {
+                return "Text file formatted by PubGuru Recommend";
+            }
+        });
+
+        int returnValue = fc.showOpenDialog(this);
+        if (returnValue == JFileChooser.APPROVE_OPTION) {
+            File file = fc.getSelectedFile();
+            jTextFieldStemmingSourcePath.setText(file.getPath());
+            jTextFieldStemOutPath.setText(file.getPath());
+            jTextFieldStemOutPath.setEnabled(false);
+        }
+    }//GEN-LAST:event_jButtonBrowse2ActionPerformed
+
+    private void jButtonBrowse4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBrowse4ActionPerformed
+        final JFileChooser fc = new JFileChooser();
+        fc.setFileFilter(new FileFilter() {
+            @Override
+            public boolean accept(File file) {
+                String extension = file.getName().toLowerCase();
+                return extension.endsWith(".txt") || extension.endsWith("");
+            }
+
+            @Override
+            public String getDescription() {
+                return "Text file formatted by PubGuru Recommend";
+            }
+        });
+
+        int returnValue = fc.showOpenDialog(this);
+        if (returnValue == JFileChooser.APPROVE_OPTION) {
+            File file = fc.getSelectedFile();
+            jTextFieldFormatLDAPath.setText(file.getPath());
+            jTextFieldFormatLDAOutFile.setText(file.getPath());
+            jTextFieldFormatLDAOutFile.setEnabled(true);
+        }
+    }//GEN-LAST:event_jButtonBrowse4ActionPerformed
+
+    private void jButtonDBExtractActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDBExtractActionPerformed
+        try {
+            System.out.println("-----------------------------------------------");
+            System.out.println("START PROCESSING: ");
+            DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+            Calendar cal = Calendar.getInstance();
+            System.out.println(dateFormat.format(cal.getTime()));
+
+            String rootPath = jTextFieldPathDataExtraction.getText();
+            int yearFrom = Integer.parseInt(jFormattedTextFieldYearFrom.getText());
+            int yearTo = Integer.parseInt(jFormattedTextFieldYearTo.getText());
+
+            AuthorPaperBO authorPaperBO = new AuthorPaperBO();
+            authorPaperBO.getAllPaperForEachAuthorOutToTextFile(rootPath, yearFrom, yearTo);
+
+            cal = Calendar.getInstance();
+            System.out.println(dateFormat.format(cal.getTime()));
+            System.out.println("END PROCESSING: ");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }//GEN-LAST:event_jButtonDBExtractActionPerformed
+
+    private void jButtonStemmingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonStemmingActionPerformed
+        try {
+            System.out.println("-----------------------------------------------");
+            System.out.println("START PROCESSING: ");
+            DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+            Calendar cal = Calendar.getInstance();
+            System.out.println(dateFormat.format(cal.getTime()));
+
+            String rootPath = jTextFieldStemmingSourcePath.getText();
+            boolean isStem = jCheckBoxStemming.isSelected();
+
+            TextParallelProcessor textProcessor = new TextParallelProcessor();
+            File mainFolder = new File(rootPath);
+            System.out.println(mainFolder.getAbsolutePath());
+            File[] subFolderList = mainFolder.listFiles();
+            for (int i = 0; i < subFolderList.length; i++) {
+                if (subFolderList[i].isDirectory()) {
+                    textProcessor.parallelProcess(rootPath, subFolderList[i].getPath(), subFolderList[i].getName(), isStem);
+                }
+            }
+
+            cal = Calendar.getInstance();
+            System.out.println(dateFormat.format(cal.getTime()));
+            System.out.println("END PROCESSING: ");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }//GEN-LAST:event_jButtonStemmingActionPerformed
+
+    private void jButtonFormatInputLDAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonFormatInputLDAActionPerformed
+        try {
+            System.out.println("-----------------------------------------------");
+            System.out.println("START PROCESSING: ");
+            DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+            Calendar cal = Calendar.getInstance();
+            System.out.println(dateFormat.format(cal.getTime()));
+
+            String selectedLDALib = (jComboBoxLDALib.getSelectedItem()).toString();
+            if (selectedLDALib.equalsIgnoreCase("JGibbLDA")) {
+            }
+            if (selectedLDALib.equalsIgnoreCase("MALLET-LDA")) {
+            }
+
+            cal = Calendar.getInstance();
+            System.out.println(dateFormat.format(cal.getTime()));
+            System.out.println("END PROCESSING: ");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }//GEN-LAST:event_jButtonFormatInputLDAActionPerformed
+
+    private void jButtonRunActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRunActionPerformed
+        int numberOfRandomAuthor = Integer.parseInt(txtNumberOfRandomAuthor.getText());
+        boolean isCosineMethod = jCheckBoxCosine.isSelected();
+        boolean isJaccardMethod = jCheckBoxJaccard.isSelected();
+        boolean isAdarMethod = jCheckBoxAdamicAdar.isSelected();
+        boolean isRSSMethod = jCheckBoxRSS.isSelected();
+        boolean isRSSPlusMethod = jCheckBoxRSSPlus.isSelected();
+        boolean isMPVSMethod = jCheckBoxMPVS.isSelected();
+        boolean isMVVSPlusMethod = jCheckBoxMPVSPlus.isSelected();
+        boolean isKLDivergence = jCheckBoxKLDivergence.isSelected();
+        
+        final Experiment experiment = new Experiment(txtTrainingAuthorPaperPath.getText(),
+                txtTrainingPaperYearPath.getText(), txtNFAuthorPaperPath.getText(),
+                txtFFAuthorPaperPath.getText(), txtListAuthorPath.getText(),
+                txtValueK.getText(), txtValueYear.getText(),
+                "2;4", txtResultPath.getText(),
+                numberOfRandomAuthor, 
+                isCosineMethod, isJaccardMethod, isAdarMethod, isRSSMethod,
+                isRSSPlusMethod, isMPVSMethod, isMVVSPlusMethod, isKLDivergence);
+
+        final DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        Date date = new Date();
+        System.out.println("Started Time : " + dateFormat.format(date) + "\n");
+        System.out.println("Processing ..." + "\n");
+        ExecutorService executor = Executors.newFixedThreadPool(1);
+        executor.submit(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    experiment.Run();
+                    Date date = new Date();
+                    System.out.println("Finished time : " + dateFormat.format(date) + "\n");
+                    System.out.println("DONE !!!");
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+        });
+        executor.shutdown();
+    }//GEN-LAST:event_jButtonRunActionPerformed
+
+    private void radbtnUseListAuthorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radbtnUseListAuthorActionPerformed
+        if (!radbtnUseListAuthor.isSelected()) {
+            txtNumberOfRandomAuthor.setEnabled(true);
+            return;
+        } else {
+            radbtnUseListAuthor.setSelected(true);
+            radbtnRadomAuthors.setSelected(false);
+            txtNumberOfRandomAuthor.setEnabled(false);
+        }
+    }//GEN-LAST:event_radbtnUseListAuthorActionPerformed
+
+    private void radbtnRadomAuthorsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radbtnRadomAuthorsActionPerformed
+        if (!radbtnRadomAuthors.isSelected()) {
+            txtNumberOfRandomAuthor.setEnabled(false);
+            return;
+        } else {
+            txtNumberOfRandomAuthor.setEnabled(true);
+            radbtnRadomAuthors.setSelected(true);
+            radbtnUseListAuthor.setSelected(false);
+            txtListAuthorPath.setText("");
+        }
+    }//GEN-LAST:event_radbtnRadomAuthorsActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -997,15 +1277,12 @@ public class CRSMainFrame extends javax.swing.JFrame {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButtonApplyDBSetting;
     private javax.swing.JButton jButtonBrowse1;
     private javax.swing.JButton jButtonBrowse10;
     private javax.swing.JButton jButtonBrowse11;
     private javax.swing.JButton jButtonBrowse2;
-    private javax.swing.JButton jButtonBrowse3;
     private javax.swing.JButton jButtonBrowse4;
-    private javax.swing.JButton jButtonBrowse5;
     private javax.swing.JButton jButtonBrowse6;
     private javax.swing.JButton jButtonBrowse7;
     private javax.swing.JButton jButtonBrowse8;
@@ -1013,15 +1290,16 @@ public class CRSMainFrame extends javax.swing.JFrame {
     private javax.swing.JButton jButtonChangeDBSetting;
     private javax.swing.JButton jButtonDBExtract;
     private javax.swing.JButton jButtonFormatInputLDA;
+    private javax.swing.JButton jButtonRun;
     private javax.swing.JButton jButtonStemming;
-    private javax.swing.JCheckBox jCheckBox1;
-    private javax.swing.JCheckBox jCheckBox2;
-    private javax.swing.JCheckBox jCheckBox3;
-    private javax.swing.JCheckBox jCheckBox4;
-    private javax.swing.JCheckBox jCheckBox5;
-    private javax.swing.JCheckBox jCheckBox6;
-    private javax.swing.JCheckBox jCheckBox7;
-    private javax.swing.JCheckBox jCheckBox8;
+    private javax.swing.JCheckBox jCheckBoxAdamicAdar;
+    private javax.swing.JCheckBox jCheckBoxCosine;
+    private javax.swing.JCheckBox jCheckBoxJaccard;
+    private javax.swing.JCheckBox jCheckBoxKLDivergence;
+    private javax.swing.JCheckBox jCheckBoxMPVS;
+    private javax.swing.JCheckBox jCheckBoxMPVSPlus;
+    private javax.swing.JCheckBox jCheckBoxRSS;
+    private javax.swing.JCheckBox jCheckBoxRSSPlus;
     private javax.swing.JCheckBox jCheckBoxStemming;
     private javax.swing.JCheckBox jCheckBoxStopword;
     private javax.swing.JComboBox jComboBoxLDALib;
@@ -1073,28 +1351,28 @@ public class CRSMainFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jPanelPreProcessing;
     private javax.swing.JPanel jPanelRemoveStopwordStemming;
     private javax.swing.JPanel jPanelSetting;
-    private javax.swing.JRadioButton jRadioButton1;
-    private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JTabbedPane jTabbedPaneCRS;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField10;
-    private javax.swing.JTextField jTextField11;
-    private javax.swing.JTextField jTextField12;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField6;
-    private javax.swing.JTextField jTextField7;
-    private javax.swing.JTextField jTextField8;
-    private javax.swing.JTextField jTextField9;
     private javax.swing.JTextField jTextFieldDBMSPort;
     private javax.swing.JTextField jTextFieldDBName;
     private javax.swing.JTextField jTextFieldDBPassword;
     private javax.swing.JTextField jTextFieldDBUserName;
+    private javax.swing.JTextField jTextFieldFormatLDAOutFile;
+    private javax.swing.JTextField jTextFieldFormatLDAPath;
     private javax.swing.JTextField jTextFieldHostName;
     private javax.swing.JTextField jTextFieldPathDataExtraction;
-    private javax.swing.JTextField jTextFieldSourceFileStemming;
+    private javax.swing.JTextField jTextFieldStemOutPath;
+    private javax.swing.JTextField jTextFieldStemmingSourcePath;
     private javax.swing.JMenuBar mainMenuBar;
+    private javax.swing.JRadioButton radbtnRadomAuthors;
+    private javax.swing.JRadioButton radbtnUseListAuthor;
+    private javax.swing.JTextField txtFFAuthorPaperPath;
+    private javax.swing.JTextField txtListAuthorPath;
+    private javax.swing.JTextField txtNFAuthorPaperPath;
+    private javax.swing.JTextField txtNumberOfRandomAuthor;
+    private javax.swing.JTextField txtResultPath;
+    private javax.swing.JTextField txtTrainingAuthorPaperPath;
+    private javax.swing.JTextField txtTrainingPaperYearPath;
+    private javax.swing.JTextField txtValueK;
+    private javax.swing.JTextField txtValueYear;
     // End of variables declaration//GEN-END:variables
 }
