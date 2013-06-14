@@ -20,12 +20,12 @@ import uit.tkorg.utility.TextFileProcessor;
  *
  * @author tin
  */
-public class KLDivergenceLDA {
+public class ParallelLDA {
     private static StringBuffer buffInputParallelLDA = new StringBuffer();
     private static StringBuffer buffAuthorIDAndDocMapping = new StringBuffer();
     private static HashMap<Integer, HashMap<Integer, Float>> _KLDivergenceHM;
 
-    public HashMap<Integer, HashMap<Integer, Float>> process(String pathFile) {
+    public HashMap<Integer, HashMap<Integer, Float>> process(String inputFile) {
         try {
             // Begin by importing documents from text to feature sequences
             ArrayList<Pipe> pipeList = new ArrayList<Pipe>();
@@ -38,7 +38,7 @@ public class KLDivergenceLDA {
 
             InstanceList instances = new InstanceList(new SerialPipes(pipeList));
 
-            Reader fileReader = new InputStreamReader(new FileInputStream(new File(pathFile + "\\" + "CRS-InputParallelLDA.txt")), "UTF-8");
+            Reader fileReader = new InputStreamReader(new FileInputStream(new File(inputFile)), "UTF-8");
             instances.addThruPipe(new CsvIterator(fileReader, Pattern.compile("^(\\S*)[\\s,]*(\\S*)[\\s,]*(.*)$"),
                     3, 2, 1)); // data, label, name fields
 
@@ -60,13 +60,11 @@ public class KLDivergenceLDA {
             model.setNumIterations(1000);
             model.estimate();
 
-            ///*
+            String pathFile = (new File(inputFile)).getPath();
             model.printDocumentTopics(new File(pathFile + "\\" + "DocumentTopics.txt"));
             model.printTopicWordWeights(new File(pathFile + "\\" + "TopicWords.txt"));
             model.printTopWords(new File(pathFile + "\\" + "TopWords.txt"), 11, true);
-            //* */
 
-            System.out.println("***************************************************************************");
             System.out.println("***************************************************************************");
             // The data alphabet maps word IDs to strings
             Alphabet dataAlphabet = instances.getDataAlphabet();

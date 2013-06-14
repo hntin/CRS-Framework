@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Vector;
+import uit.tkorg.crs.method.ParallelLDA;
 
 /**
  *
@@ -43,6 +44,7 @@ public class Experiment {
     private ArrayList<Integer> _yearArray;
     private ArrayList<Integer> _topNArray;
     private String _resultPath;
+    private String _training_LDA_InputFile;
     private int _numberOfRandomAuthor;
     private boolean _isCosineMethod;
     private boolean _isJaccardMethod;
@@ -72,6 +74,7 @@ public class Experiment {
             String Existing_List_AuthorPath, // empty or null if use radom author
             String K, String Year, String TopNList,
             String ResultPath,
+            String Training_LDA_InputFile,
             int numberOfRandomAuthor,
             boolean isCosineMethod, boolean isJaccardMethod, boolean isAdarMethod, boolean isRSSMethod,
             boolean isRSSPlusMethod, boolean isMPVSMethod, boolean isMVVSPlusMethod, boolean isKLDivergence) {
@@ -100,6 +103,7 @@ public class Experiment {
             _topNArray.add(Integer.parseInt(topN));
         }
 
+        _training_LDA_InputFile = Training_LDA_InputFile;
         _numberOfRandomAuthor = numberOfRandomAuthor;
         _isCosineMethod = isCosineMethod;
         _isJaccardMethod = isJaccardMethod;
@@ -126,12 +130,13 @@ public class Experiment {
         RSSPlus measureRSSPlus = new RSSPlus();
 
         HashMap<Integer, HashMap<Integer, Float>> topSimilarity;
+        //<editor-fold defaultstate="collapsed" desc="Run for different K and Year">
         for (int year : _yearArray) {
             for (float k : _kArray) {
                 _graph.BuildAllGraph(k, year);
                 selectAuthorsForExperiment();
                 
-                // Tinh do tuong tu acc author trong _listAuthorRandom voi tat ca cac nguoi khac trong Graph
+                //<editor-fold defaultstate="collapsed" desc="Execute different methods">
                 HashMap<Integer, HashMap<Integer, Float>> cosineResult = null;
                 HashMap<Integer, HashMap<Integer, Float>> jaccardResult = null;
                 HashMap<Integer, HashMap<Integer, Float>> adamicAdarResult = null;
@@ -139,8 +144,6 @@ public class Experiment {
                 HashMap<Integer, HashMap<Integer, Float>> mpbvsResult = null;
                 HashMap<Integer, HashMap<Integer, Float>> rssplusResult = null;
                 HashMap<Integer, HashMap<Integer, Float>> mpbvsplusResult = null;
-
-                //<editor-fold defaultstate="collapsed" desc="Execute different methods">
                 if (_isCosineMethod) {
                     cosineResult = measureCosine.Process(_graph.rssGraph, _listAuthorRandom);
                 }
@@ -278,6 +281,15 @@ public class Experiment {
                 writeToTxtFile(k, year, topN);
             }
         }
+        //</editor-fold>
+        
+        //<editor-fold defaultstate="collapsed" desc="Run for Topic Model - KL Divergence">
+        if (_isKLDivergence) {
+            ParallelLDA ldaParallelTool = new ParallelLDA();
+            HashMap<Integer, HashMap<Integer, Float>> klDivergenceOfInstances = 
+            ldaParallelTool.process(_training_LDA_InputFile);
+        }
+        //</editor-fold>
     }
 
     private void selectAuthorsForExperiment() throws Exception{
