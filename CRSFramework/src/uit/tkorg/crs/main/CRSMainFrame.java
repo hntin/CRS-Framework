@@ -17,6 +17,8 @@ import javax.swing.filechooser.FileFilter;
 import uit.tkorg.crs.bo.AuthorPaperBO;
 import uit.tkorg.crs.dbconnection.ConnectionService;
 import uit.tkorg.crs.experiment.Experiment;
+import uit.tkorg.crs.method.JGibbLDA;
+import uit.tkorg.crs.method.ParallelLDA;
 import uit.tkorg.utility.TextParallelProcessor;
 
 /**
@@ -1179,12 +1181,18 @@ public class CRSMainFrame extends javax.swing.JFrame {
             Calendar cal = Calendar.getInstance();
             System.out.println(dateFormat.format(cal.getTime()));
 
+            ParallelLDA ldaParallelTool = new ParallelLDA();
+            JGibbLDA ldaTool = new JGibbLDA();
             String selectedLDALib = (jComboBoxLDALib.getSelectedItem()).toString();
+            String inputPath = jTextFieldFormatLDAPath.getText();
+            
             if (selectedLDALib.equalsIgnoreCase("JGibbLDA")) {
+                ldaTool.formatInputForLDA(inputPath);
             }
             if (selectedLDALib.equalsIgnoreCase("MALLET-LDA")) {
+                ldaParallelTool.formatInputForParallelLDA(inputPath);
             }
-
+            
             cal = Calendar.getInstance();
             System.out.println(dateFormat.format(cal.getTime()));
             System.out.println("END PROCESSING: ");
