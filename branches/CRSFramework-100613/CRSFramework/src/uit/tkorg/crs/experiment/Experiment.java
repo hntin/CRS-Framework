@@ -287,7 +287,7 @@ public class Experiment {
         if (_isKLDivergence) {
             ParallelLDA ldaParallelTool = new ParallelLDA();
             HashMap<Integer, HashMap<Integer, Float>> klDivergenceOfInstances = 
-            ldaParallelTool.process(_training_LDA_InputFile);
+            ldaParallelTool.process(_training_LDA_InputFile, _listAuthorRandom);
         }
         //</editor-fold>
     }
