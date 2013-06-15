@@ -26,6 +26,7 @@ import java.util.HashSet;
 import java.util.Random;
 import java.util.Vector;
 import uit.tkorg.crs.method.ParallelLDA;
+import uit.tkorg.utility.TextFileProcessor;
 
 /**
  *
@@ -33,6 +34,7 @@ import uit.tkorg.crs.method.ParallelLDA;
  */
 public class Experiment {
 
+    //<editor-fold defaultstate="collapsed" desc="Class variables">
     private Graph _graph = Graph.getInstance();
     private String _training_PaperId_AuthorIdPath;
     private String _training_PaperId_YearPath;
@@ -54,20 +56,23 @@ public class Experiment {
     private boolean _isMPVSMethod;
     private boolean _isMVVSPlusMethod;
     private boolean _isKLDivergence;
-    private StringBuffer _nfAdamicAdarBuffer;
-    private StringBuffer _nfCosineBuffer;
-    private StringBuffer _nfJaccardBuffer;
-    private StringBuffer _nfRSSBuffer;
-    private StringBuffer _nfRSSPlusBuffer;
-    private StringBuffer _nfMPBVSBuffer;
-    private StringBuffer _nfMPBVSPlusBuffer;
-    private StringBuffer _ffAdamicAdarBuffer;
-    private StringBuffer _ffCosineBuffer;
-    private StringBuffer _ffJaccardBuffer;
-    private StringBuffer _ffRSSBuffer;
-    private StringBuffer _ffRSSPlusBuffer;
-    private StringBuffer _ffMPBVSBuffer;
-    private StringBuffer _ffMPBVSPlusBuffer;
+    private StringBuffer _nfAdamicAdarBuffer = new StringBuffer();
+    private StringBuffer _nfCosineBuffer = new StringBuffer();
+    private StringBuffer _nfJaccardBuffer = new StringBuffer();
+    private StringBuffer _nfRSSBuffer = new StringBuffer();
+    private StringBuffer _nfRSSPlusBuffer = new StringBuffer();
+    private StringBuffer _nfMPBVSBuffer = new StringBuffer();
+    private StringBuffer _nfMPBVSPlusBuffer = new StringBuffer();
+    private StringBuffer _ffAdamicAdarBuffer = new StringBuffer();
+    private StringBuffer _ffCosineBuffer = new StringBuffer();
+    private StringBuffer _ffJaccardBuffer = new StringBuffer();
+    private StringBuffer _ffRSSBuffer = new StringBuffer();
+    private StringBuffer _ffRSSPlusBuffer = new StringBuffer();
+    private StringBuffer _ffMPBVSBuffer = new StringBuffer();
+    private StringBuffer _ffMPBVSPlusBuffer = new StringBuffer();
+    private StringBuffer _nfKLDivergenceBuffer = new StringBuffer();
+    private StringBuffer _ffKLDivergenceBuffer = new StringBuffer();
+    //</editor-fold>
 
     public Experiment(String Training_PaperId_AuthorIdPath, String Training_PaperId_YearPath,
             String Testing_PaperId_Year_NFPath, String Testing_PaperId_Year_FFPath,
@@ -130,12 +135,13 @@ public class Experiment {
         RSSPlus measureRSSPlus = new RSSPlus();
 
         HashMap<Integer, HashMap<Integer, Float>> topSimilarity;
+        int topN = 50;
         //<editor-fold defaultstate="collapsed" desc="Run for different K and Year">
         for (int year : _yearArray) {
             for (float k : _kArray) {
                 _graph.BuildAllGraph(k, year);
                 selectAuthorsForExperiment();
-                
+
                 //<editor-fold defaultstate="collapsed" desc="Execute different methods">
                 HashMap<Integer, HashMap<Integer, Float>> cosineResult = null;
                 HashMap<Integer, HashMap<Integer, Float>> jaccardResult = null;
@@ -167,24 +173,6 @@ public class Experiment {
                 }
                 //</editor-fold>
 
-                //<editor-fold defaultstate="collapsed" desc="Init buffer for writing result to Txt file">
-                _nfAdamicAdarBuffer = new StringBuffer();
-                _nfCosineBuffer = new StringBuffer();
-                _nfJaccardBuffer = new StringBuffer();
-                _nfRSSBuffer = new StringBuffer();
-                _nfRSSPlusBuffer = new StringBuffer();
-                _nfMPBVSBuffer = new StringBuffer();
-                _nfMPBVSPlusBuffer = new StringBuffer();
-                _ffAdamicAdarBuffer = new StringBuffer();
-                _ffCosineBuffer = new StringBuffer();
-                _ffJaccardBuffer = new StringBuffer();
-                _ffRSSBuffer = new StringBuffer();
-                _ffRSSPlusBuffer = new StringBuffer();
-                _ffMPBVSBuffer = new StringBuffer();
-                _ffMPBVSPlusBuffer = new StringBuffer();
-                //</editor-fold>
-
-                int topN = 50;
                 for (int i = 1; i <= topN; i++) {
                     //<editor-fold defaultstate="collapsed" desc="Cosine">
                     topSimilarity = FindTopNSimilarity(i, cosineResult);
@@ -224,7 +212,7 @@ public class Experiment {
                     recall = EvaluationMeasure.Mean_Recall_TopN(topSimilarity, _graph.farTestingData);
                     bufferingExperimentResult(false, "AdamicAdar", recall);
                     //</editor-fold>
-                    
+
                     //<editor-fold defaultstate="collapsed" desc="RSS">
                     topSimilarity = FindTopNSimilarity(i, rssResult);
                     precisionNear = EvaluationMeasure.Mean_Precision_TopN(topSimilarity, _graph.nearTestingData);
@@ -278,182 +266,214 @@ public class Experiment {
                     //</editor-fold>
                 }
 
-                writeToTxtFile(k, year, topN);
+                writeToTxtFileForLinkMethods(k, year, topN);
             }
         }
         //</editor-fold>
-        
-        //<editor-fold defaultstate="collapsed" desc="Run for Topic Model - KL Divergence">
+
+        //<editor-fold defaultstate="collapsed" desc="Run for Topic Model - KL Divergence, out to File">
+        HashMap<Integer, HashMap<Integer, Float>> klDivergenceResult = null;
         if (_isKLDivergence) {
             ParallelLDA ldaParallelTool = new ParallelLDA();
-            HashMap<Integer, HashMap<Integer, Float>> klDivergenceOfInstances = 
-            ldaParallelTool.process(_training_LDA_InputFile, _listAuthorRandom);
+            klDivergenceResult = ldaParallelTool.process(_training_LDA_InputFile, _listAuthorRandom);
         }
+
+        DecimalFormat df = new DecimalFormat("0.#####");
+        _nfKLDivergenceBuffer.append("Near future");
+        _ffKLDivergenceBuffer.append("Far future");
+        for (int i = 1; i <= topN; i++) {
+            _nfKLDivergenceBuffer.append("P@" + i + "\t" + "R@" + i + "\t");
+            _ffKLDivergenceBuffer.append("P@" + i + "\t" + "R@" + i + "\t");
+        }
+        _nfKLDivergenceBuffer.append("\n");
+        _ffKLDivergenceBuffer.append("\n");
+
+        if (klDivergenceResult != null) {
+            for (int i = 1; i <= topN; i++) {
+                topSimilarity = FindTopNSimilarity(i, klDivergenceResult);
+                float precisionNear = EvaluationMeasure.Mean_Precision_TopN(topSimilarity, _graph.nearTestingData);
+                float precisionFar = EvaluationMeasure.Mean_Precision_TopN(topSimilarity, _graph.farTestingData);
+                _nfKLDivergenceBuffer.append(df.format(precisionNear) + "\t");
+                _ffKLDivergenceBuffer.append(df.format(precisionFar) + "\t");
+
+                float recallNear = EvaluationMeasure.Mean_Recall_TopN(topSimilarity, _graph.nearTestingData);
+                float recallFar = EvaluationMeasure.Mean_Recall_TopN(topSimilarity, _graph.farTestingData);
+                _nfKLDivergenceBuffer.append(df.format(recallNear) + "\t");
+                _ffKLDivergenceBuffer.append(df.format(recallFar) + "\t");
+            }
+        }
+        TextFileProcessor.writeTextFile("C:\\CRS-Experiment\\KLResult.txt",
+                _nfKLDivergenceBuffer.toString() + "\n\n" + _ffKLDivergenceBuffer.toString());
         //</editor-fold>
     }
 
-    private void selectAuthorsForExperiment() throws Exception{
-        if (_listAuthorRandom == null || _listAuthorRandom.size() == 0) {
-            _listAuthorRandom = new ArrayList<>();
-            if (_existing_List_AuthorPath == null || _existing_List_AuthorPath.isEmpty()) {
-                // <editor-fold defaultstate="collapsed" desc="Random Author">
-                HashMap<Integer, Integer> authorDegree = new HashMap<>();
-                for (int authorId : _graph.rssGraph.keySet()) {
-                    authorDegree.put(authorId, _graph.rssGraph.get(authorId).size());
-                }
-                HashMap<Integer, Integer> degreeCounter = new HashMap<>();
-                for (int authorId : authorDegree.keySet()) {
-                    Integer counter = degreeCounter.get(authorDegree.get(authorId));
-                    if (counter == null) {
-                        counter = 0;
+    private void selectAuthorsForExperiment() {
+        try {
+            if (_listAuthorRandom == null || _listAuthorRandom.size() == 0) {
+                _listAuthorRandom = new ArrayList<>();
+                if (_existing_List_AuthorPath == null || _existing_List_AuthorPath.isEmpty()) {
+                    // <editor-fold defaultstate="collapsed" desc="Random Author">
+                    HashMap<Integer, Integer> authorDegree = new HashMap<>();
+                    for (int authorId : _graph.rssGraph.keySet()) {
+                        authorDegree.put(authorId, _graph.rssGraph.get(authorId).size());
                     }
-                    counter++;
-                    degreeCounter.put(authorDegree.get(authorId), counter);
-                }
-                int[] degreeArray = new int[degreeCounter.keySet().size()];
-                int index = 0;
-                for (int degree : degreeCounter.keySet()) {
-                    degreeArray[index] = degree;
-                    index++;
-                }
-                //sort degree Array
-                for (int i = 0; i < degreeArray.length - 1; i++) {
-                    for (int j = i + 1; j < degreeArray.length; j++) {
-                        if (degreeArray[i] > degreeArray[j]) {
-                            int temp = degreeArray[i];
-                            degreeArray[i] = degreeArray[j];
-                            degreeArray[j] = temp;
+                    HashMap<Integer, Integer> degreeCounter = new HashMap<>();
+                    for (int authorId : authorDegree.keySet()) {
+                        Integer counter = degreeCounter.get(authorDegree.get(authorId));
+                        if (counter == null) {
+                            counter = 0;
+                        }
+                        counter++;
+                        degreeCounter.put(authorDegree.get(authorId), counter);
+                    }
+                    int[] degreeArray = new int[degreeCounter.keySet().size()];
+                    int index = 0;
+                    for (int degree : degreeCounter.keySet()) {
+                        degreeArray[index] = degree;
+                        index++;
+                    }
+                    //sort degree Array
+                    for (int i = 0; i < degreeArray.length - 1; i++) {
+                        for (int j = i + 1; j < degreeArray.length; j++) {
+                            if (degreeArray[i] > degreeArray[j]) {
+                                int temp = degreeArray[i];
+                                degreeArray[i] = degreeArray[j];
+                                degreeArray[j] = temp;
+                            }
                         }
                     }
-                }
-                int numberOfDegree, numberOfLowDegree, numberOfMidDegree, numberOfHighDegree;
-                numberOfDegree =
-                        numberOfLowDegree =
-                        numberOfMidDegree =
-                        numberOfHighDegree = (int) degreeArray.length / 3;
-                if (degreeArray.length - numberOfDegree * 3 == 1) {
-                    numberOfLowDegree += 1;
-                } else if (degreeArray.length - numberOfDegree * 3 == 2) {
-                    numberOfLowDegree += 1;
-                    numberOfMidDegree += 1;
-                }
+                    int numberOfDegree, numberOfLowDegree, numberOfMidDegree, numberOfHighDegree;
+                    numberOfDegree =
+                            numberOfLowDegree =
+                            numberOfMidDegree =
+                            numberOfHighDegree = (int) degreeArray.length / 3;
+                    if (degreeArray.length - numberOfDegree * 3 == 1) {
+                        numberOfLowDegree += 1;
+                    } else if (degreeArray.length - numberOfDegree * 3 == 2) {
+                        numberOfLowDegree += 1;
+                        numberOfMidDegree += 1;
+                    }
 
-                int maxLowDegree = degreeArray[numberOfLowDegree - 1];
-                int maxMidDegree = degreeArray[numberOfLowDegree + numberOfMidDegree - 1];
-                int maxHighDegree = degreeArray[numberOfLowDegree + numberOfMidDegree + numberOfHighDegree - 1];;
+                    int maxLowDegree = degreeArray[numberOfLowDegree - 1];
+                    int maxMidDegree = degreeArray[numberOfLowDegree + numberOfMidDegree - 1];
+                    int maxHighDegree = degreeArray[numberOfLowDegree + numberOfMidDegree + numberOfHighDegree - 1];;
 
-                ArrayList<Integer> listAuthorIdInLow = new ArrayList<>();
-                ArrayList<Integer> listAuthorIdInMid = new ArrayList<>();
-                ArrayList<Integer> listAuthorIdInHigh = new ArrayList<>();
+                    ArrayList<Integer> listAuthorIdInLow = new ArrayList<>();
+                    ArrayList<Integer> listAuthorIdInMid = new ArrayList<>();
+                    ArrayList<Integer> listAuthorIdInHigh = new ArrayList<>();
 
-                ArrayList<Integer> listAuthorIdInLowForStatic = new ArrayList<>();
-                ArrayList<Integer> listAuthorIdInMidForStatic = new ArrayList<>();
-                ArrayList<Integer> listAuthorIdInHighForStatic = new ArrayList<>();
+                    ArrayList<Integer> listAuthorIdInLowForStatic = new ArrayList<>();
+                    ArrayList<Integer> listAuthorIdInMidForStatic = new ArrayList<>();
+                    ArrayList<Integer> listAuthorIdInHighForStatic = new ArrayList<>();
 
-                HashSet<Integer> listAuthorNearTesting = _graph.GetAllAuthorNearTest();
-                HashSet<Integer> listAuthorFarTesting = _graph.GetAllAuthorFarTest();
-                for (int authorId : authorDegree.keySet()) {
-                    if (authorDegree.get(authorId) < maxLowDegree) {
-                        listAuthorIdInLowForStatic.add(authorId);
-                        if (listAuthorNearTesting.contains(authorId)
-                                && listAuthorFarTesting.contains(authorId)) {
-                            listAuthorIdInLow.add(authorId);
+                    HashSet<Integer> listAuthorNearTesting = _graph.GetAllAuthorNearTest();
+                    HashSet<Integer> listAuthorFarTesting = _graph.GetAllAuthorFarTest();
+                    for (int authorId : authorDegree.keySet()) {
+                        if (authorDegree.get(authorId) < maxLowDegree) {
+                            listAuthorIdInLowForStatic.add(authorId);
+                            if (listAuthorNearTesting.contains(authorId)
+                                    && listAuthorFarTesting.contains(authorId)) {
+                                listAuthorIdInLow.add(authorId);
+                            }
+                        } else if (authorDegree.get(authorId) < maxMidDegree) {
+                            listAuthorIdInMidForStatic.add(authorId);
+                            if (listAuthorNearTesting.contains(authorId)
+                                    && listAuthorFarTesting.contains(authorId)) {
+                                listAuthorIdInMid.add(authorId);
+                            }
+                        } else {
+                            listAuthorIdInHighForStatic.add(authorId);
+                            if (listAuthorNearTesting.contains(authorId)
+                                    && listAuthorFarTesting.contains(authorId)) {
+                                listAuthorIdInHigh.add(authorId);
+                            }
                         }
-                    } else if (authorDegree.get(authorId) < maxMidDegree) {
-                        listAuthorIdInMidForStatic.add(authorId);
-                        if (listAuthorNearTesting.contains(authorId)
-                                && listAuthorFarTesting.contains(authorId)) {
-                            listAuthorIdInMid.add(authorId);
+                    }
+
+                    Random rd = new Random();
+                    ArrayList<Integer> listRandomAuthorIdInLow = new ArrayList<>();
+                    int counter = 0;
+                    if (listAuthorIdInLow.size() > 200) {
+                        while (counter < 100) {
+                            counter++;
+                            int aid;
+                            while (listRandomAuthorIdInLow.contains(aid = listAuthorIdInLow.get(rd.nextInt(listAuthorIdInLow.size())))) ;
+                            listRandomAuthorIdInLow.add(aid);
                         }
                     } else {
-                        listAuthorIdInHighForStatic.add(authorId);
-                        if (listAuthorNearTesting.contains(authorId)
-                                && listAuthorFarTesting.contains(authorId)) {
-                            listAuthorIdInHigh.add(authorId);
+                        int length = listAuthorIdInLow.size() > 100 ? 100 : listAuthorIdInLow.size();
+                        for (int i = 0; i < length; i++) {
+                            listRandomAuthorIdInLow.add(listAuthorIdInLow.get(i));
                         }
                     }
-                }
 
-                Random rd = new Random();
-                ArrayList<Integer> listRandomAuthorIdInLow = new ArrayList<>();
-                int counter = 0;
-                if (listAuthorIdInLow.size() > 200) {
-                    while (counter < 100) {
-                        counter++;
-                        int aid;
-                        while (listRandomAuthorIdInLow.contains(aid = listAuthorIdInLow.get(rd.nextInt(listAuthorIdInLow.size())))) ;
-                        listRandomAuthorIdInLow.add(aid);
+                    ArrayList<Integer> listRandomAuthorIdInMid = new ArrayList<>();
+                    counter = 0;
+                    if (listAuthorIdInMid.size() > 200) {
+                        while (counter < 100) {
+                            counter++;
+                            int aid;
+                            while (listRandomAuthorIdInMid.contains(aid = listAuthorIdInMid.get(rd.nextInt(listAuthorIdInMid.size())))) ;
+                            listRandomAuthorIdInMid.add(aid);
+                        }
+                    } else {
+                        int length = listAuthorIdInMid.size() > 100 ? 100 : listAuthorIdInMid.size();
+                        for (int i = 0; i < length; i++) {
+                            listRandomAuthorIdInMid.add(listAuthorIdInMid.get(i));
+                        }
                     }
+
+                    ArrayList<Integer> listRandomAuthorIdInHigh = new ArrayList<>();
+                    counter = 0;
+                    if (listAuthorIdInHigh.size() > 200) {
+                        while (counter < 100) {
+                            counter++;
+                            int aid;
+                            while (listRandomAuthorIdInHigh.contains(aid = listAuthorIdInHigh.get(rd.nextInt(listAuthorIdInHigh.size())))) ;
+                            listRandomAuthorIdInHigh.add(aid);
+                        }
+                    } else {
+                        int length = listAuthorIdInHigh.size() > 100 ? 100 : listAuthorIdInHigh.size();
+                        for (int i = 0; i < length; i++) {
+                            listRandomAuthorIdInHigh.add(listAuthorIdInHigh.get(i));
+                        }
+                    }
+
+                    _listAuthorRandom.addAll(listRandomAuthorIdInLow);
+                    _listAuthorRandom.addAll(listRandomAuthorIdInMid);
+                    _listAuthorRandom.addAll(listRandomAuthorIdInHigh);
+
+                    FileOutputStream fos = new FileOutputStream(_resultPath + "/" + "ListRandomAuthor.txt");
+                    Writer file = new OutputStreamWriter(fos, "UTF8");
+                    file.write("AuthorID" + "\n");
+                    for (int authorId : _listAuthorRandom) {
+                        file.write(String.valueOf(authorId) + "\n");
+                    }
+                    file.close();
+                    // </editor-fold>
                 } else {
-                    int length = listAuthorIdInLow.size() > 100 ? 100 : listAuthorIdInLow.size();
-                    for (int i = 0; i < length; i++) {
-                        listRandomAuthorIdInLow.add(listAuthorIdInLow.get(i));
+                    // <editor-fold defaultstate="collapsed" desc="Load Author">
+                    try {
+                        _listAuthorRandom = new ArrayList<>();
+                        FileInputStream fis = new FileInputStream(_existing_List_AuthorPath);
+                        Reader reader = new InputStreamReader(fis, "UTF8");
+                        BufferedReader bufferReader = new BufferedReader(reader);
+                        bufferReader.readLine();
+                        String line = null;
+                        int authorId;
+                        while ((line = bufferReader.readLine()) != null) {
+                            authorId = Integer.parseInt(line);
+                            _listAuthorRandom.add(authorId);
+                        }
+                        bufferReader.close();
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
-
-                ArrayList<Integer> listRandomAuthorIdInMid = new ArrayList<>();
-                counter = 0;
-                if (listAuthorIdInMid.size() > 200) {
-                    while (counter < 100) {
-                        counter++;
-                        int aid;
-                        while (listRandomAuthorIdInMid.contains(aid = listAuthorIdInMid.get(rd.nextInt(listAuthorIdInMid.size())))) ;
-                        listRandomAuthorIdInMid.add(aid);
-                    }
-                } else {
-                    int length = listAuthorIdInMid.size() > 100 ? 100 : listAuthorIdInMid.size();
-                    for (int i = 0; i < length; i++) {
-                        listRandomAuthorIdInMid.add(listAuthorIdInMid.get(i));
-                    }
-                }
-
-                ArrayList<Integer> listRandomAuthorIdInHigh = new ArrayList<>();
-                counter = 0;
-                if (listAuthorIdInHigh.size() > 200) {
-                    while (counter < 100) {
-                        counter++;
-                        int aid;
-                        while (listRandomAuthorIdInHigh.contains(aid = listAuthorIdInHigh.get(rd.nextInt(listAuthorIdInHigh.size())))) ;
-                        listRandomAuthorIdInHigh.add(aid);
-                    }
-                } else {
-                    int length = listAuthorIdInHigh.size() > 100 ? 100 : listAuthorIdInHigh.size();
-                    for (int i = 0; i < length; i++) {
-                        listRandomAuthorIdInHigh.add(listAuthorIdInHigh.get(i));
-                    }
-                }
-
-                _listAuthorRandom.addAll(listRandomAuthorIdInLow);
-                _listAuthorRandom.addAll(listRandomAuthorIdInMid);
-                _listAuthorRandom.addAll(listRandomAuthorIdInHigh);
-
-                FileOutputStream fos = new FileOutputStream(_resultPath + "/" + "ListRandomAuthor.txt");
-                Writer file = new OutputStreamWriter(fos, "UTF8");
-                file.write("AuthorID" + "\n");
-                for (int authorId : _listAuthorRandom) {
-                    file.write(String.valueOf(authorId) + "\n");
-                }
-                file.close();
                 // </editor-fold>
-            } else {
-                // <editor-fold defaultstate="collapsed" desc="Load Author">
-                try {
-                    _listAuthorRandom = new ArrayList<>();
-                    FileInputStream fis = new FileInputStream(_existing_List_AuthorPath);
-                    Reader reader = new InputStreamReader(fis, "UTF8");
-                    BufferedReader bufferReader = new BufferedReader(reader);
-                    bufferReader.readLine();
-                    String line = null;
-                    int authorId;
-                    while ((line = bufferReader.readLine()) != null) {
-                        authorId = Integer.parseInt(line);
-                        _listAuthorRandom.add(authorId);
-                    }
-                    bufferReader.close();
-                } catch (Exception e) {
-                }
             }
-            // </editor-fold>
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
 
@@ -485,7 +505,6 @@ public class Experiment {
         //<editor-fold defaultstate="collapsed" desc="buffering Experiment Result">
         try {
             DecimalFormat df = new DecimalFormat("0.#####");
-
             if (predictMethod.equalsIgnoreCase("AdamicAdar")) {
                 if (isNFResult == true) {
                     _nfAdamicAdarBuffer.append("\t" + df.format(value));
@@ -547,7 +566,7 @@ public class Experiment {
 //</editor-fold>  
     }
 
-    private void writeToTxtFile(float k, int year, int topN) {
+    private void writeToTxtFileForLinkMethods(float k, int year, int topN) {
         //<editor-fold defaultstate="collapsed" desc="Write result into file">
         try {
             FileOutputStream fos = new FileOutputStream(_resultPath + "/" + String.valueOf(k) + "_" + String.valueOf(year) + ".txt");
