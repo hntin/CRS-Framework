@@ -23,9 +23,12 @@ import uit.tkorg.utility.TextFileProcessor;
 public class ParallelLDA {
     private static StringBuffer buffInputParallelLDA = new StringBuffer();
     private static StringBuffer buffAuthorIDAndDocMapping = new StringBuffer();
+    HashMap<Integer, Integer> AuthorInstanceHM = new HashMap<>();
+    HashMap<Integer, Integer> InstanceAuthorHM = new HashMap<>();
     private static HashMap<Integer, HashMap<Integer, Float>> _KLDivergenceHM;
 
     public HashMap<Integer, HashMap<Integer, Float>> process(String inputFile, ArrayList<Integer> listAuthorID) {
+        System.out.println("START TRAINING LDA");
         try {
             // Begin by importing documents from text to feature sequences
             ArrayList<Pipe> pipeList = new ArrayList<Pipe>();
@@ -60,30 +63,16 @@ public class ParallelLDA {
             model.setNumIterations(1000);
             model.estimate();
 
-            String pathFile = (new File(inputFile)).getPath();
+            System.out.println("***************************************************************************");
+            String pathFile = (new File(inputFile)).getParent();
             model.printDocumentTopics(new File(pathFile + "\\" + "DocumentTopics.txt"));
             model.printTopicWordWeights(new File(pathFile + "\\" + "TopicWords.txt"));
             model.printTopWords(new File(pathFile + "\\" + "TopWords.txt"), 11, true);
-
-            System.out.println("***************************************************************************");
-            // The data alphabet maps word IDs to strings
-            Alphabet dataAlphabet = instances.getDataAlphabet();
-
-            FeatureSequence tokens = (FeatureSequence) model.getData().get(0).instance.getData();
-            LabelSequence topics = model.getData().get(0).topicSequence;
-
-            Formatter out = new Formatter(new StringBuilder(), Locale.US);
-            for (int position = 0; position < tokens.getLength(); position++) {
-                out.format("%s-%d ", dataAlphabet.lookupObject(tokens.getIndexAtPosition(position)), topics.getIndexAtPosition(position));
-            }
-            System.out.println(out);
             System.out.println("***************************************************************************");
 
             _KLDivergenceHM = new HashMap<>();
             System.out.println("NUMBER OF INSTANCES:" + instances.size());
-            
-            // Load AuthorID_InstanceID Mapping
-            loadMappingInstanceIDAuthorID("......");
+            loadMappingInstanceIDAuthorID(pathFile + "\\CRS-AuthorIDAndInstance.txt");
             
             for (int inputAuthorID : listAuthorID) {
                 System.out.println("CURRENT INSTANCE IS:" + inputAuthorID);
@@ -143,22 +132,19 @@ public class ParallelLDA {
     }
     
     private int getInstanceFromAuthorID(int authorID) {
-        return 0;
+        return AuthorInstanceHM.get(authorID);
     }
     
     private int getAuthorIDFromInstanceID(int instanceID) {
-        return 0;
+        return InstanceAuthorHM.get(instanceID);
     }
     
     private void loadMappingInstanceIDAuthorID(String mapFile) {
-        HashMap<Integer, Integer> AuthorInstanceHM = new HashMap<>();
-        HashMap<Integer, Integer> InstanceAuthorHM = new HashMap<>();
-        StringBuffer strBuffer = new StringBuffer();
         try {
             FileInputStream fis = new FileInputStream(mapFile);
             Reader reader = new InputStreamReader(fis, "UTF8");
             BufferedReader bufferReader = new BufferedReader(reader);
-            bufferReader.readLine(); // skip the first line
+            bufferReader.readLine(); // skip the header line
             String line = null;
             String[] tokens;
             while ((line = bufferReader.readLine()) != null) {
