@@ -1253,7 +1253,7 @@ public class CRSMainFrame extends javax.swing.JFrame {
                 txtTrainingPaperYearPath.getText(), txtNFAuthorPaperPath.getText(),
                 txtFFAuthorPaperPath.getText(), txtListAuthorPath.getText(),
                 txtValueK.getText(), txtValueYear.getText(),
-                "2;4", txtResultPath.getText(),
+                txtResultPath.getText(),
                 txtLDAInputFile.getText(),
                 numberOfRandomAuthor, 
                 isCosineMethod, isJaccardMethod, isAdarMethod, isRSSMethod,
