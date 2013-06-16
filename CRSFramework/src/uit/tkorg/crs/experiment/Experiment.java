@@ -8,8 +8,7 @@ import uit.tkorg.crs.method.Jaccard;
 import uit.tkorg.crs.method.MPBVS;
 import uit.tkorg.crs.method.MPBVSPlus;
 import uit.tkorg.crs.method.RSS;
-import uit.tkorg.crs.method.RTBVS;
-
+import uit.tkorg.crs.method.RSSPlus;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -26,6 +25,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Vector;
+import uit.tkorg.crs.method.ParallelLDA;
+import uit.tkorg.utility.TextFileProcessor;
 
 /**
  *
@@ -33,6 +34,7 @@ import java.util.Vector;
  */
 public class Experiment {
 
+    //<editor-fold defaultstate="collapsed" desc="Class variables">
     private Graph _graph = Graph.getInstance();
     private String _training_PaperId_AuthorIdPath;
     private String _training_PaperId_YearPath;
@@ -44,42 +46,43 @@ public class Experiment {
     private ArrayList<Integer> _yearArray;
     private ArrayList<Integer> _topNArray;
     private String _resultPath;
-    private StringBuffer _nfAdamicAdarBuffer;
-    private StringBuffer _nfCosineBuffer;
-    private StringBuffer _nfJaccardBuffer;
-    private StringBuffer _nfRSSBuffer;
-    private StringBuffer _nfRSSPlusBuffer;
-    private StringBuffer _nfMPBVSBuffer;
-    private StringBuffer _nfMPBVSPlusBuffer;
-    private StringBuffer _ffAdamicAdarBuffer;
-    private StringBuffer _ffCosineBuffer;
-    private StringBuffer _ffJaccardBuffer;
-    private StringBuffer _ffRSSBuffer;
-    private StringBuffer _ffRSSPlusBuffer;
-    private StringBuffer _ffMPBVSBuffer;
-    private StringBuffer _ffMPBVSPlusBuffer;
+    private String _training_LDA_InputFile;
+    private int _numberOfRandomAuthor;
+    private boolean _isCosineMethod;
+    private boolean _isJaccardMethod;
+    private boolean _isAdarMethod;
+    private boolean _isRSSMethod;
+    private boolean _isRSSPlusMethod;
+    private boolean _isMPVSMethod;
+    private boolean _isMVVSPlusMethod;
+    private boolean _isKLDivergence;
+    private StringBuffer _nfAdamicAdarBuffer = new StringBuffer();
+    private StringBuffer _nfCosineBuffer = new StringBuffer();
+    private StringBuffer _nfJaccardBuffer = new StringBuffer();
+    private StringBuffer _nfRSSBuffer = new StringBuffer();
+    private StringBuffer _nfRSSPlusBuffer = new StringBuffer();
+    private StringBuffer _nfMPBVSBuffer = new StringBuffer();
+    private StringBuffer _nfMPBVSPlusBuffer = new StringBuffer();
+    private StringBuffer _ffAdamicAdarBuffer = new StringBuffer();
+    private StringBuffer _ffCosineBuffer = new StringBuffer();
+    private StringBuffer _ffJaccardBuffer = new StringBuffer();
+    private StringBuffer _ffRSSBuffer = new StringBuffer();
+    private StringBuffer _ffRSSPlusBuffer = new StringBuffer();
+    private StringBuffer _ffMPBVSBuffer = new StringBuffer();
+    private StringBuffer _ffMPBVSPlusBuffer = new StringBuffer();
+    private StringBuffer _nfKLDivergenceBuffer = new StringBuffer();
+    private StringBuffer _ffKLDivergenceBuffer = new StringBuffer();
+    //</editor-fold>
 
-    /**
-     *
-     * @param Training_PaperId_AuthorIdPath
-     * @param Training_PaperId_YearPath
-     * @param Testing_PaperId_Year_NFPath
-     * @param Testing_PaperId_Year_FFPath
-     * @param Existing_List_AuthorPath
-     * @param K
-     * @param Year
-     * @param TopNList
-     * @param ResultPath
-     */
-    public Experiment(String Training_PaperId_AuthorIdPath,
-            String Training_PaperId_YearPath,
-            String Testing_PaperId_Year_NFPath,
-            String Testing_PaperId_Year_FFPath,
+    public Experiment(String Training_PaperId_AuthorIdPath, String Training_PaperId_YearPath,
+            String Testing_PaperId_Year_NFPath, String Testing_PaperId_Year_FFPath,
             String Existing_List_AuthorPath, // empty or null if use radom author
-            String K, //0.5;0.6;0.7;0.8;0.9
-            String Year, //2005
-            String TopNList,
-            String ResultPath) {
+            String K, String Year, String TopNList,
+            String ResultPath,
+            String Training_LDA_InputFile,
+            int numberOfRandomAuthor,
+            boolean isCosineMethod, boolean isJaccardMethod, boolean isAdarMethod, boolean isRSSMethod,
+            boolean isRSSPlusMethod, boolean isMPVSMethod, boolean isMVVSPlusMethod, boolean isKLDivergence) {
 
         _training_PaperId_AuthorIdPath = Training_PaperId_AuthorIdPath;
         _training_PaperId_YearPath = Training_PaperId_YearPath;
@@ -87,12 +90,21 @@ public class Experiment {
         _testing_PaperId_Year_FFPath = Testing_PaperId_Year_FFPath;
         _existing_List_AuthorPath = Existing_List_AuthorPath;
 
-        String[] kArray = K.split(";");
+        String str = ";";
+        if (K.contains(","))
+            str = ",";
+        else if (K.contains("-"))
+                str = "-";
+        String[] kArray = K.split(str);
         _kArray = new ArrayList<>();
         for (String k : kArray) {
             _kArray.add(Float.parseFloat(k));
         }
 
+        if (Year.contains(","))
+            str = ",";
+        else if (Year.contains("-"))
+                str = "-";
         String[] yearArray = Year.split(";");
         _yearArray = new ArrayList<>();
         for (String year : yearArray) {
@@ -105,250 +117,83 @@ public class Experiment {
             _topNArray.add(Integer.parseInt(topN));
         }
 
+        _training_LDA_InputFile = Training_LDA_InputFile;
+        _numberOfRandomAuthor = numberOfRandomAuthor;
+        _isCosineMethod = isCosineMethod;
+        _isJaccardMethod = isJaccardMethod;
+        _isAdarMethod = isAdarMethod;
+        _isRSSMethod = isRSSMethod;
+        _isRSSPlusMethod = isRSSPlusMethod;
+        _isMPVSMethod = isMPVSMethod;
+        _isMVVSPlusMethod = isMVVSPlusMethod;
+        _isKLDivergence = isKLDivergence;
+
         _resultPath = ResultPath;
     }
 
-    public void Run() throws FileNotFoundException, UnsupportedEncodingException, IOException {
+    public void Run() throws Exception {
         _graph.LoadTrainingData(_training_PaperId_AuthorIdPath, _training_PaperId_YearPath);
         _graph.LoadTestingData(_testing_PaperId_Year_NFPath, _testing_PaperId_Year_FFPath);
+
         AdamicAdar measureAdamicAdar = new AdamicAdar();
         Cosine measureCosine = new Cosine();
         Jaccard measureJaccard = new Jaccard();
         MPBVS measureMPBVS = new MPBVS();
         MPBVSPlus measureMPBVSPlus = new MPBVSPlus();
         RSS measureRSS = new RSS();
-        RTBVS measureRTBVS = new RTBVS();
+        RSSPlus measureRSSPlus = new RSSPlus();
 
         HashMap<Integer, HashMap<Integer, Float>> topSimilarity;
-
+        int topN = 50;
+        //<editor-fold defaultstate="collapsed" desc="Run for different K and Year">
         for (int year : _yearArray) {
             for (float k : _kArray) {
                 _graph.BuildAllGraph(k, year);
+                selectAuthorsForExperiment();
 
-                if (_listAuthorRandom == null || _listAuthorRandom.size() == 0) {
-                    _listAuthorRandom = new ArrayList<>();
-                    if (_existing_List_AuthorPath == null || _existing_List_AuthorPath.isEmpty()) {
-                        
-                        // <editor-fold defaultstate="collapsed" desc="Random Author">
-                        HashMap<Integer, Integer> authorDegree = new HashMap<>();
-                        for (int authorId : _graph.rssGraph.keySet()) {
-                            authorDegree.put(authorId, _graph.rssGraph.get(authorId).size());
-                        }
-                        HashMap<Integer, Integer> degreeCounter = new HashMap<>();
-                        for (int authorId : authorDegree.keySet()) {
-                            Integer counter = degreeCounter.get(authorDegree.get(authorId));
-                            if (counter == null) {
-                                counter = 0;
-                            }
-                            counter++;
-                            degreeCounter.put(authorDegree.get(authorId), counter);
-                        }
-                        int[] degreeArray = new int[degreeCounter.keySet().size()];
-                        int index = 0;
-                        for (int degree : degreeCounter.keySet()) {
-                            degreeArray[index] = degree;
-                            index++;
-                        }
-                        //sort degree Array
-                        for (int i = 0; i < degreeArray.length - 1; i++) {
-                            for (int j = i + 1; j < degreeArray.length; j++) {
-                                if (degreeArray[i] > degreeArray[j]) {
-                                    int temp = degreeArray[i];
-                                    degreeArray[i] = degreeArray[j];
-                                    degreeArray[j] = temp;
-                                }
-                            }
-                        }
-                        int numberOfDegree, numberOfLowDegree, numberOfMidDegree, numberOfHighDegree;
-                        numberOfDegree =
-                                numberOfLowDegree =
-                                numberOfMidDegree =
-                                numberOfHighDegree = (int) degreeArray.length / 3;
-                        if (degreeArray.length - numberOfDegree * 3 == 1) {
-                            numberOfLowDegree += 1;
-                        } else if (degreeArray.length - numberOfDegree * 3 == 2) {
-                            numberOfLowDegree += 1;
-                            numberOfMidDegree += 1;
-                        }
-
-                        int maxLowDegree = degreeArray[numberOfLowDegree - 1];
-                        int maxMidDegree = degreeArray[numberOfLowDegree + numberOfMidDegree - 1];
-                        int maxHighDegree = degreeArray[numberOfLowDegree + numberOfMidDegree + numberOfHighDegree - 1];;
-
-                        ArrayList<Integer> listAuthorIdInLow = new ArrayList<>();
-                        ArrayList<Integer> listAuthorIdInMid = new ArrayList<>();
-                        ArrayList<Integer> listAuthorIdInHigh = new ArrayList<>();
-
-                        ArrayList<Integer> listAuthorIdInLowForStatic = new ArrayList<>();
-                        ArrayList<Integer> listAuthorIdInMidForStatic = new ArrayList<>();
-                        ArrayList<Integer> listAuthorIdInHighForStatic = new ArrayList<>();
-
-                        HashSet<Integer> listAuthorNearTesting = _graph.GetAllAuthorNearTest();
-                        HashSet<Integer> listAuthorFarTesting = _graph.GetAllAuthorFarTest();
-                        for (int authorId : authorDegree.keySet()) {
-                            if (authorDegree.get(authorId) < maxLowDegree) {
-                                listAuthorIdInLowForStatic.add(authorId);
-                                if (listAuthorNearTesting.contains(authorId)
-                                        && listAuthorFarTesting.contains(authorId)) {
-                                    listAuthorIdInLow.add(authorId);
-                                }
-                            } else if (authorDegree.get(authorId) < maxMidDegree) {
-                                listAuthorIdInMidForStatic.add(authorId);
-                                if (listAuthorNearTesting.contains(authorId)
-                                        && listAuthorFarTesting.contains(authorId)) {
-                                    listAuthorIdInMid.add(authorId);
-                                }
-                            } else {
-                                listAuthorIdInHighForStatic.add(authorId);
-                                if (listAuthorNearTesting.contains(authorId)
-                                        && listAuthorFarTesting.contains(authorId)) {
-                                    listAuthorIdInHigh.add(authorId);
-                                }
-                            }
-                        }
-
-                        Random rd = new Random();
-                        ArrayList<Integer> listRandomAuthorIdInLow = new ArrayList<>();
-                        int counter = 0;
-                        if (listAuthorIdInLow.size() > 200) {
-                            while (counter < 100) {
-                                counter++;
-                                int aid;
-                                while (listRandomAuthorIdInLow.contains(aid = listAuthorIdInLow.get(rd.nextInt(listAuthorIdInLow.size())))) ;
-                                listRandomAuthorIdInLow.add(aid);
-                            }
-                        } else {
-                            int length = listAuthorIdInLow.size() > 100 ? 100 : listAuthorIdInLow.size();
-                            for (int i = 0; i < length; i++) {
-                                listRandomAuthorIdInLow.add(listAuthorIdInLow.get(i));
-                            }
-                        }
-
-                        ArrayList<Integer> listRandomAuthorIdInMid = new ArrayList<>();
-                        counter = 0;
-                        if (listAuthorIdInMid.size() > 200) {
-                            while (counter < 100) {
-                                counter++;
-                                int aid;
-                                while (listRandomAuthorIdInMid.contains(aid = listAuthorIdInMid.get(rd.nextInt(listAuthorIdInMid.size())))) ;
-                                listRandomAuthorIdInMid.add(aid);
-                            }
-                        } else {
-                            int length = listAuthorIdInMid.size() > 100 ? 100 : listAuthorIdInMid.size();
-                            for (int i = 0; i < length; i++) {
-                                listRandomAuthorIdInMid.add(listAuthorIdInMid.get(i));
-                            }
-                        }
-
-                        ArrayList<Integer> listRandomAuthorIdInHigh = new ArrayList<>();
-                        counter = 0;
-                        if (listAuthorIdInHigh.size() > 200) {
-                            while (counter < 100) {
-                                counter++;
-                                int aid;
-                                while (listRandomAuthorIdInHigh.contains(aid = listAuthorIdInHigh.get(rd.nextInt(listAuthorIdInHigh.size())))) ;
-                                listRandomAuthorIdInHigh.add(aid);
-                            }
-                        } else {
-                            int length = listAuthorIdInHigh.size() > 100 ? 100 : listAuthorIdInHigh.size();
-                            for (int i = 0; i < length; i++) {
-                                listRandomAuthorIdInHigh.add(listAuthorIdInHigh.get(i));
-                            }
-                        }
-
-                        _listAuthorRandom.addAll(listRandomAuthorIdInLow);
-                        _listAuthorRandom.addAll(listRandomAuthorIdInMid);
-                        _listAuthorRandom.addAll(listRandomAuthorIdInHigh);
-
-                        FileOutputStream fos = new FileOutputStream(_resultPath + "/" + "ListRandomAuthor.txt");
-                        Writer file = new OutputStreamWriter(fos, "UTF8");
-                        file.write("AuthorID" + "\n");
-                        for (int authorId : _listAuthorRandom) {
-                            file.write(String.valueOf(authorId) + "\n");
-                        }
-                        file.close();
-                        // </editor-fold>
-                    } else {
-                        // <editor-fold defaultstate="collapsed" desc="Load Author">
-                        try {
-                            _listAuthorRandom = new ArrayList<>();
-                            FileInputStream fis = new FileInputStream(_existing_List_AuthorPath);
-                            Reader reader = new InputStreamReader(fis, "UTF8");
-                            BufferedReader bufferReader = new BufferedReader(reader);
-                            bufferReader.readLine();
-                            String line = null;
-                            int authorId;
-                            while ((line = bufferReader.readLine()) != null) {
-                                authorId = Integer.parseInt(line);
-                                _listAuthorRandom.add(authorId);
-                            }
-                            bufferReader.close();
-                        } catch (Exception e) {
-                        }
-                    }
-                    // </editor-fold>
+                //<editor-fold defaultstate="collapsed" desc="Execute different methods">
+                HashMap<Integer, HashMap<Integer, Float>> cosineResult = null;
+                HashMap<Integer, HashMap<Integer, Float>> jaccardResult = null;
+                HashMap<Integer, HashMap<Integer, Float>> adamicAdarResult = null;
+                HashMap<Integer, HashMap<Integer, Float>> rssResult = null;
+                HashMap<Integer, HashMap<Integer, Float>> mpbvsResult = null;
+                HashMap<Integer, HashMap<Integer, Float>> rssplusResult = null;
+                HashMap<Integer, HashMap<Integer, Float>> mpbvsplusResult = null;
+                if (_isCosineMethod) {
+                    cosineResult = measureCosine.Process(_graph.rssGraph, _listAuthorRandom);
                 }
+                if (_isJaccardMethod) {
+                    jaccardResult = measureJaccard.Process(_graph.rssGraph, _listAuthorRandom);
+                }
+                if (_isAdarMethod) {
+                    adamicAdarResult = measureAdamicAdar.Process(_graph.rssGraph, _listAuthorRandom);
+                }
+                if (_isRSSMethod) {
+                    rssResult = measureRSS.Process(_graph.rssGraph, _listAuthorRandom);
+                }
+                if (_isMPVSMethod) {
+                    mpbvsResult = measureMPBVS.Process(_graph.rssGraph, _listAuthorRandom);
+                }
+                if (_isRSSPlusMethod) {
+                    mpbvsplusResult = measureRSSPlus.Process(_graph.rtbvsGraph, _listAuthorRandom);
+                }
+                if (_isMVVSPlusMethod) {
+                    rssplusResult = measureMPBVSPlus.Process(_graph.rtbvsGraph, _listAuthorRandom);
+                }
+                //</editor-fold>
 
-                // Tinh do tuong tu cho cac tac gia trong danh sach input la _listAuthorRandom voi tat ca cac nguoi khac trong Graph
-                HashMap<Integer, HashMap<Integer, Float>> adamicAdarResult = measureAdamicAdar.Process(_graph.rssGraph, _listAuthorRandom);
-                HashMap<Integer, HashMap<Integer, Float>> cosineResult = measureCosine.Process(_graph.rssGraph, _listAuthorRandom);
-                HashMap<Integer, HashMap<Integer, Float>> jaccardResult = measureJaccard.Process(_graph.rssGraph, _listAuthorRandom);
-                HashMap<Integer, HashMap<Integer, Float>> rssResult = measureRSS.Process(_graph.rssGraph, _listAuthorRandom);
-                HashMap<Integer, HashMap<Integer, Float>> rtbvsResult = measureRTBVS.Process(_graph.rtbvsGraph, _listAuthorRandom);
-                HashMap<Integer, HashMap<Integer, Float>> mpbvsResult = measureMPBVS.Process(_graph.rssGraph, _listAuthorRandom);
-                HashMap<Integer, HashMap<Integer, Float>> mpbvsplusResult = measureMPBVSPlus.Process(_graph.rtbvsGraph, _listAuthorRandom);
-
-                _nfAdamicAdarBuffer = new StringBuffer();
-                _nfCosineBuffer = new StringBuffer();
-                _nfJaccardBuffer = new StringBuffer();
-                _nfRSSBuffer = new StringBuffer();
-                _nfRSSPlusBuffer = new StringBuffer();
-                _nfMPBVSBuffer = new StringBuffer();
-                _nfMPBVSPlusBuffer = new StringBuffer();
-                _ffAdamicAdarBuffer = new StringBuffer();
-                _ffCosineBuffer = new StringBuffer();
-                _ffJaccardBuffer = new StringBuffer();
-                _ffRSSBuffer = new StringBuffer();
-                _ffRSSPlusBuffer = new StringBuffer();
-                _ffMPBVSBuffer = new StringBuffer();
-                _ffMPBVSPlusBuffer = new StringBuffer();
-    
-                int topN = 50;
                 for (int i = 1; i <= topN; i++) {
-                    //<editor-fold defaultstate="collapsed" desc="AdamicAdar">
-                    topSimilarity = FindTopNSimilarity(i, adamicAdarResult);
-                    float precisionNear = EvaluationMeasure.Mean_Precision_TopN(topSimilarity, _graph.nearTestingData);
-                    float precisionFar = EvaluationMeasure.Mean_Precision_TopN(topSimilarity, _graph.farTestingData);
-                    bufferingExperimentResult(true, "AdamicAdar", precisionNear);
-                    bufferingExperimentResult(false, "AdamicAdar", precisionFar);
-
-                    float recall = EvaluationMeasure.Mean_Recall_TopN(topSimilarity, _graph.nearTestingData);
-                    //float MAP = EvaluationMeasure.MAP(topSimilarity, _graph.nearTestingData);
-                    bufferingExperimentResult(true, "AdamicAdar", recall);
-                    //bufferingExperimentResult(true, "AdamicAdar", MAP);
-                    recall = EvaluationMeasure.Mean_Recall_TopN(topSimilarity, _graph.farTestingData);
-                    //MAP = EvaluationMeasure.MAP(topSimilarity, _graph.farTestingData);
-                    bufferingExperimentResult(false, "AdamicAdar", recall);
-                    //bufferingExperimentResult(false, "AdamicAdar", MAP);
-
-                    //</editor-fold>
-
                     //<editor-fold defaultstate="collapsed" desc="Cosine">
                     topSimilarity = FindTopNSimilarity(i, cosineResult);
-                    precisionNear = EvaluationMeasure.Mean_Precision_TopN(topSimilarity, _graph.nearTestingData);
-                    precisionFar = EvaluationMeasure.Mean_Precision_TopN(topSimilarity, _graph.farTestingData);
+                    float precisionNear = EvaluationMeasure.Mean_Precision_TopN(topSimilarity, _graph.nearTestingData);
+                    float precisionFar = EvaluationMeasure.Mean_Precision_TopN(topSimilarity, _graph.farTestingData);
                     bufferingExperimentResult(true, "Cosine", precisionNear);
                     bufferingExperimentResult(false, "Cosine", precisionFar);
 
-                    recall = EvaluationMeasure.Mean_Recall_TopN(topSimilarity, _graph.nearTestingData);
-                    //MAP = EvaluationMeasure.MAP(topSimilarity, _graph.nearTestingData);
+                    float recall = EvaluationMeasure.Mean_Recall_TopN(topSimilarity, _graph.nearTestingData);
                     bufferingExperimentResult(true, "Cosine", recall);
-                    //bufferingExperimentResult(true, "Cosine", MAP);
                     recall = EvaluationMeasure.Mean_Recall_TopN(topSimilarity, _graph.farTestingData);
-                    //MAP = EvaluationMeasure.MAP(topSimilarity, _graph.farTestingData);
                     bufferingExperimentResult(false, "Cosine", recall);
-                   // bufferingExperimentResult(false, "Cosine", MAP);
-
                     //</editor-fold>
 
                     //<editor-fold defaultstate="collapsed" desc="Jaccard">
@@ -359,14 +204,22 @@ public class Experiment {
                     bufferingExperimentResult(false, "Jaccard", precisionFar);
 
                     recall = EvaluationMeasure.Mean_Recall_TopN(topSimilarity, _graph.nearTestingData);
-                    //MAP = EvaluationMeasure.MAP(topSimilarity, _graph.nearTestingData);
                     bufferingExperimentResult(true, "Jaccard", recall);
-                    //bufferingExperimentResult(true, "Jaccard", MAP);
                     recall = EvaluationMeasure.Mean_Recall_TopN(topSimilarity, _graph.farTestingData);
-                    //MAP = EvaluationMeasure.MAP(topSimilarity, _graph.farTestingData);
                     bufferingExperimentResult(false, "Jaccard", recall);
-                    //bufferingExperimentResult(false, "Jaccard", MAP);
+                    //</editor-fold>
 
+                    //<editor-fold defaultstate="collapsed" desc="AdamicAdar">
+                    topSimilarity = FindTopNSimilarity(i, adamicAdarResult);
+                    precisionNear = EvaluationMeasure.Mean_Precision_TopN(topSimilarity, _graph.nearTestingData);
+                    precisionFar = EvaluationMeasure.Mean_Precision_TopN(topSimilarity, _graph.farTestingData);
+                    bufferingExperimentResult(true, "AdamicAdar", precisionNear);
+                    bufferingExperimentResult(false, "AdamicAdar", precisionFar);
+
+                    recall = EvaluationMeasure.Mean_Recall_TopN(topSimilarity, _graph.nearTestingData);
+                    bufferingExperimentResult(true, "AdamicAdar", recall);
+                    recall = EvaluationMeasure.Mean_Recall_TopN(topSimilarity, _graph.farTestingData);
+                    bufferingExperimentResult(false, "AdamicAdar", recall);
                     //</editor-fold>
 
                     //<editor-fold defaultstate="collapsed" desc="RSS">
@@ -377,31 +230,22 @@ public class Experiment {
                     bufferingExperimentResult(false, "RSS", precisionFar);
 
                     recall = EvaluationMeasure.Mean_Recall_TopN(topSimilarity, _graph.nearTestingData);
-                    //MAP = EvaluationMeasure.MAP(topSimilarity, _graph.nearTestingData);
                     bufferingExperimentResult(true, "RSS", recall);
-                    //bufferingExperimentResult(true, "RSS", MAP);
                     recall = EvaluationMeasure.Mean_Recall_TopN(topSimilarity, _graph.farTestingData);
-                    //MAP = EvaluationMeasure.MAP(topSimilarity, _graph.farTestingData);
                     bufferingExperimentResult(false, "RSS", recall);
-                    //bufferingExperimentResult(false, "RSS", MAP);
-
                     //</editor-fold>
 
                     //<editor-fold defaultstate="collapsed" desc="RSSPlus">
-                    topSimilarity = FindTopNSimilarity(i, rtbvsResult);
+                    topSimilarity = FindTopNSimilarity(i, rssplusResult);
                     precisionNear = EvaluationMeasure.Mean_Precision_TopN(topSimilarity, _graph.nearTestingData);
                     precisionFar = EvaluationMeasure.Mean_Precision_TopN(topSimilarity, _graph.farTestingData);
                     bufferingExperimentResult(true, "RSSPlus", precisionNear);
                     bufferingExperimentResult(false, "RSSPlus", precisionFar);
 
                     recall = EvaluationMeasure.Mean_Recall_TopN(topSimilarity, _graph.nearTestingData);
-                    //MAP = EvaluationMeasure.MAP(topSimilarity, _graph.nearTestingData);
                     bufferingExperimentResult(true, "RSSPlus", recall);
-                    //bufferingExperimentResult(true, "RSSPlus", MAP);
                     recall = EvaluationMeasure.Mean_Recall_TopN(topSimilarity, _graph.farTestingData);
-                    //MAP = EvaluationMeasure.MAP(topSimilarity, _graph.farTestingData);
                     bufferingExperimentResult(false, "RSSPlus", recall);
-                    //bufferingExperimentResult(false, "RSSPlus", MAP);
                     //</editor-fold>
 
                     //<editor-fold defaultstate="collapsed" desc="MPBVS">
@@ -412,14 +256,9 @@ public class Experiment {
                     bufferingExperimentResult(false, "MPBVS", precisionFar);
 
                     recall = EvaluationMeasure.Mean_Recall_TopN(topSimilarity, _graph.nearTestingData);
-                    //MAP = EvaluationMeasure.MAP(topSimilarity, _graph.nearTestingData);
                     bufferingExperimentResult(true, "MPBVS", recall);
-                    //bufferingExperimentResult(true, "MPBVS", MAP);
                     recall = EvaluationMeasure.Mean_Recall_TopN(topSimilarity, _graph.farTestingData);
-                    //MAP = EvaluationMeasure.MAP(topSimilarity, _graph.farTestingData);
                     bufferingExperimentResult(false, "MPBVS", recall);
-                    //bufferingExperimentResult(false, "MPBVS", MAP);
-
                     //</editor-fold>
 
                     //<editor-fold defaultstate="collapsed" desc="MPBVSPlus">
@@ -430,18 +269,220 @@ public class Experiment {
                     bufferingExperimentResult(false, "MPBVSPlus", precisionFar);
 
                     recall = EvaluationMeasure.Mean_Recall_TopN(topSimilarity, _graph.nearTestingData);
-                    //MAP = EvaluationMeasure.MAP(topSimilarity, _graph.nearTestingData);
                     bufferingExperimentResult(true, "MPBVSPlus", recall);
-                    //bufferingExperimentResult(true, "MPBVSPlus", MAP);
                     recall = EvaluationMeasure.Mean_Recall_TopN(topSimilarity, _graph.farTestingData);
-                    //MAP = EvaluationMeasure.MAP(topSimilarity, _graph.farTestingData);
                     bufferingExperimentResult(false, "MPBVSPlus", recall);
-                    //bufferingExperimentResult(false, "MPBVSPlus", MAP);
                     //</editor-fold>
                 }
 
-                writeToTxtFile(k, year, topN);
+                writeToTxtFileForLinkMethods(k, year, topN);
             }
+        }
+        //</editor-fold>
+
+        //<editor-fold defaultstate="collapsed" desc="Run for Topic Model - KL Divergence, out to File">
+        HashMap<Integer, HashMap<Integer, Float>> klDivergenceResult = null;
+        if (_isKLDivergence) {
+            ParallelLDA ldaParallelTool = new ParallelLDA();
+            klDivergenceResult = ldaParallelTool.process(_training_LDA_InputFile, _listAuthorRandom);
+        }
+
+        DecimalFormat df = new DecimalFormat("0.#####");
+        _nfKLDivergenceBuffer.append("Near future");
+        _ffKLDivergenceBuffer.append("Far future");
+        for (int i = 1; i <= topN; i++) {
+            _nfKLDivergenceBuffer.append("P@" + i + "\t" + "R@" + i + "\t");
+            _ffKLDivergenceBuffer.append("P@" + i + "\t" + "R@" + i + "\t");
+        }
+        _nfKLDivergenceBuffer.append("\n");
+        _ffKLDivergenceBuffer.append("\n");
+
+        if (klDivergenceResult != null) {
+            for (int i = 1; i <= topN; i++) {
+                topSimilarity = FindTopNSimilarity(i, klDivergenceResult);
+                float precisionNear = EvaluationMeasure.Mean_Precision_TopN(topSimilarity, _graph.nearTestingData);
+                float precisionFar = EvaluationMeasure.Mean_Precision_TopN(topSimilarity, _graph.farTestingData);
+                _nfKLDivergenceBuffer.append(df.format(precisionNear) + "\t");
+                _ffKLDivergenceBuffer.append(df.format(precisionFar) + "\t");
+
+                float recallNear = EvaluationMeasure.Mean_Recall_TopN(topSimilarity, _graph.nearTestingData);
+                float recallFar = EvaluationMeasure.Mean_Recall_TopN(topSimilarity, _graph.farTestingData);
+                _nfKLDivergenceBuffer.append(df.format(recallNear) + "\t");
+                _ffKLDivergenceBuffer.append(df.format(recallFar) + "\t");
+            }
+        }
+        TextFileProcessor.writeTextFile("C:\\CRS-Experiment\\KLResult.txt",
+                _nfKLDivergenceBuffer.toString() + "\n\n" + _ffKLDivergenceBuffer.toString());
+        //</editor-fold>
+    }
+
+    private void selectAuthorsForExperiment() {
+        try {
+            if (_listAuthorRandom == null || _listAuthorRandom.size() == 0) {
+                _listAuthorRandom = new ArrayList<>();
+                if (_existing_List_AuthorPath == null || _existing_List_AuthorPath.isEmpty()) {
+                    // <editor-fold defaultstate="collapsed" desc="Random Author">
+                    HashMap<Integer, Integer> authorDegree = new HashMap<>();
+                    for (int authorId : _graph.rssGraph.keySet()) {
+                        authorDegree.put(authorId, _graph.rssGraph.get(authorId).size());
+                    }
+                    HashMap<Integer, Integer> degreeCounter = new HashMap<>();
+                    for (int authorId : authorDegree.keySet()) {
+                        Integer counter = degreeCounter.get(authorDegree.get(authorId));
+                        if (counter == null) {
+                            counter = 0;
+                        }
+                        counter++;
+                        degreeCounter.put(authorDegree.get(authorId), counter);
+                    }
+                    int[] degreeArray = new int[degreeCounter.keySet().size()];
+                    int index = 0;
+                    for (int degree : degreeCounter.keySet()) {
+                        degreeArray[index] = degree;
+                        index++;
+                    }
+                    //sort degree Array
+                    for (int i = 0; i < degreeArray.length - 1; i++) {
+                        for (int j = i + 1; j < degreeArray.length; j++) {
+                            if (degreeArray[i] > degreeArray[j]) {
+                                int temp = degreeArray[i];
+                                degreeArray[i] = degreeArray[j];
+                                degreeArray[j] = temp;
+                            }
+                        }
+                    }
+                    int numberOfDegree, numberOfLowDegree, numberOfMidDegree, numberOfHighDegree;
+                    numberOfDegree =
+                            numberOfLowDegree =
+                            numberOfMidDegree =
+                            numberOfHighDegree = (int) degreeArray.length / 3;
+                    if (degreeArray.length - numberOfDegree * 3 == 1) {
+                        numberOfLowDegree += 1;
+                    } else if (degreeArray.length - numberOfDegree * 3 == 2) {
+                        numberOfLowDegree += 1;
+                        numberOfMidDegree += 1;
+                    }
+
+                    int maxLowDegree = degreeArray[numberOfLowDegree - 1];
+                    int maxMidDegree = degreeArray[numberOfLowDegree + numberOfMidDegree - 1];
+                    int maxHighDegree = degreeArray[numberOfLowDegree + numberOfMidDegree + numberOfHighDegree - 1];;
+
+                    ArrayList<Integer> listAuthorIdInLow = new ArrayList<>();
+                    ArrayList<Integer> listAuthorIdInMid = new ArrayList<>();
+                    ArrayList<Integer> listAuthorIdInHigh = new ArrayList<>();
+
+                    ArrayList<Integer> listAuthorIdInLowForStatic = new ArrayList<>();
+                    ArrayList<Integer> listAuthorIdInMidForStatic = new ArrayList<>();
+                    ArrayList<Integer> listAuthorIdInHighForStatic = new ArrayList<>();
+
+                    HashSet<Integer> listAuthorNearTesting = _graph.GetAllAuthorNearTest();
+                    HashSet<Integer> listAuthorFarTesting = _graph.GetAllAuthorFarTest();
+                    for (int authorId : authorDegree.keySet()) {
+                        if (authorDegree.get(authorId) < maxLowDegree) {
+                            listAuthorIdInLowForStatic.add(authorId);
+                            if (listAuthorNearTesting.contains(authorId)
+                                    && listAuthorFarTesting.contains(authorId)) {
+                                listAuthorIdInLow.add(authorId);
+                            }
+                        } else if (authorDegree.get(authorId) < maxMidDegree) {
+                            listAuthorIdInMidForStatic.add(authorId);
+                            if (listAuthorNearTesting.contains(authorId)
+                                    && listAuthorFarTesting.contains(authorId)) {
+                                listAuthorIdInMid.add(authorId);
+                            }
+                        } else {
+                            listAuthorIdInHighForStatic.add(authorId);
+                            if (listAuthorNearTesting.contains(authorId)
+                                    && listAuthorFarTesting.contains(authorId)) {
+                                listAuthorIdInHigh.add(authorId);
+                            }
+                        }
+                    }
+
+                    Random rd = new Random();
+                    ArrayList<Integer> listRandomAuthorIdInLow = new ArrayList<>();
+                    int counter = 0;
+                    if (listAuthorIdInLow.size() > 200) {
+                        while (counter < 100) {
+                            counter++;
+                            int aid;
+                            while (listRandomAuthorIdInLow.contains(aid = listAuthorIdInLow.get(rd.nextInt(listAuthorIdInLow.size())))) ;
+                            listRandomAuthorIdInLow.add(aid);
+                        }
+                    } else {
+                        int length = listAuthorIdInLow.size() > 100 ? 100 : listAuthorIdInLow.size();
+                        for (int i = 0; i < length; i++) {
+                            listRandomAuthorIdInLow.add(listAuthorIdInLow.get(i));
+                        }
+                    }
+
+                    ArrayList<Integer> listRandomAuthorIdInMid = new ArrayList<>();
+                    counter = 0;
+                    if (listAuthorIdInMid.size() > 200) {
+                        while (counter < 100) {
+                            counter++;
+                            int aid;
+                            while (listRandomAuthorIdInMid.contains(aid = listAuthorIdInMid.get(rd.nextInt(listAuthorIdInMid.size())))) ;
+                            listRandomAuthorIdInMid.add(aid);
+                        }
+                    } else {
+                        int length = listAuthorIdInMid.size() > 100 ? 100 : listAuthorIdInMid.size();
+                        for (int i = 0; i < length; i++) {
+                            listRandomAuthorIdInMid.add(listAuthorIdInMid.get(i));
+                        }
+                    }
+
+                    ArrayList<Integer> listRandomAuthorIdInHigh = new ArrayList<>();
+                    counter = 0;
+                    if (listAuthorIdInHigh.size() > 200) {
+                        while (counter < 100) {
+                            counter++;
+                            int aid;
+                            while (listRandomAuthorIdInHigh.contains(aid = listAuthorIdInHigh.get(rd.nextInt(listAuthorIdInHigh.size())))) ;
+                            listRandomAuthorIdInHigh.add(aid);
+                        }
+                    } else {
+                        int length = listAuthorIdInHigh.size() > 100 ? 100 : listAuthorIdInHigh.size();
+                        for (int i = 0; i < length; i++) {
+                            listRandomAuthorIdInHigh.add(listAuthorIdInHigh.get(i));
+                        }
+                    }
+
+                    _listAuthorRandom.addAll(listRandomAuthorIdInLow);
+                    _listAuthorRandom.addAll(listRandomAuthorIdInMid);
+                    _listAuthorRandom.addAll(listRandomAuthorIdInHigh);
+
+                    FileOutputStream fos = new FileOutputStream(_resultPath + "/" + "ListRandomAuthor.txt");
+                    Writer file = new OutputStreamWriter(fos, "UTF8");
+                    file.write("AuthorID" + "\n");
+                    for (int authorId : _listAuthorRandom) {
+                        file.write(String.valueOf(authorId) + "\n");
+                    }
+                    file.close();
+                    // </editor-fold>
+                } else {
+                    // <editor-fold defaultstate="collapsed" desc="Load Author">
+                    try {
+                        _listAuthorRandom = new ArrayList<>();
+                        FileInputStream fis = new FileInputStream(_existing_List_AuthorPath);
+                        Reader reader = new InputStreamReader(fis, "UTF8");
+                        BufferedReader bufferReader = new BufferedReader(reader);
+                        bufferReader.readLine();
+                        String line = null;
+                        int authorId;
+                        while ((line = bufferReader.readLine()) != null) {
+                            authorId = Integer.parseInt(line);
+                            _listAuthorRandom.add(authorId);
+                        }
+                        bufferReader.close();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                // </editor-fold>
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
 
@@ -473,7 +514,6 @@ public class Experiment {
         //<editor-fold defaultstate="collapsed" desc="buffering Experiment Result">
         try {
             DecimalFormat df = new DecimalFormat("0.#####");
-
             if (predictMethod.equalsIgnoreCase("AdamicAdar")) {
                 if (isNFResult == true) {
                     _nfAdamicAdarBuffer.append("\t" + df.format(value));
@@ -535,7 +575,7 @@ public class Experiment {
 //</editor-fold>  
     }
 
-    private void writeToTxtFile(float k, int year, int topN) {
+    private void writeToTxtFileForLinkMethods(float k, int year, int topN) {
         //<editor-fold defaultstate="collapsed" desc="Write result into file">
         try {
             FileOutputStream fos = new FileOutputStream(_resultPath + "/" + String.valueOf(k) + "_" + String.valueOf(year) + ".txt");
@@ -564,7 +604,7 @@ public class Experiment {
             //<editor-fold defaultstate="collapsed" desc="Far future testing">
             file.write("Far Future Testing" + "\n");
             for (int i = 1; i <= topN; i++) {
-               file.write("\t" + "P@" + i + "\t" + "R@" + i);
+                file.write("\t" + "P@" + i + "\t" + "R@" + i);
             }
             //file.write("\t" + "Recall@" + topN);
             //file.write("\t" + "MAP");

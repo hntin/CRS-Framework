@@ -20,12 +20,15 @@ import uit.tkorg.utility.TextFileProcessor;
  *
  * @author tin
  */
-public class KLDivergenceLDA {
+public class ParallelLDA {
     private static StringBuffer buffInputParallelLDA = new StringBuffer();
     private static StringBuffer buffAuthorIDAndDocMapping = new StringBuffer();
+    HashMap<Integer, Integer> AuthorInstanceHM = new HashMap<>();
+    HashMap<Integer, Integer> InstanceAuthorHM = new HashMap<>();
     private static HashMap<Integer, HashMap<Integer, Float>> _KLDivergenceHM;
 
-    public HashMap<Integer, HashMap<Integer, Float>> process(String pathFile) {
+    public HashMap<Integer, HashMap<Integer, Float>> process(String inputFile, ArrayList<Integer> listAuthorID) {
+        System.out.println("START TRAINING LDA");
         try {
             // Begin by importing documents from text to feature sequences
             ArrayList<Pipe> pipeList = new ArrayList<Pipe>();
@@ -38,7 +41,7 @@ public class KLDivergenceLDA {
 
             InstanceList instances = new InstanceList(new SerialPipes(pipeList));
 
-            Reader fileReader = new InputStreamReader(new FileInputStream(new File(pathFile + "\\" + "CRS-InputParallelLDA.txt")), "UTF-8");
+            Reader fileReader = new InputStreamReader(new FileInputStream(new File(inputFile)), "UTF-8");
             instances.addThruPipe(new CsvIterator(fileReader, Pattern.compile("^(\\S*)[\\s,]*(\\S*)[\\s,]*(.*)$"),
                     3, 2, 1)); // data, label, name fields
 
@@ -60,49 +63,39 @@ public class KLDivergenceLDA {
             model.setNumIterations(1000);
             model.estimate();
 
-            ///*
+            System.out.println("***************************************************************************");
+            String pathFile = (new File(inputFile)).getParent();
             model.printDocumentTopics(new File(pathFile + "\\" + "DocumentTopics.txt"));
             model.printTopicWordWeights(new File(pathFile + "\\" + "TopicWords.txt"));
             model.printTopWords(new File(pathFile + "\\" + "TopWords.txt"), 11, true);
-            //* */
-
-            System.out.println("***************************************************************************");
-            System.out.println("***************************************************************************");
-            // The data alphabet maps word IDs to strings
-            Alphabet dataAlphabet = instances.getDataAlphabet();
-
-            FeatureSequence tokens = (FeatureSequence) model.getData().get(0).instance.getData();
-            LabelSequence topics = model.getData().get(0).topicSequence;
-
-            Formatter out = new Formatter(new StringBuilder(), Locale.US);
-            for (int position = 0; position < tokens.getLength(); position++) {
-                out.format("%s-%d ", dataAlphabet.lookupObject(tokens.getIndexAtPosition(position)), topics.getIndexAtPosition(position));
-            }
-            System.out.println(out);
             System.out.println("***************************************************************************");
 
             _KLDivergenceHM = new HashMap<>();
             System.out.println("NUMBER OF INSTANCES:" + instances.size());
-            for (int authorID1 = 0; authorID1 < instances.size(); authorID1++) {
-                System.out.println("CURRENT INSTANCE IS:" + authorID1);
+            loadMappingInstanceIDAuthorID(pathFile + "\\CRS-AuthorIDAndInstance.txt");
+            
+            for (int inputAuthorID : listAuthorID) {
+                System.out.println("CURRENT INSTANCE IS:" + inputAuthorID);
+                int instanceID = getInstanceFromAuthorID(inputAuthorID);
+                double[] topicDistInputAuthor = model.getTopicProbabilities(instanceID);
+                
+                for (int otherInstanceID = 0; otherInstanceID < instances.size(); otherInstanceID++) {
+                    if (instanceID != otherInstanceID) {
+                        double[] topicDistOtherAuthor = model.getTopicProbabilities(otherInstanceID);
+                        float klDivergence = (float) Maths.klDivergence(topicDistInputAuthor, topicDistOtherAuthor);
 
-                double[] topicDistributionAuthor1 = model.getTopicProbabilities(authorID1);
-
-                for (int authorID2 = 0; authorID2 < instances.size(); authorID2++) {
-                    if (authorID1 != authorID2) {
-                        System.out.println("KL DIVERGENCE OF CURRENT INSTANCE WITH THE INSTANCE NUMBER:" + authorID2);
-                        double[] topicDistributionAuthor2 = model.getTopicProbabilities(authorID2);
-                        float klDivergence = (float) Maths.klDivergence(topicDistributionAuthor1, topicDistributionAuthor2);
-
-                        HashMap<Integer, Float> listKLDivergence = _KLDivergenceHM.get(authorID1);
+                        HashMap<Integer, Float> listKLDivergence = _KLDivergenceHM.get(inputAuthorID);
                         if (listKLDivergence == null) {
                             listKLDivergence = new HashMap<>();
                         }
-                        listKLDivergence.put(authorID2, klDivergence);
-                        _KLDivergenceHM.put(authorID1, listKLDivergence);
+                        
+                        int otherAuthorID = getAuthorIDFromInstanceID(otherInstanceID);
+                        listKLDivergence.put(otherAuthorID, klDivergence);
+                        _KLDivergenceHM.put(inputAuthorID, listKLDivergence);
                     }
                 }
             }
+            
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -111,7 +104,7 @@ public class KLDivergenceLDA {
     }
 
     public void formatInputForParallelLDA(String rootPath) {
-        File mainFolder = new File(rootPath); // C:\CRS-Experiment\OutStem
+        File mainFolder = new File(rootPath); 
         File[] subFolderList = mainFolder.listFiles();
         int instanceID = 0;
         buffAuthorIDAndDocMapping.append("AuthorID" + "\t" + "InstanceID" + "\n");
@@ -124,7 +117,9 @@ public class KLDivergenceLDA {
                         String fileName = fList[j].getName();
                         buffInputParallelLDA.append(fileName + "\t" + "X" + "\t");
                         buffInputParallelLDA.append(TextFileProcessor.readTextFile(fList[j].getAbsolutePath()));
-                        buffAuthorIDAndDocMapping.append(fileName.substring(fileName.lastIndexOf("_")+1) + "\t" + instanceID + "\n");
+                        buffAuthorIDAndDocMapping.append(
+                                fileName.substring(fileName.lastIndexOf("_")+1, fileName.lastIndexOf(".")) 
+                                + "\t" + instanceID + "\n");
                         instanceID++;
                     }
                     buffInputParallelLDA.append("\n");
@@ -134,5 +129,38 @@ public class KLDivergenceLDA {
 
         TextFileProcessor.writeTextFile(rootPath + "\\CRS-InputParallelLDA.txt", buffInputParallelLDA.toString());
         TextFileProcessor.writeTextFile(rootPath + "\\CRS-AuthorIDAndInstance.txt", buffAuthorIDAndDocMapping.toString());
+    }
+    
+    private int getInstanceFromAuthorID(int authorID) {
+        return AuthorInstanceHM.get(authorID);
+    }
+    
+    private int getAuthorIDFromInstanceID(int instanceID) {
+        return InstanceAuthorHM.get(instanceID);
+    }
+    
+    private void loadMappingInstanceIDAuthorID(String mapFile) {
+        try {
+            FileInputStream fis = new FileInputStream(mapFile);
+            Reader reader = new InputStreamReader(fis, "UTF8");
+            BufferedReader bufferReader = new BufferedReader(reader);
+            bufferReader.readLine(); // skip the header line
+            String line = null;
+            String[] tokens;
+            while ((line = bufferReader.readLine()) != null) {
+                tokens = line.split("\t");
+                if (tokens.length != 2) {
+                    continue;
+                }
+
+                int authorID = Integer.parseInt(tokens[0]);
+                int instanceID = Integer.parseInt(tokens[1]);
+                AuthorInstanceHM.put(authorID, instanceID);
+                InstanceAuthorHM.put(instanceID, authorID);
+            }
+            bufferReader.close();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 }
