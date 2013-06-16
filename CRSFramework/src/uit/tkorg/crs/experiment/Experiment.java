@@ -44,7 +44,6 @@ public class Experiment {
     private ArrayList<Integer> _listAuthorRandom;
     private ArrayList<Float> _kArray;
     private ArrayList<Integer> _yearArray;
-    private ArrayList<Integer> _topNArray;
     private String _resultPath;
     private String _training_LDA_InputFile;
     private int _numberOfRandomAuthor;
@@ -77,7 +76,7 @@ public class Experiment {
     public Experiment(String Training_PaperId_AuthorIdPath, String Training_PaperId_YearPath,
             String Testing_PaperId_Year_NFPath, String Testing_PaperId_Year_FFPath,
             String Existing_List_AuthorPath, // empty or null if use radom author
-            String K, String Year, String TopNList,
+            String K, String Year, 
             String ResultPath,
             String Training_LDA_InputFile,
             int numberOfRandomAuthor,
@@ -109,12 +108,6 @@ public class Experiment {
         _yearArray = new ArrayList<>();
         for (String year : yearArray) {
             _yearArray.add(Integer.parseInt(year));
-        }
-
-        String[] topNArray = TopNList.split(";");
-        _topNArray = new ArrayList<>();
-        for (String topN : topNArray) {
-            _topNArray.add(Integer.parseInt(topN));
         }
 
         _training_LDA_InputFile = Training_LDA_InputFile;
