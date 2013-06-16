@@ -90,12 +90,21 @@ public class Experiment {
         _testing_PaperId_Year_FFPath = Testing_PaperId_Year_FFPath;
         _existing_List_AuthorPath = Existing_List_AuthorPath;
 
-        String[] kArray = K.split(";");
+        String str = ";";
+        if (K.contains(","))
+            str = ",";
+        else if (K.contains("-"))
+                str = "-";
+        String[] kArray = K.split(str);
         _kArray = new ArrayList<>();
         for (String k : kArray) {
             _kArray.add(Float.parseFloat(k));
         }
 
+        if (Year.contains(","))
+            str = ",";
+        else if (Year.contains("-"))
+                str = "-";
         String[] yearArray = Year.split(";");
         _yearArray = new ArrayList<>();
         for (String year : yearArray) {
