@@ -13,9 +13,11 @@ import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.filechooser.FileFilter;
 import uit.tkorg.crs.bo.AuthorPaperBO;
 import uit.tkorg.crs.dbconnection.ConnectionService;
+import uit.tkorg.crs.dblp.DBLPFrame;
 import uit.tkorg.crs.experiment.Experiment;
 import uit.tkorg.crs.method.JGibbLDA;
 import uit.tkorg.crs.method.ParallelLDA;
@@ -146,6 +148,8 @@ public class CRSMainFrame extends javax.swing.JFrame {
         jMenuItemPreProcessing = new javax.swing.JMenuItem();
         jMenuItemLinkPrediction = new javax.swing.JMenuItem();
         jMenuDBLP = new javax.swing.JMenu();
+        jMenuItemDBLP = new javax.swing.JMenuItem();
+        jMenuItemArtnetMiner = new javax.swing.JMenuItem();
         jMenuHelp = new javax.swing.JMenu();
         jMenuItemAbout = new javax.swing.JMenuItem();
 
@@ -229,7 +233,7 @@ public class CRSMainFrame extends javax.swing.JFrame {
                             .addComponent(jTextFieldDBPassword)
                             .addComponent(jTextFieldDBMSPort)
                             .addComponent(jLabelDBSetting, javax.swing.GroupLayout.DEFAULT_SIZE, 285, Short.MAX_VALUE))))
-                .addContainerGap(278, Short.MAX_VALUE))
+                .addContainerGap(425, Short.MAX_VALUE))
         );
         jPanelSettingLayout.setVerticalGroup(
             jPanelSettingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -482,7 +486,7 @@ public class CRSMainFrame extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel_LDALib)
                     .addComponent(jComboBoxLDALib, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 54, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 176, Short.MAX_VALUE)
                 .addComponent(jButtonFormatInputLDA))
         );
 
@@ -504,7 +508,7 @@ public class CRSMainFrame extends javax.swing.JFrame {
                     .addGroup(jPanelPreProcessingLayout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(157, Short.MAX_VALUE))
         );
         jPanelPreProcessingLayout.setVerticalGroup(
             jPanelPreProcessingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -525,11 +529,11 @@ public class CRSMainFrame extends javax.swing.JFrame {
         jPanel10.setLayout(jPanel10Layout);
         jPanel10Layout.setHorizontalGroup(
             jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 769, Short.MAX_VALUE)
+            .addGap(0, 916, Short.MAX_VALUE)
         );
         jPanel10Layout.setVerticalGroup(
             jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 523, Short.MAX_VALUE)
+            .addGap(0, 645, Short.MAX_VALUE)
         );
 
         jTabbedPaneCRS.addTab("Topic Model Learning", jPanel10);
@@ -575,7 +579,7 @@ public class CRSMainFrame extends javax.swing.JFrame {
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE))
+                                .addGap(0, 141, Short.MAX_VALUE))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                                 .addGap(0, 0, Short.MAX_VALUE)
                                 .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -796,7 +800,7 @@ public class CRSMainFrame extends javax.swing.JFrame {
                     .addComponent(jCheckBoxMPVS))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jCheckBoxAdamicAdar)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(27, Short.MAX_VALUE))
         );
 
         jPanel8.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Trend Based Methods", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 10))); // NOI18N
@@ -914,7 +918,7 @@ public class CRSMainFrame extends javax.swing.JFrame {
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -933,7 +937,7 @@ public class CRSMainFrame extends javax.swing.JFrame {
             .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -958,7 +962,7 @@ public class CRSMainFrame extends javax.swing.JFrame {
             .addGroup(jPanelLinkPredictionLayout.createSequentialGroup()
                 .addGap(330, 330, 330)
                 .addComponent(jLabel5)
-                .addContainerGap(301, Short.MAX_VALUE))
+                .addContainerGap())
             .addGroup(jPanelLinkPredictionLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -970,7 +974,7 @@ public class CRSMainFrame extends javax.swing.JFrame {
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(109, Short.MAX_VALUE))
         );
 
         jTabbedPaneCRS.addTab("Co-Author Prediction", jPanelLinkPrediction);
@@ -997,7 +1001,24 @@ public class CRSMainFrame extends javax.swing.JFrame {
 
         mainMenuBar.add(jMenuExperiment);
 
-        jMenuDBLP.setText("DBLP");
+        jMenuDBLP.setText("Format");
+
+        jMenuItemDBLP.setText("DBLP");
+        jMenuItemDBLP.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemDBLPActionPerformed(evt);
+            }
+        });
+        jMenuDBLP.add(jMenuItemDBLP);
+
+        jMenuItemArtnetMiner.setText("Artnet Miner");
+        jMenuItemArtnetMiner.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemArtnetMinerActionPerformed(evt);
+            }
+        });
+        jMenuDBLP.add(jMenuItemArtnetMiner);
+
         mainMenuBar.add(jMenuDBLP);
 
         jMenuHelp.setText("Help");
@@ -1466,6 +1487,18 @@ public class CRSMainFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButtonBrowse11ActionPerformed
 
+    private void jMenuItemDBLPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemDBLPActionPerformed
+        // TODO add your handling code here:
+        
+        DBLPFrame frame = new DBLPFrame();
+        frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        frame.setVisible(true);
+    }//GEN-LAST:event_jMenuItemDBLPActionPerformed
+
+    private void jMenuItemArtnetMinerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemArtnetMinerActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuItemArtnetMinerActionPerformed
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -1557,6 +1590,8 @@ public class CRSMainFrame extends javax.swing.JFrame {
     private javax.swing.JMenu jMenuExperiment;
     private javax.swing.JMenu jMenuHelp;
     private javax.swing.JMenuItem jMenuItemAbout;
+    private javax.swing.JMenuItem jMenuItemArtnetMiner;
+    private javax.swing.JMenuItem jMenuItemDBLP;
     private javax.swing.JMenuItem jMenuItemLinkPrediction;
     private javax.swing.JMenuItem jMenuItemPreProcessing;
     private javax.swing.JPanel jPanel1;
