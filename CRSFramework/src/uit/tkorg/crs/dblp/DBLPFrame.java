@@ -15,12 +15,12 @@ import javax.swing.filechooser.FileFilter;
  *
  * @author daolv
  */
-public class DBLPToPubGuru extends javax.swing.JFrame {
+public class DBLPFrame extends javax.swing.JFrame {
 
     /**
-     * Creates new form DBLPToPubGuru
+     * Creates new form DBLPFrame
      */
-    public DBLPToPubGuru() {
+    public DBLPFrame() {
         initComponents();
     }
 
@@ -407,20 +407,20 @@ public class DBLPToPubGuru extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(DBLPToPubGuru.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DBLPFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(DBLPToPubGuru.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DBLPFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(DBLPToPubGuru.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DBLPFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(DBLPToPubGuru.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DBLPFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new DBLPToPubGuru().setVisible(true);
+                new DBLPFrame().setVisible(true);
             }
         });
     }
