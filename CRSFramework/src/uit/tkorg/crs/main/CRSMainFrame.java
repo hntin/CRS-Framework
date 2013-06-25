@@ -95,8 +95,7 @@ public class CRSMainFrame extends javax.swing.JFrame {
         jLabel_LDALib = new javax.swing.JLabel();
         jComboBoxLDALib = new javax.swing.JComboBox();
         jButtonFormatInputLDA = new javax.swing.JButton();
-        jPanel10 = new javax.swing.JPanel();
-        jPanelLinkPrediction = new javax.swing.JPanel();
+        jPanelLinkMethod = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
@@ -142,8 +141,43 @@ public class CRSMainFrame extends javax.swing.JFrame {
         jLabel14 = new javax.swing.JLabel();
         txtResultPath = new javax.swing.JTextField();
         jButtonBrowse11 = new javax.swing.JButton();
-        jButtonRun = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
+        jButtonRun = new javax.swing.JButton();
+        jPanelContentMethod = new javax.swing.JPanel();
+        jLabel16 = new javax.swing.JLabel();
+        jPanelInput = new javax.swing.JPanel();
+        jPanelTestingNet = new javax.swing.JPanel();
+        jLabel17 = new javax.swing.JLabel();
+        jLabel18 = new javax.swing.JLabel();
+        txtNFAuthorPaperPath1 = new javax.swing.JTextField();
+        txtFFAuthorPaperPath1 = new javax.swing.JTextField();
+        jButtonBrowse12 = new javax.swing.JButton();
+        jButtonBrowse13 = new javax.swing.JButton();
+        jPanelTrainingNet = new javax.swing.JPanel();
+        jLabel19 = new javax.swing.JLabel();
+        jLabel20 = new javax.swing.JLabel();
+        txtTrainingAuthorPaperPath1 = new javax.swing.JTextField();
+        txtTrainingPaperYearPath1 = new javax.swing.JTextField();
+        jButtonBrowse14 = new javax.swing.JButton();
+        jButtonBrowse15 = new javax.swing.JButton();
+        jPanelMethod = new javax.swing.JPanel();
+        jRadioButtonTFIDF = new javax.swing.JRadioButton();
+        jRadioButtonKLDivergence = new javax.swing.JRadioButton();
+        jLabel21 = new javax.swing.JLabel();
+        txtLDAInputFile1 = new javax.swing.JTextField();
+        jButton2 = new javax.swing.JButton();
+        jPanel12 = new javax.swing.JPanel();
+        jLabel26 = new javax.swing.JLabel();
+        txtListAuthorPath3 = new javax.swing.JTextField();
+        jButtonBrowse18 = new javax.swing.JButton();
+        radbtnUseListAuthor3 = new javax.swing.JRadioButton();
+        radbtnRadomAuthors3 = new javax.swing.JRadioButton();
+        jLabel27 = new javax.swing.JLabel();
+        txtNumberOfRandomAuthor3 = new javax.swing.JTextField();
+        jButton3 = new javax.swing.JButton();
+        jPanel13 = new javax.swing.JPanel();
+        txtResultPath1 = new javax.swing.JTextField();
+        jButtonBrowse19 = new javax.swing.JButton();
         mainMenuBar = new javax.swing.JMenuBar();
         jMenuExperiment = new javax.swing.JMenu();
         jMenuItemPreProcessing = new javax.swing.JMenuItem();
@@ -234,7 +268,7 @@ public class CRSMainFrame extends javax.swing.JFrame {
                             .addComponent(jTextFieldDBPassword)
                             .addComponent(jTextFieldDBMSPort)
                             .addComponent(jLabelDBSetting, javax.swing.GroupLayout.DEFAULT_SIZE, 285, Short.MAX_VALUE))))
-                .addContainerGap(425, Short.MAX_VALUE))
+                .addContainerGap(461, Short.MAX_VALUE))
         );
         jPanelSettingLayout.setVerticalGroup(
             jPanelSettingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -487,7 +521,7 @@ public class CRSMainFrame extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel_LDALib)
                     .addComponent(jComboBoxLDALib, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 78, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 109, Short.MAX_VALUE)
                 .addComponent(jButtonFormatInputLDA))
         );
 
@@ -509,7 +543,7 @@ public class CRSMainFrame extends javax.swing.JFrame {
                     .addGroup(jPanelPreProcessingLayout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addContainerGap(157, Short.MAX_VALUE))
+                .addContainerGap(168, Short.MAX_VALUE))
         );
         jPanelPreProcessingLayout.setVerticalGroup(
             jPanelPreProcessingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -525,21 +559,6 @@ public class CRSMainFrame extends javax.swing.JFrame {
         );
 
         jTabbedPaneCRS.addTab("PreProcessing", jPanelPreProcessing);
-
-        javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
-        jPanel10.setLayout(jPanel10Layout);
-        jPanel10Layout.setHorizontalGroup(
-            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 916, Short.MAX_VALUE)
-        );
-        jPanel10Layout.setVerticalGroup(
-            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 547, Short.MAX_VALUE)
-        );
-
-        jTabbedPaneCRS.addTab("Topic Model Learning", jPanel10);
-
-        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Input Data", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 10))); // NOI18N
 
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Training Network", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 10))); // NOI18N
 
@@ -579,7 +598,7 @@ public class CRSMainFrame extends javax.swing.JFrame {
                     .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6)
                     .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 162, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 198, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(txtTrainingAuthorPaperPath)
@@ -843,7 +862,7 @@ public class CRSMainFrame extends javax.swing.JFrame {
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel13)
                     .addComponent(txtValueYear, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 8, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         jPanel9.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Topic Model Methods", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 10))); // NOI18N
@@ -859,7 +878,7 @@ public class CRSMainFrame extends javax.swing.JFrame {
             .addGroup(jPanel9Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jCheckBoxKLDivergence)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(178, Short.MAX_VALUE))
         );
         jPanel9Layout.setVerticalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -878,34 +897,22 @@ public class CRSMainFrame extends javax.swing.JFrame {
             }
         });
 
-        jButtonRun.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jButtonRun.setText("RUN EXPERIMENTS");
-        jButtonRun.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonRunActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(1, 1, 1)
-                        .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addComponent(jLabel14)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txtResultPath, javax.swing.GroupLayout.PREFERRED_SIZE, 412, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButtonBrowse11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(1, 1, 1)
+                .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButtonRun, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addComponent(jLabel14)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(txtResultPath)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButtonBrowse11))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -914,12 +921,11 @@ public class CRSMainFrame extends javax.swing.JFrame {
                     .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel14)
                     .addComponent(txtResultPath, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButtonBrowse11)
-                    .addComponent(jButtonRun))
+                    .addComponent(jButtonBrowse11))
                 .addContainerGap())
         );
 
@@ -948,29 +954,375 @@ public class CRSMainFrame extends javax.swing.JFrame {
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel5.setText("CO-AUTHOR PREDICTION");
 
-        javax.swing.GroupLayout jPanelLinkPredictionLayout = new javax.swing.GroupLayout(jPanelLinkPrediction);
-        jPanelLinkPrediction.setLayout(jPanelLinkPredictionLayout);
-        jPanelLinkPredictionLayout.setHorizontalGroup(
-            jPanelLinkPredictionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanelLinkPredictionLayout.createSequentialGroup()
-                .addGap(330, 330, 330)
-                .addComponent(jLabel5)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(jPanelLinkPredictionLayout.createSequentialGroup()
+        jButtonRun.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jButtonRun.setText("RUN EXPERIMENTS");
+        jButtonRun.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonRunActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanelLinkMethodLayout = new javax.swing.GroupLayout(jPanelLinkMethod);
+        jPanelLinkMethod.setLayout(jPanelLinkMethodLayout);
+        jPanelLinkMethodLayout.setHorizontalGroup(
+            jPanelLinkMethodLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelLinkMethodLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanelLinkMethodLayout.createSequentialGroup()
+                .addGap(385, 385, 385)
+                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelLinkMethodLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButtonRun, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
-        jPanelLinkPredictionLayout.setVerticalGroup(
-            jPanelLinkPredictionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanelLinkPredictionLayout.createSequentialGroup()
+        jPanelLinkMethodLayout.setVerticalGroup(
+            jPanelLinkMethodLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelLinkMethodLayout.createSequentialGroup()
                 .addGap(4, 4, 4)
-                .addComponent(jLabel5)
+                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButtonRun, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jTabbedPaneCRS.addTab("Co-Author Prediction", jPanelLinkPrediction);
+        jTabbedPaneCRS.addTab("Link Based Method", jPanelLinkMethod);
+
+        jLabel16.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
+        jLabel16.setText("CONTENT BASED METHODS FOR CO-AUTHOR LINK PREDICTION");
+
+        jPanelTestingNet.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Testing Network", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 10))); // NOI18N
+
+        jLabel17.setText("AuthorID_PaperID (NF):");
+
+        jLabel18.setText("AuthorID_PaperID (FF):");
+
+        jButtonBrowse12.setText("Browse");
+        jButtonBrowse12.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonBrowse12ActionPerformed(evt);
+            }
+        });
+
+        jButtonBrowse13.setText("Browse");
+        jButtonBrowse13.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonBrowse13ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanelTestingNetLayout = new javax.swing.GroupLayout(jPanelTestingNet);
+        jPanelTestingNet.setLayout(jPanelTestingNetLayout);
+        jPanelTestingNetLayout.setHorizontalGroup(
+            jPanelTestingNetLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelTestingNetLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanelTestingNetLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel17)
+                    .addComponent(jLabel18))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanelTestingNetLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(txtNFAuthorPaperPath1, javax.swing.GroupLayout.DEFAULT_SIZE, 617, Short.MAX_VALUE)
+                    .addComponent(txtFFAuthorPaperPath1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanelTestingNetLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButtonBrowse12, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jButtonBrowse13, javax.swing.GroupLayout.Alignment.TRAILING)))
+        );
+        jPanelTestingNetLayout.setVerticalGroup(
+            jPanelTestingNetLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelTestingNetLayout.createSequentialGroup()
+                .addGroup(jPanelTestingNetLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel17)
+                    .addComponent(txtNFAuthorPaperPath1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonBrowse12))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanelTestingNetLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel18)
+                    .addComponent(txtFFAuthorPaperPath1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonBrowse13))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        jPanelTrainingNet.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Training Network", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 10))); // NOI18N
+
+        jLabel19.setText("AuthorID_PaperID:");
+
+        jLabel20.setText("PaperID_Year:");
+
+        jButtonBrowse14.setText("Browse");
+        jButtonBrowse14.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonBrowse14ActionPerformed(evt);
+            }
+        });
+
+        jButtonBrowse15.setText("Browse");
+        jButtonBrowse15.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonBrowse15ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanelTrainingNetLayout = new javax.swing.GroupLayout(jPanelTrainingNet);
+        jPanelTrainingNet.setLayout(jPanelTrainingNetLayout);
+        jPanelTrainingNetLayout.setHorizontalGroup(
+            jPanelTrainingNetLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelTrainingNetLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanelTrainingNetLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel19)
+                    .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(44, 44, 44)
+                .addGroup(jPanelTrainingNetLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanelTrainingNetLayout.createSequentialGroup()
+                        .addComponent(txtTrainingPaperYearPath1)
+                        .addGap(10, 10, 10)
+                        .addComponent(jButtonBrowse15))
+                    .addGroup(jPanelTrainingNetLayout.createSequentialGroup()
+                        .addComponent(txtTrainingAuthorPaperPath1, javax.swing.GroupLayout.PREFERRED_SIZE, 623, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
+                        .addComponent(jButtonBrowse14))))
+        );
+        jPanelTrainingNetLayout.setVerticalGroup(
+            jPanelTrainingNetLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelTrainingNetLayout.createSequentialGroup()
+                .addGroup(jPanelTrainingNetLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtTrainingAuthorPaperPath1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonBrowse14))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanelTrainingNetLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtTrainingPaperYearPath1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonBrowse15)))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelTrainingNetLayout.createSequentialGroup()
+                .addComponent(jLabel19)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel20)
+                .addGap(3, 3, 3))
+        );
+
+        jPanelMethod.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Content Based Methods", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 10))); // NOI18N
+
+        jRadioButtonTFIDF.setText("TF*IDF");
+
+        jRadioButtonKLDivergence.setText("KL Divergence");
+        jRadioButtonKLDivergence.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioButtonKLDivergenceActionPerformed(evt);
+            }
+        });
+
+        jLabel21.setText("Data Input File:");
+
+        jButton2.setText("Browse");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanelMethodLayout = new javax.swing.GroupLayout(jPanelMethod);
+        jPanelMethod.setLayout(jPanelMethodLayout);
+        jPanelMethodLayout.setHorizontalGroup(
+            jPanelMethodLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelMethodLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanelMethodLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanelMethodLayout.createSequentialGroup()
+                        .addComponent(jRadioButtonTFIDF, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jRadioButtonKLDivergence))
+                    .addGroup(jPanelMethodLayout.createSequentialGroup()
+                        .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(txtLDAInputFile1, javax.swing.GroupLayout.PREFERRED_SIZE, 628, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton2))
+        );
+        jPanelMethodLayout.setVerticalGroup(
+            jPanelMethodLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelMethodLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanelMethodLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jRadioButtonTFIDF)
+                    .addComponent(jRadioButtonKLDivergence))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanelMethodLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtLDAInputFile1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton2))
+                .addGap(39, 39, 39))
+        );
+
+        jPanel12.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Selecting Random Author", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 10))); // NOI18N
+
+        jLabel26.setText("Existing Author List:");
+
+        jButtonBrowse18.setText("Browse");
+        jButtonBrowse18.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonBrowse18ActionPerformed(evt);
+            }
+        });
+
+        radbtnUseListAuthor3.setText("Using Existing List");
+        radbtnUseListAuthor3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                radbtnUseListAuthor3ActionPerformed(evt);
+            }
+        });
+
+        radbtnRadomAuthors3.setSelected(true);
+        radbtnRadomAuthors3.setText("Random Authors");
+        radbtnRadomAuthors3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                radbtnRadomAuthors3ActionPerformed(evt);
+            }
+        });
+
+        jLabel27.setText("Number of Random Authors");
+
+        txtNumberOfRandomAuthor3.setText("300");
+
+        javax.swing.GroupLayout jPanel12Layout = new javax.swing.GroupLayout(jPanel12);
+        jPanel12.setLayout(jPanel12Layout);
+        jPanel12Layout.setHorizontalGroup(
+            jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel12Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel26)
+                    .addComponent(jLabel27))
+                .addGap(47, 47, 47)
+                .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel12Layout.createSequentialGroup()
+                        .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtNumberOfRandomAuthor3, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel12Layout.createSequentialGroup()
+                                .addComponent(radbtnUseListAuthor3)
+                                .addGap(10, 10, 10)
+                                .addComponent(radbtnRadomAuthors3)))
+                        .addContainerGap())
+                    .addGroup(jPanel12Layout.createSequentialGroup()
+                        .addComponent(txtListAuthorPath3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButtonBrowse18))))
+        );
+        jPanel12Layout.setVerticalGroup(
+            jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel12Layout.createSequentialGroup()
+                .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(radbtnUseListAuthor3)
+                    .addComponent(radbtnRadomAuthors3))
+                .addGap(4, 4, 4)
+                .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtListAuthorPath3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel26)
+                    .addComponent(jButtonBrowse18))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel27)
+                    .addComponent(txtNumberOfRandomAuthor3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+        );
+
+        javax.swing.GroupLayout jPanelInputLayout = new javax.swing.GroupLayout(jPanelInput);
+        jPanelInput.setLayout(jPanelInputLayout);
+        jPanelInputLayout.setHorizontalGroup(
+            jPanelInputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelInputLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanelInputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanelTestingNet, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanelTrainingNet, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanelMethod, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        jPanelInputLayout.setVerticalGroup(
+            jPanelInputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelInputLayout.createSequentialGroup()
+                .addComponent(jPanelMethod, javax.swing.GroupLayout.PREFERRED_SIZE, 111, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanelTrainingNet, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jPanelTestingNet, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jPanel12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+
+        jButton3.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
+        jButton3.setText("Run Experiment");
+
+        jPanel13.setBorder(javax.swing.BorderFactory.createTitledBorder("Output"));
+
+        jButtonBrowse19.setText("Browse");
+        jButtonBrowse19.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonBrowse19ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel13Layout = new javax.swing.GroupLayout(jPanel13);
+        jPanel13.setLayout(jPanel13Layout);
+        jPanel13Layout.setHorizontalGroup(
+            jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel13Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(txtResultPath1, javax.swing.GroupLayout.PREFERRED_SIZE, 777, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jButtonBrowse19))
+        );
+        jPanel13Layout.setVerticalGroup(
+            jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel13Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(txtResultPath1)
+                    .addComponent(jButtonBrowse19, javax.swing.GroupLayout.DEFAULT_SIZE, 27, Short.MAX_VALUE))
+                .addGap(16, 16, 16))
+        );
+
+        javax.swing.GroupLayout jPanelContentMethodLayout = new javax.swing.GroupLayout(jPanelContentMethod);
+        jPanelContentMethod.setLayout(jPanelContentMethodLayout);
+        jPanelContentMethodLayout.setHorizontalGroup(
+            jPanelContentMethodLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelContentMethodLayout.createSequentialGroup()
+                .addGroup(jPanelContentMethodLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanelContentMethodLayout.createSequentialGroup()
+                        .addGap(263, 263, 263)
+                        .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 419, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanelContentMethodLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(jPanelContentMethodLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jPanelInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanelContentMethodLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addGroup(jPanelContentMethodLayout.createSequentialGroup()
+                                    .addGap(10, 10, 10)
+                                    .addComponent(jPanel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanelContentMethodLayout.createSequentialGroup()
+                                    .addGap(728, 728, 728)
+                                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanelContentMethodLayout.setVerticalGroup(
+            jPanelContentMethodLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelContentMethodLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jPanelInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
+                .addComponent(jPanel13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(1, 1, 1)
+                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+
+        jTabbedPaneCRS.addTab("Content Based Method", jPanelContentMethod);
 
         mainMenuBar.setName("mainMenubar"); // NOI18N
 
@@ -1498,6 +1850,46 @@ public class CRSMainFrame extends javax.swing.JFrame {
         frame.setVisible(true);
     }//GEN-LAST:event_jMenuItemArtnetMinerActionPerformed
 
+    private void jButtonBrowse12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBrowse12ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButtonBrowse12ActionPerformed
+
+    private void jButtonBrowse13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBrowse13ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButtonBrowse13ActionPerformed
+
+    private void jButtonBrowse14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBrowse14ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButtonBrowse14ActionPerformed
+
+    private void jButtonBrowse15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBrowse15ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButtonBrowse15ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jRadioButtonKLDivergenceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButtonKLDivergenceActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jRadioButtonKLDivergenceActionPerformed
+
+    private void jButtonBrowse18ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBrowse18ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButtonBrowse18ActionPerformed
+
+    private void radbtnUseListAuthor3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radbtnUseListAuthor3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_radbtnUseListAuthor3ActionPerformed
+
+    private void radbtnRadomAuthors3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radbtnRadomAuthors3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_radbtnRadomAuthors3ActionPerformed
+
+    private void jButtonBrowse19ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBrowse19ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButtonBrowse19ActionPerformed
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -1531,10 +1923,20 @@ public class CRSMainFrame extends javax.swing.JFrame {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButtonApplyDBSetting;
     private javax.swing.JButton jButtonBrowse1;
     private javax.swing.JButton jButtonBrowse10;
     private javax.swing.JButton jButtonBrowse11;
+    private javax.swing.JButton jButtonBrowse12;
+    private javax.swing.JButton jButtonBrowse13;
+    private javax.swing.JButton jButtonBrowse14;
+    private javax.swing.JButton jButtonBrowse15;
+    private javax.swing.JButton jButtonBrowse16;
+    private javax.swing.JButton jButtonBrowse17;
+    private javax.swing.JButton jButtonBrowse18;
+    private javax.swing.JButton jButtonBrowse19;
     private javax.swing.JButton jButtonBrowse2;
     private javax.swing.JButton jButtonBrowse4;
     private javax.swing.JButton jButtonBrowse6;
@@ -1566,7 +1968,19 @@ public class CRSMainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel21;
+    private javax.swing.JLabel jLabel22;
+    private javax.swing.JLabel jLabel23;
+    private javax.swing.JLabel jLabel24;
+    private javax.swing.JLabel jLabel25;
+    private javax.swing.JLabel jLabel26;
+    private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -1595,6 +2009,9 @@ public class CRSMainFrame extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItemPreProcessing;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
+    private javax.swing.JPanel jPanel11;
+    private javax.swing.JPanel jPanel12;
+    private javax.swing.JPanel jPanel13;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
@@ -1603,11 +2020,18 @@ public class CRSMainFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
+    private javax.swing.JPanel jPanelContentMethod;
     private javax.swing.JPanel jPanelDBExtraction;
-    private javax.swing.JPanel jPanelLinkPrediction;
+    private javax.swing.JPanel jPanelInput;
+    private javax.swing.JPanel jPanelLinkMethod;
+    private javax.swing.JPanel jPanelMethod;
     private javax.swing.JPanel jPanelPreProcessing;
     private javax.swing.JPanel jPanelRemoveStopwordStemming;
     private javax.swing.JPanel jPanelSetting;
+    private javax.swing.JPanel jPanelTestingNet;
+    private javax.swing.JPanel jPanelTrainingNet;
+    private javax.swing.JRadioButton jRadioButtonKLDivergence;
+    private javax.swing.JRadioButton jRadioButtonTFIDF;
     private javax.swing.JTabbedPane jTabbedPaneCRS;
     private javax.swing.JTextField jTextFieldDBMSPort;
     private javax.swing.JTextField jTextFieldDBName;
@@ -1621,15 +2045,33 @@ public class CRSMainFrame extends javax.swing.JFrame {
     private javax.swing.JTextField jTextFieldStemmingSourcePath;
     private javax.swing.JMenuBar mainMenuBar;
     private javax.swing.JRadioButton radbtnRadomAuthors;
+    private javax.swing.JRadioButton radbtnRadomAuthors1;
+    private javax.swing.JRadioButton radbtnRadomAuthors2;
+    private javax.swing.JRadioButton radbtnRadomAuthors3;
     private javax.swing.JRadioButton radbtnUseListAuthor;
+    private javax.swing.JRadioButton radbtnUseListAuthor1;
+    private javax.swing.JRadioButton radbtnUseListAuthor2;
+    private javax.swing.JRadioButton radbtnUseListAuthor3;
     private javax.swing.JTextField txtFFAuthorPaperPath;
+    private javax.swing.JTextField txtFFAuthorPaperPath1;
     private javax.swing.JTextField txtLDAInputFile;
+    private javax.swing.JTextField txtLDAInputFile1;
     private javax.swing.JTextField txtListAuthorPath;
+    private javax.swing.JTextField txtListAuthorPath1;
+    private javax.swing.JTextField txtListAuthorPath2;
+    private javax.swing.JTextField txtListAuthorPath3;
     private javax.swing.JTextField txtNFAuthorPaperPath;
+    private javax.swing.JTextField txtNFAuthorPaperPath1;
     private javax.swing.JTextField txtNumberOfRandomAuthor;
+    private javax.swing.JTextField txtNumberOfRandomAuthor1;
+    private javax.swing.JTextField txtNumberOfRandomAuthor2;
+    private javax.swing.JTextField txtNumberOfRandomAuthor3;
     private javax.swing.JTextField txtResultPath;
+    private javax.swing.JTextField txtResultPath1;
     private javax.swing.JTextField txtTrainingAuthorPaperPath;
+    private javax.swing.JTextField txtTrainingAuthorPaperPath1;
     private javax.swing.JTextField txtTrainingPaperYearPath;
+    private javax.swing.JTextField txtTrainingPaperYearPath1;
     private javax.swing.JTextField txtValueK;
     private javax.swing.JTextField txtValueYear;
     // End of variables declaration//GEN-END:variables
