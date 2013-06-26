@@ -11,20 +11,16 @@ import uit.tkorg.crs.method.RSS;
 import uit.tkorg.crs.method.RSSPlus;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.Reader;
-import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Random;
-import java.util.Vector;
 import uit.tkorg.crs.method.ParallelLDA;
 import uit.tkorg.utility.TextFileProcessor;
 
@@ -32,9 +28,9 @@ import uit.tkorg.utility.TextFileProcessor;
  *
  * @author daolv
  */
-public class Experiment {
-
+public class LinkMethodExperiment {
     //<editor-fold defaultstate="collapsed" desc="Class variables">
+
     private Graph _graph = Graph.getInstance();
     private String _training_PaperId_AuthorIdPath;
     private String _training_PaperId_YearPath;
@@ -73,10 +69,10 @@ public class Experiment {
     private StringBuffer _ffKLDivergenceBuffer = new StringBuffer();
     //</editor-fold>
 
-    public Experiment(String Training_PaperId_AuthorIdPath, String Training_PaperId_YearPath,
+    public LinkMethodExperiment(String Training_PaperId_AuthorIdPath, String Training_PaperId_YearPath,
             String Testing_PaperId_Year_NFPath, String Testing_PaperId_Year_FFPath,
             String Existing_List_AuthorPath, // empty or null if use radom author
-            String K, String Year, 
+            String K, String Year,
             String ResultPath,
             String Training_LDA_InputFile,
             int numberOfRandomAuthor,
@@ -90,20 +86,22 @@ public class Experiment {
         _existing_List_AuthorPath = Existing_List_AuthorPath;
 
         String str = ";";
-        if (K.contains(","))
+        if (K.contains(",")) {
             str = ",";
-        else if (K.contains("-"))
-                str = "-";
+        } else if (K.contains("-")) {
+            str = "-";
+        }
         String[] kArray = K.split(str);
         _kArray = new ArrayList<>();
         for (String k : kArray) {
             _kArray.add(Float.parseFloat(k));
         }
 
-        if (Year.contains(","))
+        if (Year.contains(",")) {
             str = ",";
-        else if (Year.contains("-"))
-                str = "-";
+        } else if (Year.contains("-")) {
+            str = "-";
+        }
         String[] yearArray = Year.split(";");
         _yearArray = new ArrayList<>();
         for (String year : yearArray) {
@@ -319,6 +317,7 @@ public class Experiment {
                     for (int authorId : _graph.rssGraph.keySet()) {
                         authorDegree.put(authorId, _graph.rssGraph.get(authorId).size());
                     }
+
                     HashMap<Integer, Integer> degreeCounter = new HashMap<>();
                     for (int authorId : authorDegree.keySet()) {
                         Integer counter = degreeCounter.get(authorDegree.get(authorId));
@@ -328,12 +327,14 @@ public class Experiment {
                         counter++;
                         degreeCounter.put(authorDegree.get(authorId), counter);
                     }
+
                     int[] degreeArray = new int[degreeCounter.keySet().size()];
                     int index = 0;
                     for (int degree : degreeCounter.keySet()) {
                         degreeArray[index] = degree;
                         index++;
                     }
+                    
                     //sort degree Array
                     for (int i = 0; i < degreeArray.length - 1; i++) {
                         for (int j = i + 1; j < degreeArray.length; j++) {
@@ -344,6 +345,7 @@ public class Experiment {
                             }
                         }
                     }
+                    
                     int numberOfDegree, numberOfLowDegree, numberOfMidDegree, numberOfHighDegree;
                     numberOfDegree =
                             numberOfLowDegree =
@@ -504,7 +506,7 @@ public class Experiment {
     }
 
     private void bufferingExperimentResult(boolean isNFResult, String predictMethod, float value) {
-        //<editor-fold defaultstate="collapsed" desc="buffering Experiment Result">
+        //<editor-fold defaultstate="collapsed" desc="buffering LinkMethodExperiment Result">
         try {
             DecimalFormat df = new DecimalFormat("0.#####");
             if (predictMethod.equalsIgnoreCase("AdamicAdar")) {
