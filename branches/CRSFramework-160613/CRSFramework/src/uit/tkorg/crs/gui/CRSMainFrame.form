@@ -121,7 +121,7 @@
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="jTabbedPaneCRS" alignment="0" max="32767" attributes="0"/>
+          <Component id="jTabbedPaneCRS" alignment="0" pref="593" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
   </Layout>
@@ -345,8 +345,8 @@
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="jPanelRemoveStopwordStemming" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="jPanel1" max="32767" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="jPanel1" min="-2" pref="179" max="-2" attributes="0"/>
+                      <EmptySpace pref="7" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -644,7 +644,7 @@
                               <Component id="jLabel_LDALib" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="jComboBoxLDALib" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace pref="165" max="32767" attributes="0"/>
+                          <EmptySpace type="unrelated" max="32767" attributes="0"/>
                           <Component id="jButtonFormatInputLDA" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
@@ -735,7 +735,7 @@
                       <Component id="jLabel16" min="-2" pref="33" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="jPanelInput" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="184" max="32767" attributes="0"/>
+                      <EmptySpace pref="31" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -810,8 +810,8 @@
                               </Group>
                               <EmptySpace min="-2" pref="69" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="txtNFAuthorPaperPath1" max="32767" attributes="0"/>
-                                  <Component id="txtFFAuthorPaperPath1" max="32767" attributes="0"/>
+                                  <Component id="txtNFAuthorPaperFile" max="32767" attributes="0"/>
+                                  <Component id="txtFFAuthorPaperFile" max="32767" attributes="0"/>
                               </Group>
                               <EmptySpace type="unrelated" min="-2" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
@@ -827,7 +827,7 @@
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="102" alignment="0" attributes="0">
                                       <EmptySpace min="2" pref="2" max="-2" attributes="0"/>
-                                      <Component id="txtNFAuthorPaperPath1" max="32767" attributes="0"/>
+                                      <Component id="txtNFAuthorPaperFile" max="32767" attributes="0"/>
                                   </Group>
                                   <Group type="103" groupAlignment="3" attributes="0">
                                       <Component id="jLabel17" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -837,7 +837,7 @@
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="102" alignment="0" attributes="0">
                                       <EmptySpace min="2" pref="2" max="-2" attributes="0"/>
-                                      <Component id="txtFFAuthorPaperPath1" max="32767" attributes="0"/>
+                                      <Component id="txtFFAuthorPaperFile" max="32767" attributes="0"/>
                                   </Group>
                                   <Group type="103" groupAlignment="3" attributes="0">
                                       <Component id="jLabel18" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -860,9 +860,9 @@
                         <Property name="text" type="java.lang.String" value="AuthorID_PaperID (FF):"/>
                       </Properties>
                     </Component>
-                    <Component class="javax.swing.JTextField" name="txtNFAuthorPaperPath1">
+                    <Component class="javax.swing.JTextField" name="txtNFAuthorPaperFile">
                     </Component>
-                    <Component class="javax.swing.JTextField" name="txtFFAuthorPaperPath1">
+                    <Component class="javax.swing.JTextField" name="txtFFAuthorPaperFile">
                     </Component>
                     <Component class="javax.swing.JButton" name="jButtonBrowse12">
                       <Properties>
@@ -905,12 +905,12 @@
                               <EmptySpace min="-2" pref="84" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="1" attributes="0">
                                   <Group type="102" alignment="1" attributes="0">
-                                      <Component id="txtTrainingPaperYearPath1" pref="622" max="32767" attributes="0"/>
+                                      <Component id="txtTrainingPaperYearFile" pref="622" max="32767" attributes="0"/>
                                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                       <Component id="jButtonBrowse15" min="-2" max="-2" attributes="0"/>
                                   </Group>
                                   <Group type="102" alignment="1" attributes="0">
-                                      <Component id="txtTrainingAuthorPaperPath1" max="32767" attributes="0"/>
+                                      <Component id="txtTrainingAuthorPaperFile" max="32767" attributes="0"/>
                                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                       <Component id="jButtonBrowse14" min="-2" max="-2" attributes="0"/>
                                   </Group>
@@ -924,14 +924,14 @@
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="102" alignment="0" attributes="0">
                                       <EmptySpace min="2" pref="2" max="-2" attributes="0"/>
-                                      <Component id="txtTrainingAuthorPaperPath1" pref="30" max="32767" attributes="0"/>
+                                      <Component id="txtTrainingAuthorPaperFile" pref="30" max="32767" attributes="0"/>
                                   </Group>
                                   <Component id="jButtonBrowse14" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="102" alignment="0" attributes="0">
                                       <EmptySpace min="2" pref="2" max="-2" attributes="0"/>
-                                      <Component id="txtTrainingPaperYearPath1" pref="31" max="32767" attributes="0"/>
+                                      <Component id="txtTrainingPaperYearFile" pref="31" max="32767" attributes="0"/>
                                   </Group>
                                   <Component id="jButtonBrowse15" min="-2" max="-2" attributes="0"/>
                               </Group>
@@ -957,9 +957,12 @@
                         <Property name="text" type="java.lang.String" value="PaperID_Year:"/>
                       </Properties>
                     </Component>
-                    <Component class="javax.swing.JTextField" name="txtTrainingAuthorPaperPath1">
+                    <Component class="javax.swing.JTextField" name="txtTrainingAuthorPaperFile">
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtTrainingAuthorPaperFileActionPerformed"/>
+                      </Events>
                     </Component>
-                    <Component class="javax.swing.JTextField" name="txtTrainingPaperYearPath1">
+                    <Component class="javax.swing.JTextField" name="txtTrainingPaperYearFile">
                     </Component>
                     <Component class="javax.swing.JButton" name="jButtonBrowse14">
                       <Properties>
@@ -1010,12 +1013,12 @@
                                               <Component id="jRadioButtonKLDivergence" min="-2" max="-2" attributes="0"/>
                                           </Group>
                                           <Group type="102" attributes="0">
-                                              <Component id="txtListAuthorPath3" min="-2" pref="620" max="-2" attributes="0"/>
+                                              <Component id="txtExistingAuthorFile" min="-2" pref="620" max="-2" attributes="0"/>
                                               <EmptySpace max="-2" attributes="0"/>
                                               <Component id="jButtonBrowse18" min="-2" max="-2" attributes="0"/>
                                           </Group>
                                           <Group type="102" alignment="0" attributes="0">
-                                              <Component id="txtPathAuthor" max="32767" attributes="0"/>
+                                              <Component id="txtInputDataFile" max="32767" attributes="0"/>
                                               <EmptySpace max="-2" attributes="0"/>
                                               <Component id="jButton2" min="-2" max="-2" attributes="0"/>
                                           </Group>
@@ -1039,7 +1042,7 @@
                                       <EmptySpace max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="0" attributes="0">
                                           <Component id="jButton2" min="-2" max="-2" attributes="0"/>
-                                          <Component id="txtPathAuthor" alignment="0" max="32767" attributes="0"/>
+                                          <Component id="txtInputDataFile" alignment="0" max="32767" attributes="0"/>
                                       </Group>
                                   </Group>
                                   <Group type="102" alignment="1" attributes="0">
@@ -1050,7 +1053,7 @@
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="jLabel26" max="32767" attributes="0"/>
-                                  <Component id="txtListAuthorPath3" max="32767" attributes="0"/>
+                                  <Component id="txtExistingAuthorFile" max="32767" attributes="0"/>
                                   <Group type="102" alignment="0" attributes="0">
                                       <Component id="jButtonBrowse18" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
@@ -1087,7 +1090,7 @@
                         <Property name="text" type="java.lang.String" value="Data Input File:"/>
                       </Properties>
                     </Component>
-                    <Component class="javax.swing.JTextField" name="txtPathAuthor">
+                    <Component class="javax.swing.JTextField" name="txtInputDataFile">
                     </Component>
                     <Component class="javax.swing.JButton" name="jButton2">
                       <Properties>
@@ -1102,7 +1105,7 @@
                         <Property name="text" type="java.lang.String" value="Existing Author List:"/>
                       </Properties>
                     </Component>
-                    <Component class="javax.swing.JTextField" name="txtListAuthorPath3">
+                    <Component class="javax.swing.JTextField" name="txtExistingAuthorFile">
                     </Component>
                     <Component class="javax.swing.JButton" name="jButtonBrowse18">
                       <Properties>
@@ -1167,6 +1170,9 @@
                     </Property>
                     <Property name="text" type="java.lang.String" value="Run Experiment"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton3ActionPerformed"/>
+                  </Events>
                 </Component>
               </SubComponents>
             </Container>
@@ -1202,7 +1208,7 @@
                       <Component id="jLabel5" min="-2" pref="24" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jPanel2" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="159" max="32767" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
