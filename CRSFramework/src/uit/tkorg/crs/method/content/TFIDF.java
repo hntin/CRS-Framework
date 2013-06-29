@@ -32,9 +32,24 @@ public class TFIDF {
             for (int inputAuthorID : listAuthorID) {
                 System.out.println("CURRENT INSTANCE IS:" + inputAuthorID);
                 int instanceID = getInstanceFromAuthorID(inputAuthorID);
-
-
+                for(int index =instanceID+1 ; index < listAuthorID.size() ;index++)
+                {
+                    // calculate  similarity using TF only
+                    
+                    DocumentSimilarityTF similarityUsingTF = new DocumentSimilarityTF(_InstancePublicationHM.get(inputAuthorID),_InstancePublicationHM.get(index));
+                    HashMap <Integer, Float> indexAuthor = new HashMap<Integer, Float>();
+                    indexAuthor.put(index, (float)similarityUsingTF.getCosineSimilarity());
+                    _tfidfHM.put(instanceID, indexAuthor);
+                                   
+                    // calculate  similarity using TFIDF
+                    
+//                    DocumentSimilarityTFIDF similarityUsingTF = new DocumentSimilarityTFIDF(fileContent.get(inputAuthorID),fileContent.get(index));
+//                    HashMap <Integer, Float> indexAuthor = new HashMap<Integer, Float>();
+//                    indexAuthor.put(index, (float)similarityUsingTF.getCosineSimilarity());
+//                    _tfidfHM.put(instanceID, indexAuthor);
+                }
             }
+            
 
         } catch (Exception ex) {
             ex.printStackTrace();
