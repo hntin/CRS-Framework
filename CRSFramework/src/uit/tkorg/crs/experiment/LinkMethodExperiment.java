@@ -2,13 +2,13 @@ package uit.tkorg.crs.experiment;
 
 import uit.tkorg.crs.evaluation.EvaluationMeasure;
 import uit.tkorg.crs.graph.Graph;
-import uit.tkorg.crs.method.AdamicAdar;
-import uit.tkorg.crs.method.Cosine;
-import uit.tkorg.crs.method.Jaccard;
-import uit.tkorg.crs.method.MPBVS;
-import uit.tkorg.crs.method.MPBVSPlus;
-import uit.tkorg.crs.method.RSS;
-import uit.tkorg.crs.method.RSSPlus;
+import uit.tkorg.crs.method.link.AdamicAdar;
+import uit.tkorg.crs.method.link.Cosine;
+import uit.tkorg.crs.method.link.Jaccard;
+import uit.tkorg.crs.method.link.MPBVS;
+import uit.tkorg.crs.method.link.MPBVSPlus;
+import uit.tkorg.crs.method.link.RSS;
+import uit.tkorg.crs.method.link.RSSPlus;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -42,7 +42,6 @@ public class LinkMethodExperiment {
     private ArrayList<Integer> _yearArray;
     private String _resultPath;
     private String _training_LDA_InputFile;
-    private int _numberOfRandomAuthor;
     private boolean _isCosineMethod;
     private boolean _isJaccardMethod;
     private boolean _isAdarMethod;
@@ -74,10 +73,8 @@ public class LinkMethodExperiment {
             String Existing_List_AuthorPath, // empty or null if use radom author
             String K, String Year,
             String ResultPath,
-            String Training_LDA_InputFile,
-            int numberOfRandomAuthor,
             boolean isCosineMethod, boolean isJaccardMethod, boolean isAdarMethod, boolean isRSSMethod,
-            boolean isRSSPlusMethod, boolean isMPVSMethod, boolean isMVVSPlusMethod, boolean isKLDivergence) {
+            boolean isRSSPlusMethod, boolean isMPVSMethod, boolean isMVVSPlusMethod) {
 
         _training_PaperId_AuthorIdPath = Training_PaperId_AuthorIdPath;
         _training_PaperId_YearPath = Training_PaperId_YearPath;
@@ -108,8 +105,6 @@ public class LinkMethodExperiment {
             _yearArray.add(Integer.parseInt(year));
         }
 
-        _training_LDA_InputFile = Training_LDA_InputFile;
-        _numberOfRandomAuthor = numberOfRandomAuthor;
         _isCosineMethod = isCosineMethod;
         _isJaccardMethod = isJaccardMethod;
         _isAdarMethod = isAdarMethod;
@@ -117,7 +112,6 @@ public class LinkMethodExperiment {
         _isRSSPlusMethod = isRSSPlusMethod;
         _isMPVSMethod = isMPVSMethod;
         _isMVVSPlusMethod = isMVVSPlusMethod;
-        _isKLDivergence = isKLDivergence;
 
         _resultPath = ResultPath;
     }
