@@ -117,12 +117,12 @@ public class TFIDF {
             String[] tokens;
             int instanceID = 0;
             while ((line = bufferReader.readLine()) != null) {
-                tokens = line.split("X\t");
-                if (tokens.length != 2) {
-                    continue;
-                }
-                String publications = tokens[1];
-                _InstancePublicationHM.put(instanceID, publications);
+//                tokens = line.split("X\t");
+//                if (tokens.length != 2) {
+//                    continue;
+//                }
+//                String publications = tokens[1];
+                _InstancePublicationHM.put(instanceID, line);
                 instanceID++;
             }
             bufferReader.close();
