@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Random;
-import uit.tkorg.crs.method.ParallelLDA;
+import uit.tkorg.crs.method.content.ParallelLDA;
 import uit.tkorg.utility.TextFileProcessor;
 
 /**

@@ -20,8 +20,8 @@ import uit.tkorg.crs.dbconnection.ConnectionService;
 import uit.tkorg.crs.artnetminer.ArtnetMinerFrame;
 import uit.tkorg.crs.dblp.DBLPFrame;
 import uit.tkorg.crs.experiment.LinkMethodExperiment;
-import uit.tkorg.crs.method.JGibbLDA;
-import uit.tkorg.crs.method.ParallelLDA;
+import uit.tkorg.crs.method.content.JGibbLDA;
+import uit.tkorg.crs.method.content.ParallelLDA;
 import uit.tkorg.utility.TextParallelProcessor;
 
 /**
