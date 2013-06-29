@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import org.apache.commons.lang.StringUtils;
 
 /**
  *
@@ -122,6 +123,7 @@ public class TFIDF {
 //                    continue;
 //                }
 //                String publications = tokens[1];
+                line = StringUtils.substringAfter(line,"X");
                 _InstancePublicationHM.put(instanceID, line);
                 instanceID++;
             }
