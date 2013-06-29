@@ -171,8 +171,6 @@ public class CRSMainFrame extends javax.swing.JFrame {
         jLabel26 = new javax.swing.JLabel();
         txtListAuthorPath3 = new javax.swing.JTextField();
         jButtonBrowse18 = new javax.swing.JButton();
-        radbtnUseExistingList2 = new javax.swing.JRadioButton();
-        radbtnRadomAuthor2 = new javax.swing.JRadioButton();
         jLabel27 = new javax.swing.JLabel();
         txtNumberOfRandomAuthor3 = new javax.swing.JTextField();
         jButton3 = new javax.swing.JButton();
@@ -1181,21 +1179,6 @@ public class CRSMainFrame extends javax.swing.JFrame {
             }
         });
 
-        radbtnUseExistingList2.setText("Using Existing List");
-        radbtnUseExistingList2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                radbtnUseExistingList2ActionPerformed(evt);
-            }
-        });
-
-        radbtnRadomAuthor2.setSelected(true);
-        radbtnRadomAuthor2.setText("Random Authors");
-        radbtnRadomAuthor2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                radbtnRadomAuthor2ActionPerformed(evt);
-            }
-        });
-
         jLabel27.setText("Number of Random Authors");
 
         txtNumberOfRandomAuthor3.setText("300");
@@ -1212,13 +1195,8 @@ public class CRSMainFrame extends javax.swing.JFrame {
                 .addGap(47, 47, 47)
                 .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel12Layout.createSequentialGroup()
-                        .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtNumberOfRandomAuthor3, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel12Layout.createSequentialGroup()
-                                .addComponent(radbtnUseExistingList2)
-                                .addGap(10, 10, 10)
-                                .addComponent(radbtnRadomAuthor2)))
-                        .addContainerGap())
+                        .addComponent(txtNumberOfRandomAuthor3, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(680, Short.MAX_VALUE))
                     .addGroup(jPanel12Layout.createSequentialGroup()
                         .addGap(6, 6, 6)
                         .addComponent(txtListAuthorPath3)
@@ -1228,10 +1206,7 @@ public class CRSMainFrame extends javax.swing.JFrame {
         jPanel12Layout.setVerticalGroup(
             jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel12Layout.createSequentialGroup()
-                .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(radbtnUseExistingList2)
-                    .addComponent(radbtnRadomAuthor2))
-                .addGap(4, 4, 4)
+                .addGap(27, 27, 27)
                 .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel12Layout.createSequentialGroup()
                         .addGap(2, 2, 2)
@@ -1899,29 +1874,6 @@ public class CRSMainFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButtonBrowse18ActionPerformed
 
-    private void radbtnUseExistingList2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radbtnUseExistingList2ActionPerformed
-        if (!radbtnUseExistingList1.isSelected()) {
-            txtNumberOfRandomAuthor.setEnabled(true);
-            return;
-        } else {
-            radbtnUseExistingList1.setSelected(true);
-            radbtnRadomAuthor1.setSelected(false);
-            txtNumberOfRandomAuthor.setEnabled(false);
-        }
-    }//GEN-LAST:event_radbtnUseExistingList2ActionPerformed
-
-    private void radbtnRadomAuthor2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radbtnRadomAuthor2ActionPerformed
-        if (!radbtnRadomAuthor1.isSelected()) {
-            txtNumberOfRandomAuthor.setEnabled(false);
-            return;
-        } else {
-            txtNumberOfRandomAuthor.setEnabled(true);
-            radbtnRadomAuthor1.setSelected(true);
-            radbtnUseExistingList1.setSelected(false);
-            txtListAuthorPath.setText("");
-        }
-    }//GEN-LAST:event_radbtnRadomAuthor2ActionPerformed
-
     private void jButtonBrowse19ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBrowse19ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButtonBrowse19ActionPerformed
@@ -2080,9 +2032,7 @@ public class CRSMainFrame extends javax.swing.JFrame {
     private javax.swing.JTextField jTextFieldStemmingSourcePath;
     private javax.swing.JMenuBar mainMenuBar;
     private javax.swing.JRadioButton radbtnRadomAuthor1;
-    private javax.swing.JRadioButton radbtnRadomAuthor2;
     private javax.swing.JRadioButton radbtnUseExistingList1;
-    private javax.swing.JRadioButton radbtnUseExistingList2;
     private javax.swing.JTextField txtFFAuthorPaperPath;
     private javax.swing.JTextField txtFFAuthorPaperPath1;
     private javax.swing.JTextField txtLDAInputFile;
