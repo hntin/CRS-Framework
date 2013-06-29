@@ -11,6 +11,8 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  *
@@ -54,6 +56,13 @@ public class TFIDF {
                 }
 
                 _tfidfHM.put(inputAuthorID, similarityHM);
+                System.out.println("Similarity Author:" +inputAuthorID);
+                Iterator it = similarityHM.entrySet().iterator();
+                while (it.hasNext()) {
+                    Map.Entry pairs = (Map.Entry)it.next();
+                    System.out.println("other ID:" +pairs.getKey() + " Value " + pairs.getValue());
+                    it.remove(); // avoids a ConcurrentModificationException
+                }
             }
             
             System.out.println("FINISH TFIDF.process()");
