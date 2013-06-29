@@ -43,7 +43,7 @@ public class TFIDF {
                                    
                     // calculate  similarity using TFIDF
                     
-//                    DocumentSimilarityTFIDF similarityUsingTF = new DocumentSimilarityTFIDF(fileContent.get(inputAuthorID),fileContent.get(index));
+//                    DocumentSimilarityTFIDF similarityUsingTF = new DocumentSimilarityTFIDF(_InstancePublicationHM.get(inputAuthorID),_InstancePublicationHM.get(index));
 //                    HashMap <Integer, Float> indexAuthor = new HashMap<Integer, Float>();
 //                    indexAuthor.put(index, (float)similarityUsingTF.getCosineSimilarity());
 //                    _tfidfHM.put(instanceID, indexAuthor);
