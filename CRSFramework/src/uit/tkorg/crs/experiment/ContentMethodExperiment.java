@@ -19,6 +19,7 @@ import java.util.Random;
 import uit.tkorg.crs.evaluation.EvaluationMeasure;
 import uit.tkorg.crs.graph.Graph;
 import uit.tkorg.crs.method.content.ParallelLDA;
+import uit.tkorg.crs.method.content.TFIDF;
 import uit.tkorg.utility.TextFileProcessor;
 
 /**
@@ -40,6 +41,7 @@ public class ContentMethodExperiment {
     private String _resultPath;
     private StringBuffer _nfContentPredictionBuffer = new StringBuffer();
     private StringBuffer _ffContentPredictionBuffer = new StringBuffer();
+    
     HashMap<Integer, HashMap<Integer, Float>> topSimilarity;
     int topN = 50;
 
@@ -99,10 +101,30 @@ public class ContentMethodExperiment {
                 }
             }
         }
+        // </editor-fold>
         
+        //<editor-fold defaultstate="collapsed" desc="Calculating Similarity based on TFIDF Method, out to File">
+        HashMap<Integer, HashMap<Integer, Float>> tfidfResult = null;
         if (_isTFIDF) {
+            TFIDF tfidfMethod = new TFIDF();
+            tfidfResult = tfidfMethod.process(_LDA_InputFile, _listAuthorRandom);
             
+            if (tfidfResult != null) {
+                for (int i = 1; i <= topN; i++) {
+                    topSimilarity = FindTopNSimilarity(i, tfidfResult);
+                    float precisionNear = EvaluationMeasure.Mean_Precision_TopN(topSimilarity, _graph.nearTestingData);
+                    float precisionFar = EvaluationMeasure.Mean_Precision_TopN(topSimilarity, _graph.farTestingData);
+                    _nfContentPredictionBuffer.append(df.format(precisionNear) + "\t");
+                    _ffContentPredictionBuffer.append(df.format(precisionFar) + "\t");
+
+                    float recallNear = EvaluationMeasure.Mean_Recall_TopN(topSimilarity, _graph.nearTestingData);
+                    float recallFar = EvaluationMeasure.Mean_Recall_TopN(topSimilarity, _graph.farTestingData);
+                    _nfContentPredictionBuffer.append(df.format(recallNear) + "\t");
+                    _ffContentPredictionBuffer.append(df.format(recallFar) + "\t");
+                }
+            }
         }
+        // </editor-fold>
 
         TextFileProcessor.writeTextFile(_resultPath + "/Result.txt",
                 _nfContentPredictionBuffer.toString() + "\n\n" + _ffContentPredictionBuffer.toString());
