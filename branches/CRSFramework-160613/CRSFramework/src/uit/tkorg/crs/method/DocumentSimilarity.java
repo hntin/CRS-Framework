@@ -20,14 +20,14 @@ import org.apache.lucene.index.*;
 import org.apache.lucene.store.*;
 import org.apache.lucene.util.*;
 
-public class CosineDocumentSimilarity {
+public class DocumentSimilarity {
 
     public static final String CONTENT = "Content";
     private final Set<String> terms = new HashSet<>();
     private final RealVector v1;
     private final RealVector v2;
 
-    CosineDocumentSimilarity(String s1, String s2) throws IOException {
+    DocumentSimilarity(String s1, String s2) throws IOException {
         Directory directory = createIndex(s1, s2);
         IndexReader reader = DirectoryReader.open(directory);
         Map<String, Integer> f1 = getTermFrequencies(reader, 0);
@@ -74,7 +74,7 @@ public class CosineDocumentSimilarity {
 
     public static double getCosineSimilarity(String s1, String s2)
             throws IOException {
-        return new CosineDocumentSimilarity(s1, s2).getCosineSimilarity();
+        return new DocumentSimilarity(s1, s2).getCosineSimilarity();
     }
 
     Map<String, Integer> getTermFrequencies(IndexReader reader, int docId)
