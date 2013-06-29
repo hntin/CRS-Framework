@@ -17,15 +17,24 @@ import uit.tkorg.crs.graph.Graph;
  *
  * @author TinHuynh
  */
+
 public class ExperimentSetting {
 
     private Graph _graph = Graph.getInstance();
     private ArrayList<Integer> _listAuthorRandom;
+    
+    public static enum GeneratingOption
+    {
+        NONE,
+        LOWEST,
+        HIGHEST,
+        LOWMIDHIGH,
+    }
 
     public ExperimentSetting() {
     }
 
-    public void generateAuthorList(int numberOfAuthor, String savePath, String generatingOption) {
+    public void generateAuthorList(int numberOfAuthor, String savePath, GeneratingOption generatingOption) {
         try {
             _listAuthorRandom = new ArrayList<>();
             _graph.BuildingRSSGraph();
@@ -112,60 +121,21 @@ public class ExperimentSetting {
                 }
             }
 
-            Random rd = new Random();
-            ArrayList<Integer> listRandomAuthorIdInLow = new ArrayList<>();
-            int counter = 0;
+            //_listAuthorRandom;
             
-            if (listAuthorIdInLow.size() > 200) {
-                while (counter < 100) {
-                    counter++;
-                    int aid;
-                    while (listRandomAuthorIdInLow.contains(aid = listAuthorIdInLow.get(rd.nextInt(listAuthorIdInLow.size())))) ;
-                    listRandomAuthorIdInLow.add(aid);
-                }
-            } else {
-                int length = listAuthorIdInLow.size() > 100 ? 100 : listAuthorIdInLow.size();
-                for (int i = 0; i < length; i++) {
-                    listRandomAuthorIdInLow.add(listAuthorIdInLow.get(i));
-                }
+            if (generatingOption == GeneratingOption.LOWEST)
+            {
+                _listAuthorRandom.addAll(randomAuthorIdFromList(numberOfAuthor, listAuthorIdInLow));
+            } else if (generatingOption == GeneratingOption.HIGHEST)
+            {
+                _listAuthorRandom.addAll(randomAuthorIdFromList(numberOfAuthor, listAuthorIdInHigh));
+            } else if (generatingOption == GeneratingOption.LOWMIDHIGH)
+            {
+                _listAuthorRandom.addAll(randomAuthorIdFromList(numberOfAuthor, listAuthorIdInLow));
+                _listAuthorRandom.addAll(randomAuthorIdFromList(numberOfAuthor, listAuthorIdInMid));
+                _listAuthorRandom.addAll(randomAuthorIdFromList(numberOfAuthor, listAuthorIdInHigh));
             }
-
-            ArrayList<Integer> listRandomAuthorIdInMid = new ArrayList<>();
-            counter = 0;
-            if (listAuthorIdInMid.size() > 200) {
-                while (counter < 100) {
-                    counter++;
-                    int aid;
-                    while (listRandomAuthorIdInMid.contains(aid = listAuthorIdInMid.get(rd.nextInt(listAuthorIdInMid.size())))) ;
-                    listRandomAuthorIdInMid.add(aid);
-                }
-            } else {
-                int length = listAuthorIdInMid.size() > 100 ? 100 : listAuthorIdInMid.size();
-                for (int i = 0; i < length; i++) {
-                    listRandomAuthorIdInMid.add(listAuthorIdInMid.get(i));
-                }
-            }
-
-            ArrayList<Integer> listRandomAuthorIdInHigh = new ArrayList<>();
-            counter = 0;
-            if (listAuthorIdInHigh.size() > 200) {
-                while (counter < 100) {
-                    counter++;
-                    int aid;
-                    while (listRandomAuthorIdInHigh.contains(aid = listAuthorIdInHigh.get(rd.nextInt(listAuthorIdInHigh.size())))) ;
-                    listRandomAuthorIdInHigh.add(aid);
-                }
-            } else {
-                int length = listAuthorIdInHigh.size() > 100 ? 100 : listAuthorIdInHigh.size();
-                for (int i = 0; i < length; i++) {
-                    listRandomAuthorIdInHigh.add(listAuthorIdInHigh.get(i));
-                }
-            }
-
-            _listAuthorRandom.addAll(listRandomAuthorIdInLow);
-            _listAuthorRandom.addAll(listRandomAuthorIdInMid);
-            _listAuthorRandom.addAll(listRandomAuthorIdInHigh);
-
+            
             FileOutputStream fos = new FileOutputStream(savePath + "/" + "ListRandomAuthor.txt");
             Writer file = new OutputStreamWriter(fos, "UTF8");
             file.write("AuthorID" + "\n");
@@ -177,5 +147,26 @@ public class ExperimentSetting {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+        
+    }
+    
+    private ArrayList<Integer> randomAuthorIdFromList(int numberOfAuthorId, ArrayList<Integer> listId)
+    {
+        ArrayList<Integer> result = new ArrayList<>();
+        
+        if (listId.size() < numberOfAuthorId)
+            numberOfAuthorId = listId.size();
+        
+        int counter=0;
+        Random rd = new Random();
+        while (counter < numberOfAuthorId)
+        {
+            int index = rd.nextInt(listId.size());
+            result.add(listId.get(index));
+            listId.remove(index);
+            counter++;
+        }
+        
+        return result;
     }
 }

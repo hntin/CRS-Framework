@@ -249,14 +249,15 @@ public class GenerateInAuthorFrame extends javax.swing.JDialog {
 
     private void jButtonGenerateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGenerateActionPerformed
         // TODO add your handling code here:
+        ExperimentSetting.GeneratingOption option = ExperimentSetting.GeneratingOption.NONE;
         if (jRadioButtonLowestDegree.isSelected()) {
-            optionStr = "lowest";
+            option = ExperimentSetting.GeneratingOption.LOWEST;
         }
         if (jRadioButtonHighestDegree.isSelected()) {
-            optionStr = "highest";
+            option = ExperimentSetting.GeneratingOption.HIGHEST;
         }
         if (jRadioButtonLowMedHigh.isSelected()) {
-            optionStr = "lowmedhigh";
+            option = ExperimentSetting.GeneratingOption.LOWMIDHIGH;
         }
         
         if (numberOfRandomAuthor.getText() == null || numberOfRandomAuthor.getText().equals(""))
@@ -268,7 +269,7 @@ public class GenerateInAuthorFrame extends javax.swing.JDialog {
         numberOfAuthor = Integer.parseInt(numberOfRandomAuthor.getText());
         savePath = jTextFieldSaveTo.getText();
         ExperimentSetting experimentSetting = new ExperimentSetting();
-        experimentSetting.generateAuthorList(numberOfAuthor, savePath, optionStr);
+        experimentSetting.generateAuthorList(numberOfAuthor, savePath, option);
     }//GEN-LAST:event_jButtonGenerateActionPerformed
 
     public static void main(String args[]) {
