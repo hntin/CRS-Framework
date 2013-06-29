@@ -41,7 +41,6 @@ public class LinkMethodExperiment {
     private ArrayList<Float> _kArray;
     private ArrayList<Integer> _yearArray;
     private String _resultPath;
-    private String _training_LDA_InputFile;
     private boolean _isCosineMethod;
     private boolean _isJaccardMethod;
     private boolean _isAdarMethod;
@@ -49,7 +48,7 @@ public class LinkMethodExperiment {
     private boolean _isRSSPlusMethod;
     private boolean _isMPVSMethod;
     private boolean _isMVVSPlusMethod;
-    private boolean _isKLDivergence;
+
     private StringBuffer _nfAdamicAdarBuffer = new StringBuffer();
     private StringBuffer _nfCosineBuffer = new StringBuffer();
     private StringBuffer _nfJaccardBuffer = new StringBuffer();
@@ -64,8 +63,6 @@ public class LinkMethodExperiment {
     private StringBuffer _ffRSSPlusBuffer = new StringBuffer();
     private StringBuffer _ffMPBVSBuffer = new StringBuffer();
     private StringBuffer _ffMPBVSPlusBuffer = new StringBuffer();
-    private StringBuffer _nfKLDivergenceBuffer = new StringBuffer();
-    private StringBuffer _ffKLDivergenceBuffer = new StringBuffer();
     //</editor-fold>
 
     public LinkMethodExperiment(String Training_PaperId_AuthorIdPath, String Training_PaperId_YearPath,
@@ -264,41 +261,7 @@ public class LinkMethodExperiment {
             }
         }
         //</editor-fold>
-
-        //<editor-fold defaultstate="collapsed" desc="Run for Topic Model - KL Divergence, out to File">
-        HashMap<Integer, HashMap<Integer, Float>> klDivergenceResult = null;
-        if (_isKLDivergence) {
-            ParallelLDA ldaParallelTool = new ParallelLDA();
-            klDivergenceResult = ldaParallelTool.process(_training_LDA_InputFile, _listAuthorRandom);
-        }
-
-        DecimalFormat df = new DecimalFormat("0.#####");
-        _nfKLDivergenceBuffer.append("Near future");
-        _ffKLDivergenceBuffer.append("Far future");
-        for (int i = 1; i <= topN; i++) {
-            _nfKLDivergenceBuffer.append("P@" + i + "\t" + "R@" + i + "\t");
-            _ffKLDivergenceBuffer.append("P@" + i + "\t" + "R@" + i + "\t");
-        }
-        _nfKLDivergenceBuffer.append("\n");
-        _ffKLDivergenceBuffer.append("\n");
-
-        if (klDivergenceResult != null) {
-            for (int i = 1; i <= topN; i++) {
-                topSimilarity = FindTopNSimilarity(i, klDivergenceResult);
-                float precisionNear = EvaluationMeasure.Mean_Precision_TopN(topSimilarity, _graph.nearTestingData);
-                float precisionFar = EvaluationMeasure.Mean_Precision_TopN(topSimilarity, _graph.farTestingData);
-                _nfKLDivergenceBuffer.append(df.format(precisionNear) + "\t");
-                _ffKLDivergenceBuffer.append(df.format(precisionFar) + "\t");
-
-                float recallNear = EvaluationMeasure.Mean_Recall_TopN(topSimilarity, _graph.nearTestingData);
-                float recallFar = EvaluationMeasure.Mean_Recall_TopN(topSimilarity, _graph.farTestingData);
-                _nfKLDivergenceBuffer.append(df.format(recallNear) + "\t");
-                _ffKLDivergenceBuffer.append(df.format(recallFar) + "\t");
-            }
-        }
-        TextFileProcessor.writeTextFile("C:\\CRS-Experiment\\KLResult.txt",
-                _nfKLDivergenceBuffer.toString() + "\n\n" + _ffKLDivergenceBuffer.toString());
-        //</editor-fold>
+        
     }
 
     private void selectAuthorsForExperiment() {
