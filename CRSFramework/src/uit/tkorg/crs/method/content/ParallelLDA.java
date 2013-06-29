@@ -1,4 +1,4 @@
-package uit.tkorg.crs.method;
+package uit.tkorg.crs.method.content;
 
 import cc.mallet.util.*;
 import cc.mallet.types.*;
