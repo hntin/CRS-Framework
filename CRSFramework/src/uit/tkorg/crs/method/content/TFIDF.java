@@ -123,7 +123,7 @@ public class TFIDF {
 //                    continue;
 //                }
 //                String publications = tokens[1];
-                line = StringUtils.substringAfter(line,"X");
+                //line = StringUtils.substringAfter(line,"X");
                 _InstancePublicationHM.put(instanceID, line);
                 instanceID++;
             }
