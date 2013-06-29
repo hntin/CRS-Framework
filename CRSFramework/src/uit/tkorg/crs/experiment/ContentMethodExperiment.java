@@ -41,7 +41,6 @@ public class ContentMethodExperiment {
     private String _resultPath;
     private StringBuffer _nfContentPredictionBuffer = new StringBuffer();
     private StringBuffer _ffContentPredictionBuffer = new StringBuffer();
-    
     HashMap<Integer, HashMap<Integer, Float>> topSimilarity;
     int topN = 50;
 
@@ -64,11 +63,19 @@ public class ContentMethodExperiment {
     }
 
     public void Run() throws Exception {
+        System.out.println("START LOADING TRAINING DATA");
         _graph.LoadTrainingData(_training_PaperId_AuthorIdPath, _training_PaperId_YearPath);
         _graph.LoadTestingData(_testing_PaperId_Year_NFPath, _testing_PaperId_Year_FFPath);
+        System.out.println("FINISH LOADING TRAINING DATA");
 
         _graph.BuildingRSSGraph();
         selectAuthorsForExperiment();
+
+        System.out.println("FNISH BUILD GRAPH AND LOAD AUTHORLIST");
+        for (int i = 0; i < _listAuthorRandom.size(); i++) {
+            System.out.println("AuthorList:" + _listAuthorRandom.get(i));
+        }
+        
 
         DecimalFormat df = new DecimalFormat("0.#####");
         _nfContentPredictionBuffer.append("Near future \n");
@@ -102,13 +109,13 @@ public class ContentMethodExperiment {
             }
         }
         // </editor-fold>
-        
+
         //<editor-fold defaultstate="collapsed" desc="Calculating Similarity based on TFIDF Method, out to File">
         HashMap<Integer, HashMap<Integer, Float>> tfidfResult = null;
         if (_isTFIDF) {
             TFIDF tfidfMethod = new TFIDF();
             tfidfResult = tfidfMethod.process(_LDA_InputFile, _listAuthorRandom);
-            
+
             if (tfidfResult != null) {
                 for (int i = 1; i <= topN; i++) {
                     topSimilarity = FindTopNSimilarity(i, tfidfResult);

@@ -55,8 +55,9 @@ public class TFIDF {
 
                 _tfidfHM.put(inputAuthorID, similarityHM);
             }
-
-
+            
+            System.out.println("FINISH TFIDF.process()");
+            
         } catch (Exception ex) {
             ex.printStackTrace();
         }
