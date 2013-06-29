@@ -19,8 +19,8 @@ import uit.tkorg.utility.TextFileProcessor;
 public class ParallelLDA {
     private static StringBuffer buffInputParallelLDA = new StringBuffer();
     private static StringBuffer buffAuthorIDAndDocMapping = new StringBuffer();
-    HashMap<Integer, Integer> AuthorInstanceHM = new HashMap<>();
-    HashMap<Integer, Integer> InstanceAuthorHM = new HashMap<>();
+    HashMap<Integer, Integer> _AuthorInstanceHM = new HashMap<>();
+    HashMap<Integer, Integer> _InstanceAuthorHM = new HashMap<>();
     private static HashMap<Integer, HashMap<Integer, Float>> _KLDivergenceHM;
 
     public HashMap<Integer, HashMap<Integer, Float>> process(String inputFile, ArrayList<Integer> listAuthorID) {
@@ -128,11 +128,11 @@ public class ParallelLDA {
     }
     
     private int getInstanceFromAuthorID(int authorID) {
-        return AuthorInstanceHM.get(authorID);
+        return _AuthorInstanceHM.get(authorID);
     }
     
     private int getAuthorIDFromInstanceID(int instanceID) {
-        return InstanceAuthorHM.get(instanceID);
+        return _InstanceAuthorHM.get(instanceID);
     }
     
     private void loadMappingInstanceIDAuthorID(String mapFile) {
@@ -151,8 +151,8 @@ public class ParallelLDA {
 
                 int authorID = Integer.parseInt(tokens[0]);
                 int instanceID = Integer.parseInt(tokens[1]);
-                AuthorInstanceHM.put(authorID, instanceID);
-                InstanceAuthorHM.put(instanceID, authorID);
+                _AuthorInstanceHM.put(authorID, instanceID);
+                _InstanceAuthorHM.put(instanceID, authorID);
             }
             bufferReader.close();
         } catch (Exception ex) {
