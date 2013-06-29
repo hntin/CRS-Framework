@@ -5,6 +5,7 @@
 package uit.tkorg.crs.method.content;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
@@ -23,7 +24,14 @@ public class TFIDF {
     public HashMap<Integer, HashMap<Integer, Float>> process(String inputFile, ArrayList<Integer> listAuthorID) {
         System.out.println("START PROCESSING TFIDF");
         try {
-            
+            String pathFile = (new File(inputFile)).getParent();
+            loadMappingInstanceIDAuthorID(pathFile + "\\CRS-AuthorIDAndInstance.txt");
+            for (int inputAuthorID : listAuthorID) {
+                System.out.println("CURRENT INSTANCE IS:" + inputAuthorID);
+                int instanceID = getInstanceFromAuthorID(inputAuthorID);
+                
+                
+            }
             
         } catch (Exception ex) {
             ex.printStackTrace();
