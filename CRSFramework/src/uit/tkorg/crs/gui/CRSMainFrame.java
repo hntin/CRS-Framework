@@ -19,6 +19,7 @@ import uit.tkorg.crs.bo.AuthorPaperBO;
 import uit.tkorg.crs.dbconnection.ConnectionService;
 import uit.tkorg.crs.artnetminer.ArtnetMinerFrame;
 import uit.tkorg.crs.dblp.DBLPFrame;
+import uit.tkorg.crs.experiment.ContentMethodExperiment;
 import uit.tkorg.crs.experiment.LinkMethodExperiment;
 import uit.tkorg.crs.method.content.JGibbLDA;
 import uit.tkorg.crs.method.content.ParallelLDA;
@@ -126,7 +127,7 @@ public class CRSMainFrame extends javax.swing.JFrame {
         jPanel13 = new javax.swing.JPanel();
         txtResultPath1 = new javax.swing.JTextField();
         jButtonBrowse19 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        jButtonRunContentMethod = new javax.swing.JButton();
         jPanelLinkMethod = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
@@ -165,7 +166,7 @@ public class CRSMainFrame extends javax.swing.JFrame {
         jLabel14 = new javax.swing.JLabel();
         txtResultPath = new javax.swing.JTextField();
         jButtonBrowse11 = new javax.swing.JButton();
-        jButtonRun = new javax.swing.JButton();
+        jButtonRunLinkMethod = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
         mainMenuBar = new javax.swing.JMenuBar();
         jMenuDBLP = new javax.swing.JMenu();
@@ -793,11 +794,11 @@ public class CRSMainFrame extends javax.swing.JFrame {
                 .addGap(16, 16, 16))
         );
 
-        jButton3.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
-        jButton3.setText("Run Experiment");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        jButtonRunContentMethod.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
+        jButtonRunContentMethod.setText("Run Experiment");
+        jButtonRunContentMethod.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                jButtonRunContentMethodActionPerformed(evt);
             }
         });
 
@@ -814,7 +815,7 @@ public class CRSMainFrame extends javax.swing.JFrame {
                     .addComponent(jPanel13, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelInputLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jButtonRunContentMethod, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanelInputLayout.setVerticalGroup(
@@ -828,7 +829,7 @@ public class CRSMainFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jButtonRunContentMethod, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -1130,11 +1131,11 @@ public class CRSMainFrame extends javax.swing.JFrame {
             }
         });
 
-        jButtonRun.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jButtonRun.setText("RUN EXPERIMENTS");
-        jButtonRun.addActionListener(new java.awt.event.ActionListener() {
+        jButtonRunLinkMethod.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jButtonRunLinkMethod.setText("RUN EXPERIMENTS");
+        jButtonRunLinkMethod.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonRunActionPerformed(evt);
+                jButtonRunLinkMethodActionPerformed(evt);
             }
         });
 
@@ -1155,7 +1156,7 @@ public class CRSMainFrame extends javax.swing.JFrame {
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel14)
-                            .addComponent(jButtonRun, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jButtonRunLinkMethod, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 0, Short.MAX_VALUE))))
         );
         jPanel6Layout.setVerticalGroup(
@@ -1173,7 +1174,7 @@ public class CRSMainFrame extends javax.swing.JFrame {
                             .addComponent(txtResultPath, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jButtonBrowse11))
                         .addGap(18, 18, 18)
-                        .addComponent(jButtonRun, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jButtonRunLinkMethod, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(15, Short.MAX_VALUE))
         );
 
@@ -1700,8 +1701,7 @@ public class CRSMainFrame extends javax.swing.JFrame {
         generateFr.setVisible(true);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
-    private void jButtonRunActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRunActionPerformed
-
+    private void jButtonRunLinkMethodActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRunLinkMethodActionPerformed
         boolean isCosineMethod = jCheckBoxCosine.isSelected();
         boolean isJaccardMethod = jCheckBoxJaccard.isSelected();
         boolean isAdarMethod = jCheckBoxAdamicAdar.isSelected();
@@ -1737,7 +1737,7 @@ public class CRSMainFrame extends javax.swing.JFrame {
             }
         });
         executor.shutdown();
-    }//GEN-LAST:event_jButtonRunActionPerformed
+    }//GEN-LAST:event_jButtonRunLinkMethodActionPerformed
 
     private void jButtonBrowse11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBrowse11ActionPerformed
         // TODO add your handling code here:
@@ -1886,10 +1886,34 @@ public class CRSMainFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtTrainingAuthorPaperFileActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
+    private void jButtonRunContentMethodActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRunContentMethodActionPerformed
+        final ContentMethodExperiment experiment = new ContentMethodExperiment(
+                txtInputDataFile.getText(),
+                txtTrainingAuthorPaperFile.getText(), txtTrainingPaperYearFile.getText(),
+                txtNFAuthorPaperFile.getText(), txtFFAuthorPaperFile.getText(),
+                txtExistingAuthorFile.getText(), // empty or null if use radom author
+                txtResultPath1.getText(), jRadioButtonKLDivergence.isSelected(), jRadioButtonTFIDF.isSelected());
         
-    }//GEN-LAST:event_jButton3ActionPerformed
+        final DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        Date date = new Date();
+        System.out.println("Started Time : " + dateFormat.format(date) + "\n");
+        System.out.println("Processing ..." + "\n");
+        ExecutorService executor = Executors.newFixedThreadPool(1);
+        executor.submit(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    experiment.Run();
+                    Date date = new Date();
+                    System.out.println("Finished time : " + dateFormat.format(date) + "\n");
+                    System.out.println("DONE !!!");
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+        });
+        executor.shutdown();
+    }//GEN-LAST:event_jButtonRunContentMethodActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -1925,7 +1949,6 @@ public class CRSMainFrame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup groupContentMethod;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButtonApplyDBSetting;
     private javax.swing.JButton jButtonBrowse1;
     private javax.swing.JButton jButtonBrowse10;
@@ -1945,7 +1968,8 @@ public class CRSMainFrame extends javax.swing.JFrame {
     private javax.swing.JButton jButtonChangeDBSetting;
     private javax.swing.JButton jButtonDBExtract;
     private javax.swing.JButton jButtonFormatInputLDA;
-    private javax.swing.JButton jButtonRun;
+    private javax.swing.JButton jButtonRunContentMethod;
+    private javax.swing.JButton jButtonRunLinkMethod;
     private javax.swing.JButton jButtonStemming;
     private javax.swing.JCheckBox jCheckBoxAdamicAdar;
     private javax.swing.JCheckBox jCheckBoxCosine;
