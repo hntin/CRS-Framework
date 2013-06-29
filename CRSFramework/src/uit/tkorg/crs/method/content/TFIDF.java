@@ -28,7 +28,7 @@ public class TFIDF {
         loadInstancePublication(inputFile);
         try {
             String pathFile = (new File(inputFile)).getParent();
-            loadMappingInstanceIDAuthorID(pathFile + "\\CRS-AuthorIDAndInstance.txt");
+            loadMappingInstanceIDAuthorID(pathFile + "/CRS-AuthorIDAndInstance.txt");
             for (int inputAuthorID : listAuthorID) {
                 System.out.println("CURRENT INSTANCE IS:" + inputAuthorID);
                 int instanceID = getInstanceFromAuthorID(inputAuthorID);
