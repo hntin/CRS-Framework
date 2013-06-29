@@ -133,7 +133,7 @@ public class ContentMethodExperiment {
         }
         // </editor-fold>
 
-        TextFileProcessor.writeTextFile(_resultPath + "/Result.txt",
+        TextFileProcessor.writeTextFile(_resultPath,
                 _nfContentPredictionBuffer.toString() + "\n\n" + _ffContentPredictionBuffer.toString());
     }
 
