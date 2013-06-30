@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package uit.tkorg.crs.method.content;
 
 import java.io.BufferedReader;
@@ -13,6 +9,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import org.apache.commons.lang.StringUtils;
 
 /**
@@ -26,48 +24,53 @@ public class TFIDF {
     private static HashMap<Integer, HashMap<Integer, Float>> _tfidfHM = new HashMap<>();
     private HashMap<Integer, String> _InstancePublicationHM = new HashMap<>();
 
-    public HashMap<Integer, HashMap<Integer, Float>> process(String inputFile, ArrayList<Integer> listAuthorID) {
-        System.out.println("START PROCESSING TFIDF");
-        loadInstancePublication(inputFile);
+    private void Run(int inputAuthorID) {
         try {
             int currentAuthorID;
-            String pathFile = (new File(inputFile)).getParent();
-            loadMappingInstanceIDAuthorID(pathFile + "/CRS-AuthorIDAndInstance.txt");
-            for (int inputAuthorID : listAuthorID) {
-                System.out.println("CURRENT INSTANCE IS:" + inputAuthorID);
-                int instanceID = getInstanceFromAuthorID(inputAuthorID);
+            System.out.println("CURRENT INSTANCE IS:" + inputAuthorID);
+            int instanceID = getInstanceFromAuthorID(inputAuthorID);
 
-                HashMap<Integer, Float> similarityHM = new HashMap<Integer, Float>();
-                for (int otherInstanceID = 0; otherInstanceID < _InstancePublicationHM.size(); otherInstanceID++) {
-                    if (instanceID != otherInstanceID) {
-                        // calculate  similarity using TF only                   
-                        DocumentSimilarityTF similarityUsingTF = new DocumentSimilarityTF(
-                                _InstancePublicationHM.get(instanceID), _InstancePublicationHM.get(otherInstanceID));
-                        float simValue = (float) similarityUsingTF.getCosineSimilarity();
-                        currentAuthorID = getAuthorIDFromInstanceID(otherInstanceID);
-                        similarityHM.put(currentAuthorID, simValue);
-
-                        // calculate  similarity using TFIDF
-                        /*
-                        DocumentSimilarityTFIDF similarityUsingTF = new DocumentSimilarityTFIDF(_InstancePublicationHM.get(inputAuthorID),_InstancePublicationHM.get(index));
-                        HashMap <Integer, Float> indexAuthor = new HashMap<Integer, Float>();
-                        indexAuthor.put(index, (float)similarityUsingTF.getCosineSimilarity());
-                        */
-                    }
-                }
-
-                _tfidfHM.put(inputAuthorID, similarityHM);
-                System.out.println("Similarity Author:" +inputAuthorID);
-                Iterator it = similarityHM.entrySet().iterator();
-                while (it.hasNext()) {
-                    Map.Entry pairs = (Map.Entry)it.next();
-                    System.out.println("other ID:" +pairs.getKey() + " Value " + pairs.getValue());
-                    it.remove(); // avoids a ConcurrentModificationException
+            HashMap<Integer, Float> similarityHM = new HashMap<Integer, Float>();
+            for (int otherInstanceID = 0; otherInstanceID < _InstancePublicationHM.size(); otherInstanceID++) {
+                if (instanceID != otherInstanceID) {
+                    // calculate  similarity using TF only                   
+                    DocumentSimilarityTF similarityUsingTF = new DocumentSimilarityTF(
+                            _InstancePublicationHM.get(instanceID), _InstancePublicationHM.get(otherInstanceID));
+                    float simValue = (float) similarityUsingTF.getCosineSimilarity();
+                    currentAuthorID = getAuthorIDFromInstanceID(otherInstanceID);
+                    similarityHM.put(currentAuthorID, simValue);
                 }
             }
-            
-            System.out.println("FINISH TFIDF.process()");
-            
+
+            _tfidfHM.put(inputAuthorID, similarityHM);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public HashMap<Integer, HashMap<Integer, Float>> process(String inputFile, ArrayList<Integer> listAuthorID) {
+        System.out.println("START PROCESSING TFIDF");
+        try {            
+            loadInstancePublication(inputFile);
+            String pathFile = (new File(inputFile)).getParent();
+            loadMappingInstanceIDAuthorID(pathFile + "/CRS-AuthorIDAndInstance.txt");
+
+            Runtime runtime = Runtime.getRuntime();
+            int numOfProcessors = runtime.availableProcessors();
+            ExecutorService executor = Executors.newFixedThreadPool(numOfProcessors - 1);
+            for (final int authorId : listAuthorID) {
+                executor.submit(new Runnable() {
+                    @Override
+                    public void run() {
+                        Run(authorId);
+                    }
+                });
+            }
+
+            executor.shutdown();
+            while (!executor.isTerminated()) {
+            }
+
         } catch (Exception ex) {
             ex.printStackTrace();
         }
