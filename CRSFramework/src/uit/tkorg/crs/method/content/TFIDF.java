@@ -19,6 +19,8 @@ public class TFIDF {
     HashMap<Integer, Integer> _InstanceAuthorHM = new HashMap<>();
     private static HashMap<Integer, HashMap<Integer, Float>> _tfidfHM = new HashMap<>();
     private HashMap<Integer, String> _InstancePublicationHM = new HashMap<>();
+     DocumentSimilarityTF similarityUsingTF = new DocumentSimilarityTF();
+            
 
 //    private void Run(int inputAuthorID) {
 //        try {
@@ -50,8 +52,6 @@ public class TFIDF {
             int instanceID = getInstanceFromAuthorID(inputAuthorID);
             HashMap<Integer, Float> similarityHM = new HashMap<Integer, Float>();
             
-            DocumentSimilarityTF similarityUsingTF = new DocumentSimilarityTF();
-            similarityUsingTF.indexAllDocument(_InstancePublicationHM);
             for (int otherInstanceID = 0; otherInstanceID < _InstancePublicationHM.size(); otherInstanceID++) {
                 if (instanceID != otherInstanceID) {
                     float simValue = (float) similarityUsingTF.getCosineSimilarityWhenIndexAllDocument(instanceID,otherInstanceID);
@@ -71,22 +71,27 @@ public class TFIDF {
             loadInstancePublication(inputFile);
             String pathFile = (new File(inputFile)).getParent();
             loadMappingInstanceIDAuthorID(pathFile + "/CRS-AuthorIDAndInstance.txt");
+            similarityUsingTF.indexAllDocument(_InstancePublicationHM);
 
-            Runtime runtime = Runtime.getRuntime();
-            int numOfProcessors = runtime.availableProcessors();
-            ExecutorService executor = Executors.newFixedThreadPool(numOfProcessors - 1);
+//            Runtime runtime = Runtime.getRuntime();
+//            int numOfProcessors = runtime.availableProcessors();
+//            ExecutorService executor = Executors.newFixedThreadPool(numOfProcessors - 1);
+//            for (final int authorId : listAuthorID) {
+//                executor.submit(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        Run(authorId);
+//                    }
+//                });
+//            }
+            
             for (final int authorId : listAuthorID) {
-                executor.submit(new Runnable() {
-                    @Override
-                    public void run() {
                         Run(authorId);
                     }
-                });
-            }
 
-            executor.shutdown();
-            while (!executor.isTerminated()) {
-            }
+//            executor.shutdown();
+//            while (!executor.isTerminated()) {
+//            }
 
         } catch (Exception ex) {
             ex.printStackTrace();

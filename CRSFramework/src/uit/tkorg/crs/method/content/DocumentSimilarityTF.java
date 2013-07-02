@@ -23,7 +23,7 @@ import org.apache.lucene.util.*;
 public class DocumentSimilarityTF {
 
     public static final String CONTENT = "Content";
-    public Directory _directory;
+    public static Directory _directory;
     private final Set<String> terms = new HashSet<>();
     private static RealVector v1;
     private static RealVector v2;
@@ -72,6 +72,7 @@ public class DocumentSimilarityTF {
             addDocument(writer, allDocument.get(i));
         }
         writer.close();
+        System.out.println(_directory);
         System.out.println("====== End INDEX ALL =====");
     }
     
@@ -112,9 +113,15 @@ public class DocumentSimilarityTF {
         else
             return 0;
     }
-     public static double getCosineSimilarityWhenIndexAllDocument(int authorIDOne, int authorIDTwo)
+     public  double getCosineSimilarityWhenIndexAllDocument(int authorIDOne, int authorIDTwo)
             throws IOException {
-        return new DocumentSimilarityTF(authorIDOne, authorIDTwo).getCosineSimilarity();
+            IndexReader reader = DirectoryReader.open(_directory);
+            Map<String, Integer> f1 = getTermFrequencies(reader,authorIDOne );
+            Map<String, Integer> f2 = getTermFrequencies(reader,authorIDTwo);
+            reader.close();
+            v1 = toRealVector(f1);
+            v2 = toRealVector(f2);
+        return getCosineSimilarity();
     }
 
     public static double getCosineSimilarity(String s1, String s2)
