@@ -1721,13 +1721,13 @@ public class CRSMainFrame extends javax.swing.JFrame {
         final DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         Date date = new Date();
         System.out.println("Started Time : " + dateFormat.format(date) + "\n");
-        System.out.println("Processing ..." + "\n");
+        System.out.println("START RUNNING EXPERIMENT FOR LINK BASED METHODS" + "\n");
         ExecutorService executor = Executors.newFixedThreadPool(1);
         executor.submit(new Runnable() {
             @Override
             public void run() {
                 try {
-                    experiment.Run();
+                    experiment.runLinkMethodExperiment();
                     Date date = new Date();
                     System.out.println("Finished time : " + dateFormat.format(date) + "\n");
                     System.out.println("DONE !!!");
@@ -1903,7 +1903,7 @@ public class CRSMainFrame extends javax.swing.JFrame {
             @Override
             public void run() {
                 try {
-                    experiment.Run();
+                    experiment.runContentMethodExperiment();
                     Date date = new Date();
                     System.out.println("Finished time : " + dateFormat.format(date) + "\n");
                     System.out.println("DONE !!!");
