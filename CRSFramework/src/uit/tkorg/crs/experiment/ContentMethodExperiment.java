@@ -5,6 +5,7 @@
 package uit.tkorg.crs.experiment;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStreamReader;
@@ -16,7 +17,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Random;
-import uit.tkorg.crs.evaluation.EvaluationMeasure;
+import uit.tkorg.crs.evaluation.EvaluationMetric;
 import uit.tkorg.crs.graph.Graph;
 import uit.tkorg.crs.method.content.ParallelLDA;
 import uit.tkorg.crs.method.content.TFIDF;
@@ -62,7 +63,7 @@ public class ContentMethodExperiment {
         _resultPath = ResultPath;
     }
 
-    public void Run() throws Exception {
+    public void runContentMethodExperiment() throws Exception {
         System.out.println("START LOADING TRAINING DATA");
         _graph.LoadTrainingData(_training_PaperId_AuthorIdPath, _training_PaperId_YearPath);
         _graph.LoadTestingData(_testing_PaperId_Year_NFPath, _testing_PaperId_Year_FFPath);
@@ -75,7 +76,7 @@ public class ContentMethodExperiment {
         for (int i = 0; i < _listAuthorRandom.size(); i++) {
             System.out.println("AuthorList:" + _listAuthorRandom.get(i));
         }
-        
+
 
         DecimalFormat df = new DecimalFormat("0.#####");
         _nfContentPredictionBuffer.append("Near future \n");
@@ -95,14 +96,14 @@ public class ContentMethodExperiment {
 
             if (klDivergenceResult != null) {
                 for (int i = 1; i <= topN; i++) {
-                    topSimilarity = FindTopNSimilarity(i, klDivergenceResult);
-                    float precisionNear = EvaluationMeasure.Mean_Precision_TopN(topSimilarity, _graph.nearTestingData);
-                    float precisionFar = EvaluationMeasure.Mean_Precision_TopN(topSimilarity, _graph.farTestingData);
+                    topSimilarity = findTopNSimilarity(i, klDivergenceResult);
+                    float precisionNear = EvaluationMetric.Mean_Precision_TopN(topSimilarity, _graph.nearTestingData);
+                    float precisionFar = EvaluationMetric.Mean_Precision_TopN(topSimilarity, _graph.farTestingData);
                     _nfContentPredictionBuffer.append(df.format(precisionNear) + "\t");
                     _ffContentPredictionBuffer.append(df.format(precisionFar) + "\t");
 
-                    float recallNear = EvaluationMeasure.Mean_Recall_TopN(topSimilarity, _graph.nearTestingData);
-                    float recallFar = EvaluationMeasure.Mean_Recall_TopN(topSimilarity, _graph.farTestingData);
+                    float recallNear = EvaluationMetric.Mean_Recall_TopN(topSimilarity, _graph.nearTestingData);
+                    float recallFar = EvaluationMetric.Mean_Recall_TopN(topSimilarity, _graph.farTestingData);
                     _nfContentPredictionBuffer.append(df.format(recallNear) + "\t");
                     _ffContentPredictionBuffer.append(df.format(recallFar) + "\t");
                 }
@@ -118,26 +119,38 @@ public class ContentMethodExperiment {
 
             if (tfidfResult != null) {
                 for (int i = 1; i <= topN; i++) {
-                    topSimilarity = FindTopNSimilarity(i, tfidfResult);
-                    float precisionNear = EvaluationMeasure.Mean_Precision_TopN(topSimilarity, _graph.nearTestingData);
-                    float precisionFar = EvaluationMeasure.Mean_Precision_TopN(topSimilarity, _graph.farTestingData);
+                    topSimilarity = findTopNSimilarity(i, tfidfResult);
+                    float precisionNear = EvaluationMetric.Mean_Precision_TopN(topSimilarity, _graph.nearTestingData);
+                    float precisionFar = EvaluationMetric.Mean_Precision_TopN(topSimilarity, _graph.farTestingData);
                     _nfContentPredictionBuffer.append(df.format(precisionNear) + "\t");
                     _ffContentPredictionBuffer.append(df.format(precisionFar) + "\t");
 
-                    float recallNear = EvaluationMeasure.Mean_Recall_TopN(topSimilarity, _graph.nearTestingData);
-                    float recallFar = EvaluationMeasure.Mean_Recall_TopN(topSimilarity, _graph.farTestingData);
+                    float recallNear = EvaluationMetric.Mean_Recall_TopN(topSimilarity, _graph.nearTestingData);
+                    float recallFar = EvaluationMetric.Mean_Recall_TopN(topSimilarity, _graph.farTestingData);
                     _nfContentPredictionBuffer.append(df.format(recallNear) + "\t");
                     _ffContentPredictionBuffer.append(df.format(recallFar) + "\t");
                 }
             }
         }
-        // </editor-fold>
-
         TextFileProcessor.writeTextFile(_resultPath,
                 _nfContentPredictionBuffer.toString() + "\n\n" + _ffContentPredictionBuffer.toString());
+        // </editor-fold>
+
+        //<editor-fold defaultstate="collapsed" desc="Writting Pair of LinkedAuthors (True Positive) to file for checking">
+        StringBuffer truePositiveBuffer = new StringBuffer();
+        truePositiveBuffer.append("TRUE POSITIVE - PAIRS OF LINKED AUTHORS IN THE TESTING NETWORK \n");
+        for (int authorID1 : EvaluationMetric.authorHasLinkHM.keySet()) {
+            for (int authorID2 : EvaluationMetric.authorHasLinkHM.get(authorID1)) {
+                truePositiveBuffer.append("(" + "," + ")" + "\n");
+            }
+        }
+        String pathFile = (new File(_resultPath)).getParent();
+        TextFileProcessor.writeTextFile(pathFile + "\\TruePostiveCase.txt", truePositiveBuffer.toString());
+        // </editor-fold>
+        
     }
 
-    private HashMap<Integer, HashMap<Integer, Float>> FindTopNSimilarity(int topN, HashMap<Integer, HashMap<Integer, Float>> data) {
+    private HashMap<Integer, HashMap<Integer, Float>> findTopNSimilarity(int topN, HashMap<Integer, HashMap<Integer, Float>> data) {
         HashMap<Integer, HashMap<Integer, Float>> result = new HashMap<>();
         for (int authorId : data.keySet()) {
             HashMap<Integer, Float> listAuthorRecommend = new HashMap<>();

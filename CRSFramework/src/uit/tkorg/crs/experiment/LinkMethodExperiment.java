@@ -1,6 +1,6 @@
 package uit.tkorg.crs.experiment;
 
-import uit.tkorg.crs.evaluation.EvaluationMeasure;
+import uit.tkorg.crs.evaluation.EvaluationMetric;
 import uit.tkorg.crs.graph.Graph;
 import uit.tkorg.crs.method.link.AdamicAdar;
 import uit.tkorg.crs.method.link.Cosine;
@@ -113,7 +113,7 @@ public class LinkMethodExperiment {
         _resultPath = ResultPath;
     }
 
-    public void Run() throws Exception {
+    public void runLinkMethodExperiment() throws Exception {
         _graph.LoadTrainingData(_training_PaperId_AuthorIdPath, _training_PaperId_YearPath);
         _graph.LoadTestingData(_testing_PaperId_Year_NFPath, _testing_PaperId_Year_FFPath);
 
@@ -166,93 +166,93 @@ public class LinkMethodExperiment {
 
                 for (int i = 1; i <= topN; i++) {
                     //<editor-fold defaultstate="collapsed" desc="Cosine">
-                    topSimilarity = FindTopNSimilarity(i, cosineResult);
-                    float precisionNear = EvaluationMeasure.Mean_Precision_TopN(topSimilarity, _graph.nearTestingData);
-                    float precisionFar = EvaluationMeasure.Mean_Precision_TopN(topSimilarity, _graph.farTestingData);
+                    topSimilarity = findTopNSimilarity(i, cosineResult);
+                    float precisionNear = EvaluationMetric.Mean_Precision_TopN(topSimilarity, _graph.nearTestingData);
+                    float precisionFar = EvaluationMetric.Mean_Precision_TopN(topSimilarity, _graph.farTestingData);
                     bufferingExperimentResult(true, "Cosine", precisionNear);
                     bufferingExperimentResult(false, "Cosine", precisionFar);
 
-                    float recall = EvaluationMeasure.Mean_Recall_TopN(topSimilarity, _graph.nearTestingData);
+                    float recall = EvaluationMetric.Mean_Recall_TopN(topSimilarity, _graph.nearTestingData);
                     bufferingExperimentResult(true, "Cosine", recall);
-                    recall = EvaluationMeasure.Mean_Recall_TopN(topSimilarity, _graph.farTestingData);
+                    recall = EvaluationMetric.Mean_Recall_TopN(topSimilarity, _graph.farTestingData);
                     bufferingExperimentResult(false, "Cosine", recall);
                     //</editor-fold>
 
                     //<editor-fold defaultstate="collapsed" desc="Jaccard">
-                    topSimilarity = FindTopNSimilarity(i, jaccardResult);
-                    precisionNear = EvaluationMeasure.Mean_Precision_TopN(topSimilarity, _graph.nearTestingData);
-                    precisionFar = EvaluationMeasure.Mean_Precision_TopN(topSimilarity, _graph.farTestingData);
+                    topSimilarity = findTopNSimilarity(i, jaccardResult);
+                    precisionNear = EvaluationMetric.Mean_Precision_TopN(topSimilarity, _graph.nearTestingData);
+                    precisionFar = EvaluationMetric.Mean_Precision_TopN(topSimilarity, _graph.farTestingData);
                     bufferingExperimentResult(true, "Jaccard", precisionNear);
                     bufferingExperimentResult(false, "Jaccard", precisionFar);
 
-                    recall = EvaluationMeasure.Mean_Recall_TopN(topSimilarity, _graph.nearTestingData);
+                    recall = EvaluationMetric.Mean_Recall_TopN(topSimilarity, _graph.nearTestingData);
                     bufferingExperimentResult(true, "Jaccard", recall);
-                    recall = EvaluationMeasure.Mean_Recall_TopN(topSimilarity, _graph.farTestingData);
+                    recall = EvaluationMetric.Mean_Recall_TopN(topSimilarity, _graph.farTestingData);
                     bufferingExperimentResult(false, "Jaccard", recall);
                     //</editor-fold>
 
                     //<editor-fold defaultstate="collapsed" desc="AdamicAdar">
-                    topSimilarity = FindTopNSimilarity(i, adamicAdarResult);
-                    precisionNear = EvaluationMeasure.Mean_Precision_TopN(topSimilarity, _graph.nearTestingData);
-                    precisionFar = EvaluationMeasure.Mean_Precision_TopN(topSimilarity, _graph.farTestingData);
+                    topSimilarity = findTopNSimilarity(i, adamicAdarResult);
+                    precisionNear = EvaluationMetric.Mean_Precision_TopN(topSimilarity, _graph.nearTestingData);
+                    precisionFar = EvaluationMetric.Mean_Precision_TopN(topSimilarity, _graph.farTestingData);
                     bufferingExperimentResult(true, "AdamicAdar", precisionNear);
                     bufferingExperimentResult(false, "AdamicAdar", precisionFar);
 
-                    recall = EvaluationMeasure.Mean_Recall_TopN(topSimilarity, _graph.nearTestingData);
+                    recall = EvaluationMetric.Mean_Recall_TopN(topSimilarity, _graph.nearTestingData);
                     bufferingExperimentResult(true, "AdamicAdar", recall);
-                    recall = EvaluationMeasure.Mean_Recall_TopN(topSimilarity, _graph.farTestingData);
+                    recall = EvaluationMetric.Mean_Recall_TopN(topSimilarity, _graph.farTestingData);
                     bufferingExperimentResult(false, "AdamicAdar", recall);
                     //</editor-fold>
 
                     //<editor-fold defaultstate="collapsed" desc="RSS">
-                    topSimilarity = FindTopNSimilarity(i, rssResult);
-                    precisionNear = EvaluationMeasure.Mean_Precision_TopN(topSimilarity, _graph.nearTestingData);
-                    precisionFar = EvaluationMeasure.Mean_Precision_TopN(topSimilarity, _graph.farTestingData);
+                    topSimilarity = findTopNSimilarity(i, rssResult);
+                    precisionNear = EvaluationMetric.Mean_Precision_TopN(topSimilarity, _graph.nearTestingData);
+                    precisionFar = EvaluationMetric.Mean_Precision_TopN(topSimilarity, _graph.farTestingData);
                     bufferingExperimentResult(true, "RSS", precisionNear);
                     bufferingExperimentResult(false, "RSS", precisionFar);
 
-                    recall = EvaluationMeasure.Mean_Recall_TopN(topSimilarity, _graph.nearTestingData);
+                    recall = EvaluationMetric.Mean_Recall_TopN(topSimilarity, _graph.nearTestingData);
                     bufferingExperimentResult(true, "RSS", recall);
-                    recall = EvaluationMeasure.Mean_Recall_TopN(topSimilarity, _graph.farTestingData);
+                    recall = EvaluationMetric.Mean_Recall_TopN(topSimilarity, _graph.farTestingData);
                     bufferingExperimentResult(false, "RSS", recall);
                     //</editor-fold>
 
                     //<editor-fold defaultstate="collapsed" desc="RSSPlus">
-                    topSimilarity = FindTopNSimilarity(i, rssplusResult);
-                    precisionNear = EvaluationMeasure.Mean_Precision_TopN(topSimilarity, _graph.nearTestingData);
-                    precisionFar = EvaluationMeasure.Mean_Precision_TopN(topSimilarity, _graph.farTestingData);
+                    topSimilarity = findTopNSimilarity(i, rssplusResult);
+                    precisionNear = EvaluationMetric.Mean_Precision_TopN(topSimilarity, _graph.nearTestingData);
+                    precisionFar = EvaluationMetric.Mean_Precision_TopN(topSimilarity, _graph.farTestingData);
                     bufferingExperimentResult(true, "RSSPlus", precisionNear);
                     bufferingExperimentResult(false, "RSSPlus", precisionFar);
 
-                    recall = EvaluationMeasure.Mean_Recall_TopN(topSimilarity, _graph.nearTestingData);
+                    recall = EvaluationMetric.Mean_Recall_TopN(topSimilarity, _graph.nearTestingData);
                     bufferingExperimentResult(true, "RSSPlus", recall);
-                    recall = EvaluationMeasure.Mean_Recall_TopN(topSimilarity, _graph.farTestingData);
+                    recall = EvaluationMetric.Mean_Recall_TopN(topSimilarity, _graph.farTestingData);
                     bufferingExperimentResult(false, "RSSPlus", recall);
                     //</editor-fold>
 
                     //<editor-fold defaultstate="collapsed" desc="MPBVS">
-                    topSimilarity = FindTopNSimilarity(i, mpbvsResult);
-                    precisionNear = EvaluationMeasure.Mean_Precision_TopN(topSimilarity, _graph.nearTestingData);
-                    precisionFar = EvaluationMeasure.Mean_Precision_TopN(topSimilarity, _graph.farTestingData);
+                    topSimilarity = findTopNSimilarity(i, mpbvsResult);
+                    precisionNear = EvaluationMetric.Mean_Precision_TopN(topSimilarity, _graph.nearTestingData);
+                    precisionFar = EvaluationMetric.Mean_Precision_TopN(topSimilarity, _graph.farTestingData);
                     bufferingExperimentResult(true, "MPBVS", precisionNear);
                     bufferingExperimentResult(false, "MPBVS", precisionFar);
 
-                    recall = EvaluationMeasure.Mean_Recall_TopN(topSimilarity, _graph.nearTestingData);
+                    recall = EvaluationMetric.Mean_Recall_TopN(topSimilarity, _graph.nearTestingData);
                     bufferingExperimentResult(true, "MPBVS", recall);
-                    recall = EvaluationMeasure.Mean_Recall_TopN(topSimilarity, _graph.farTestingData);
+                    recall = EvaluationMetric.Mean_Recall_TopN(topSimilarity, _graph.farTestingData);
                     bufferingExperimentResult(false, "MPBVS", recall);
                     //</editor-fold>
 
                     //<editor-fold defaultstate="collapsed" desc="MPBVSPlus">
-                    topSimilarity = FindTopNSimilarity(i, mpbvsplusResult);
-                    precisionNear = EvaluationMeasure.Mean_Precision_TopN(topSimilarity, _graph.nearTestingData);
-                    precisionFar = EvaluationMeasure.Mean_Precision_TopN(topSimilarity, _graph.farTestingData);
+                    topSimilarity = findTopNSimilarity(i, mpbvsplusResult);
+                    precisionNear = EvaluationMetric.Mean_Precision_TopN(topSimilarity, _graph.nearTestingData);
+                    precisionFar = EvaluationMetric.Mean_Precision_TopN(topSimilarity, _graph.farTestingData);
                     bufferingExperimentResult(true, "MPBVSPlus", precisionNear);
                     bufferingExperimentResult(false, "MPBVSPlus", precisionFar);
 
-                    recall = EvaluationMeasure.Mean_Recall_TopN(topSimilarity, _graph.nearTestingData);
+                    recall = EvaluationMetric.Mean_Recall_TopN(topSimilarity, _graph.nearTestingData);
                     bufferingExperimentResult(true, "MPBVSPlus", recall);
-                    recall = EvaluationMeasure.Mean_Recall_TopN(topSimilarity, _graph.farTestingData);
+                    recall = EvaluationMetric.Mean_Recall_TopN(topSimilarity, _graph.farTestingData);
                     bufferingExperimentResult(false, "MPBVSPlus", recall);
                     //</editor-fold>
                 }
@@ -438,7 +438,7 @@ public class LinkMethodExperiment {
         }
     }
 
-    private HashMap<Integer, HashMap<Integer, Float>> FindTopNSimilarity(int topN, HashMap<Integer, HashMap<Integer, Float>> data) {
+    private HashMap<Integer, HashMap<Integer, Float>> findTopNSimilarity(int topN, HashMap<Integer, HashMap<Integer, Float>> data) {
         HashMap<Integer, HashMap<Integer, Float>> result = new HashMap<>();
         for (int authorId : data.keySet()) {
             HashMap<Integer, Float> listAuthorRecommend = new HashMap<>();
