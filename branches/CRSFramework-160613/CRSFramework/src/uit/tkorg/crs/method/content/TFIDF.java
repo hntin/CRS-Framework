@@ -15,10 +15,10 @@ import org.apache.commons.lang.StringUtils;
  */
 public class TFIDF {
 
-    HashMap<Integer, Integer> _AuthorInstanceHM = new HashMap<>();
-    HashMap<Integer, Integer> _InstanceAuthorHM = new HashMap<>();
+    public static HashMap<Integer, Integer> _AuthorInstanceHM = new HashMap<>();
+    public static HashMap<Integer, Integer> _InstanceAuthorHM = new HashMap<>();
+    public static HashMap<Integer, String> _InstancePublicationHM = new HashMap<>();
     private static HashMap<Integer, HashMap<Integer, Float>> _tfidfHM = new HashMap<>();
-    private HashMap<Integer, String> _InstancePublicationHM = new HashMap<>();
     DocumentSimilarityTF similarityUsingTF = new DocumentSimilarityTF();
 
     private void runTFIDF(int inputAuthorID) {
@@ -104,6 +104,11 @@ public class TFIDF {
 
     private int getAuthorIDFromInstanceID(int instanceID) {
         return _InstanceAuthorHM.get(instanceID);
+    }
+    
+    public String getPublicationFromAuthorID(int authorID) {
+        int instanceID = getInstanceFromAuthorID(authorID);
+        return (_InstancePublicationHM.get(instanceID));
     }
 
     private void loadMappingInstanceIDAuthorID(String mapFile) {

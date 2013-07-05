@@ -113,10 +113,9 @@ public class ContentMethodExperiment {
 
         //<editor-fold defaultstate="collapsed" desc="Calculating Similarity based on TFIDF Method, out to File">
         HashMap<Integer, HashMap<Integer, Float>> tfidfResult = null;
+        TFIDF tfidfMethod = new TFIDF();
         if (_isTFIDF) {
-            TFIDF tfidfMethod = new TFIDF();
             tfidfResult = tfidfMethod.process(_LDA_InputFile, _listAuthorRandom);
-
             if (tfidfResult != null) {
                 for (int i = 1; i <= topN; i++) {
                     topSimilarity = findTopNSimilarity(i, tfidfResult);
@@ -141,7 +140,10 @@ public class ContentMethodExperiment {
         truePositiveBuffer.append("TRUE POSITIVE - PAIRS OF LINKED AUTHORS IN THE TESTING NETWORK \n");
         for (int authorID1 : EvaluationMetric.authorHasLinkHM.keySet()) {
             for (int authorID2 : EvaluationMetric.authorHasLinkHM.get(authorID1)) {
-                truePositiveBuffer.append("(" + "," + ")" + "\n");
+                truePositiveBuffer.append("(" + authorID1 + ", " + authorID2 + ")" + "\n");
+                truePositiveBuffer.append(tfidfMethod.getPublicationFromAuthorID(authorID1) + "\n");
+                truePositiveBuffer.append(tfidfMethod.getPublicationFromAuthorID(authorID2) + "\n");
+                truePositiveBuffer.append("\n");
             }
         }
         String pathFile = (new File(_resultPath)).getParent();
