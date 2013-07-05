@@ -19,7 +19,7 @@ public class TFIDF {
     public static HashMap<Integer, Integer> _InstanceAuthorHM = new HashMap<>();
     public static HashMap<Integer, String> _InstancePublicationHM = new HashMap<>();
     private static HashMap<Integer, HashMap<Integer, Float>> _tfidfHM = new HashMap<>();
-    DocumentSimilarityTF similarityUsingTF = new DocumentSimilarityTF();
+    //DocumentSimilarityTF similarityUsingTF = new DocumentSimilarityTF();
 
     private void runTFIDF(int inputAuthorID) {
         try {
@@ -72,7 +72,7 @@ public class TFIDF {
             loadInstancePublication(inputFile);
             String pathFile = (new File(inputFile)).getParent();
             loadMappingInstanceIDAuthorID(pathFile + "/CRS-AuthorIDAndInstance.txt");
-            similarityUsingTF.indexAllDocument(_InstancePublicationHM);
+            //similarityUsingTF.indexAllDocument(_InstancePublicationHM);
 
             Runtime runtime = Runtime.getRuntime();
             int numOfProcessors = runtime.availableProcessors();
