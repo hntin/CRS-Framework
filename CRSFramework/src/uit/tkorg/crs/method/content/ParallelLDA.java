@@ -48,7 +48,7 @@ public class ParallelLDA {
             ParallelTopicModel model = new ParallelTopicModel(numTopics, 1.0, 0.01);
 
             model.addInstances(instances);
-            model.wordsPerTopic = 20;
+            model.wordsPerTopic = 100;
 
             // Use two parallel samplers, which each look at one half the corpus and combine
             //  statistics after every iteration.
