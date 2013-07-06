@@ -1,5 +1,6 @@
 package uit.tkorg.crs.method.content;
 
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,7 +20,8 @@ public class TFIDF {
     public static HashMap<Integer, Integer> _InstanceAuthorHM = new HashMap<>();
     public static HashMap<Integer, String> _InstancePublicationHM = new HashMap<>();
     private static HashMap<Integer, HashMap<Integer, Float>> _tfidfHM = new HashMap<>();
-    //DocumentSimilarityTF similarityUsingTF = new DocumentSimilarityTF();
+    DocumentSimilarityTFIDF similarityUsingTFIDF; 
+    private Object lock = new Object();
 
     private void runTFIDF(int inputAuthorID) {
         try {
@@ -159,14 +161,64 @@ public class TFIDF {
             ex.printStackTrace();
         }
     }
-
-//    public static void main(String[] args) {
-//        ArrayList <Integer> ListAuthor = new ArrayList<Integer>();
-//        ListAuthor.add(1);
-//        ListAuthor.add(10);
-//        
-//        TFIDF test = new TFIDF();
-//        test.process("C:\\Data\\AuthorPaper.txt", ListAuthor);
-//        
+    /**
+     * tiendv Input for run real TFIDF
+     */
+//        public HashMap<Integer, HashMap<Integer, Float>> process(String inputFile, ArrayList<Integer> listAuthorID) {
+//        System.out.println("START PROCESSING TFIDF");
+//        try {
+//            loadInstancePublication(inputFile);
+//            String pathFile = (new File(inputFile)).getParent();
+//            loadMappingInstanceIDAuthorID(pathFile + "/CRS-AuthorIDAndInstance.txt");
+//            similarityUsingTFIDF = new DocumentSimilarityTFIDF();
+//            similarityUsingTFIDF.indexAllDocument(_InstancePublicationHM);
+//            
+//            Runtime runtime = Runtime.getRuntime();
+//            int numOfProcessors = runtime.availableProcessors();
+//            ExecutorService executor = Executors.newFixedThreadPool(numOfProcessors - 2);
+//            for (final int authorId : listAuthorID) {
+//                executor.submit(new Runnable() {
+//
+//                    @Override
+//                    public void run() {
+//                        Run(authorId);
+//                    }
+//                });
+//            }
+//            executor.shutdown();
+//            while (!executor.isTerminated()) {
+//            }
+//
+//        } catch (Exception ex) {
+//            ex.printStackTrace();
+//        }
+//
+//        System.out.println("FINISH PROCESSING TFIDF");
+//        return _tfidfHM;
+//    }
+    
+    /**
+     * Run of IFIDF 
+     */
+//        private void Run(int inputAuthorID) {
+//        try {
+//            int currentAuthorID;
+//            System.out.println("CURRENT INSTANCE IS:" + inputAuthorID);
+//            int instanceID = getInstanceFromAuthorID(inputAuthorID);
+//            HashMap<Integer, Float> similarityHM = new HashMap<Integer, Float>();
+//            synchronized (lock) {
+//                for (int otherInstanceID = 0; otherInstanceID < _InstancePublicationHM.size(); otherInstanceID++) {
+//                    if (instanceID != otherInstanceID) {
+//                        float simValue = (float) similarityUsingTFIDF.getCosineSimilarityWhenIndexAllDocument(instanceID, otherInstanceID);
+//                        currentAuthorID = getAuthorIDFromInstanceID(otherInstanceID);
+//                        System.out.println("AuthorID: " + instanceID + " AuthorID : " + otherInstanceID + "Value:" + simValue);
+//                        similarityHM.put(currentAuthorID, simValue);
+//                    }
+//                }
+//            }
+//            _tfidfHM.put(inputAuthorID, similarityHM);
+//        } catch (Exception ex) {
+//            ex.printStackTrace();
+//        }
 //    }
 }
