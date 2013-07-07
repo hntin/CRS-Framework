@@ -90,10 +90,9 @@ public class ContentMethodExperiment {
 
         //<editor-fold defaultstate="collapsed" desc="Run for Topic Model - KL Divergence, out to File">
         HashMap<Integer, HashMap<Integer, Float>> klDivergenceResult = null;
+        ParallelLDA ldaMethod = new ParallelLDA();
         if (_isKLDivergence) {
-            ParallelLDA ldaParallelTool = new ParallelLDA();
-            klDivergenceResult = ldaParallelTool.process(_LDA_InputFile, _listAuthorRandom);
-
+            klDivergenceResult = ldaMethod.process(_LDA_InputFile, _listAuthorRandom);
             if (klDivergenceResult != null) {
                 for (int i = 1; i <= topN; i++) {
                     topSimilarity = findTopNSimilarity(i, klDivergenceResult);
@@ -141,15 +140,21 @@ public class ContentMethodExperiment {
         for (int authorID1 : EvaluationMetric.authorHasLinkHM.keySet()) {
             for (int authorID2 : EvaluationMetric.authorHasLinkHM.get(authorID1)) {
                 truePositiveBuffer.append("(" + authorID1 + ", " + authorID2 + ")" + "\n");
-                truePositiveBuffer.append(tfidfMethod.getPublicationFromAuthorID(authorID1) + "\n");
-                truePositiveBuffer.append(tfidfMethod.getPublicationFromAuthorID(authorID2) + "\n");
+                if (_isKLDivergence) {
+                    truePositiveBuffer.append(ldaMethod.getPublicationFromAuthorID(authorID1) + "\n");
+                    truePositiveBuffer.append(ldaMethod.getPublicationFromAuthorID(authorID2) + "\n");
+                }
+                if (_isTFIDF) {
+                    truePositiveBuffer.append(tfidfMethod.getPublicationFromAuthorID(authorID1) + "\n");
+                    truePositiveBuffer.append(tfidfMethod.getPublicationFromAuthorID(authorID2) + "\n");
+                }
                 truePositiveBuffer.append("\n");
             }
         }
         String pathFile = (new File(_resultPath)).getParent();
         TextFileProcessor.writeTextFile(pathFile + "\\TruePostiveCase.txt", truePositiveBuffer.toString());
         // </editor-fold>
-        
+
     }
 
     private HashMap<Integer, HashMap<Integer, Float>> findTopNSimilarity(int topN, HashMap<Integer, HashMap<Integer, Float>> data) {

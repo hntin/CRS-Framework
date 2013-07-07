@@ -19,13 +19,16 @@ import uit.tkorg.utility.TextFileProcessor;
 public class ParallelLDA {
     private static StringBuffer buffInputParallelLDA = new StringBuffer();
     private static StringBuffer buffAuthorIDAndDocMapping = new StringBuffer();
-    HashMap<Integer, Integer> _AuthorInstanceHM = new HashMap<>();
-    HashMap<Integer, Integer> _InstanceAuthorHM = new HashMap<>();
+    public static HashMap<Integer, Integer> _AuthorInstanceHM = new HashMap<>();
+    public static HashMap<Integer, Integer> _InstanceAuthorHM = new HashMap<>();
+    public static HashMap<Integer, String> _InstancePublicationHM = new HashMap<>();
     private static HashMap<Integer, HashMap<Integer, Float>> _KLDivergenceHM;
 
     public HashMap<Integer, HashMap<Integer, Float>> process(String inputFile, ArrayList<Integer> listAuthorID) {
         System.out.println("START TRAINING LDA");
         try {
+            loadInstancePublication(inputFile);
+            
             // Begin by importing documents from text to feature sequences
             ArrayList<Pipe> pipeList = new ArrayList<Pipe>();
 
@@ -135,6 +138,11 @@ public class ParallelLDA {
         return _InstanceAuthorHM.get(instanceID);
     }
     
+    public String getPublicationFromAuthorID(int authorID) {
+        int instanceID = getInstanceFromAuthorID(authorID);
+        return (_InstancePublicationHM.get(instanceID));
+    }
+    
     private void loadMappingInstanceIDAuthorID(String mapFile) {
         try {
             FileInputStream fis = new FileInputStream(mapFile);
@@ -153,6 +161,31 @@ public class ParallelLDA {
                 int instanceID = Integer.parseInt(tokens[1]);
                 _AuthorInstanceHM.put(authorID, instanceID);
                 _InstanceAuthorHM.put(instanceID, authorID);
+            }
+            bufferReader.close();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+    
+    
+        private void loadInstancePublication(String inputFile) {
+        try {
+            FileInputStream fis = new FileInputStream(inputFile);
+            Reader reader = new InputStreamReader(fis, "UTF8");
+            BufferedReader bufferReader = new BufferedReader(reader);
+            String line = null;
+            String[] tokens;
+            int instanceID = 0;
+            while ((line = bufferReader.readLine()) != null) {
+//                tokens = line.split("X\t");
+//                if (tokens.length != 2) {
+//                    continue;
+//                }
+//                String publications = tokens[1];
+                //line = StringUtils.substringAfter(line,"X");
+                _InstancePublicationHM.put(instanceID, line);
+                instanceID++;
             }
             bufferReader.close();
         } catch (Exception ex) {
