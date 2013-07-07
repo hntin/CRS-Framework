@@ -23,7 +23,7 @@ public class TFIDF {
     DocumentSimilarityTFIDF similarityUsingTFIDF; 
     private Object lock = new Object();
 
-    private void runTFIDF(int inputAuthorID) {
+    private void runTF(int inputAuthorID) {
         try {
             int currentAuthorID;
             System.out.println("CURRENT INSTANCE IS:" + inputAuthorID);
@@ -83,7 +83,7 @@ public class TFIDF {
                 executor.submit(new Runnable() {
                     @Override
                     public void run() {
-                        runTFIDF(authorId);
+                        runTF(authorId);
                     }
                 });
             }
