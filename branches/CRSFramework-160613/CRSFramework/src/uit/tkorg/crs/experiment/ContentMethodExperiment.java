@@ -64,19 +64,14 @@ public class ContentMethodExperiment {
     }
 
     public void runContentMethodExperiment() throws Exception {
+        // Loading traning and testing data
         System.out.println("START LOADING TRAINING DATA");
         _graph.LoadTrainingData(_training_PaperId_AuthorIdPath, _training_PaperId_YearPath);
         _graph.LoadTestingData(_testing_PaperId_Year_NFPath, _testing_PaperId_Year_FFPath);
-        System.out.println("FINISH LOADING TRAINING DATA");
 
+        // Building Graphs
         _graph.BuildingRSSGraph();
         selectAuthorsForExperiment();
-
-        System.out.println("FNISH BUILD GRAPH AND LOAD AUTHORLIST");
-        for (int i = 0; i < _listAuthorRandom.size(); i++) {
-            System.out.println("AuthorList:" + _listAuthorRandom.get(i));
-        }
-
 
         DecimalFormat df = new DecimalFormat("0.#####");
         _nfContentPredictionBuffer.append("Near future \n");

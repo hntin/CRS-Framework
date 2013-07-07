@@ -20,6 +20,7 @@ import uit.tkorg.crs.dbconnection.ConnectionService;
 import uit.tkorg.crs.artnetminer.ArtnetMinerFrame;
 import uit.tkorg.crs.dblp.DBLPFrame;
 import uit.tkorg.crs.experiment.ContentMethodExperiment;
+import uit.tkorg.crs.experiment.HybridMethodExperiment;
 import uit.tkorg.crs.experiment.LinkMethodExperiment;
 import uit.tkorg.crs.method.content.JGibbLDA;
 import uit.tkorg.crs.method.content.ParallelLDA;
@@ -54,6 +55,7 @@ public class CRSMainFrame extends javax.swing.JFrame {
 
         jDesktopPane1 = new javax.swing.JDesktopPane();
         groupContentMethod = new javax.swing.ButtonGroup();
+        groupHybridMethod = new javax.swing.ButtonGroup();
         jTabbedPaneCRS = new javax.swing.JTabbedPane();
         jPanelSetting = new javax.swing.JPanel();
         jLabelDBSetting = new javax.swing.JLabel();
@@ -168,6 +170,36 @@ public class CRSMainFrame extends javax.swing.JFrame {
         jButtonBrowse11 = new javax.swing.JButton();
         jButtonRunLinkMethod = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
+        jPanel9 = new javax.swing.JPanel();
+        jLabel22 = new javax.swing.JLabel();
+        jPanelInput1 = new javax.swing.JPanel();
+        jPanelTestingNet1 = new javax.swing.JPanel();
+        jLabel32 = new javax.swing.JLabel();
+        jLabel33 = new javax.swing.JLabel();
+        txtNFAuthorPaperFileHybrid = new javax.swing.JTextField();
+        txtFFAuthorPaperFileHybrid = new javax.swing.JTextField();
+        jButtonBrowse16 = new javax.swing.JButton();
+        jButtonBrowse17 = new javax.swing.JButton();
+        jPanelTrainingNet1 = new javax.swing.JPanel();
+        jLabel34 = new javax.swing.JLabel();
+        jLabel35 = new javax.swing.JLabel();
+        txtTrainingAuthorPaperFileHybrid = new javax.swing.JTextField();
+        txtTrainingPaperYearFileHybrid = new javax.swing.JTextField();
+        jButtonBrowse24 = new javax.swing.JButton();
+        jButtonBrowse25 = new javax.swing.JButton();
+        jPanelMethod5 = new javax.swing.JPanel();
+        jRadioButtonLinearHybrid = new javax.swing.JRadioButton();
+        jRadioButtonOtherCombination = new javax.swing.JRadioButton();
+        jLabel36 = new javax.swing.JLabel();
+        txtInputDataFileHybrid = new javax.swing.JTextField();
+        jButton7 = new javax.swing.JButton();
+        jLabel37 = new javax.swing.JLabel();
+        txtExistingAuthorFileHybrid = new javax.swing.JTextField();
+        jButtonBrowse26 = new javax.swing.JButton();
+        jPanel14 = new javax.swing.JPanel();
+        txtResultPathHybrid = new javax.swing.JTextField();
+        jButtonBrowse27 = new javax.swing.JButton();
+        jButtonRunHybridMethod = new javax.swing.JButton();
         mainMenuBar = new javax.swing.JMenuBar();
         jMenuDBLP = new javax.swing.JMenu();
         jMenuItemDBLP = new javax.swing.JMenuItem();
@@ -259,7 +291,7 @@ public class CRSMainFrame extends javax.swing.JFrame {
                             .addComponent(jTextFieldDBPassword)
                             .addComponent(jTextFieldDBMSPort)
                             .addComponent(jLabelDBSetting, javax.swing.GroupLayout.DEFAULT_SIZE, 285, Short.MAX_VALUE))))
-                .addContainerGap(479, Short.MAX_VALUE))
+                .addContainerGap(490, Short.MAX_VALUE))
         );
         jPanelSettingLayout.setVerticalGroup(
             jPanelSettingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -512,7 +544,7 @@ public class CRSMainFrame extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel_LDALib)
                     .addComponent(jComboBoxLDALib, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, 23, Short.MAX_VALUE)
                 .addComponent(jButtonFormatInputLDA))
         );
 
@@ -534,7 +566,7 @@ public class CRSMainFrame extends javax.swing.JFrame {
                     .addGroup(jPanelPreProcessingLayout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addContainerGap(185, Short.MAX_VALUE))
+                .addContainerGap(197, Short.MAX_VALUE))
         );
         jPanelPreProcessingLayout.setVerticalGroup(
             jPanelPreProcessingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -545,8 +577,8 @@ public class CRSMainFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanelRemoveStopwordStemming, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(7, Short.MAX_VALUE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(39, Short.MAX_VALUE))
         );
 
         jTabbedPaneCRS.addTab("PreProcessing", jPanelPreProcessing);
@@ -662,15 +694,17 @@ public class CRSMainFrame extends javax.swing.JFrame {
             jPanelTrainingNetLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelTrainingNetLayout.createSequentialGroup()
                 .addGroup(jPanelTrainingNetLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanelTrainingNetLayout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelTrainingNetLayout.createSequentialGroup()
                         .addGap(2, 2, 2)
-                        .addComponent(txtTrainingAuthorPaperFile, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE))
+                        .addComponent(txtTrainingAuthorPaperFile, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jButtonBrowse14))
-                .addGroup(jPanelTrainingNetLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanelTrainingNetLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanelTrainingNetLayout.createSequentialGroup()
                         .addGap(2, 2, 2)
-                        .addComponent(txtTrainingPaperYearFile, javax.swing.GroupLayout.DEFAULT_SIZE, 31, Short.MAX_VALUE))
-                    .addComponent(jButtonBrowse15)))
+                        .addComponent(txtTrainingPaperYearFile))
+                    .addComponent(jButtonBrowse15))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelTrainingNetLayout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -823,7 +857,7 @@ public class CRSMainFrame extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelInputLayout.createSequentialGroup()
                 .addComponent(jPanelMethod, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanelTrainingNet, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanelTrainingNet, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanelTestingNet, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -886,16 +920,14 @@ public class CRSMainFrame extends javax.swing.JFrame {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 209, Short.MAX_VALUE)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(txtTrainingAuthorPaperPath)
-                        .addGap(10, 10, 10)
-                        .addComponent(jButtonBrowse6))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(txtTrainingPaperYearPath, javax.swing.GroupLayout.PREFERRED_SIZE, 475, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButtonBrowse7))))
+                .addGap(15, 15, 15)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(txtTrainingAuthorPaperPath)
+                    .addComponent(txtTrainingPaperYearPath))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButtonBrowse7, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jButtonBrowse6, javax.swing.GroupLayout.Alignment.TRAILING)))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -910,7 +942,7 @@ public class CRSMainFrame extends javax.swing.JFrame {
                         .addComponent(jLabel7)
                         .addComponent(txtTrainingPaperYearPath, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jButtonBrowse7))
-                .addContainerGap(8, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Testing Network", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 10))); // NOI18N
@@ -941,9 +973,9 @@ public class CRSMainFrame extends javax.swing.JFrame {
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel8)
                     .addComponent(jLabel9))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 231, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(txtNFAuthorPaperPath, javax.swing.GroupLayout.DEFAULT_SIZE, 476, Short.MAX_VALUE)
+                    .addComponent(txtNFAuthorPaperPath, javax.swing.GroupLayout.DEFAULT_SIZE, 687, Short.MAX_VALUE)
                     .addComponent(txtFFAuthorPaperPath))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1157,7 +1189,7 @@ public class CRSMainFrame extends javax.swing.JFrame {
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel14)
                             .addComponent(jButtonRunLinkMethod, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                        .addGap(0, 182, Short.MAX_VALUE))))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1201,7 +1233,7 @@ public class CRSMainFrame extends javax.swing.JFrame {
         );
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel5.setText("CO-AUTHOR PREDICTION");
+        jLabel5.setText("LINK BASED METHODS FOR CO-AUTHOR PREDICTION");
 
         javax.swing.GroupLayout jPanelLinkMethodLayout = new javax.swing.GroupLayout(jPanelLinkMethod);
         jPanelLinkMethod.setLayout(jPanelLinkMethodLayout);
@@ -1211,8 +1243,8 @@ public class CRSMainFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(jPanelLinkMethodLayout.createSequentialGroup()
-                .addGap(385, 385, 385)
-                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(307, 307, 307)
+                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 404, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanelLinkMethodLayout.setVerticalGroup(
@@ -1222,10 +1254,320 @@ public class CRSMainFrame extends javax.swing.JFrame {
                 .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(29, Short.MAX_VALUE))
         );
 
         jTabbedPaneCRS.addTab("Link Based Method", jPanelLinkMethod);
+
+        jLabel22.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
+        jLabel22.setText("HYBRID METHODS FOR CO-AUTHOR LINK PREDICTION");
+
+        jPanelTestingNet1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Testing Network", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 10))); // NOI18N
+
+        jLabel32.setText("AuthorID_PaperID (NF):");
+
+        jLabel33.setText("AuthorID_PaperID (FF):");
+
+        jButtonBrowse16.setText("Browse");
+        jButtonBrowse16.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonBrowse16ActionPerformed(evt);
+            }
+        });
+
+        jButtonBrowse17.setText("Browse");
+        jButtonBrowse17.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonBrowse17ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanelTestingNet1Layout = new javax.swing.GroupLayout(jPanelTestingNet1);
+        jPanelTestingNet1.setLayout(jPanelTestingNet1Layout);
+        jPanelTestingNet1Layout.setHorizontalGroup(
+            jPanelTestingNet1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelTestingNet1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanelTestingNet1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel32)
+                    .addComponent(jLabel33))
+                .addGap(69, 69, 69)
+                .addGroup(jPanelTestingNet1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtNFAuthorPaperFileHybrid)
+                    .addComponent(txtFFAuthorPaperFileHybrid))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanelTestingNet1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButtonBrowse16, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jButtonBrowse17, javax.swing.GroupLayout.Alignment.TRAILING)))
+        );
+        jPanelTestingNet1Layout.setVerticalGroup(
+            jPanelTestingNet1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelTestingNet1Layout.createSequentialGroup()
+                .addGroup(jPanelTestingNet1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanelTestingNet1Layout.createSequentialGroup()
+                        .addGap(2, 2, 2)
+                        .addComponent(txtNFAuthorPaperFileHybrid))
+                    .addGroup(jPanelTestingNet1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel32)
+                        .addComponent(jButtonBrowse16)))
+                .addGroup(jPanelTestingNet1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanelTestingNet1Layout.createSequentialGroup()
+                        .addGap(2, 2, 2)
+                        .addComponent(txtFFAuthorPaperFileHybrid))
+                    .addGroup(jPanelTestingNet1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel33)
+                        .addComponent(jButtonBrowse17)))
+                .addContainerGap())
+        );
+
+        jPanelTrainingNet1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Training Network", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 10))); // NOI18N
+
+        jLabel34.setText("AuthorID_PaperID:");
+
+        jLabel35.setText("PaperID_Year:");
+
+        txtTrainingAuthorPaperFileHybrid.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtTrainingAuthorPaperFileHybridActionPerformed(evt);
+            }
+        });
+
+        jButtonBrowse24.setText("Browse");
+        jButtonBrowse24.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonBrowse24ActionPerformed(evt);
+            }
+        });
+
+        jButtonBrowse25.setText("Browse");
+        jButtonBrowse25.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonBrowse25ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanelTrainingNet1Layout = new javax.swing.GroupLayout(jPanelTrainingNet1);
+        jPanelTrainingNet1.setLayout(jPanelTrainingNet1Layout);
+        jPanelTrainingNet1Layout.setHorizontalGroup(
+            jPanelTrainingNet1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelTrainingNet1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanelTrainingNet1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel34)
+                    .addComponent(jLabel35, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(84, 84, 84)
+                .addGroup(jPanelTrainingNet1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanelTrainingNet1Layout.createSequentialGroup()
+                        .addComponent(txtTrainingPaperYearFileHybrid, javax.swing.GroupLayout.DEFAULT_SIZE, 622, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButtonBrowse25))
+                    .addGroup(jPanelTrainingNet1Layout.createSequentialGroup()
+                        .addComponent(txtTrainingAuthorPaperFileHybrid)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButtonBrowse24))))
+        );
+        jPanelTrainingNet1Layout.setVerticalGroup(
+            jPanelTrainingNet1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelTrainingNet1Layout.createSequentialGroup()
+                .addGroup(jPanelTrainingNet1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelTrainingNet1Layout.createSequentialGroup()
+                        .addGap(2, 2, 2)
+                        .addComponent(txtTrainingAuthorPaperFileHybrid, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jButtonBrowse24))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanelTrainingNet1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jPanelTrainingNet1Layout.createSequentialGroup()
+                        .addGap(2, 2, 2)
+                        .addComponent(txtTrainingPaperYearFileHybrid))
+                    .addComponent(jButtonBrowse25))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelTrainingNet1Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jLabel34, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel35)
+                .addGap(15, 15, 15))
+        );
+
+        jPanelMethod5.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Hybrid", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 10))); // NOI18N
+
+        groupHybridMethod.add(jRadioButtonLinearHybrid);
+        jRadioButtonLinearHybrid.setSelected(true);
+        jRadioButtonLinearHybrid.setText("Linear Combination (k*RSS + (1-k)*TFIDF)");
+
+        groupContentMethod.add(jRadioButtonOtherCombination);
+        jRadioButtonOtherCombination.setText("KL Divergence");
+        jRadioButtonOtherCombination.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioButtonOtherCombinationActionPerformed(evt);
+            }
+        });
+
+        jLabel36.setText("Data Input File:");
+
+        jButton7.setText("Browse");
+        jButton7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton7ActionPerformed(evt);
+            }
+        });
+
+        jLabel37.setText("Existing Author List:");
+
+        jButtonBrowse26.setText("Browse");
+        jButtonBrowse26.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonBrowse26ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanelMethod5Layout = new javax.swing.GroupLayout(jPanelMethod5);
+        jPanelMethod5.setLayout(jPanelMethod5Layout);
+        jPanelMethod5Layout.setHorizontalGroup(
+            jPanelMethod5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelMethod5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanelMethod5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanelMethod5Layout.createSequentialGroup()
+                        .addComponent(jLabel37)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelMethod5Layout.createSequentialGroup()
+                        .addComponent(jLabel36, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 68, Short.MAX_VALUE)
+                        .addGroup(jPanelMethod5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(jPanelMethod5Layout.createSequentialGroup()
+                                .addComponent(jRadioButtonLinearHybrid, javax.swing.GroupLayout.PREFERRED_SIZE, 308, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jRadioButtonOtherCombination, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanelMethod5Layout.createSequentialGroup()
+                                .addComponent(txtExistingAuthorFileHybrid, javax.swing.GroupLayout.PREFERRED_SIZE, 620, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButtonBrowse26))
+                            .addGroup(jPanelMethod5Layout.createSequentialGroup()
+                                .addComponent(txtInputDataFileHybrid)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButton7)))
+                        .addContainerGap())))
+        );
+        jPanelMethod5Layout.setVerticalGroup(
+            jPanelMethod5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelMethod5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanelMethod5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanelMethod5Layout.createSequentialGroup()
+                        .addGroup(jPanelMethod5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jRadioButtonLinearHybrid)
+                            .addComponent(jRadioButtonOtherCombination))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanelMethod5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButton7)
+                            .addComponent(txtInputDataFileHybrid, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelMethod5Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jLabel36, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanelMethod5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel37, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanelMethod5Layout.createSequentialGroup()
+                        .addGroup(jPanelMethod5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButtonBrowse26)
+                            .addComponent(txtExistingAuthorFileHybrid, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addGap(5, 5, 5))
+        );
+
+        jPanel14.setBorder(javax.swing.BorderFactory.createTitledBorder("Output"));
+
+        jButtonBrowse27.setText("Browse");
+        jButtonBrowse27.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonBrowse27ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel14Layout = new javax.swing.GroupLayout(jPanel14);
+        jPanel14.setLayout(jPanel14Layout);
+        jPanel14Layout.setHorizontalGroup(
+            jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel14Layout.createSequentialGroup()
+                .addGap(12, 12, 12)
+                .addComponent(txtResultPathHybrid)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButtonBrowse27))
+        );
+        jPanel14Layout.setVerticalGroup(
+            jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel14Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButtonBrowse27, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(txtResultPathHybrid))
+                .addGap(16, 16, 16))
+        );
+
+        jButtonRunHybridMethod.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
+        jButtonRunHybridMethod.setText("Run Experiment");
+        jButtonRunHybridMethod.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonRunHybridMethodActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanelInput1Layout = new javax.swing.GroupLayout(jPanelInput1);
+        jPanelInput1.setLayout(jPanelInput1Layout);
+        jPanelInput1Layout.setHorizontalGroup(
+            jPanelInput1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelInput1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanelInput1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanelTestingNet1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanelTrainingNet1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanelMethod5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel14, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelInput1Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jButtonRunHybridMethod, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
+        );
+        jPanelInput1Layout.setVerticalGroup(
+            jPanelInput1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelInput1Layout.createSequentialGroup()
+                .addComponent(jPanelMethod5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jPanelTrainingNet1, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jPanelTestingNet1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jPanel14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButtonRunHybridMethod, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+
+        javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
+        jPanel9.setLayout(jPanel9Layout);
+        jPanel9Layout.setHorizontalGroup(
+            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel9Layout.createSequentialGroup()
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanelInput1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel9Layout.createSequentialGroup()
+                        .addGap(263, 263, 263)
+                        .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 466, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        jPanel9Layout.setVerticalGroup(
+            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel9Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jPanelInput1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(31, Short.MAX_VALUE))
+        );
+
+        jTabbedPaneCRS.addTab("Hybrid Method", jPanel9);
 
         mainMenuBar.setName("mainMenubar"); // NOI18N
 
@@ -1307,7 +1649,7 @@ public class CRSMainFrame extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPaneCRS, javax.swing.GroupLayout.DEFAULT_SIZE, 593, Short.MAX_VALUE)
+            .addComponent(jTabbedPaneCRS)
         );
 
         pack();
@@ -1626,7 +1968,6 @@ public class CRSMainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonBrowse15ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
         final JFileChooser fc = new JFileChooser();
         fc.setFileFilter(new FileFilter() {
             @Override
@@ -1893,7 +2234,7 @@ public class CRSMainFrame extends javax.swing.JFrame {
                 txtNFAuthorPaperFile.getText(), txtFFAuthorPaperFile.getText(),
                 txtExistingAuthorFile.getText(), // empty or null if use radom author
                 txtResultPath1.getText(), jRadioButtonKLDivergence.isSelected(), jRadioButtonTFIDF.isSelected());
-        
+
         final DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         Date date = new Date();
         System.out.println("Started Time : " + dateFormat.format(date) + "\n");
@@ -1914,6 +2255,198 @@ public class CRSMainFrame extends javax.swing.JFrame {
         });
         executor.shutdown();
     }//GEN-LAST:event_jButtonRunContentMethodActionPerformed
+
+    private void jButtonBrowse16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBrowse16ActionPerformed
+        final JFileChooser fc = new JFileChooser();
+        fc.setFileFilter(new FileFilter() {
+            @Override
+            public boolean accept(File file) {
+                String extension = file.getName().toLowerCase();
+                return extension.endsWith(".txt") || extension.endsWith("");
+            }
+
+            @Override
+            public String getDescription() {
+                return "Text file formatted by PubGuru Recommend";
+            }
+        });
+
+        int returnValue = fc.showOpenDialog(this);
+        if (returnValue == JFileChooser.APPROVE_OPTION) {
+            File file = fc.getSelectedFile();
+            txtNFAuthorPaperFileHybrid.setText(file.getPath());
+        }
+    }//GEN-LAST:event_jButtonBrowse16ActionPerformed
+
+    private void jButtonBrowse17ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBrowse17ActionPerformed
+        final JFileChooser fc = new JFileChooser();
+        fc.setFileFilter(new FileFilter() {
+            @Override
+            public boolean accept(File file) {
+                String extension = file.getName().toLowerCase();
+                return extension.endsWith(".txt") || extension.endsWith("");
+            }
+
+            @Override
+            public String getDescription() {
+                return "Text file formatted by PubGuru Recommend";
+            }
+        });
+
+        int returnValue = fc.showOpenDialog(this);
+        if (returnValue == JFileChooser.APPROVE_OPTION) {
+            File file = fc.getSelectedFile();
+            txtFFAuthorPaperFileHybrid.setText(file.getPath());
+        }
+    }//GEN-LAST:event_jButtonBrowse17ActionPerformed
+
+    private void txtTrainingAuthorPaperFileHybridActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTrainingAuthorPaperFileHybridActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtTrainingAuthorPaperFileHybridActionPerformed
+
+    private void jButtonBrowse24ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBrowse24ActionPerformed
+        final JFileChooser fc = new JFileChooser();
+        fc.setFileFilter(new FileFilter() {
+            @Override
+            public boolean accept(File file) {
+                String extension = file.getName().toLowerCase();
+                return extension.endsWith(".txt") || extension.endsWith("");
+            }
+
+            @Override
+            public String getDescription() {
+                return "Text file formatted by PubGuru Recommend";
+            }
+        });
+
+        int returnValue = fc.showOpenDialog(this);
+        if (returnValue == JFileChooser.APPROVE_OPTION) {
+            File file = fc.getSelectedFile();
+            txtTrainingAuthorPaperFileHybrid.setText(file.getPath());
+        }
+    }//GEN-LAST:event_jButtonBrowse24ActionPerformed
+
+    private void jButtonBrowse25ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBrowse25ActionPerformed
+        final JFileChooser fc = new JFileChooser();
+        fc.setFileFilter(new FileFilter() {
+            @Override
+            public boolean accept(File file) {
+                String extension = file.getName().toLowerCase();
+                return extension.endsWith(".txt") || extension.endsWith("");
+            }
+
+            @Override
+            public String getDescription() {
+                return "Text file formatted by PubGuru Recommend";
+            }
+        });
+
+        int returnValue = fc.showOpenDialog(this);
+        if (returnValue == JFileChooser.APPROVE_OPTION) {
+            File file = fc.getSelectedFile();
+            txtTrainingPaperYearFileHybrid.setText(file.getPath());
+        }
+    }//GEN-LAST:event_jButtonBrowse25ActionPerformed
+
+    private void jRadioButtonOtherCombinationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButtonOtherCombinationActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jRadioButtonOtherCombinationActionPerformed
+
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+        final JFileChooser fc = new JFileChooser();
+        fc.setFileFilter(new FileFilter() {
+            @Override
+            public boolean accept(File file) {
+                String extension = file.getName().toLowerCase();
+                return extension.endsWith(".txt") || extension.endsWith("");
+            }
+
+            @Override
+            public String getDescription() {
+                return "Text file formatted by PubGuru Recommend";
+            }
+        });
+
+        int returnValue = fc.showOpenDialog(this);
+        if (returnValue == JFileChooser.APPROVE_OPTION) {
+            File file = fc.getSelectedFile();
+            txtInputDataFileHybrid.setText(file.getPath());
+        }
+    }//GEN-LAST:event_jButton7ActionPerformed
+
+    private void jButtonBrowse26ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBrowse26ActionPerformed
+        final JFileChooser fc = new JFileChooser();
+        fc.setFileFilter(new FileFilter() {
+            @Override
+            public boolean accept(File file) {
+                String extension = file.getName().toLowerCase();
+                return extension.endsWith(".txt") || extension.endsWith("");
+            }
+
+            @Override
+            public String getDescription() {
+                return "Text file formatted by PubGuru Recommend";
+            }
+        });
+
+        int returnValue = fc.showOpenDialog(this);
+        if (returnValue == JFileChooser.APPROVE_OPTION) {
+            File file = fc.getSelectedFile();
+            txtExistingAuthorFileHybrid.setText(file.getPath());
+        }
+    }//GEN-LAST:event_jButtonBrowse26ActionPerformed
+
+    private void jButtonBrowse27ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBrowse27ActionPerformed
+        final JFileChooser fc = new JFileChooser();
+        fc.setFileFilter(new FileFilter() {
+            @Override
+            public boolean accept(File file) {
+                String extension = file.getName().toLowerCase();
+                return extension.endsWith(".txt") || extension.endsWith("");
+            }
+
+            @Override
+            public String getDescription() {
+                return "Text file formatted by PubGuru Recommend";
+            }
+        });
+
+        int returnValue = fc.showOpenDialog(this);
+        if (returnValue == JFileChooser.APPROVE_OPTION) {
+            File file = fc.getSelectedFile();
+            txtResultPathHybrid.setText(file.getPath());
+        }
+    }//GEN-LAST:event_jButtonBrowse27ActionPerformed
+
+    private void jButtonRunHybridMethodActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRunHybridMethodActionPerformed
+        final HybridMethodExperiment experiment = new HybridMethodExperiment(
+                txtInputDataFileHybrid.getText(),
+                txtTrainingAuthorPaperFileHybrid.getText(), 
+                txtTrainingPaperYearFileHybrid.getText(),
+                txtNFAuthorPaperFileHybrid.getText(), txtFFAuthorPaperFileHybrid.getText(),
+                txtExistingAuthorFileHybrid.getText(),
+                txtResultPathHybrid.getText(), jRadioButtonLinearHybrid.isSelected());
+
+        final DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        Date date = new Date();
+        System.out.println("Started Time : " + dateFormat.format(date) + "\n");
+        System.out.println("START PROCESSING HYBRID METHOD ..." + "\n");
+        ExecutorService executor = Executors.newFixedThreadPool(1);
+        executor.submit(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    experiment.runHybridMethodExperiment();
+                    Date date = new Date();
+                    System.out.println("Finished time : " + dateFormat.format(date) + "\n");
+                    System.out.println("DONE !!!");
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+        });
+        executor.shutdown();
+    }//GEN-LAST:event_jButtonRunHybridMethodActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -1948,7 +2481,9 @@ public class CRSMainFrame extends javax.swing.JFrame {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup groupContentMethod;
+    private javax.swing.ButtonGroup groupHybridMethod;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton7;
     private javax.swing.JButton jButtonApplyDBSetting;
     private javax.swing.JButton jButtonBrowse1;
     private javax.swing.JButton jButtonBrowse10;
@@ -1957,9 +2492,15 @@ public class CRSMainFrame extends javax.swing.JFrame {
     private javax.swing.JButton jButtonBrowse13;
     private javax.swing.JButton jButtonBrowse14;
     private javax.swing.JButton jButtonBrowse15;
+    private javax.swing.JButton jButtonBrowse16;
+    private javax.swing.JButton jButtonBrowse17;
     private javax.swing.JButton jButtonBrowse18;
     private javax.swing.JButton jButtonBrowse19;
     private javax.swing.JButton jButtonBrowse2;
+    private javax.swing.JButton jButtonBrowse24;
+    private javax.swing.JButton jButtonBrowse25;
+    private javax.swing.JButton jButtonBrowse26;
+    private javax.swing.JButton jButtonBrowse27;
     private javax.swing.JButton jButtonBrowse4;
     private javax.swing.JButton jButtonBrowse6;
     private javax.swing.JButton jButtonBrowse7;
@@ -1969,6 +2510,7 @@ public class CRSMainFrame extends javax.swing.JFrame {
     private javax.swing.JButton jButtonDBExtract;
     private javax.swing.JButton jButtonFormatInputLDA;
     private javax.swing.JButton jButtonRunContentMethod;
+    private javax.swing.JButton jButtonRunHybridMethod;
     private javax.swing.JButton jButtonRunLinkMethod;
     private javax.swing.JButton jButtonStemming;
     private javax.swing.JCheckBox jCheckBoxAdamicAdar;
@@ -1996,8 +2538,15 @@ public class CRSMainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
+    private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel32;
+    private javax.swing.JLabel jLabel33;
+    private javax.swing.JLabel jLabel34;
+    private javax.swing.JLabel jLabel35;
+    private javax.swing.JLabel jLabel36;
+    private javax.swing.JLabel jLabel37;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -2026,6 +2575,7 @@ public class CRSMainFrame extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItemPreProcessing;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel13;
+    private javax.swing.JPanel jPanel14;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
@@ -2033,17 +2583,24 @@ public class CRSMainFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
+    private javax.swing.JPanel jPanel9;
     private javax.swing.JPanel jPanelContentMethod;
     private javax.swing.JPanel jPanelDBExtraction;
     private javax.swing.JPanel jPanelInput;
+    private javax.swing.JPanel jPanelInput1;
     private javax.swing.JPanel jPanelLinkMethod;
     private javax.swing.JPanel jPanelMethod;
+    private javax.swing.JPanel jPanelMethod5;
     private javax.swing.JPanel jPanelPreProcessing;
     private javax.swing.JPanel jPanelRemoveStopwordStemming;
     private javax.swing.JPanel jPanelSetting;
     private javax.swing.JPanel jPanelTestingNet;
+    private javax.swing.JPanel jPanelTestingNet1;
     private javax.swing.JPanel jPanelTrainingNet;
+    private javax.swing.JPanel jPanelTrainingNet1;
     private javax.swing.JRadioButton jRadioButtonKLDivergence;
+    private javax.swing.JRadioButton jRadioButtonLinearHybrid;
+    private javax.swing.JRadioButton jRadioButtonOtherCombination;
     private javax.swing.JRadioButton jRadioButtonTFIDF;
     private javax.swing.JTabbedPane jTabbedPaneCRS;
     private javax.swing.JTextField jTextFieldDBMSPort;
@@ -2059,17 +2616,24 @@ public class CRSMainFrame extends javax.swing.JFrame {
     private javax.swing.JMenuBar mainMenuBar;
     private javax.swing.JRadioButton radbtnUseExistingList1;
     private javax.swing.JTextField txtExistingAuthorFile;
+    private javax.swing.JTextField txtExistingAuthorFileHybrid;
     private javax.swing.JTextField txtFFAuthorPaperFile;
+    private javax.swing.JTextField txtFFAuthorPaperFileHybrid;
     private javax.swing.JTextField txtFFAuthorPaperPath;
     private javax.swing.JTextField txtInputDataFile;
+    private javax.swing.JTextField txtInputDataFileHybrid;
     private javax.swing.JTextField txtListAuthorPath;
     private javax.swing.JTextField txtNFAuthorPaperFile;
+    private javax.swing.JTextField txtNFAuthorPaperFileHybrid;
     private javax.swing.JTextField txtNFAuthorPaperPath;
     private javax.swing.JTextField txtResultPath;
     private javax.swing.JTextField txtResultPath1;
+    private javax.swing.JTextField txtResultPathHybrid;
     private javax.swing.JTextField txtTrainingAuthorPaperFile;
+    private javax.swing.JTextField txtTrainingAuthorPaperFileHybrid;
     private javax.swing.JTextField txtTrainingAuthorPaperPath;
     private javax.swing.JTextField txtTrainingPaperYearFile;
+    private javax.swing.JTextField txtTrainingPaperYearFileHybrid;
     private javax.swing.JTextField txtTrainingPaperYearPath;
     private javax.swing.JTextField txtValueK;
     private javax.swing.JTextField txtValueYear;
