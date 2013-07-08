@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package uit.tkorg.crs.artnetminer;
+package uit.tkorg.crs.gui;
 
 import uit.tkorg.crs.dblp.MappingNameToId;
 import java.io.File;
@@ -10,6 +10,7 @@ import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
+import uit.tkorg.crs.artnetminer.PreprocessingANMData;
 import uit.tkorg.crs.dblp.MappingNameToId;
 
 /**

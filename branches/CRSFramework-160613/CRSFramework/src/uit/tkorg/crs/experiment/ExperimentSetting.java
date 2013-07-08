@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Random;
 import uit.tkorg.crs.graph.Graph;
+import uit.tkorg.utility.TextFileProcessor;
 
 /**
  *
@@ -21,6 +22,12 @@ public class ExperimentSetting {
 
     private Graph _graph = Graph.getInstance();
     private ArrayList<Integer> _listAuthorRandom;
+    private String _file_TraingAuthorIDPaperID;
+    private String _file_TraingPaperID_Year;
+    private String _file_NF_AuthorIDPaperID;
+    private String _file_FF_AuthorIDPaperID;
+    private String _fileSaveTo;
+    private int _numberOfAuthor;
 
     public static enum GeneratingOption {
 
@@ -30,12 +37,22 @@ public class ExperimentSetting {
         LOWMIDHIGH,
     }
 
-    public ExperimentSetting() {
+    public ExperimentSetting(int numberOfAuthor, String file_TraingAuthorIDPaperID, String file_TraingPaperID_Year,
+            String file_NF_AuthorIDPaperID, String file_FF_AuthorIDPaperID, String file_SaveTo) {
+        _numberOfAuthor = numberOfAuthor;
+        _file_TraingAuthorIDPaperID = file_TraingAuthorIDPaperID;
+        _file_TraingPaperID_Year = file_TraingPaperID_Year;
+        _file_NF_AuthorIDPaperID = file_NF_AuthorIDPaperID;
+        _file_FF_AuthorIDPaperID = file_FF_AuthorIDPaperID;
+        _fileSaveTo = file_SaveTo;
     }
 
-    public void generateAuthorList(int numberOfAuthor, String savePath, GeneratingOption generatingOption) {
+    public void generateAuthorList(GeneratingOption generatingOption) {
+        _listAuthorRandom = new ArrayList<>();
         try {
-            _listAuthorRandom = new ArrayList<>();
+            _graph.LoadTrainingData(_file_TraingAuthorIDPaperID, _file_TraingPaperID_Year);
+            _graph.LoadTestingData(_file_NF_AuthorIDPaperID, _file_FF_AuthorIDPaperID);
+            _graph.BuidCoAuthorGraph();
             _graph.BuildingRSSGraph();
 
             // <AuthorID, AuthorDegree>
@@ -123,22 +140,29 @@ public class ExperimentSetting {
             //_listAuthorRandom;
 
             if (generatingOption == GeneratingOption.LOWEST) {
-                _listAuthorRandom.addAll(randomAuthorIdFromList(numberOfAuthor, listAuthorIdInLow));
+                _listAuthorRandom.addAll(randomAuthorIdFromList(_numberOfAuthor, listAuthorIdInLow));
             } else if (generatingOption == GeneratingOption.HIGHEST) {
-                _listAuthorRandom.addAll(randomAuthorIdFromList(numberOfAuthor, listAuthorIdInHigh));
+                _listAuthorRandom.addAll(randomAuthorIdFromList(_numberOfAuthor, listAuthorIdInHigh));
             } else if (generatingOption == GeneratingOption.LOWMIDHIGH) {
-                _listAuthorRandom.addAll(randomAuthorIdFromList(numberOfAuthor, listAuthorIdInLow));
-                _listAuthorRandom.addAll(randomAuthorIdFromList(numberOfAuthor, listAuthorIdInMid));
-                _listAuthorRandom.addAll(randomAuthorIdFromList(numberOfAuthor, listAuthorIdInHigh));
+                if (_numberOfAuthor % 3 == 1) {
+                    _listAuthorRandom.addAll(randomAuthorIdFromList(_numberOfAuthor / 3 + 1, listAuthorIdInLow));
+                } else {
+                    if (_numberOfAuthor % 3 == 2) {
+                        _listAuthorRandom.addAll(randomAuthorIdFromList(_numberOfAuthor / 3 + 2, listAuthorIdInLow));
+                    } else {
+                        _listAuthorRandom.addAll(randomAuthorIdFromList(_numberOfAuthor / 3, listAuthorIdInLow));
+                    }
+                }
+                _listAuthorRandom.addAll(randomAuthorIdFromList(_numberOfAuthor/3, listAuthorIdInMid));
+                _listAuthorRandom.addAll(randomAuthorIdFromList(_numberOfAuthor/3, listAuthorIdInHigh));
             }
 
-            FileOutputStream fos = new FileOutputStream(savePath + "/" + "ListRandomAuthor.txt");
-            Writer file = new OutputStreamWriter(fos, "UTF8");
-            file.write("AuthorID" + "\n");
+            StringBuffer listAuthorBuff = new StringBuffer();
+            listAuthorBuff.append("AuthorID" + "\n");
             for (int authorId : _listAuthorRandom) {
-                file.write(String.valueOf(authorId) + "\n");
+                listAuthorBuff.append(authorId + "\n");
             }
-            file.close();
+            TextFileProcessor.writeTextFile(_fileSaveTo, listAuthorBuff.toString());
 
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -148,7 +172,6 @@ public class ExperimentSetting {
 
     private ArrayList<Integer> randomAuthorIdFromList(int numberOfAuthorId, ArrayList<Integer> listId) {
         ArrayList<Integer> result = new ArrayList<>();
-
         if (listId.size() < numberOfAuthorId) {
             numberOfAuthorId = listId.size();
         }
@@ -156,7 +179,7 @@ public class ExperimentSetting {
         int counter = 0;
         Random rd = new Random();
         while (counter < numberOfAuthorId) {
-            int index = rd.nextInt(listId.size());
+            int index = rd.nextInt(listId.size() - 1);
             result.add(listId.get(index));
             listId.remove(index);
             counter++;

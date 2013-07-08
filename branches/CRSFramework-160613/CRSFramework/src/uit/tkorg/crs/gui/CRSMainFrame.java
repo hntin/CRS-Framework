@@ -17,8 +17,6 @@ import javax.swing.JFrame;
 import javax.swing.filechooser.FileFilter;
 import uit.tkorg.crs.bo.AuthorPaperBO;
 import uit.tkorg.crs.dbconnection.ConnectionService;
-import uit.tkorg.crs.artnetminer.ArtnetMinerFrame;
-import uit.tkorg.crs.dblp.DBLPFrame;
 import uit.tkorg.crs.experiment.ContentMethodExperiment;
 import uit.tkorg.crs.experiment.HybridMethodExperiment;
 import uit.tkorg.crs.experiment.LinkMethodExperiment;
@@ -386,10 +384,10 @@ public class CRSMainFrame extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jFormattedTextFieldYearTo, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanelDBExtractionLayout.createSequentialGroup()
-                        .addComponent(jTextFieldPathDataExtraction, javax.swing.GroupLayout.PREFERRED_SIZE, 564, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jTextFieldPathDataExtraction, javax.swing.GroupLayout.DEFAULT_SIZE, 564, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButtonBrowse1)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         jPanelDBExtractionLayout.setVerticalGroup(
             jPanelDBExtractionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -447,18 +445,21 @@ public class CRSMainFrame extends javax.swing.JFrame {
                     .addComponent(jLabel2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanelRemoveStopwordStemmingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButtonStemming)
                     .addGroup(jPanelRemoveStopwordStemmingLayout.createSequentialGroup()
-                        .addComponent(jCheckBoxStopword)
-                        .addGap(18, 18, 18)
-                        .addComponent(jCheckBoxStemming))
-                    .addGroup(jPanelRemoveStopwordStemmingLayout.createSequentialGroup()
-                        .addGroup(jPanelRemoveStopwordStemmingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jTextFieldStemOutPath, javax.swing.GroupLayout.DEFAULT_SIZE, 564, Short.MAX_VALUE)
-                            .addComponent(jTextFieldStemmingSourcePath))
+                        .addGroup(jPanelRemoveStopwordStemmingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jTextFieldStemmingSourcePath)
+                            .addComponent(jTextFieldStemOutPath))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButtonBrowse2)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jButtonBrowse2)
+                        .addContainerGap())
+                    .addGroup(jPanelRemoveStopwordStemmingLayout.createSequentialGroup()
+                        .addGroup(jPanelRemoveStopwordStemmingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButtonStemming)
+                            .addGroup(jPanelRemoveStopwordStemmingLayout.createSequentialGroup()
+                                .addComponent(jCheckBoxStopword)
+                                .addGap(18, 18, 18)
+                                .addComponent(jCheckBoxStemming)))
+                        .addGap(25, 25, 25))))
         );
         jPanelRemoveStopwordStemmingLayout.setVerticalGroup(
             jPanelRemoveStopwordStemmingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -517,13 +518,10 @@ public class CRSMainFrame extends javax.swing.JFrame {
                     .addComponent(jLabel3))
                 .addGap(28, 28, 28)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTextFieldFormatLDAPath)
                     .addComponent(jTextFieldFormatLDAOutFile)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButtonFormatInputLDA, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jComboBoxLDALib, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                    .addComponent(jButtonFormatInputLDA, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jComboBoxLDALib, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextFieldFormatLDAPath, javax.swing.GroupLayout.PREFERRED_SIZE, 560, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButtonBrowse4)
                 .addGap(18, 18, 18))
@@ -565,7 +563,7 @@ public class CRSMainFrame extends javax.swing.JFrame {
                         .addComponent(jPanelRemoveStopwordStemming, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanelPreProcessingLayout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 772, Short.MAX_VALUE)))
                 .addContainerGap(197, Short.MAX_VALUE))
         );
         jPanelPreProcessingLayout.setVerticalGroup(
@@ -916,9 +914,9 @@ public class CRSMainFrame extends javax.swing.JFrame {
                     .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6))
                 .addGap(15, 15, 15)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(txtTrainingAuthorPaperPath)
-                    .addComponent(txtTrainingPaperYearPath))
+                    .addComponent(txtTrainingPaperYearPath, javax.swing.GroupLayout.PREFERRED_SIZE, 687, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jButtonBrowse7, javax.swing.GroupLayout.Alignment.TRAILING)
@@ -968,10 +966,10 @@ public class CRSMainFrame extends javax.swing.JFrame {
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel8)
                     .addComponent(jLabel9))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(txtNFAuthorPaperPath, javax.swing.GroupLayout.DEFAULT_SIZE, 687, Short.MAX_VALUE)
-                    .addComponent(txtFFAuthorPaperPath))
+                .addGap(47, 47, 47)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtNFAuthorPaperPath, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(txtFFAuthorPaperPath, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jButtonBrowse8, javax.swing.GroupLayout.Alignment.TRAILING)
@@ -1184,7 +1182,7 @@ public class CRSMainFrame extends javax.swing.JFrame {
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel14)
                             .addComponent(jButtonRunLinkMethod, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 182, Short.MAX_VALUE))))
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
