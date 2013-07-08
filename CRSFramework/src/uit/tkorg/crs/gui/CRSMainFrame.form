@@ -332,7 +332,7 @@
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="jPanel1" max="32767" attributes="0"/>
+                              <Component id="jPanel1" pref="772" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                       <EmptySpace pref="197" max="32767" attributes="0"/>
@@ -376,7 +376,7 @@
                 <DimensionLayout dim="0">
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace max="-2" attributes="0"/>
+                          <EmptySpace min="-2" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="jLabelFrom" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="jLabelDirPath" alignment="0" min="-2" max="-2" attributes="0"/>
@@ -392,12 +392,12 @@
                                   <Component id="jFormattedTextFieldYearTo" min="-2" pref="69" max="-2" attributes="0"/>
                               </Group>
                               <Group type="102" attributes="0">
-                                  <Component id="jTextFieldPathDataExtraction" min="-2" pref="564" max="-2" attributes="0"/>
-                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="jTextFieldPathDataExtraction" pref="564" max="32767" attributes="0"/>
+                                  <EmptySpace min="-2" max="-2" attributes="0"/>
                                   <Component id="jButtonBrowse1" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
-                          <EmptySpace max="32767" attributes="0"/>
+                          <EmptySpace min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -494,29 +494,34 @@
                 <DimensionLayout dim="0">
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace max="-2" attributes="0"/>
+                          <EmptySpace min="-2" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="jLabel1" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="jLabel2" alignment="0" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace max="-2" attributes="0"/>
+                          <EmptySpace min="-2" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="jButtonStemming" min="-2" max="-2" attributes="0"/>
                               <Group type="102" attributes="0">
-                                  <Component id="jCheckBoxStopword" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                                  <Component id="jCheckBoxStemming" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <Group type="102" attributes="0">
-                                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                      <Component id="jTextFieldStemOutPath" pref="564" max="32767" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
                                       <Component id="jTextFieldStemmingSourcePath" max="32767" attributes="0"/>
+                                      <Component id="jTextFieldStemOutPath" max="32767" attributes="0"/>
                                   </Group>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="jButtonBrowse2" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                              </Group>
+                              <Group type="102" attributes="0">
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="jButtonStemming" min="-2" max="-2" attributes="0"/>
+                                      <Group type="102" attributes="0">
+                                          <Component id="jCheckBoxStopword" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                                          <Component id="jCheckBoxStemming" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                  </Group>
+                                  <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
                               </Group>
                           </Group>
-                          <EmptySpace max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -612,15 +617,10 @@
                           </Group>
                           <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="jTextFieldFormatLDAPath" max="32767" attributes="0"/>
                               <Component id="jTextFieldFormatLDAOutFile" max="32767" attributes="0"/>
-                              <Group type="102" attributes="0">
-                                  <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="jButtonFormatInputLDA" min="-2" pref="77" max="-2" attributes="0"/>
-                                      <Component id="jComboBoxLDALib" min="-2" max="-2" attributes="0"/>
-                                  </Group>
-                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                              </Group>
+                              <Component id="jButtonFormatInputLDA" min="-2" pref="77" max="-2" attributes="0"/>
+                              <Component id="jComboBoxLDALib" min="-2" max="-2" attributes="0"/>
+                              <Component id="jTextFieldFormatLDAPath" alignment="0" min="-2" pref="560" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="jButtonBrowse4" min="-2" max="-2" attributes="0"/>
@@ -1260,11 +1260,11 @@
                                   <Component id="jLabel6" alignment="0" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="1" attributes="0">
-                                  <Component id="txtTrainingAuthorPaperPath" max="32767" attributes="0"/>
-                                  <Component id="txtTrainingPaperYearPath" max="32767" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="txtTrainingAuthorPaperPath" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="txtTrainingPaperYearPath" alignment="0" min="-2" pref="687" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" min="-2" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="jButtonBrowse7" alignment="1" min="-2" max="-2" attributes="0"/>
                                   <Component id="jButtonBrowse6" alignment="1" min="-2" max="-2" attributes="0"/>
@@ -1345,12 +1345,12 @@
                                   <Component id="jLabel8" min="-2" max="-2" attributes="0"/>
                                   <Component id="jLabel9" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace max="32767" attributes="0"/>
-                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                  <Component id="txtNFAuthorPaperPath" pref="687" max="32767" attributes="0"/>
-                                  <Component id="txtFFAuthorPaperPath" max="32767" attributes="0"/>
+                              <EmptySpace min="-2" pref="47" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="txtNFAuthorPaperPath" alignment="1" max="32767" attributes="0"/>
+                                  <Component id="txtFFAuthorPaperPath" alignment="1" max="32767" attributes="0"/>
                               </Group>
-                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" min="-2" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="jButtonBrowse8" alignment="1" min="-2" max="-2" attributes="0"/>
                                   <Component id="jButtonBrowse9" alignment="1" min="-2" max="-2" attributes="0"/>
@@ -1513,7 +1513,7 @@
                                           <Component id="jLabel14" min="-2" max="-2" attributes="0"/>
                                           <Component id="jButtonRunLinkMethod" alignment="0" min="-2" pref="242" max="-2" attributes="0"/>
                                       </Group>
-                                      <EmptySpace min="0" pref="182" max="32767" attributes="0"/>
+                                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                                   </Group>
                               </Group>
                           </Group>
