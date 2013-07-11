@@ -149,7 +149,6 @@ public class ContentMethodExperiment {
         String pathFile = (new File(_resultPath)).getParent();
         TextFileProcessor.writeTextFile(pathFile + "\\TruePostiveCase.txt", truePositiveBuffer.toString());
         // </editor-fold>
-
     }
 
     private HashMap<Integer, HashMap<Integer, Float>> findTopNSimilarity(int topN, HashMap<Integer, HashMap<Integer, Float>> data) {
