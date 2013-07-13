@@ -530,7 +530,9 @@ public class LinkMethodExperiment {
     private void writeToTxtFileForLinkMethods(float k, int year, int topN) {
         //<editor-fold defaultstate="collapsed" desc="Write result into file">
         try {
-            FileOutputStream fos = new FileOutputStream(_resultPath + "/" + String.valueOf(k) + "_" + String.valueOf(year) + ".txt");
+            //FileOutputStream fos = new FileOutputStream(_resultPath + "/" + String.valueOf(k) + "_" + String.valueOf(year) + ".txt");
+            FileOutputStream fos = new FileOutputStream(_resultPath);
+            
             Writer file = new OutputStreamWriter(fos, "UTF8");
             //<editor-fold defaultstate="collapsed" desc="Near future testing">
 

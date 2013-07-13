@@ -47,11 +47,11 @@ public class ParallelLDA {
             // Create a model with 100 topics, alpha_t = 0.01, beta_w = 0.01
             //  Note that the first parameter is passed as the sum over topics, while
             //  the second is the parameter for a single dimension of the Dirichlet prior.
-            int numTopics = 1000;
-            ParallelTopicModel model = new ParallelTopicModel(numTopics, 1.0, 0.001);
+            int numTopics = 100;
+            ParallelTopicModel model = new ParallelTopicModel(numTopics, 1.0, 0.01);
 
             model.addInstances(instances);
-            model.wordsPerTopic = 1000;
+            //model.wordsPerTopic = 1000;
 
             // Use two parallel samplers, which each look at one half the corpus and combine
             //  statistics after every iteration.
