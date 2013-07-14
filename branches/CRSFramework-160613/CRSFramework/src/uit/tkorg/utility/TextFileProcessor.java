@@ -6,6 +6,7 @@ package uit.tkorg.utility;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
@@ -102,5 +103,42 @@ public class TextFileProcessor {
         }
 
         return strBuffer.toString();
+    }
+
+    /**
+     * Splitting a text file for many piece with 5.000 rows/file
+     *
+     * @param filePath
+     */
+    public static void splitTextFile(String filePath) {
+        int count = 1;
+        StringBuffer strBufferSpliter = new StringBuffer();
+        try {
+            FileInputStream fis = new FileInputStream(filePath);
+            Reader reader = new InputStreamReader(fis, "UTF8");
+            BufferedReader bufferReader = new BufferedReader(reader);
+            bufferReader.readLine(); // skip the first line
+            String line = null;
+            String path = null;
+            String fileNamePiece = null;
+            while ((line = bufferReader.readLine()) != null) {
+                strBufferSpliter.append(line + "\n");
+                if (count % 5000 == 0) {
+                    path = (new File(filePath)).getParent();
+                    fileNamePiece = path + "\\file_" + (count / 5000) + ".txt";
+                    TextFileProcessor.writeTextFile(fileNamePiece, strBufferSpliter.toString());
+                    strBufferSpliter = new StringBuffer();
+                }
+                count++;
+            }
+
+            path = (new File(filePath)).getParent();
+            fileNamePiece = path + "\\file_" + (count / 5000 + 1)  + ".txt";
+            TextFileProcessor.writeTextFile(fileNamePiece, strBufferSpliter.toString());
+
+            bufferReader.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
