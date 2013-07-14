@@ -65,7 +65,7 @@ public class RSS {
         Runtime runtime = Runtime.getRuntime();
         int numOfProcessors = runtime.availableProcessors();
 
-        ExecutorService executor = Executors.newFixedThreadPool(numOfProcessors / 2);
+        ExecutorService executor = Executors.newFixedThreadPool(numOfProcessors - 1);
         for (final int authorId : listAuthor) {
             executor.submit(new Runnable() {
                 @Override
