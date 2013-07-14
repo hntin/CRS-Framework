@@ -8,8 +8,8 @@ package uit.tkorg.utility;
  *
  * @author TinHuynh
  */
-public class SplitTextFile_MainClass {
-    public static void main(String ards[]) {
+public class MainClass_SplitTextFile {
+    public static void main(String args[]) {
         try {
             TextFileProcessor.splitTextFile("C:\\CRS-Experiment\\MAS\\Content\\LDA\\Stemming\\CRS-InputParallelLDA.txt");
             System.out.printf("DONE");

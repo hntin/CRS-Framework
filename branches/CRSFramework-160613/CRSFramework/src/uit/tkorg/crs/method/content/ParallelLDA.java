@@ -81,16 +81,20 @@ public class ParallelLDA {
                 for (int otherInstanceID = 0; otherInstanceID < instances.size(); otherInstanceID++) {
                     if (instanceID != otherInstanceID) {
                         double[] topicDistOtherAuthor = model.getTopicProbabilities(otherInstanceID);
-                        //float klDivergence = (float) Maths.klDivergence(topicDistInputAuthor, topicDistOtherAuthor);
-                        float klDivergence = (float) Maths.jensenShannonDivergence(topicDistInputAuthor, topicDistOtherAuthor);
-
+                        //double klDivergence = (float) Maths.klDivergence(topicDistInputAuthor, topicDistOtherAuthor);
+                        double klDivergence = Maths.jensenShannonDivergence(topicDistInputAuthor, topicDistOtherAuthor);
+                                    
                         HashMap<Integer, Float> listKLDivergence = _KLDivergenceHM.get(inputAuthorID);
                         if (listKLDivergence == null) {
                             listKLDivergence = new HashMap<>();
                         }
                         
                         int otherAuthorID = getAuthorIDFromInstanceID(otherInstanceID);
-                        listKLDivergence.put(otherAuthorID, klDivergence);
+                        
+                        System.out.println("(AuthorID1,AuthorID2)=" + "(" + inputAuthorID + "," + otherAuthorID + ")" 
+                                + "... KL:" + klDivergence);
+                        
+                        listKLDivergence.put(otherAuthorID, (float) klDivergence);
                         _KLDivergenceHM.put(inputAuthorID, listKLDivergence);
                     }
                 }
