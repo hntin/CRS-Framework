@@ -45,6 +45,8 @@ public class ContentMethodExperiment {
     HashMap<Integer, HashMap<Integer, Float>> topSimilarity;
     int topN = 50;
 
+    public ContentMethodExperiment(){}
+            
     public ContentMethodExperiment(String LDAInputFile, String Training_PaperId_AuthorIdPath, String Training_PaperId_YearPath,
             String Testing_PaperId_Year_NFPath, String Testing_PaperId_Year_FFPath,
             String Existing_List_AuthorPath, // empty or null if use radom author
@@ -90,7 +92,7 @@ public class ContentMethodExperiment {
             klDivergenceResult = ldaMethod.process(_LDA_InputFile, _listAuthorRandom);
             if (klDivergenceResult != null) {
                 for (int i = 1; i <= topN; i++) {
-                    topSimilarity = findTopNSimilarity(i, klDivergenceResult);
+                    topSimilarity = findTopNSimilarityForKLDivergence(i, klDivergenceResult);
                     float precisionNear = EvaluationMetric.Mean_Precision_TopN(topSimilarity, _graph.nearTestingData);
                     float precisionFar = EvaluationMetric.Mean_Precision_TopN(topSimilarity, _graph.farTestingData);
                     _nfContentPredictionBuffer.append(df.format(precisionNear) + "\t");
@@ -168,6 +170,30 @@ public class ContentMethodExperiment {
                     }
 
                     listAuthorRecommend.remove(keyMinValue);
+                }
+            }
+            result.put(authorId, listAuthorRecommend);
+        }
+        return result;
+    }
+    
+    private HashMap<Integer, HashMap<Integer, Float>> findTopNSimilarityForKLDivergence(int topN, HashMap<Integer, HashMap<Integer, Float>> data) {
+        HashMap<Integer, HashMap<Integer, Float>> result = new HashMap<>();
+        for (int authorId : data.keySet()) {
+            HashMap<Integer, Float> listAuthorRecommend = new HashMap<>();
+            for (int idRecommend : data.get(authorId).keySet()) {
+                listAuthorRecommend.put(idRecommend, data.get(authorId).get(idRecommend));
+                if (listAuthorRecommend.size() > topN) {
+                    int keyMaxValue = 0;
+                    float maxValue = Float.MIN_VALUE;
+                    for (int id : listAuthorRecommend.keySet()) {
+                        if (listAuthorRecommend.get(id) > maxValue) {
+                            maxValue = listAuthorRecommend.get(id);
+                            keyMaxValue = id;
+                        }
+                    }
+
+                    listAuthorRecommend.remove(keyMaxValue);
                 }
             }
             result.put(authorId, listAuthorRecommend);
@@ -348,4 +374,27 @@ public class ContentMethodExperiment {
             ex.printStackTrace();
         }
     }
+    
+    /*
+    public static void main(String args[]) {
+        int topN = 0;
+        HashMap<Integer, HashMap<Integer, Float>> data = new HashMap<>();
+        HashMap<Integer, Float> valueHM = new HashMap<>();
+        
+        valueHM.put(6, 0.4f);
+        valueHM.put(2, 0.2f);
+        valueHM.put(3, 0.3f);
+        valueHM.put(4, 0.4f);
+        valueHM.put(5, 0.2f);
+        
+        data.put(0, valueHM);
+        data.put(1, valueHM);
+        ContentMethodExperiment tmp = new ContentMethodExperiment();
+                
+        HashMap<Integer, HashMap<Integer, Float>> result1 = tmp.findTopNSimilarity(2, data);
+        HashMap<Integer, HashMap<Integer, Float>> result2 = tmp.findTopNSimilarityForKLDivergence(2, data);
+        
+        System.out.println("DONE...");
+    }
+    * */
 }
