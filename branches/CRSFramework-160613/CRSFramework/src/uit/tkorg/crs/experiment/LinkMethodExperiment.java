@@ -176,6 +176,7 @@ public class LinkMethodExperiment {
                     bufferingExperimentResult(true, "Cosine", recall);
                     recall = EvaluationMetric.Mean_Recall_TopN(topSimilarity, _graph.farTestingData);
                     bufferingExperimentResult(false, "Cosine", recall);
+                    System.out.println("Cosine PrecisionNear - Top:" + i + "  is :" + precisionNear);
                     //</editor-fold>
 
                     //<editor-fold defaultstate="collapsed" desc="Jaccard">

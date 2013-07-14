@@ -55,7 +55,7 @@ public class ParallelLDA {
 
             // Use two parallel samplers, which each look at one half the corpus and combine
             //  statistics after every iteration.
-            model.setNumThreads(11);
+            model.setNumThreads(22);
 
             // Run the model for 50 iterations and stop (this is for testing only, 
             //  for real applications, use 1000 to 2000 iterations)
@@ -81,7 +81,8 @@ public class ParallelLDA {
                 for (int otherInstanceID = 0; otherInstanceID < instances.size(); otherInstanceID++) {
                     if (instanceID != otherInstanceID) {
                         double[] topicDistOtherAuthor = model.getTopicProbabilities(otherInstanceID);
-                        float klDivergence = (float) Maths.klDivergence(topicDistInputAuthor, topicDistOtherAuthor);
+                        //float klDivergence = (float) Maths.klDivergence(topicDistInputAuthor, topicDistOtherAuthor);
+                        float klDivergence = (float) Maths.jensenShannonDivergence(topicDistInputAuthor, topicDistOtherAuthor);
 
                         HashMap<Integer, Float> listKLDivergence = _KLDivergenceHM.get(inputAuthorID);
                         if (listKLDivergence == null) {
