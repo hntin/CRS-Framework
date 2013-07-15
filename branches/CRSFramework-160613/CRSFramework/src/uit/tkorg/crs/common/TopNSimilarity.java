@@ -154,50 +154,46 @@ public class TopNSimilarity {
         return result;
     }
 
-    ///*
-    public static void main(String args[]) {
-        int topN = 0;
-        HashMap<Integer, HashMap<Integer, Float>> data = new HashMap<>();
-
-        HashMap<Integer, Float> valueHM = new HashMap<>();
-        valueHM.put(2, 0.2f);
-        valueHM.put(3, 0.3f);
-        valueHM.put(4, 0.4f);
-        valueHM.put(5, 0.5f);
-        valueHM.put(6, 0.6f);
-        valueHM.put(7, 0.7f);
-        valueHM.put(8, 0.8f);
-        data.put(1, valueHM);
-
-        valueHM = new HashMap<>();
-        valueHM.put(1, 0.1f);
-        valueHM.put(3, 0.3f);
-        valueHM.put(4, 0.4f);
-        valueHM.put(5, 0.5f);
-        valueHM.put(6, 0.6f);
-        valueHM.put(7, 0.7f);
-        valueHM.put(8, 0.8f);
-        data.put(2, valueHM);
-
-        Graph _graph = Graph.getInstance();
-
-        _graph.LoadTrainingData(
-                "C:\\CRS-Experiment\\Sampledata\\[Training]AuthorId_PaperID.txt",
-                "C:\\CRS-Experiment\\Sampledata\\[Training]PaperID_Year.txt");
-        _graph.LoadTestingData(
-                "C:\\CRS-Experiment\\Sampledata\\[NearTesting]AuthorId_PaperID.txt",
-                "C:\\CRS-Experiment\\Sampledata\\[FarTesting]AuthorId_PaperID.txt");
-
-        // Building Graphs
-        _graph.BuidCoAuthorGraph();
-        _graph.BuildingRSSGraph();
-
-        HashMap<Integer, HashMap<Integer, Float>> result1 = TopNSimilarity.findTopNSimilarity(2, data);
-        HashMap<Integer, HashMap<Integer, Float>> result2 = TopNSimilarity.findTopNSimilarityForKLDivergence(2, data);
-        HashMap<Integer, HashMap<Integer, Float>> result3 = TopNSimilarity.findTopNSimilarityForNewLinkOnly(2, data, _graph.rssGraph);
-        HashMap<Integer, HashMap<Integer, Float>> result4 = TopNSimilarity.findTopNSimilarityForKLDivergenceForNewLinkOnly(2, data, _graph.rssGraph);
-
-        System.out.println("DONE...");
-    }
-    //* */
+//    public static void main(String args[]) {
+//        int topN = 0;
+//        HashMap<Integer, HashMap<Integer, Float>> data = new HashMap<>();
+//
+//        HashMap<Integer, Float> valueHM = new HashMap<>();
+//        valueHM.put(2, 0.2f);
+//        valueHM.put(3, 0.3f);
+//        valueHM.put(4, 0.4f);
+//        valueHM.put(5, 0.5f);
+//        valueHM.put(6, 0.6f);
+//        valueHM.put(7, 0.7f);
+//        valueHM.put(8, 0.8f);
+//        data.put(1, valueHM);
+//
+//        valueHM = new HashMap<>();
+//        valueHM.put(1, 0.1f);
+//        valueHM.put(3, 0.3f);
+//        valueHM.put(4, 0.4f);
+//        valueHM.put(5, 0.5f);
+//        valueHM.put(6, 0.6f);
+//        valueHM.put(7, 0.7f);
+//        valueHM.put(8, 0.8f);
+//        data.put(2, valueHM);
+//
+//        Graph _graph = Graph.getInstance();
+//        _graph.LoadTrainingData(
+//                "C:\\CRS-Experiment\\Sampledata\\[Training]AuthorId_PaperID.txt",
+//                "C:\\CRS-Experiment\\Sampledata\\[Training]PaperID_Year.txt");
+//        _graph.LoadTestingData(
+//                "C:\\CRS-Experiment\\Sampledata\\[NearTesting]AuthorId_PaperID.txt",
+//                "C:\\CRS-Experiment\\Sampledata\\[FarTesting]AuthorId_PaperID.txt");
+//
+//        // Building Graphs
+//        _graph.BuidCoAuthorGraph();
+//        _graph.BuildingRSSGraph();
+//
+//        HashMap<Integer, HashMap<Integer, Float>> result1 = TopNSimilarity.findTopNSimilarity(2, data);
+//        HashMap<Integer, HashMap<Integer, Float>> result2 = TopNSimilarity.findTopNSimilarityForKLDivergence(2, data);
+//        HashMap<Integer, HashMap<Integer, Float>> result3 = TopNSimilarity.findTopNSimilarityForNewLinkOnly(2, data, _graph.rssGraph);
+//        HashMap<Integer, HashMap<Integer, Float>> result4 = TopNSimilarity.findTopNSimilarityForKLDivergenceForNewLinkOnly(2, data, _graph.rssGraph);
+//        System.out.println("DONE...");
+//    }
 }
