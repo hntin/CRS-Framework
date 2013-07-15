@@ -20,7 +20,7 @@ import weka.core.tokenizers.WordTokenizer;
  *
  * @author tin
  */
-public class TextParallelProcessor {
+public class TextParallelUtility {
 
     /**
      * Remove stop-words and do stemming, and then out to TXT file
@@ -64,7 +64,7 @@ public class TextParallelProcessor {
 
 
             strBuffer = strBuffer.insert(0, lineCount + "\n");
-            TextFileProcessor.writeTextFile(pathStemmingResult + "\\OutStem_"
+            TextFileUtility.writeTextFile(pathStemmingResult + "\\OutStem_"
                     + fileName + ".dat", strBuffer.toString());
 
             bufferReader.close();

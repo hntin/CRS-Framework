@@ -22,7 +22,7 @@ import uit.tkorg.crs.experiment.HybridMethodExperiment;
 import uit.tkorg.crs.experiment.LinkMethodExperiment;
 import uit.tkorg.crs.method.content.JGibbLDA;
 import uit.tkorg.crs.method.content.ParallelLDA;
-import uit.tkorg.utility.TextParallelProcessor;
+import uit.tkorg.utility.TextParallelUtility;
 
 /**
  *
@@ -1796,7 +1796,7 @@ public class CRSMainFrame extends javax.swing.JFrame {
             String rootPath = jTextFieldStemmingSourcePath.getText();
             boolean isStem = jCheckBoxStemming.isSelected();
 
-            TextParallelProcessor textProcessor = new TextParallelProcessor();
+            TextParallelUtility textProcessor = new TextParallelUtility();
             File mainFolder = new File(rootPath);
             System.out.println(mainFolder.getAbsolutePath());
             File[] subFolderList = mainFolder.listFiles();

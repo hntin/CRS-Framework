@@ -22,7 +22,7 @@ import java.util.Set;
  *
  * @author tin
  */
-public class TextFileProcessor {
+public class TextFileUtility {
 
     /**
      * writeTextFile
@@ -126,7 +126,7 @@ public class TextFileProcessor {
                 if (count % 5000 == 0) {
                     path = (new File(filePath)).getParent();
                     fileNamePiece = path + "\\file_" + (count / 5000) + ".txt";
-                    TextFileProcessor.writeTextFile(fileNamePiece, strBufferSpliter.toString());
+                    TextFileUtility.writeTextFile(fileNamePiece, strBufferSpliter.toString());
                     strBufferSpliter = new StringBuffer();
                 }
                 count++;
@@ -134,7 +134,7 @@ public class TextFileProcessor {
 
             path = (new File(filePath)).getParent();
             fileNamePiece = path + "\\file_" + (count / 5000 + 1)  + ".txt";
-            TextFileProcessor.writeTextFile(fileNamePiece, strBufferSpliter.toString());
+            TextFileUtility.writeTextFile(fileNamePiece, strBufferSpliter.toString());
 
             bufferReader.close();
         } catch (Exception e) {

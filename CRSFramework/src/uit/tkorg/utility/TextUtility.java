@@ -17,7 +17,7 @@ import weka.core.tokenizers.WordTokenizer;
  *
  * @author tin
  */
-public class TextProcessor {
+public class TextUtility {
     public static ArrayList<String> removeStopWord(String str) throws Exception {
         ArrayList<String> result = new ArrayList<String>();
         WordTokenizer wordTokenizer = new WordTokenizer();

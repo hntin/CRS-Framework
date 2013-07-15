@@ -2,8 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package uit.tkorg.utility;
+package uit.tkorg.crs.common;
 
+import uit.tkorg.crs.common.CosineSimilarity;
 import cc.mallet.util.Maths;
 import java.text.DecimalFormat;
 

@@ -17,7 +17,7 @@ import java.util.Map;
  *
  * @author tin
  */
-public class HashMapProcessor {
+public class HashMapUtility {
     /**
      * getSortedMapAscending
      * @param map

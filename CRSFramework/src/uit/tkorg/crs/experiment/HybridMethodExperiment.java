@@ -16,12 +16,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Random;
-import uit.tkorg.crs.evaluation.EvaluationMetric;
+import uit.tkorg.crs.common.EvaluationMetric;
+import uit.tkorg.crs.common.TopNSimilarity;
 import uit.tkorg.crs.graph.Graph;
 import uit.tkorg.crs.method.content.TFIDF;
 import uit.tkorg.crs.method.hybrid.LinearHybrid;
 import uit.tkorg.crs.method.link.RSS;
-import uit.tkorg.utility.TextFileProcessor;
+import uit.tkorg.utility.TextFileUtility;
 
 /**
  *
@@ -102,7 +103,7 @@ public class HybridMethodExperiment {
             linearHybridResult = linearHybridMethod.calculatingLinearHybriđ(rssResult, tfidfResult);
             if (linearHybridResult != null) {
                 for (int i = 1; i <= topN; i++) {
-                    topSimilarity = findTopNSimilarity(i, linearHybridResult);
+                    topSimilarity = TopNSimilarity.findTopNSimilarity(i, linearHybridResult);
                     float precisionNear = EvaluationMetric.Mean_Precision_TopN(topSimilarity, _graph.nearTestingData);
                     float precisionFar = EvaluationMetric.Mean_Precision_TopN(topSimilarity, _graph.farTestingData);
                     _nfContentPredictionBuffer.append(df.format(precisionNear) + "\t");
@@ -117,32 +118,8 @@ public class HybridMethodExperiment {
         }
         // </editor-fold>
 
-        TextFileProcessor.writeTextFile(_resultPath,
+        TextFileUtility.writeTextFile(_resultPath,
                 _nfContentPredictionBuffer.toString() + "\n\n" + _ffContentPredictionBuffer.toString());
-    }
-
-    private HashMap<Integer, HashMap<Integer, Float>> findTopNSimilarity(int topN, HashMap<Integer, HashMap<Integer, Float>> data) {
-        HashMap<Integer, HashMap<Integer, Float>> result = new HashMap<>();
-        for (int authorId : data.keySet()) {
-            HashMap<Integer, Float> listAuthorRecommend = new HashMap<>();
-            for (int idRecommend : data.get(authorId).keySet()) {
-                listAuthorRecommend.put(idRecommend, data.get(authorId).get(idRecommend));
-                if (listAuthorRecommend.size() > topN) {
-                    int keyMinValue = 0;
-                    float minValue = Integer.MAX_VALUE;
-                    for (int id : listAuthorRecommend.keySet()) {
-                        if (listAuthorRecommend.get(id) < minValue) {
-                            minValue = listAuthorRecommend.get(id);
-                            keyMinValue = id;
-                        }
-                    }
-
-                    listAuthorRecommend.remove(keyMinValue);
-                }
-            }
-            result.put(authorId, listAuthorRecommend);
-        }
-        return result;
     }
 
     private void selectAuthorsForExperiment() {
