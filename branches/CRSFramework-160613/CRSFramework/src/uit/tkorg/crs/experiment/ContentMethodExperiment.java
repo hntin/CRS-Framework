@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package uit.tkorg.crs.experiment;
 
 import java.io.BufferedReader;
@@ -17,11 +13,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Random;
-import uit.tkorg.crs.evaluation.EvaluationMetric;
+import uit.tkorg.crs.common.EvaluationMetric;
+import uit.tkorg.crs.common.TopNSimilarity;
 import uit.tkorg.crs.graph.Graph;
 import uit.tkorg.crs.method.content.ParallelLDA;
 import uit.tkorg.crs.method.content.TFIDF;
-import uit.tkorg.utility.TextFileProcessor;
+import uit.tkorg.utility.TextFileUtility;
 
 /**
  *
@@ -92,7 +89,7 @@ public class ContentMethodExperiment {
             klDivergenceResult = ldaMethod.process(_LDA_InputFile, _listAuthorRandom);
             if (klDivergenceResult != null) {
                 for (int i = 1; i <= topN; i++) {
-                    topSimilarity = findTopNSimilarityForKLDivergence(i, klDivergenceResult);
+                    topSimilarity = TopNSimilarity.findTopNSimilarityForKLDivergence(i, klDivergenceResult);
                     float precisionNear = EvaluationMetric.Mean_Precision_TopN(topSimilarity, _graph.nearTestingData);
                     float precisionFar = EvaluationMetric.Mean_Precision_TopN(topSimilarity, _graph.farTestingData);
                     _nfContentPredictionBuffer.append(df.format(precisionNear) + "\t");
@@ -114,7 +111,7 @@ public class ContentMethodExperiment {
             tfidfResult = tfidfMethod.process(_LDA_InputFile, _listAuthorRandom);
             if (tfidfResult != null) {
                 for (int i = 1; i <= topN; i++) {
-                    topSimilarity = findTopNSimilarity(i, tfidfResult);
+                    topSimilarity = TopNSimilarity.findTopNSimilarity(i, tfidfResult);
                     float precisionNear = EvaluationMetric.Mean_Precision_TopN(topSimilarity, _graph.nearTestingData);
                     float precisionFar = EvaluationMetric.Mean_Precision_TopN(topSimilarity, _graph.farTestingData);
                     _nfContentPredictionBuffer.append(df.format(precisionNear) + "\t");
@@ -127,7 +124,7 @@ public class ContentMethodExperiment {
                 }
             }
         }
-        TextFileProcessor.writeTextFile(_resultPath,
+        TextFileUtility.writeTextFile(_resultPath,
                 _nfContentPredictionBuffer.toString() + "\n\n" + _ffContentPredictionBuffer.toString());
         // </editor-fold>
 
@@ -149,56 +146,8 @@ public class ContentMethodExperiment {
             }
         }
         String pathFile = (new File(_resultPath)).getParent();
-        TextFileProcessor.writeTextFile(pathFile + "\\TruePostiveCase.txt", truePositiveBuffer.toString());
+        TextFileUtility.writeTextFile(pathFile + "\\TruePostiveCase.txt", truePositiveBuffer.toString());
         // </editor-fold>
-    }
-
-    private HashMap<Integer, HashMap<Integer, Float>> findTopNSimilarity(int topN, HashMap<Integer, HashMap<Integer, Float>> data) {
-        HashMap<Integer, HashMap<Integer, Float>> result = new HashMap<>();
-        for (int authorId : data.keySet()) {
-            HashMap<Integer, Float> listAuthorRecommend = new HashMap<>();
-            for (int idRecommend : data.get(authorId).keySet()) {
-                listAuthorRecommend.put(idRecommend, data.get(authorId).get(idRecommend));
-                if (listAuthorRecommend.size() > topN) {
-                    int keyMinValue = 0;
-                    float minValue = Integer.MAX_VALUE;
-                    for (int id : listAuthorRecommend.keySet()) {
-                        if (listAuthorRecommend.get(id) < minValue) {
-                            minValue = listAuthorRecommend.get(id);
-                            keyMinValue = id;
-                        }
-                    }
-
-                    listAuthorRecommend.remove(keyMinValue);
-                }
-            }
-            result.put(authorId, listAuthorRecommend);
-        }
-        return result;
-    }
-    
-    private HashMap<Integer, HashMap<Integer, Float>> findTopNSimilarityForKLDivergence(int topN, HashMap<Integer, HashMap<Integer, Float>> data) {
-        HashMap<Integer, HashMap<Integer, Float>> result = new HashMap<>();
-        for (int authorId : data.keySet()) {
-            HashMap<Integer, Float> listAuthorRecommend = new HashMap<>();
-            for (int idRecommend : data.get(authorId).keySet()) {
-                listAuthorRecommend.put(idRecommend, data.get(authorId).get(idRecommend));
-                if (listAuthorRecommend.size() > topN) {
-                    int keyMaxValue = 0;
-                    float maxValue = Float.MIN_VALUE;
-                    for (int id : listAuthorRecommend.keySet()) {
-                        if (listAuthorRecommend.get(id) > maxValue) {
-                            maxValue = listAuthorRecommend.get(id);
-                            keyMaxValue = id;
-                        }
-                    }
-
-                    listAuthorRecommend.remove(keyMaxValue);
-                }
-            }
-            result.put(authorId, listAuthorRecommend);
-        }
-        return result;
     }
 
     private void selectAuthorsForExperiment() {
@@ -374,27 +323,4 @@ public class ContentMethodExperiment {
             ex.printStackTrace();
         }
     }
-    
-    /*
-    public static void main(String args[]) {
-        int topN = 0;
-        HashMap<Integer, HashMap<Integer, Float>> data = new HashMap<>();
-        HashMap<Integer, Float> valueHM = new HashMap<>();
-        
-        valueHM.put(6, 0.4f);
-        valueHM.put(2, 0.2f);
-        valueHM.put(3, 0.3f);
-        valueHM.put(4, 0.4f);
-        valueHM.put(5, 0.2f);
-        
-        data.put(0, valueHM);
-        data.put(1, valueHM);
-        ContentMethodExperiment tmp = new ContentMethodExperiment();
-                
-        HashMap<Integer, HashMap<Integer, Float>> result1 = tmp.findTopNSimilarity(2, data);
-        HashMap<Integer, HashMap<Integer, Float>> result2 = tmp.findTopNSimilarityForKLDivergence(2, data);
-        
-        System.out.println("DONE...");
-    }
-    * */
 }

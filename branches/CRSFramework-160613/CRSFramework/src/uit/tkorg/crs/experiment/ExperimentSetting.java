@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Random;
 import uit.tkorg.crs.graph.Graph;
-import uit.tkorg.utility.TextFileProcessor;
+import uit.tkorg.utility.TextFileUtility;
 
 /**
  *
@@ -162,7 +162,7 @@ public class ExperimentSetting {
             for (int authorId : _listAuthorRandom) {
                 listAuthorBuff.append(authorId + "\n");
             }
-            TextFileProcessor.writeTextFile(_fileSaveTo, listAuthorBuff.toString());
+            TextFileUtility.writeTextFile(_fileSaveTo, listAuthorBuff.toString());
 
         } catch (Exception ex) {
             ex.printStackTrace();

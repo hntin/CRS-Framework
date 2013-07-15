@@ -11,7 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
-import uit.tkorg.utility.TextFileProcessor;
+import uit.tkorg.utility.TextFileUtility;
 
 /**
  *
@@ -103,7 +103,7 @@ public class AuthorPaperMapper extends MapperDB {
                 if (i%1000 ==0 ) {
                     (new File(pathDir + "/Folder" + (i/1000+1))).mkdir();
                 }
-                TextFileProcessor.writeTextFile(pathDir + "/Folder" + (i/1000+1) + "/AuthorID_" + idAuthor, outStringBuffer.toString());
+                TextFileUtility.writeTextFile(pathDir + "/Folder" + (i/1000+1) + "/AuthorID_" + idAuthor, outStringBuffer.toString());
             }
             
             st.close();

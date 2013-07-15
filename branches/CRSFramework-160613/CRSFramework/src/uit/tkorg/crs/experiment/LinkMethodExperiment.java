@@ -1,6 +1,6 @@
 package uit.tkorg.crs.experiment;
 
-import uit.tkorg.crs.evaluation.EvaluationMetric;
+import uit.tkorg.crs.common.EvaluationMetric;
 import uit.tkorg.crs.graph.Graph;
 import uit.tkorg.crs.method.link.AdamicAdar;
 import uit.tkorg.crs.method.link.Cosine;
@@ -21,8 +21,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Random;
+import uit.tkorg.crs.common.TopNSimilarity;
 import uit.tkorg.crs.method.content.ParallelLDA;
-import uit.tkorg.utility.TextFileProcessor;
+import uit.tkorg.utility.TextFileUtility;
 
 /**
  *
@@ -166,7 +167,7 @@ public class LinkMethodExperiment {
 
                 for (int i = 1; i <= topN; i++) {
                     //<editor-fold defaultstate="collapsed" desc="Cosine">
-                    topSimilarity = findTopNSimilarity(i, cosineResult);
+                    topSimilarity = TopNSimilarity.findTopNSimilarity(i, cosineResult);
                     float precisionNear = EvaluationMetric.Mean_Precision_TopN(topSimilarity, _graph.nearTestingData);
                     float precisionFar = EvaluationMetric.Mean_Precision_TopN(topSimilarity, _graph.farTestingData);
                     bufferingExperimentResult(true, "Cosine", precisionNear);
@@ -180,7 +181,7 @@ public class LinkMethodExperiment {
                     //</editor-fold>
 
                     //<editor-fold defaultstate="collapsed" desc="Jaccard">
-                    topSimilarity = findTopNSimilarity(i, jaccardResult);
+                    topSimilarity = TopNSimilarity.findTopNSimilarity(i, jaccardResult);
                     precisionNear = EvaluationMetric.Mean_Precision_TopN(topSimilarity, _graph.nearTestingData);
                     precisionFar = EvaluationMetric.Mean_Precision_TopN(topSimilarity, _graph.farTestingData);
                     bufferingExperimentResult(true, "Jaccard", precisionNear);
@@ -193,7 +194,7 @@ public class LinkMethodExperiment {
                     //</editor-fold>
 
                     //<editor-fold defaultstate="collapsed" desc="AdamicAdar">
-                    topSimilarity = findTopNSimilarity(i, adamicAdarResult);
+                    topSimilarity = TopNSimilarity.findTopNSimilarity(i, adamicAdarResult);
                     precisionNear = EvaluationMetric.Mean_Precision_TopN(topSimilarity, _graph.nearTestingData);
                     precisionFar = EvaluationMetric.Mean_Precision_TopN(topSimilarity, _graph.farTestingData);
                     bufferingExperimentResult(true, "AdamicAdar", precisionNear);
@@ -206,7 +207,7 @@ public class LinkMethodExperiment {
                     //</editor-fold>
 
                     //<editor-fold defaultstate="collapsed" desc="RSS">
-                    topSimilarity = findTopNSimilarity(i, rssResult);
+                    topSimilarity = TopNSimilarity.findTopNSimilarity(i, rssResult);
                     precisionNear = EvaluationMetric.Mean_Precision_TopN(topSimilarity, _graph.nearTestingData);
                     precisionFar = EvaluationMetric.Mean_Precision_TopN(topSimilarity, _graph.farTestingData);
                     bufferingExperimentResult(true, "RSS", precisionNear);
@@ -219,7 +220,7 @@ public class LinkMethodExperiment {
                     //</editor-fold>
 
                     //<editor-fold defaultstate="collapsed" desc="RSSPlus">
-                    topSimilarity = findTopNSimilarity(i, rssplusResult);
+                    topSimilarity = TopNSimilarity.findTopNSimilarity(i, rssplusResult);
                     precisionNear = EvaluationMetric.Mean_Precision_TopN(topSimilarity, _graph.nearTestingData);
                     precisionFar = EvaluationMetric.Mean_Precision_TopN(topSimilarity, _graph.farTestingData);
                     bufferingExperimentResult(true, "RSSPlus", precisionNear);
@@ -232,7 +233,7 @@ public class LinkMethodExperiment {
                     //</editor-fold>
 
                     //<editor-fold defaultstate="collapsed" desc="MPBVS">
-                    topSimilarity = findTopNSimilarity(i, mpbvsResult);
+                    topSimilarity = TopNSimilarity.findTopNSimilarity(i, mpbvsResult);
                     precisionNear = EvaluationMetric.Mean_Precision_TopN(topSimilarity, _graph.nearTestingData);
                     precisionFar = EvaluationMetric.Mean_Precision_TopN(topSimilarity, _graph.farTestingData);
                     bufferingExperimentResult(true, "MPBVS", precisionNear);
@@ -245,7 +246,7 @@ public class LinkMethodExperiment {
                     //</editor-fold>
 
                     //<editor-fold defaultstate="collapsed" desc="MPBVSPlus">
-                    topSimilarity = findTopNSimilarity(i, mpbvsplusResult);
+                    topSimilarity = TopNSimilarity.findTopNSimilarity(i, mpbvsplusResult);
                     precisionNear = EvaluationMetric.Mean_Precision_TopN(topSimilarity, _graph.nearTestingData);
                     precisionFar = EvaluationMetric.Mean_Precision_TopN(topSimilarity, _graph.farTestingData);
                     bufferingExperimentResult(true, "MPBVSPlus", precisionNear);
@@ -437,30 +438,6 @@ public class LinkMethodExperiment {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-    }
-
-    private HashMap<Integer, HashMap<Integer, Float>> findTopNSimilarity(int topN, HashMap<Integer, HashMap<Integer, Float>> data) {
-        HashMap<Integer, HashMap<Integer, Float>> result = new HashMap<>();
-        for (int authorId : data.keySet()) {
-            HashMap<Integer, Float> listAuthorRecommend = new HashMap<>();
-            for (int idRecommend : data.get(authorId).keySet()) {
-                listAuthorRecommend.put(idRecommend, data.get(authorId).get(idRecommend));
-                if (listAuthorRecommend.size() > topN) {
-                    int keyMinValue = 0;
-                    float minValue = Integer.MAX_VALUE;
-                    for (int id : listAuthorRecommend.keySet()) {
-                        if (listAuthorRecommend.get(id) < minValue) {
-                            minValue = listAuthorRecommend.get(id);
-                            keyMinValue = id;
-                        }
-                    }
-
-                    listAuthorRecommend.remove(keyMinValue);
-                }
-            }
-            result.put(authorId, listAuthorRecommend);
-        }
-        return result;
     }
 
     private void bufferingExperimentResult(boolean isNFResult, String predictMethod, float value) {

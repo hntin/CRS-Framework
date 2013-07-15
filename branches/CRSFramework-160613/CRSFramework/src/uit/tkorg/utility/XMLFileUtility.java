@@ -17,7 +17,7 @@ import org.dom4j.io.XMLWriter;
  *
  * @author tin
  */
-public class XMLFileProcessor {
+public class XMLFileUtility {
      /**
      * readXMLFile(File xmlFile)
      * @param xmlFile

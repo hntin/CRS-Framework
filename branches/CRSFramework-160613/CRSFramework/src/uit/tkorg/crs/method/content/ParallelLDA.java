@@ -10,7 +10,7 @@ import java.util.regex.*;
 import java.io.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import uit.tkorg.utility.TextFileProcessor;
+import uit.tkorg.utility.TextFileUtility;
 
 /**
  *
@@ -120,7 +120,7 @@ public class ParallelLDA {
                     if (fList[j].isFile()) {
                         String fileName = fList[j].getName();
                         buffInputParallelLDA.append(fileName + "\t" + "X" + "\t");
-                        buffInputParallelLDA.append(TextFileProcessor.readTextFile(fList[j].getAbsolutePath()));
+                        buffInputParallelLDA.append(TextFileUtility.readTextFile(fList[j].getAbsolutePath()));
                         buffAuthorIDAndDocMapping.append(
                                 fileName.substring(fileName.lastIndexOf("_")+1, fileName.lastIndexOf(".")) 
                                 + "\t" + instanceID + "\n");
@@ -131,8 +131,8 @@ public class ParallelLDA {
             }
         }
 
-        TextFileProcessor.writeTextFile(rootPath + "\\CRS-InputParallelLDA.txt", buffInputParallelLDA.toString());
-        TextFileProcessor.writeTextFile(rootPath + "\\CRS-AuthorIDAndInstance.txt", buffAuthorIDAndDocMapping.toString());
+        TextFileUtility.writeTextFile(rootPath + "\\CRS-InputParallelLDA.txt", buffInputParallelLDA.toString());
+        TextFileUtility.writeTextFile(rootPath + "\\CRS-AuthorIDAndInstance.txt", buffAuthorIDAndDocMapping.toString());
     }
     
     private int getInstanceFromAuthorID(int authorID) {

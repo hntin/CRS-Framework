@@ -8,7 +8,7 @@ import java.io.File;
 import java.util.HashMap;
 import jgibblda.Estimator;
 import jgibblda.LDACmdOption;
-import uit.tkorg.utility.TextFileProcessor;
+import uit.tkorg.utility.TextFileUtility;
 
 /**
  *
@@ -47,7 +47,7 @@ public class JGibbLDA {
                 for (int j = 0; j < fList.length; j++) {
                     if (fList[j].isFile()) {
                         // Doc va bo vao buffer
-                        buffInputFormatLDA.append(TextFileProcessor.readTextFile(fList[j].getAbsolutePath()));
+                        buffInputFormatLDA.append(TextFileUtility.readTextFile(fList[j].getAbsolutePath()));
                         buffAuthorIDIndex.append(fList[j].getName() + "\t" + (idx++) + "\n");
                     }
                     buffInputFormatLDA.append("\n");
@@ -57,7 +57,7 @@ public class JGibbLDA {
 
         buffInputFormatLDA.insert(0, idx + "\n");
 
-        TextFileProcessor.writeTextFile(rootPath + "\\CRS-InputDataLDA.dat", buffInputFormatLDA.toString());
-        TextFileProcessor.writeTextFile(rootPath + "\\CRS-AuthorIDIdx.dat", buffAuthorIDIndex.toString());
+        TextFileUtility.writeTextFile(rootPath + "\\CRS-InputDataLDA.dat", buffInputFormatLDA.toString());
+        TextFileUtility.writeTextFile(rootPath + "\\CRS-AuthorIDIdx.dat", buffAuthorIDIndex.toString());
     }
 }
