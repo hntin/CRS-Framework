@@ -405,7 +405,7 @@ public class Graph {
             }
         }
     }
-   
+
     public HashSet<Integer> GetAllAuthorNearTest() {
         HashSet<Integer> listAuthor = new HashSet<>();
 
@@ -436,4 +436,22 @@ public class Graph {
         }
         return listAuthor;
     }
+
+    // Testing Functions of Graph
+//    public static void main(String args[]) {
+//        System.out.println("START LOADING TRAINING DATA");
+//        Graph _graph = Graph.getInstance();
+//        
+//        _graph.LoadTrainingData("C:\\CRS-Experiment\\Sampledata\\[Training]AuthorId_PaperID.txt", 
+//                "C:\\CRS-Experiment\\Sampledata\\[Training]PaperID_Year.txt");
+//
+//        // Building Graphs
+//        _graph.BuidCoAuthorGraph();
+//        _graph.BuildingRSSGraph();
+//        
+//        HashMap temp1 = _graph.coAuthorGraph;
+//        HashMap temp2 = _graph.rssGraph;
+//        
+//        System.out.println("DONE");
+//    }
 }

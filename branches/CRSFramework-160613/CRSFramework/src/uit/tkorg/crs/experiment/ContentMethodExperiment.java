@@ -31,10 +31,10 @@ public class ContentMethodExperiment {
     private boolean _isTFIDF = false;
     private ArrayList<Integer> _listAuthorRandom;
     private String _LDA_InputFile;
-    private String _training_PaperId_AuthorIdPath;
+    private String _training_AuthorId_PaperId_Path;
     private String _training_PaperId_YearPath;
-    private String _testing_PaperId_Year_NFPath;
-    private String _testing_PaperId_Year_FFPath;
+    private String _testing_AuthorId_PaperId_NFPath;
+    private String _testing_AuthorId_PaperId_FFPath;
     private String _existing_List_AuthorPath;
     private String _resultPath;
     private StringBuffer _nfContentPredictionBuffer = new StringBuffer();
@@ -50,10 +50,10 @@ public class ContentMethodExperiment {
             String ResultPath, boolean isKLDivergence, boolean isTFIDF) {
 
         _LDA_InputFile = LDAInputFile;
-        _training_PaperId_AuthorIdPath = Training_PaperId_AuthorIdPath;
+        _training_AuthorId_PaperId_Path = Training_PaperId_AuthorIdPath;
         _training_PaperId_YearPath = Training_PaperId_YearPath;
-        _testing_PaperId_Year_NFPath = Testing_PaperId_Year_NFPath;
-        _testing_PaperId_Year_FFPath = Testing_PaperId_Year_FFPath;
+        _testing_AuthorId_PaperId_NFPath = Testing_PaperId_Year_NFPath;
+        _testing_AuthorId_PaperId_FFPath = Testing_PaperId_Year_FFPath;
         _existing_List_AuthorPath = Existing_List_AuthorPath;
 
         _isKLDivergence = isKLDivergence;
@@ -65,8 +65,8 @@ public class ContentMethodExperiment {
     public void runContentMethodExperiment() throws Exception {
         // Loading traning and testing data
         System.out.println("START LOADING TRAINING DATA");
-        _graph.LoadTrainingData(_training_PaperId_AuthorIdPath, _training_PaperId_YearPath);
-        _graph.LoadTestingData(_testing_PaperId_Year_NFPath, _testing_PaperId_Year_FFPath);
+        _graph.LoadTrainingData(_training_AuthorId_PaperId_Path, _training_PaperId_YearPath);
+        _graph.LoadTestingData(_testing_AuthorId_PaperId_NFPath, _testing_AuthorId_PaperId_FFPath);
 
         // Building Graphs
         _graph.BuildingRSSGraph();
