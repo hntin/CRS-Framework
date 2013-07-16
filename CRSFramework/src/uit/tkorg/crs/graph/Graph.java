@@ -28,7 +28,8 @@ public class Graph {
         }
         return _instance;
     }
-    private HashMap<Integer, HashMap<Integer, Integer>> coAuthorGraph;
+    
+    public HashMap<Integer, HashMap<Integer, Integer>> coAuthorGraph;
     private HashMap<Integer, HashMap<Integer, Integer>> coAuthorGraphNear;
     private HashMap<Integer, HashMap<Integer, Integer>> coAuthorGraphFar;
     public HashMap<Integer, HashMap<Integer, Float>> rssGraph; //weighted, directed graph
@@ -438,24 +439,24 @@ public class Graph {
         return listAuthor;
     }
 
-    // Testing Functions of Graph
-    public static void main(String args[]) {
-        System.out.println("START LOADING TRAINING DATA");
-        Graph _graph = Graph.getInstance();
-        
-        _graph.LoadTrainingData("C:\\CRS-Experiment\\Sampledata\\[Training]AuthorId_PaperID.txt", 
-                "C:\\CRS-Experiment\\Sampledata\\[Training]PaperID_Year.txt");
-
-        // Building Graphs
-        _graph.BuidCoAuthorGraph();
-        _graph.BuildingRSSGraph();
-        
-        HashMap temp1 = _graph.coAuthorGraph;
-        HashMap temp2 = _graph.rssGraph;
-        
-        PageRank pr = new PageRank();
-        HashMap<Integer, HashMap<Integer, Float>> inLinkHM = pr.initInLinkHMFromGraph(temp2);
-        
-        System.out.println("DONE");
-    }
+//    // Testing Functions of Graph
+//    public static void main(String args[]) {
+//        System.out.println("START LOADING TRAINING DATA");
+//        Graph _graph = Graph.getInstance();
+//        
+//        _graph.LoadTrainingData("C:\\CRS-Experiment\\Sampledata\\[Training]AuthorId_PaperID.txt", 
+//                "C:\\CRS-Experiment\\Sampledata\\[Training]PaperID_Year.txt");
+//
+//        // Building Graphs
+//        _graph.BuidCoAuthorGraph();
+//        _graph.BuildingRSSGraph();
+//        
+//        HashMap temp1 = _graph.coAuthorGraph;
+//        HashMap temp2 = _graph.rssGraph;
+//        
+//        PageRank pr = new PageRank();
+//        HashMap<Integer, HashMap<Integer, Float>> inLinkHM = pr.initInLinkHMFromGraph(temp2);
+//        
+//        System.out.println("DONE");
+//    }
 }
