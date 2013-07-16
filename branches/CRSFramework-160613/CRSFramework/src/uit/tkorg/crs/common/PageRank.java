@@ -10,9 +10,12 @@ import uit.tkorg.crs.graph.Graph;
 public class PageRank {
     // _PageRankResult<NodeID, RankOfNode>
     HashMap<Integer, Float> _PageRankResult = new HashMap<>();
+    // Direct Graph <BeginID, <EndID, Weight>>
     HashMap<Integer, HashMap<Integer, Float>> _graph = null;
+    // Direct Graph <CurrentID, <FromID, Weight>>
     HashMap<Integer, HashMap<Integer, Float>> _inLinkHM = new HashMap<>();
-    HashMap<Integer, HashMap<Integer, Float>> _outLinkHM = new HashMap<>(); // rssGraph is exactly outLinkHM
+    // Direct Graph <CurrentID, <OutID, Weight>>
+    HashMap<Integer, HashMap<Integer, Float>> _outLinkHM = new HashMap<>(); 
     int N; // Number of Page/Node
     public float d; // damping factor
     public int iterationNumber;
@@ -24,36 +27,37 @@ public class PageRank {
         iterationNumber = iterationNum;
     }
 
-    public void initPageRank() {
-        float initValuePR = (float) 1 / (float) N;
-        for (int id : _graph.keySet()) {
-            _PageRankResult.put(id, initValuePR);
-        }
-    }
-
-    /**
-     * @return HashMap<NodeID, ImportantRate>
-     */
     public HashMap<Integer, Float> calculatePR() {
         HashMap<Integer, Float> npg = new HashMap<>();
         initInLinkHMFromGraph(_graph);
         initOutLinkHMFromGraph(_graph);
-        initPageRank();
+        
+        float initValuePR = (float) 1 / (float) N;
+        for (int id : _graph.keySet()) {
+            _PageRankResult.put(id, initValuePR);
+        }
 
-        float currentPR = 0f;
+        float valPR = 0f;
         while (iterationNumber > 0) {
             float dp = 0;
-
+            
             for (int id : _graph.keySet()) {
-                // get Pageank from random jump
-                currentPR = dp + (float)(1 - d)/(float)N;
+                // if id has no out link                
+                if ((_graph.get(id) == null) || (_graph.get(id).size() == 0) ) {
+                    dp = dp + d*(_PageRankResult.get(id))/N;
+                }
+            }
+            
+            for (int id : _graph.keySet()) {
+                // get PageRank from random jump
+                valPR = dp + (float)(1 - d)/(float)N;
                 if (_inLinkHM.get(id) != null) {
                     for (int inLinkID : _inLinkHM.get(id).keySet()) {
                         // get PageRank from inlinks
-                        currentPR = currentPR + ((float)d*_PageRankResult.get(inLinkID))/_outLinkHM.get(inLinkID).size();
+                        valPR = valPR + ((float)d*_PageRankResult.get(inLinkID))/_outLinkHM.get(inLinkID).size();
                     }
                 }
-                npg.put(id, currentPR);
+                npg.put(id, valPR);
             }
 
             // update PageRank
@@ -66,10 +70,9 @@ public class PageRank {
 
         return _PageRankResult;
     }
-
+    
     /**
      * initInLinkHMFromGraph
-     *
      * @param graph: is exactly rssGraph
      */
     public HashMap<Integer, HashMap<Integer, Float>> initInLinkHMFromGraph(HashMap<Integer, HashMap<Integer, Float>> graph) {
@@ -97,44 +100,56 @@ public class PageRank {
     // Testing Functions of Graph
     public static void main(String args[]) {
         System.out.println("START LOADING TRAINING DATA");
-        HashMap<Integer, HashMap<Integer, Float>> graph = new HashMap<>();
+//        HashMap<Integer, HashMap<Integer, Float>> graph = new HashMap<>();
+//        
+//        HashMap<Integer, Float> link_Node1 = new HashMap<>();
+//        link_Node1.put(2, 1f);
+//        link_Node1.put(3, 1f);
+//        link_Node1.put(6, 1f);
+//        graph.put(1, link_Node1);
+//        
+//        HashMap<Integer, Float> link_Node2 = new HashMap<>();
+//        link_Node2.put(3, 1f);
+//        link_Node2.put(4, 1f);
+//        link_Node2.put(5, 1f);
+//        link_Node2.put(6, 1f);
+//        graph.put(2, link_Node2);
+//        
+//        HashMap<Integer, Float> link_Node3 = new HashMap<>();
+//        link_Node3.put(4, 1f);
+//        link_Node3.put(5, 1f);
+//        graph.put(3, link_Node3);
+//        
+//        HashMap<Integer, Float> link_Node4 = new HashMap<>();
+//        link_Node4.put(1, 1f);
+//        link_Node4.put(3, 1f);
+//        link_Node4.put(5, 1f);
+//        link_Node4.put(6, 1f);
+//        graph.put(4, link_Node4);
+//        
+//        HashMap<Integer, Float> link_Node5 = new HashMap<>();
+//        link_Node5.put(1, 1f);
+//        graph.put(5, link_Node5);
+//        
+//        HashMap<Integer, Float> link_Node6 = new HashMap<>();
+//        link_Node6.put(1, 1f);
+//        link_Node6.put(2, 1f);
+//        link_Node6.put(5, 1f);
+//        graph.put(6, link_Node6);
         
-        HashMap<Integer, Float> link_Node1 = new HashMap<>();
-        link_Node1.put(2, 1f);
-        link_Node1.put(3, 1f);
-        link_Node1.put(6, 1f);
-        graph.put(1, link_Node1);
+        System.out.println("START LOADING TRAINING DATA");
+        Graph _graph = Graph.getInstance();
+        _graph.LoadTrainingData("C:\\CRS-Experiment\\Sampledata\\[Training]AuthorId_PaperID.txt", 
+                "C:\\CRS-Experiment\\Sampledata\\[Training]PaperID_Year.txt");
+
+        // Building Graphs
+        _graph.BuidCoAuthorGraph();
+        _graph.BuildingRSSGraph();
         
-        HashMap<Integer, Float> link_Node2 = new HashMap<>();
-        link_Node2.put(3, 1f);
-        link_Node2.put(4, 1f);
-        link_Node2.put(5, 1f);
-        link_Node2.put(6, 1f);
-        graph.put(2, link_Node2);
+        HashMap temp1 = _graph.coAuthorGraph;
+        HashMap temp2 = _graph.rssGraph;
         
-        HashMap<Integer, Float> link_Node3 = new HashMap<>();
-        link_Node3.put(4, 1f);
-        link_Node3.put(5, 1f);
-        graph.put(3, link_Node3);
-        
-        HashMap<Integer, Float> link_Node4 = new HashMap<>();
-        link_Node4.put(1, 1f);
-        link_Node4.put(3, 1f);
-        link_Node4.put(5, 1f);
-        link_Node4.put(6, 1f);
-        graph.put(4, link_Node4);
-        
-        HashMap<Integer, Float> link_Node5 = new HashMap<>();
-        link_Node5.put(1, 1f);
-        graph.put(5, link_Node5);
-        
-        HashMap<Integer, Float> link_Node6 = new HashMap<>();
-        link_Node6.put(1, 1f);
-        link_Node6.put(2, 1f);
-        link_Node6.put(5, 1f);
-        graph.put(6, link_Node6);
-        
-        PageRank pr = new PageRank(graph, 100000, 0.85f);
+        PageRank pr = new PageRank(_graph.rssGraph, 1000, 0.85f);
         HashMap<Integer, Float> resultPR = pr.calculatePR();
 
         System.out.println("PAGE RANK RESULT ...");
