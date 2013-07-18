@@ -15,16 +15,17 @@ import uit.tkorg.utility.TextFileUtility;
  * @author tin
  */
 public class JGibbLDA {
-    static StringBuffer buffInputFormatLDA = new StringBuffer();
-    static StringBuffer buffAuthorIDIndex = new StringBuffer();
+
+    private static StringBuffer buffAuthorIDAndDocMapping = new StringBuffer();
+    private static StringBuffer buffInputJGibbLDA = new StringBuffer();
 
     public void process() {
         LDACmdOption ldaCmdOption = new LDACmdOption();
         ldaCmdOption.setEst(true);
         ldaCmdOption.setEstc(false);
         ldaCmdOption.setInf(false);
-        ldaCmdOption.setDir("C:\\CRS-Experiment\\Test\\OutStem\\New folder");
-        ldaCmdOption.setDfile("OutStem_ap1.dat");
+        ldaCmdOption.setDir("C:\\CRS-Experiment\\Sampledata\\LDATest\\JGibbLDA\\Output\\NotStemming");
+        ldaCmdOption.setDfile("JGibbLDASample.dat");
         ldaCmdOption.setAlpha(0.01);
         ldaCmdOption.setBeta(0.01);
         ldaCmdOption.setK(100);
@@ -38,26 +39,41 @@ public class JGibbLDA {
     }
 
     public void formatInputForLDA(String rootPath) {
-        File mainFolder = new File(rootPath); // C:\CRS-Experiment\OutStem
+        File mainFolder = new File(rootPath);
         File[] subFolderList = mainFolder.listFiles();
-        int idx = 0;
+        int instanceID = 0;
+        int numberOfDoc = 0;
+        
+        buffAuthorIDAndDocMapping.append("AuthorID" + "\t" + "InstanceID" + "\n");
         for (int i = 0; i < subFolderList.length; i++) {
             if (subFolderList[i].isDirectory()) {
                 File[] fList = subFolderList[i].listFiles();
                 for (int j = 0; j < fList.length; j++) {
                     if (fList[j].isFile()) {
                         // Doc va bo vao buffer
-                        buffInputFormatLDA.append(TextFileUtility.readTextFile(fList[j].getAbsolutePath()));
-                        buffAuthorIDIndex.append(fList[j].getName() + "\t" + (idx++) + "\n");
+                        String fileName = fList[j].getName();
+                        buffInputJGibbLDA.append(TextFileUtility.readTextFile(fList[j].getAbsolutePath()));
+                        buffAuthorIDAndDocMapping.append(
+                                fileName.substring(fileName.lastIndexOf("_") + 1, fileName.lastIndexOf("."))
+                                + "\t" + instanceID + "\n");
+                        instanceID++;
+
+                        buffInputJGibbLDA.append(TextFileUtility.readTextFile(fList[j].getAbsolutePath()));
+                        numberOfDoc++;
                     }
-                    buffInputFormatLDA.append("\n");
+                    buffInputJGibbLDA.append("\n");
                 }
             }
         }
 
-        buffInputFormatLDA.insert(0, idx + "\n");
+        buffInputJGibbLDA.insert(0, numberOfDoc + "\n");
+        TextFileUtility.writeTextFile(rootPath + "\\CRS-InputJGibbLDA.dat", buffInputJGibbLDA.toString());
+        TextFileUtility.writeTextFile(rootPath + "\\CRS-AuthorIDAndInstance.txt", buffAuthorIDAndDocMapping.toString());
+    }
 
-        TextFileUtility.writeTextFile(rootPath + "\\CRS-InputDataLDA.dat", buffInputFormatLDA.toString());
-        TextFileUtility.writeTextFile(rootPath + "\\CRS-AuthorIDIdx.dat", buffAuthorIDIndex.toString());
+    public static void main(String args[]) {
+        (new JGibbLDA()).process();
+
+        System.out.println("DONE");
     }
 }
