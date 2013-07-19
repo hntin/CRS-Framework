@@ -51,11 +51,10 @@ public class ParallelLDA {
             ParallelTopicModel model = new ParallelTopicModel(numTopics, 1.0, 0.01);
 
             model.addInstances(instances);
-            //model.wordsPerTopic = 1000;
 
             // Use two parallel samplers, which each look at one half the corpus and combine
             //  statistics after every iteration.
-            model.setNumThreads(22);
+            model.setNumThreads(4);
 
             // Run the model for 50 iterations and stop (this is for testing only, 
             //  for real applications, use 1000 to 2000 iterations)
