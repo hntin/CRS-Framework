@@ -54,7 +54,7 @@ public class Cosine {
         Runtime runtime = Runtime.getRuntime();
         int numOfProcessors = runtime.availableProcessors();
 
-        ExecutorService executor = Executors.newFixedThreadPool(numOfProcessors - 1);
+        ExecutorService executor = Executors.newFixedThreadPool(numOfProcessors / 2);
         for (final int authorId : listAuthor) {
             executor.submit(new Runnable() {
                 @Override
