@@ -43,12 +43,15 @@ public class HybridMethodExperiment {
     private StringBuffer _ffContentPredictionBuffer = new StringBuffer();
     HashMap<Integer, HashMap<Integer, Float>> topSimilarity;
     boolean _isLinearHybrid;
+    boolean _isHybridMethodPredictionNewLink;
+    boolean _isHybridMethodPredictionExistAndNewLink;
     int topN = 50;
 
     public HybridMethodExperiment(String inputFileLDA, String training_AuthorId_PaperIdPath, String training_PaperId_YearPath,
             String testing_AuthorId_PaperId_NFPath, String testing_AuthorId_PaperId_FFPath,
             String existing_ListAuthorPath,
-            String ResultPath, boolean isLinearHybrid) {
+            String ResultPath, boolean isLinearHybrid, 
+            boolean isHybridMethodPredictionNewLink, boolean isHybridMethodPredictionExistAndNewLink) {
 
         _LDA_InputFile = inputFileLDA;
         _training_AuthorId__PaperIdPath = training_AuthorId_PaperIdPath;
@@ -58,6 +61,8 @@ public class HybridMethodExperiment {
         _existing_List_AuthorPath = existing_ListAuthorPath;
         _resultPath = ResultPath;
         _isLinearHybrid = isLinearHybrid;
+        _isHybridMethodPredictionNewLink = isHybridMethodPredictionNewLink;
+        _isHybridMethodPredictionExistAndNewLink = isHybridMethodPredictionExistAndNewLink;
     }
 
     public void runHybridMethodExperiment() throws Exception {
@@ -103,7 +108,12 @@ public class HybridMethodExperiment {
             linearHybridResult = linearHybridMethod.calculatingLinearHybriđ(rssResult, tfidfResult);
             if (linearHybridResult != null) {
                 for (int i = 1; i <= topN; i++) {
-                    topSimilarity = TopNSimilarity.findTopNSimilarity(i, linearHybridResult);
+                    if (_isHybridMethodPredictionNewLink) {
+                        topSimilarity = TopNSimilarity.findTopNSimilarityForNewLinkOnly(i, linearHybridResult, _graph.rssGraph);
+                    }
+                    else {
+                        topSimilarity = TopNSimilarity.findTopNSimilarity(i, linearHybridResult);
+                    }
                     float precisionNear = EvaluationMetric.Mean_Precision_TopN(topSimilarity, _graph.nearTestingData);
                     float precisionFar = EvaluationMetric.Mean_Precision_TopN(topSimilarity, _graph.farTestingData);
                     _nfContentPredictionBuffer.append(df.format(precisionNear) + "\t");

@@ -29,6 +29,8 @@ public class ContentMethodExperiment {
     private Graph _graph = Graph.getInstance();
     private boolean _isKLDivergence = false;
     private boolean _isTFIDF = false;
+    private boolean _isContentMethodPredictionNewLink;
+    private boolean _isContentMethodPredictionExistAndNewLink;
     private ArrayList<Integer> _listAuthorRandom;
     private String _LDA_InputFile;
     private String _training_AuthorId_PaperId_Path;
@@ -47,7 +49,8 @@ public class ContentMethodExperiment {
     public ContentMethodExperiment(String LDAInputFile, String Training_PaperId_AuthorIdPath, String Training_PaperId_YearPath,
             String Testing_PaperId_Year_NFPath, String Testing_PaperId_Year_FFPath,
             String Existing_List_AuthorPath, // empty or null if use radom author
-            String ResultPath, boolean isKLDivergence, boolean isTFIDF) {
+            String ResultPath, boolean isKLDivergence, boolean isTFIDF, 
+            boolean isContentMethodPredictionNewLink, boolean isContentMethodPredictionExistAndNewLink) {
 
         _LDA_InputFile = LDAInputFile;
         _training_AuthorId_PaperId_Path = Training_PaperId_AuthorIdPath;
@@ -58,6 +61,9 @@ public class ContentMethodExperiment {
 
         _isKLDivergence = isKLDivergence;
         _isTFIDF = isTFIDF;
+        
+        _isContentMethodPredictionNewLink = isContentMethodPredictionNewLink;
+        _isContentMethodPredictionExistAndNewLink = isContentMethodPredictionExistAndNewLink;
 
         _resultPath = ResultPath;
     }
@@ -89,7 +95,12 @@ public class ContentMethodExperiment {
             klDivergenceResult = ldaMethod.process(_LDA_InputFile, _listAuthorRandom);
             if (klDivergenceResult != null) {
                 for (int i = 1; i <= topN; i++) {
-                    topSimilarity = TopNSimilarity.findTopNSimilarityForKLDivergence(i, klDivergenceResult);
+                    if (_isContentMethodPredictionNewLink) {
+                        topSimilarity = TopNSimilarity.findTopNSimilarityForKLDivergenceForNewLinkOnly(i, klDivergenceResult, _graph.rssGraph);
+                    }
+                    else {
+                        topSimilarity = TopNSimilarity.findTopNSimilarityForKLDivergence(i, klDivergenceResult);
+                    }
                     float precisionNear = EvaluationMetric.Mean_Precision_TopN(topSimilarity, _graph.nearTestingData);
                     float precisionFar = EvaluationMetric.Mean_Precision_TopN(topSimilarity, _graph.farTestingData);
                     _nfContentPredictionBuffer.append(df.format(precisionNear) + "\t");
@@ -111,7 +122,12 @@ public class ContentMethodExperiment {
             tfidfResult = tfidfMethod.process(_LDA_InputFile, _listAuthorRandom);
             if (tfidfResult != null) {
                 for (int i = 1; i <= topN; i++) {
-                    topSimilarity = TopNSimilarity.findTopNSimilarity(i, tfidfResult);
+                    if (_isContentMethodPredictionNewLink) {
+                        topSimilarity = TopNSimilarity.findTopNSimilarityForNewLinkOnly(i, tfidfResult, _graph.rssGraph);
+                    }
+                    else {
+                        topSimilarity = TopNSimilarity.findTopNSimilarity(i, tfidfResult);
+                    }
                     float precisionNear = EvaluationMetric.Mean_Precision_TopN(topSimilarity, _graph.nearTestingData);
                     float precisionFar = EvaluationMetric.Mean_Precision_TopN(topSimilarity, _graph.farTestingData);
                     _nfContentPredictionBuffer.append(df.format(precisionNear) + "\t");
