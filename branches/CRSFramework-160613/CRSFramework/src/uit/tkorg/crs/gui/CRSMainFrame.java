@@ -54,6 +54,9 @@ public class CRSMainFrame extends javax.swing.JFrame {
         jDesktopPane1 = new javax.swing.JDesktopPane();
         groupContentMethod = new javax.swing.ButtonGroup();
         groupHybridMethod = new javax.swing.ButtonGroup();
+        contentMethodPredictionOptionGroup = new javax.swing.ButtonGroup();
+        linkMethodPredictionOptionGroup = new javax.swing.ButtonGroup();
+        hybridMethodPredictionOptionGroup = new javax.swing.ButtonGroup();
         jTabbedPaneCRS = new javax.swing.JTabbedPane();
         jPanelSetting = new javax.swing.JPanel();
         jLabelDBSetting = new javax.swing.JLabel();
@@ -116,7 +119,7 @@ public class CRSMainFrame extends javax.swing.JFrame {
         jButtonBrowse14 = new javax.swing.JButton();
         jButtonBrowse15 = new javax.swing.JButton();
         jPanelMethod = new javax.swing.JPanel();
-        jRadioButtonTFIDF = new javax.swing.JRadioButton();
+        jRadioButtonTF = new javax.swing.JRadioButton();
         jRadioButtonKLDivergence = new javax.swing.JRadioButton();
         jLabel21 = new javax.swing.JLabel();
         txtInputDataFile = new javax.swing.JTextField();
@@ -124,9 +127,12 @@ public class CRSMainFrame extends javax.swing.JFrame {
         jLabel26 = new javax.swing.JLabel();
         txtExistingAuthorFile = new javax.swing.JTextField();
         jButtonBrowse18 = new javax.swing.JButton();
+        jRadioButtonTFIDF = new javax.swing.JRadioButton();
         jPanel13 = new javax.swing.JPanel();
         txtResultPath1 = new javax.swing.JTextField();
         jButtonBrowse19 = new javax.swing.JButton();
+        contentMethodPredictionNewLink = new javax.swing.JRadioButton();
+        contentMethodPredictionExistAndNewLink = new javax.swing.JRadioButton();
         jButtonRunContentMethod = new javax.swing.JButton();
         jPanelLinkMethod = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
@@ -166,6 +172,8 @@ public class CRSMainFrame extends javax.swing.JFrame {
         jLabel14 = new javax.swing.JLabel();
         txtResultPath = new javax.swing.JTextField();
         jButtonBrowse11 = new javax.swing.JButton();
+        linkMethodPredictionNewLink = new javax.swing.JRadioButton();
+        linkMethodPredictionExistAndNewLink = new javax.swing.JRadioButton();
         jButtonRunLinkMethod = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
         jPanel9 = new javax.swing.JPanel();
@@ -197,6 +205,8 @@ public class CRSMainFrame extends javax.swing.JFrame {
         jPanel14 = new javax.swing.JPanel();
         txtResultPathHybrid = new javax.swing.JTextField();
         jButtonBrowse27 = new javax.swing.JButton();
+        hybridMethodPredictionNewLink = new javax.swing.JRadioButton();
+        hybridMethodPredictionExistAndNewLink = new javax.swing.JRadioButton();
         jButtonRunHybridMethod = new javax.swing.JButton();
         mainMenuBar = new javax.swing.JMenuBar();
         jMenuDBLP = new javax.swing.JMenu();
@@ -576,7 +586,7 @@ public class CRSMainFrame extends javax.swing.JFrame {
                 .addComponent(jPanelRemoveStopwordStemming, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(97, Short.MAX_VALUE))
+                .addContainerGap(138, Short.MAX_VALUE))
         );
 
         jTabbedPaneCRS.addTab("PreProcessing", jPanelPreProcessing);
@@ -710,9 +720,9 @@ public class CRSMainFrame extends javax.swing.JFrame {
 
         jPanelMethod.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Content Based Methods", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 10))); // NOI18N
 
-        groupContentMethod.add(jRadioButtonTFIDF);
-        jRadioButtonTFIDF.setSelected(true);
-        jRadioButtonTFIDF.setText("TF*IDF");
+        groupContentMethod.add(jRadioButtonTF);
+        jRadioButtonTF.setSelected(true);
+        jRadioButtonTF.setText("TF");
 
         groupContentMethod.add(jRadioButtonKLDivergence);
         jRadioButtonKLDivergence.setText("KL Divergence");
@@ -740,6 +750,9 @@ public class CRSMainFrame extends javax.swing.JFrame {
             }
         });
 
+        groupContentMethod.add(jRadioButtonTFIDF);
+        jRadioButtonTFIDF.setText("TF*IDF");
+
         javax.swing.GroupLayout jPanelMethodLayout = new javax.swing.GroupLayout(jPanelMethod);
         jPanelMethod.setLayout(jPanelMethodLayout);
         jPanelMethodLayout.setHorizontalGroup(
@@ -753,26 +766,26 @@ public class CRSMainFrame extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelMethodLayout.createSequentialGroup()
                         .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addGroup(jPanelMethodLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(jPanelMethodLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtInputDataFile, javax.swing.GroupLayout.PREFERRED_SIZE, 683, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtExistingAuthorFile, javax.swing.GroupLayout.PREFERRED_SIZE, 683, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanelMethodLayout.createSequentialGroup()
-                                .addComponent(jRadioButtonTFIDF, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jRadioButtonTF, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(jRadioButtonKLDivergence)
-                                .addGap(495, 495, 495))
-                            .addGroup(jPanelMethodLayout.createSequentialGroup()
-                                .addGroup(jPanelMethodLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtInputDataFile, javax.swing.GroupLayout.PREFERRED_SIZE, 683, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtExistingAuthorFile, javax.swing.GroupLayout.PREFERRED_SIZE, 683, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(jPanelMethodLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jButton2, javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jButtonBrowse18, javax.swing.GroupLayout.Alignment.TRAILING))))
+                                .addComponent(jRadioButtonTFIDF, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jRadioButtonKLDivergence)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanelMethodLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButton2, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jButtonBrowse18, javax.swing.GroupLayout.Alignment.TRAILING))
                         .addContainerGap())))
         );
         jPanelMethodLayout.setVerticalGroup(
             jPanelMethodLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelMethodLayout.createSequentialGroup()
-                .addGroup(jPanelMethodLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanelMethodLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jRadioButtonTF)
                     .addComponent(jRadioButtonTFIDF)
                     .addComponent(jRadioButtonKLDivergence))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -800,20 +813,39 @@ public class CRSMainFrame extends javax.swing.JFrame {
             }
         });
 
+        contentMethodPredictionOptionGroup.add(contentMethodPredictionNewLink);
+        contentMethodPredictionNewLink.setText("Prediction for only new links");
+
+        contentMethodPredictionOptionGroup.add(contentMethodPredictionExistAndNewLink);
+        contentMethodPredictionExistAndNewLink.setSelected(true);
+        contentMethodPredictionExistAndNewLink.setText("Prediction for both existing link and new links ");
+
         javax.swing.GroupLayout jPanel13Layout = new javax.swing.GroupLayout(jPanel13);
         jPanel13.setLayout(jPanel13Layout);
         jPanel13Layout.setHorizontalGroup(
             jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel13Layout.createSequentialGroup()
-                .addGap(12, 12, 12)
-                .addComponent(txtResultPath1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButtonBrowse19))
+                .addContainerGap()
+                .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel13Layout.createSequentialGroup()
+                        .addComponent(contentMethodPredictionNewLink, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(contentMethodPredictionExistAndNewLink)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(jPanel13Layout.createSequentialGroup()
+                        .addComponent(txtResultPath1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButtonBrowse19)))
+                .addContainerGap())
         );
         jPanel13Layout.setVerticalGroup(
             jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel13Layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(12, 12, 12)
+                .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(contentMethodPredictionNewLink)
+                    .addComponent(contentMethodPredictionExistAndNewLink))
+                .addGap(18, 18, 18)
                 .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonBrowse19, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(txtResultPath1))
@@ -844,7 +876,7 @@ public class CRSMainFrame extends javax.swing.JFrame {
                 .addComponent(jPanelTestingNet, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(38, 38, 38))
+                .addContainerGap())
         );
 
         jButtonRunContentMethod.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
@@ -878,9 +910,9 @@ public class CRSMainFrame extends javax.swing.JFrame {
                 .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jPanelInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
                 .addComponent(jButtonRunContentMethod, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(42, Short.MAX_VALUE))
+                .addContainerGap(55, Short.MAX_VALUE))
         );
 
         jTabbedPaneCRS.addTab("Content Based Method", jPanelContentMethod);
@@ -1094,7 +1126,7 @@ public class CRSMainFrame extends javax.swing.JFrame {
                     .addComponent(jCheckBoxMPVS))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jCheckBoxAdamicAdar)
-                .addContainerGap(27, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel8.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Trend Based Methods", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 10))); // NOI18N
@@ -1156,13 +1188,12 @@ public class CRSMainFrame extends javax.swing.JFrame {
             }
         });
 
-        jButtonRunLinkMethod.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jButtonRunLinkMethod.setText("RUN EXPERIMENTS");
-        jButtonRunLinkMethod.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonRunLinkMethodActionPerformed(evt);
-            }
-        });
+        linkMethodPredictionOptionGroup.add(linkMethodPredictionNewLink);
+        linkMethodPredictionNewLink.setText("Prediction for only new links");
+
+        linkMethodPredictionOptionGroup.add(linkMethodPredictionExistAndNewLink);
+        linkMethodPredictionExistAndNewLink.setSelected(true);
+        linkMethodPredictionExistAndNewLink.setText("Prediction for both existing links and new links");
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -1181,16 +1212,16 @@ public class CRSMainFrame extends javax.swing.JFrame {
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel14)
-                            .addComponent(jButtonRunLinkMethod, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(linkMethodPredictionNewLink)
+                            .addComponent(linkMethodPredictionExistAndNewLink))
                         .addGap(0, 0, Short.MAX_VALUE))))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1198,10 +1229,20 @@ public class CRSMainFrame extends javax.swing.JFrame {
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txtResultPath, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jButtonBrowse11))
-                        .addGap(18, 18, 18)
-                        .addComponent(jButtonRunLinkMethod, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(linkMethodPredictionNewLink)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 5, Short.MAX_VALUE)
+                        .addComponent(linkMethodPredictionExistAndNewLink)))
                 .addContainerGap(15, Short.MAX_VALUE))
         );
+
+        jButtonRunLinkMethod.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jButtonRunLinkMethod.setText("RUN EXPERIMENTS");
+        jButtonRunLinkMethod.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonRunLinkMethodActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -1211,6 +1252,10 @@ public class CRSMainFrame extends javax.swing.JFrame {
             .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButtonRunLinkMethod, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1222,7 +1267,9 @@ public class CRSMainFrame extends javax.swing.JFrame {
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(19, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButtonRunLinkMethod, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
@@ -1247,7 +1294,7 @@ public class CRSMainFrame extends javax.swing.JFrame {
                 .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(87, Short.MAX_VALUE))
+                .addContainerGap(81, Short.MAX_VALUE))
         );
 
         jTabbedPaneCRS.addTab("Link Based Method", jPanelLinkMethod);
@@ -1384,7 +1431,7 @@ public class CRSMainFrame extends javax.swing.JFrame {
         jRadioButtonLinearHybrid.setText("Linear Combination (k*RSS + (1-k)*TFIDF)");
 
         groupContentMethod.add(jRadioButtonOtherCombination);
-        jRadioButtonOtherCombination.setText("KL Divergence");
+        jRadioButtonOtherCombination.setText("...");
         jRadioButtonOtherCombination.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jRadioButtonOtherCombinationActionPerformed(evt);
@@ -1467,33 +1514,43 @@ public class CRSMainFrame extends javax.swing.JFrame {
             }
         });
 
+        hybridMethodPredictionOptionGroup.add(hybridMethodPredictionNewLink);
+        hybridMethodPredictionNewLink.setText("Prediction for only new link");
+
+        hybridMethodPredictionOptionGroup.add(hybridMethodPredictionExistAndNewLink);
+        hybridMethodPredictionExistAndNewLink.setSelected(true);
+        hybridMethodPredictionExistAndNewLink.setText("Prediction for both new and existing link");
+
         javax.swing.GroupLayout jPanel14Layout = new javax.swing.GroupLayout(jPanel14);
         jPanel14.setLayout(jPanel14Layout);
         jPanel14Layout.setHorizontalGroup(
             jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel14Layout.createSequentialGroup()
-                .addGap(12, 12, 12)
-                .addComponent(txtResultPathHybrid)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButtonBrowse27))
+                .addContainerGap()
+                .addGroup(jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel14Layout.createSequentialGroup()
+                        .addComponent(txtResultPathHybrid, javax.swing.GroupLayout.DEFAULT_SIZE, 834, Short.MAX_VALUE)
+                        .addGap(12, 12, 12)
+                        .addComponent(jButtonBrowse27))
+                    .addGroup(jPanel14Layout.createSequentialGroup()
+                        .addComponent(hybridMethodPredictionNewLink)
+                        .addGap(18, 18, 18)
+                        .addComponent(hybridMethodPredictionExistAndNewLink)
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         jPanel14Layout.setVerticalGroup(
             jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel14Layout.createSequentialGroup()
+            .addGroup(jPanel14Layout.createSequentialGroup()
                 .addContainerGap()
+                .addGroup(jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(txtResultPathHybrid)
+                    .addComponent(jButtonBrowse27, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButtonBrowse27, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                    .addComponent(txtResultPathHybrid))
-                .addGap(16, 16, 16))
+                    .addComponent(hybridMethodPredictionNewLink)
+                    .addComponent(hybridMethodPredictionExistAndNewLink))
+                .addContainerGap(19, Short.MAX_VALUE))
         );
-
-        jButtonRunHybridMethod.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
-        jButtonRunHybridMethod.setText("Run Experiment");
-        jButtonRunHybridMethod.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonRunHybridMethodActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout jPanelInput1Layout = new javax.swing.GroupLayout(jPanelInput1);
         jPanelInput1.setLayout(jPanelInput1Layout);
@@ -1505,10 +1562,7 @@ public class CRSMainFrame extends javax.swing.JFrame {
                     .addComponent(jPanelTestingNet1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanelTrainingNet1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanelMethod5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel14, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelInput1Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButtonRunHybridMethod, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jPanel14, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanelInput1Layout.setVerticalGroup(
@@ -1521,10 +1575,16 @@ public class CRSMainFrame extends javax.swing.JFrame {
                 .addComponent(jPanelTestingNet1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButtonRunHybridMethod, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
+
+        jButtonRunHybridMethod.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
+        jButtonRunHybridMethod.setText("Run Experiment");
+        jButtonRunHybridMethod.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonRunHybridMethodActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
         jPanel9.setLayout(jPanel9Layout);
@@ -1536,7 +1596,10 @@ public class CRSMainFrame extends javax.swing.JFrame {
                     .addGroup(jPanel9Layout.createSequentialGroup()
                         .addGap(263, 263, 263)
                         .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 466, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jButtonRunHybridMethod, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanel9Layout.setVerticalGroup(
@@ -1546,7 +1609,9 @@ public class CRSMainFrame extends javax.swing.JFrame {
                 .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jPanelInput1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(48, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButtonRunHybridMethod, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(43, Short.MAX_VALUE))
         );
 
         jTabbedPaneCRS.addTab("Hybrid Method", jPanel9);
@@ -2032,6 +2097,8 @@ public class CRSMainFrame extends javax.swing.JFrame {
         boolean isRSSPlusMethod = jCheckBoxRSSPlus.isSelected();
         boolean isMPVSMethod = jCheckBoxMPVS.isSelected();
         boolean isMVVSPlusMethod = jCheckBoxMPVSPlus.isSelected();
+        boolean isPredictionOnlyNewLink = linkMethodPredictionNewLink.isSelected();
+        boolean isPredictionExistAndNewLink = linkMethodPredictionExistAndNewLink.isSelected();
 
         final LinkMethodExperiment experiment = new LinkMethodExperiment(txtTrainingAuthorPaperPath.getText(),
                 txtTrainingPaperYearPath.getText(), txtNFAuthorPaperPath.getText(),
@@ -2039,7 +2106,7 @@ public class CRSMainFrame extends javax.swing.JFrame {
                 txtValueK.getText(), txtValueYear.getText(),
                 txtResultPath.getText(),
                 isCosineMethod, isJaccardMethod, isAdarMethod, isRSSMethod,
-                isRSSPlusMethod, isMPVSMethod, isMVVSPlusMethod);
+                isRSSPlusMethod, isMPVSMethod, isMVVSPlusMethod, isPredictionOnlyNewLink, isPredictionExistAndNewLink);
 
         final DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         Date date = new Date();
@@ -2215,7 +2282,8 @@ public class CRSMainFrame extends javax.swing.JFrame {
                 txtTrainingAuthorPaperFile.getText(), txtTrainingPaperYearFile.getText(),
                 txtNFAuthorPaperFile.getText(), txtFFAuthorPaperFile.getText(),
                 txtExistingAuthorFile.getText(), // empty or null if use radom author
-                txtResultPath1.getText(), jRadioButtonKLDivergence.isSelected(), jRadioButtonTFIDF.isSelected());
+                txtResultPath1.getText(), jRadioButtonKLDivergence.isSelected(), jRadioButtonTF.isSelected(),
+                contentMethodPredictionNewLink.isSelected(), contentMethodPredictionExistAndNewLink.isSelected());
 
         final DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         Date date = new Date();
@@ -2407,7 +2475,8 @@ public class CRSMainFrame extends javax.swing.JFrame {
                 txtTrainingPaperYearFileHybrid.getText(),
                 txtNFAuthorPaperFileHybrid.getText(), txtFFAuthorPaperFileHybrid.getText(),
                 txtExistingAuthorFileHybrid.getText(),
-                txtResultPathHybrid.getText(), jRadioButtonLinearHybrid.isSelected());
+                txtResultPathHybrid.getText(), jRadioButtonLinearHybrid.isSelected(),
+                hybridMethodPredictionNewLink.isSelected(), hybridMethodPredictionExistAndNewLink.isSelected());
 
         final DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         Date date = new Date();
@@ -2462,8 +2531,14 @@ public class CRSMainFrame extends javax.swing.JFrame {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JRadioButton contentMethodPredictionExistAndNewLink;
+    private javax.swing.JRadioButton contentMethodPredictionNewLink;
+    private javax.swing.ButtonGroup contentMethodPredictionOptionGroup;
     private javax.swing.ButtonGroup groupContentMethod;
     private javax.swing.ButtonGroup groupHybridMethod;
+    private javax.swing.JRadioButton hybridMethodPredictionExistAndNewLink;
+    private javax.swing.JRadioButton hybridMethodPredictionNewLink;
+    private javax.swing.ButtonGroup hybridMethodPredictionOptionGroup;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButtonApplyDBSetting;
@@ -2583,6 +2658,7 @@ public class CRSMainFrame extends javax.swing.JFrame {
     private javax.swing.JRadioButton jRadioButtonKLDivergence;
     private javax.swing.JRadioButton jRadioButtonLinearHybrid;
     private javax.swing.JRadioButton jRadioButtonOtherCombination;
+    private javax.swing.JRadioButton jRadioButtonTF;
     private javax.swing.JRadioButton jRadioButtonTFIDF;
     private javax.swing.JTabbedPane jTabbedPaneCRS;
     private javax.swing.JTextField jTextFieldDBMSPort;
@@ -2595,6 +2671,9 @@ public class CRSMainFrame extends javax.swing.JFrame {
     private javax.swing.JTextField jTextFieldPathDataExtraction;
     private javax.swing.JTextField jTextFieldStemOutPath;
     private javax.swing.JTextField jTextFieldStemmingSourcePath;
+    private javax.swing.JRadioButton linkMethodPredictionExistAndNewLink;
+    private javax.swing.JRadioButton linkMethodPredictionNewLink;
+    private javax.swing.ButtonGroup linkMethodPredictionOptionGroup;
     private javax.swing.JMenuBar mainMenuBar;
     private javax.swing.JRadioButton radbtnUseExistingList1;
     private javax.swing.JTextField txtExistingAuthorFile;

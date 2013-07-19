@@ -49,7 +49,8 @@ public class LinkMethodExperiment {
     private boolean _isRSSPlusMethod;
     private boolean _isMPVSMethod;
     private boolean _isMVVSPlusMethod;
-
+    private boolean _isPredictionOnlyNewLink;
+    private boolean _isPredictionExistAndNewLink;
     private StringBuffer _nfAdamicAdarBuffer = new StringBuffer();
     private StringBuffer _nfCosineBuffer = new StringBuffer();
     private StringBuffer _nfJaccardBuffer = new StringBuffer();
@@ -72,7 +73,8 @@ public class LinkMethodExperiment {
             String K, String Year,
             String ResultPath,
             boolean isCosineMethod, boolean isJaccardMethod, boolean isAdarMethod, boolean isRSSMethod,
-            boolean isRSSPlusMethod, boolean isMPVSMethod, boolean isMVVSPlusMethod) {
+            boolean isRSSPlusMethod, boolean isMPVSMethod, boolean isMVVSPlusMethod,
+            boolean isPredictionOnlyNewLink, boolean isPredictionExistAndNewLink) {
 
         _training_PaperId_AuthorIdPath = Training_PaperId_AuthorIdPath;
         _training_PaperId_YearPath = Training_PaperId_YearPath;
@@ -110,6 +112,8 @@ public class LinkMethodExperiment {
         _isRSSPlusMethod = isRSSPlusMethod;
         _isMPVSMethod = isMPVSMethod;
         _isMVVSPlusMethod = isMVVSPlusMethod;
+        _isPredictionOnlyNewLink = isPredictionOnlyNewLink;
+        _isPredictionExistAndNewLink = isPredictionExistAndNewLink;
 
         _resultPath = ResultPath;
     }
@@ -167,7 +171,11 @@ public class LinkMethodExperiment {
 
                 for (int i = 1; i <= topN; i++) {
                     //<editor-fold defaultstate="collapsed" desc="Cosine">
-                    topSimilarity = TopNSimilarity.findTopNSimilarity(i, cosineResult);
+                    if (_isPredictionOnlyNewLink) {
+                        topSimilarity = TopNSimilarity.findTopNSimilarityForNewLinkOnly(i, cosineResult, _graph.rssGraph);
+                    } else {
+                        topSimilarity = TopNSimilarity.findTopNSimilarity(i, cosineResult);
+                    }
                     float precisionNear = EvaluationMetric.Mean_Precision_TopN(topSimilarity, _graph.nearTestingData);
                     float precisionFar = EvaluationMetric.Mean_Precision_TopN(topSimilarity, _graph.farTestingData);
                     bufferingExperimentResult(true, "Cosine", precisionNear);
@@ -181,7 +189,11 @@ public class LinkMethodExperiment {
                     //</editor-fold>
 
                     //<editor-fold defaultstate="collapsed" desc="Jaccard">
-                    topSimilarity = TopNSimilarity.findTopNSimilarity(i, jaccardResult);
+                    if (_isPredictionOnlyNewLink) {
+                        topSimilarity = TopNSimilarity.findTopNSimilarityForNewLinkOnly(i, jaccardResult, _graph.rssGraph);
+                    } else {
+                        topSimilarity = TopNSimilarity.findTopNSimilarity(i, jaccardResult);
+                    }
                     precisionNear = EvaluationMetric.Mean_Precision_TopN(topSimilarity, _graph.nearTestingData);
                     precisionFar = EvaluationMetric.Mean_Precision_TopN(topSimilarity, _graph.farTestingData);
                     bufferingExperimentResult(true, "Jaccard", precisionNear);
@@ -194,7 +206,11 @@ public class LinkMethodExperiment {
                     //</editor-fold>
 
                     //<editor-fold defaultstate="collapsed" desc="AdamicAdar">
-                    topSimilarity = TopNSimilarity.findTopNSimilarity(i, adamicAdarResult);
+                    if (_isPredictionOnlyNewLink) {
+                        topSimilarity = TopNSimilarity.findTopNSimilarityForNewLinkOnly(i, adamicAdarResult, _graph.rssGraph);
+                    } else {
+                        topSimilarity = TopNSimilarity.findTopNSimilarity(i, adamicAdarResult);
+                    }
                     precisionNear = EvaluationMetric.Mean_Precision_TopN(topSimilarity, _graph.nearTestingData);
                     precisionFar = EvaluationMetric.Mean_Precision_TopN(topSimilarity, _graph.farTestingData);
                     bufferingExperimentResult(true, "AdamicAdar", precisionNear);
@@ -207,7 +223,11 @@ public class LinkMethodExperiment {
                     //</editor-fold>
 
                     //<editor-fold defaultstate="collapsed" desc="RSS">
-                    topSimilarity = TopNSimilarity.findTopNSimilarity(i, rssResult);
+                    if (_isPredictionOnlyNewLink) {
+                        topSimilarity = TopNSimilarity.findTopNSimilarityForNewLinkOnly(i, rssResult, _graph.rssGraph);
+                    } else {
+                        topSimilarity = TopNSimilarity.findTopNSimilarity(i, rssResult);
+                    }
                     precisionNear = EvaluationMetric.Mean_Precision_TopN(topSimilarity, _graph.nearTestingData);
                     precisionFar = EvaluationMetric.Mean_Precision_TopN(topSimilarity, _graph.farTestingData);
                     bufferingExperimentResult(true, "RSS", precisionNear);
@@ -220,7 +240,11 @@ public class LinkMethodExperiment {
                     //</editor-fold>
 
                     //<editor-fold defaultstate="collapsed" desc="RSSPlus">
-                    topSimilarity = TopNSimilarity.findTopNSimilarity(i, rssplusResult);
+                    if (_isPredictionOnlyNewLink) {
+                        topSimilarity = TopNSimilarity.findTopNSimilarityForNewLinkOnly(i, rssplusResult, _graph.rssGraph);
+                    } else {
+                        topSimilarity = TopNSimilarity.findTopNSimilarity(i, rssplusResult);
+                    }
                     precisionNear = EvaluationMetric.Mean_Precision_TopN(topSimilarity, _graph.nearTestingData);
                     precisionFar = EvaluationMetric.Mean_Precision_TopN(topSimilarity, _graph.farTestingData);
                     bufferingExperimentResult(true, "RSSPlus", precisionNear);
@@ -233,7 +257,11 @@ public class LinkMethodExperiment {
                     //</editor-fold>
 
                     //<editor-fold defaultstate="collapsed" desc="MPBVS">
-                    topSimilarity = TopNSimilarity.findTopNSimilarity(i, mpbvsResult);
+                    if (_isPredictionOnlyNewLink) {
+                        topSimilarity = TopNSimilarity.findTopNSimilarityForNewLinkOnly(i, mpbvsResult, _graph.rssGraph);
+                    } else {
+                        topSimilarity = TopNSimilarity.findTopNSimilarity(i, mpbvsResult);
+                    }
                     precisionNear = EvaluationMetric.Mean_Precision_TopN(topSimilarity, _graph.nearTestingData);
                     precisionFar = EvaluationMetric.Mean_Precision_TopN(topSimilarity, _graph.farTestingData);
                     bufferingExperimentResult(true, "MPBVS", precisionNear);
@@ -246,7 +274,11 @@ public class LinkMethodExperiment {
                     //</editor-fold>
 
                     //<editor-fold defaultstate="collapsed" desc="MPBVSPlus">
-                    topSimilarity = TopNSimilarity.findTopNSimilarity(i, mpbvsplusResult);
+                     if (_isPredictionOnlyNewLink) {
+                        topSimilarity = TopNSimilarity.findTopNSimilarityForNewLinkOnly(i, mpbvsplusResult, _graph.rssGraph);
+                    } else {
+                        topSimilarity = TopNSimilarity.findTopNSimilarity(i, mpbvsplusResult);
+                    }
                     precisionNear = EvaluationMetric.Mean_Precision_TopN(topSimilarity, _graph.nearTestingData);
                     precisionFar = EvaluationMetric.Mean_Precision_TopN(topSimilarity, _graph.farTestingData);
                     bufferingExperimentResult(true, "MPBVSPlus", precisionNear);
@@ -263,7 +295,7 @@ public class LinkMethodExperiment {
             }
         }
         //</editor-fold>
-        
+
     }
 
     private void selectAuthorsForExperiment() {
@@ -293,7 +325,7 @@ public class LinkMethodExperiment {
                         degreeArray[index] = degree;
                         index++;
                     }
-                    
+
                     //sort degree Array
                     for (int i = 0; i < degreeArray.length - 1; i++) {
                         for (int j = i + 1; j < degreeArray.length; j++) {
@@ -304,7 +336,7 @@ public class LinkMethodExperiment {
                             }
                         }
                     }
-                    
+
                     int numberOfDegree, numberOfLowDegree, numberOfMidDegree, numberOfHighDegree;
                     numberOfDegree =
                             numberOfLowDegree =
@@ -510,7 +542,7 @@ public class LinkMethodExperiment {
         try {
             //FileOutputStream fos = new FileOutputStream(_resultPath + "/" + String.valueOf(k) + "_" + String.valueOf(year) + ".txt");
             FileOutputStream fos = new FileOutputStream(_resultPath);
-            
+
             Writer file = new OutputStreamWriter(fos, "UTF8");
             //<editor-fold defaultstate="collapsed" desc="Near future testing">
 
