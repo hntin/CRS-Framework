@@ -94,7 +94,7 @@ public class HybridMethodExperiment {
             //<editor-fold defaultstate="collapsed" desc="Calculating Similarity based on TFIDF Method">
             HashMap<Integer, HashMap<Integer, Float>> tfidfResult = null;
             TFIDF tfidfMethod = new TFIDF();
-            tfidfResult = tfidfMethod.process(_LDA_InputFile, _listAuthorRandom);
+            tfidfResult = tfidfMethod.process(_LDA_InputFile, _listAuthorRandom, true, false);
             // </editor-fold>
 
             //<editor-fold defaultstate="collapsed" desc="Calculating Similarity based on link based method - RSS">
