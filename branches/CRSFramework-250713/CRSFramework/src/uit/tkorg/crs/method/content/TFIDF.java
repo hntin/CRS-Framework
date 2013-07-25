@@ -22,24 +22,21 @@ public class TFIDF {
     DocumentSimilarityTF similarityUsingTF;
     private Object lock = new Object();
 
-    private void runTF(int inputAuthorID) {
+    private void Run(int inputAuthorID) {
         try {
             int currentAuthorID;
             System.out.println("CURRENT INSTANCE IS:" + inputAuthorID);
             int instanceID = getInstanceFromAuthorID(inputAuthorID);
-
             HashMap<Integer, Float> similarityHM = new HashMap<Integer, Float>();
-            for (int otherInstanceID = 0; otherInstanceID < _InstancePublicationHM.size(); otherInstanceID++) {
-                if (instanceID != otherInstanceID) {
-                    // calculate  similarity using TF only
-                    DocumentSimilarityTF similarityUsingTF = new DocumentSimilarityTF(
-                            _InstancePublicationHM.get(instanceID), _InstancePublicationHM.get(otherInstanceID));
-                    float simValue = (float) similarityUsingTF.getCosineSimilarity();
-                    currentAuthorID = getAuthorIDFromInstanceID(otherInstanceID);
-                    similarityHM.put(currentAuthorID, simValue);
+            synchronized (lock) {
+                for (int otherInstanceID = 0; otherInstanceID < _InstancePublicationHM.size(); otherInstanceID++) {
+                    if (instanceID != otherInstanceID) {
+                        currentAuthorID = getAuthorIDFromInstanceID(otherInstanceID);
+                        float simValue = (float) similarityUsingTF.getCosineSimilarityWhenIndexAllDocument(instanceID, otherInstanceID);
+                        similarityHM.put(currentAuthorID, simValue);
+                    }
                 }
             }
-
             _tfidfHM.put(inputAuthorID, similarityHM);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -93,12 +90,6 @@ public class TFIDF {
             String[] tokens;
             int instanceID = 0;
             while ((line = bufferReader.readLine()) != null) {
-//                tokens = line.split("X\t");
-//                if (tokens.length != 2) {
-//                    continue;
-//                }
-//                String publications = tokens[1];
-                //line = StringUtils.substringAfter(line,"X");
                 _InstancePublicationHM.put(instanceID, line);
                 instanceID++;
             }
@@ -125,6 +116,7 @@ public class TFIDF {
             ExecutorService executor = Executors.newFixedThreadPool(numOfProcessors - 2);
             for (final int authorId : listAuthorID) {
                 executor.submit(new Runnable() {
+
                     @Override
                     public void run() {
                         Run(authorId);
@@ -139,32 +131,7 @@ public class TFIDF {
             ex.printStackTrace();
         }
 
-        System.out.println("FINISH PROCESSING TFIDF");
+        System.out.println("FINISH PROCESSING TF");
         return _tfidfHM;
-    }
-
-    /**
-     * Run of IF
-     */
-    private void Run(int inputAuthorID) {
-        try {
-            int currentAuthorID;
-            System.out.println("CURRENT INSTANCE IS:" + inputAuthorID);
-            int instanceID = getInstanceFromAuthorID(inputAuthorID);
-            HashMap<Integer, Float> similarityHM = new HashMap<Integer, Float>();
-            synchronized (lock) {
-                for (int otherInstanceID = 0; otherInstanceID < _InstancePublicationHM.size(); otherInstanceID++) {
-                    if (instanceID != otherInstanceID) {
-                        float simValue = (float) similarityUsingTF.getCosineSimilarityWhenIndexAllDocument(instanceID, otherInstanceID);
-                        currentAuthorID = getAuthorIDFromInstanceID(otherInstanceID);
-                        System.out.println("AuthorID: " + instanceID + " AuthorID : " + otherInstanceID + "Value:" + simValue);
-                        similarityHM.put(currentAuthorID, simValue);
-                    }
-                }
-            }
-            _tfidfHM.put(inputAuthorID, similarityHM);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
     }
 }
