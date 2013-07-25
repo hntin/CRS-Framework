@@ -22,7 +22,7 @@ public class TFIDF {
     DocumentSimilarityTF similarityUsingTF;
     private Object lock = new Object();
 
-    private void Run(int inputAuthorID) {
+    private void Run(int inputAuthorID, boolean isTF, boolean isTFIDF) {
         try {
             int currentAuthorID;
             System.out.println("CURRENT INSTANCE IS:" + inputAuthorID);
@@ -102,7 +102,7 @@ public class TFIDF {
     /**
      * tiendv Input for run real TF
      */
-    public HashMap<Integer, HashMap<Integer, Float>> process(String inputFile, ArrayList<Integer> listAuthorID) {
+    public HashMap<Integer, HashMap<Integer, Float>> process(String inputFile, ArrayList<Integer> listAuthorID, final boolean isTF, final boolean isTFIDF) {
         System.out.println("START PROCESSING TFIDF");
         try {
             loadInstancePublication(inputFile);
@@ -119,7 +119,7 @@ public class TFIDF {
 
                     @Override
                     public void run() {
-                        Run(authorId);
+                        Run(authorId, isTF, isTFIDF);
                     }
                 });
             }

@@ -117,11 +117,17 @@ public class ContentMethodExperiment {
         }
         // </editor-fold>
 
-        //<editor-fold defaultstate="collapsed" desc="Calculating Similarity based on TFIDF Method, out to File">
+        //<editor-fold defaultstate="collapsed" desc="Calculating Similarity based on TF or TFIDF Method, out to File">
         HashMap<Integer, HashMap<Integer, Float>> tfidfResult = null;
         TFIDF tfidfMethod = new TFIDF();
-        if (_isTF) {
-            tfidfResult = tfidfMethod.process(_LDA_InputFile, _listAuthorRandom);
+        if (_isTF || _isTFIDF) {
+            if (_isTF) {
+                tfidfResult = tfidfMethod.process(_LDA_InputFile, _listAuthorRandom, _isTF, false);
+            }
+            if (_isTFIDF) {
+                tfidfResult = tfidfMethod.process(_LDA_InputFile, _listAuthorRandom, false, _isTFIDF);
+            }
+            
             if (tfidfResult != null) {
                 for (int i = 1; i <= topN; i++) {
                     if (_isContentMethodPredictionNewLink) {
@@ -142,10 +148,11 @@ public class ContentMethodExperiment {
                 }
             }
         }
-        
+        // </editor-fold>
+ 
         TextFileUtility.writeTextFile(_resultPath,
                 _nfContentPredictionBuffer.toString() + "\n\n" + _ffContentPredictionBuffer.toString());
-        // </editor-fold>
+        
 
         //<editor-fold defaultstate="collapsed" desc="Writting Pair of LinkedAuthors (True Positive) to file for checking">
         StringBuffer truePositiveBuffer = new StringBuffer();
