@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package  uit.tkorg.crs.method.content;
+package uit.tkorg.crs.method.content;
 
 /**
  *
@@ -21,7 +21,6 @@ import org.apache.lucene.store.*;
 import org.apache.lucene.util.*;
 import org.apache.lucene.search.DocIdSetIterator;
 
-
 public class DocumentSimilarityTFIDF {
 
 //    public static void main(String[] args) {
@@ -30,19 +29,16 @@ public class DocumentSimilarityTFIDF {
 //
 //            System.out.println( cosSim.getCosineSimilarity() );
 //    }
-
     public static final String CONTENT = "Content";
     public static final int N = 2;//Total number of documents
     Directory _directory;
     private Object lock = new Object();
-
     private final Set<String> terms = new HashSet<>();
-    private  RealVector v1;
-    private  RealVector v2;
+    private RealVector v1;
+    private RealVector v2;
 
     public DocumentSimilarityTFIDF() {
     }
-    
 
     DocumentSimilarityTFIDF(String s1, String s2) throws IOException {
         Directory directory = createIndex(s1, s2);
@@ -51,9 +47,9 @@ public class DocumentSimilarityTFIDF {
         Map<String, Double> f2 = getWieghts(reader, 1);
         reader.close();
         v1 = toRealVector(f1);
-        System.out.println( "V1: " +v1 );
+        System.out.println("V1: " + v1);
         v2 = toRealVector(f2);
-        System.out.println( "V2: " +v2 );
+        System.out.println("V2: " + v2);
     }
 
     Directory createIndex(String s1, String s2) throws IOException {
@@ -95,15 +91,16 @@ public class DocumentSimilarityTFIDF {
 //        System.out.println( "Norm: " + normalization);
         return dotProduct / normalization;
     }
-     public double getCosineSimilarityWhenIndexAllDocument( int authorOneID, int authorTwoID) throws IOException {
+
+    public double getCosineSimilarityWhenIndexAllDocument(int authorOneID, int authorTwoID) throws IOException {
         IndexReader reader = DirectoryReader.open(_directory);
         Map<String, Double> f1 = getWieghts(reader, authorOneID);
         Map<String, Double> f2 = getWieghts(reader, authorTwoID);
         reader.close();
         v1 = toRealVector(f1);
-     //   System.out.println( "V1: " +v1 );
+        //   System.out.println( "V1: " +v1 );
         v2 = toRealVector(f2);
-      //  System.out.println( "V2: " +v2 );
+        //  System.out.println( "V2: " +v2 );
         double dotProduct = v1.dotProduct(v2);
 //        System.out.println( "Dot: " + dotProduct);
 //        System.out.println( "V1_norm: " + v1.getNorm() + ", V2_norm: " + v2.getNorm() );
@@ -111,22 +108,20 @@ public class DocumentSimilarityTFIDF {
 //        System.out.println( "Norm: " + normalization);
         return dotProduct / normalization;
     }
-    
-       public void indexAllDocument(HashMap<Integer, String> allDocument) throws IOException {
+
+    public void indexAllDocument(HashMap<Integer, String> allDocument) throws IOException {
         _directory = new RAMDirectory();
         Analyzer analyzer = new SimpleAnalyzer(Version.LUCENE_CURRENT);
         IndexWriterConfig iwc = new IndexWriterConfig(Version.LUCENE_CURRENT,
                 analyzer);
         System.out.println("======START INDEX ALL DOCUMENTS=====");
         IndexWriter writer = new IndexWriter(_directory, iwc);
-        for (int i=0; i<allDocument.size();i++)
-        {
+        for (int i = 0; i < allDocument.size(); i++) {
             addDocument(writer, allDocument.get(i));
         }
         writer.close();
         System.out.println("====== End INDEX ALL =====");
     }
-
 
     Map<String, Double> getWieghts(IndexReader reader, int docId)
             throws IOException {
@@ -143,7 +138,7 @@ public class DocumentSimilarityTFIDF {
         while ((text = termsEnum.next()) != null) {
             String term = text.utf8ToString();
             int docFreq = termsEnum.docFreq();
-            docFrequencies.put(term, reader.docFreq( new Term( CONTENT, term ) ));
+            docFrequencies.put(term, reader.docFreq(new Term(CONTENT, term)));
 
             docsEnum = termsEnum.docs(null, null);
             while (docsEnum.nextDoc() != DocIdSetIterator.NO_MORE_DOCS) {
@@ -153,13 +148,13 @@ public class DocumentSimilarityTFIDF {
             terms.add(term);
         }
 
-        for ( String term : docFrequencies.keySet() ) {
+        for (String term : docFrequencies.keySet()) {
             int tf = termFrequencies.get(term);
             int df = docFrequencies.get(term);
-            double idf = ( 1 + Math.log(N) - Math.log(df) );
+            double idf = (1 + Math.log(N) - Math.log(df));
             double w = tf * idf;
             tf_Idf_Weights.put(term, w);
-           // System.out.printf("Term: %s - tf: %d, df: %d, idf: %f, w: %f\n", term, tf, df, idf, w);
+            // System.out.printf("Term: %s - tf: %d, df: %d, idf: %f, w: %f\n", term, tf, df, idf, w);
         }
 //
 //        System.out.println( "Printing docFrequencies:" );
@@ -177,30 +172,29 @@ public class DocumentSimilarityTFIDF {
         RealVector vector = new ArrayRealVector(terms.size());
         int i = 0;
         double value = 0;
-         synchronized(lock) {
-            
-             for (String term : terms) {
-                 if (map.containsKey(term)) {
-                     value = map.get(term);
-                 } else {
-                     value = 0;
-                 }
-                 vector.setEntry(i++, value);
-             }
-         }
+        synchronized (lock) {
+
+            for (String term : terms) {
+                if (map.containsKey(term)) {
+                    value = map.get(term);
+                } else {
+                    value = 0;
+                }
+                vector.setEntry(i++, value);
+            }
+        }
         return vector;
     }
 
     public static void printMap(Map<String, Integer> map) {
-        for ( String key : map.keySet() ) {
-            System.out.println( "Term: " + key + ", value: " + map.get(key) );
+        for (String key : map.keySet()) {
+            System.out.println("Term: " + key + ", value: " + map.get(key));
         }
     }
 
     public static void printMapDouble(Map<String, Double> map) {
-        for ( String key : map.keySet() ) {
-            System.out.println( "Term: " + key + ", value: " + map.get(key) );
+        for (String key : map.keySet()) {
+            System.out.println("Term: " + key + ", value: " + map.get(key));
         }
     }
-
 }

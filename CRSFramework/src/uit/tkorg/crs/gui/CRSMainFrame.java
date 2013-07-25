@@ -2282,7 +2282,8 @@ public class CRSMainFrame extends javax.swing.JFrame {
                 txtTrainingAuthorPaperFile.getText(), txtTrainingPaperYearFile.getText(),
                 txtNFAuthorPaperFile.getText(), txtFFAuthorPaperFile.getText(),
                 txtExistingAuthorFile.getText(), // empty or null if use radom author
-                txtResultPath1.getText(), jRadioButtonKLDivergence.isSelected(), jRadioButtonTF.isSelected(),
+                txtResultPath1.getText(), jRadioButtonKLDivergence.isSelected(), 
+                jRadioButtonTF.isSelected(), jRadioButtonTFIDF.isSelected(),
                 contentMethodPredictionNewLink.isSelected(), contentMethodPredictionExistAndNewLink.isSelected());
 
         final DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");

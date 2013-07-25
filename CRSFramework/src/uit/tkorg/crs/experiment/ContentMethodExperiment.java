@@ -28,6 +28,7 @@ public class ContentMethodExperiment {
 
     private Graph _graph = Graph.getInstance();
     private boolean _isKLDivergence = false;
+    private boolean _isTF = false;
     private boolean _isTFIDF = false;
     private boolean _isContentMethodPredictionNewLink;
     private boolean _isContentMethodPredictionExistAndNewLink;
@@ -49,7 +50,7 @@ public class ContentMethodExperiment {
     public ContentMethodExperiment(String LDAInputFile, String Training_PaperId_AuthorIdPath, String Training_PaperId_YearPath,
             String Testing_PaperId_Year_NFPath, String Testing_PaperId_Year_FFPath,
             String Existing_List_AuthorPath, // empty or null if use radom author
-            String ResultPath, boolean isKLDivergence, boolean isTFIDF, 
+            String ResultPath, boolean isKLDivergence, boolean isTF, boolean isTFIDF,
             boolean isContentMethodPredictionNewLink, boolean isContentMethodPredictionExistAndNewLink) {
 
         _LDA_InputFile = LDAInputFile;
@@ -60,6 +61,7 @@ public class ContentMethodExperiment {
         _existing_List_AuthorPath = Existing_List_AuthorPath;
 
         _isKLDivergence = isKLDivergence;
+        _isTF = isTF;
         _isTFIDF = isTFIDF;
         
         _isContentMethodPredictionNewLink = isContentMethodPredictionNewLink;
@@ -118,7 +120,7 @@ public class ContentMethodExperiment {
         //<editor-fold defaultstate="collapsed" desc="Calculating Similarity based on TFIDF Method, out to File">
         HashMap<Integer, HashMap<Integer, Float>> tfidfResult = null;
         TFIDF tfidfMethod = new TFIDF();
-        if (_isTFIDF) {
+        if (_isTF) {
             tfidfResult = tfidfMethod.process(_LDA_InputFile, _listAuthorRandom);
             if (tfidfResult != null) {
                 for (int i = 1; i <= topN; i++) {
@@ -140,6 +142,7 @@ public class ContentMethodExperiment {
                 }
             }
         }
+        
         TextFileUtility.writeTextFile(_resultPath,
                 _nfContentPredictionBuffer.toString() + "\n\n" + _ffContentPredictionBuffer.toString());
         // </editor-fold>
