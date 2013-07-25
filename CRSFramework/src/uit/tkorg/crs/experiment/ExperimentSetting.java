@@ -4,6 +4,7 @@
  */
 package uit.tkorg.crs.experiment;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
@@ -35,6 +36,7 @@ public class ExperimentSetting {
         LOWEST,
         HIGHEST,
         LOWMIDHIGH,
+        POTENTIALLINK,
     }
 
     public ExperimentSetting(int numberOfAuthor, String file_TraingAuthorIDPaperID, String file_TraingPaperID_Year,
@@ -72,6 +74,7 @@ public class ExperimentSetting {
                 degreeCounter.put(authorDegree.get(authorId), counter);
             }
 
+            // degreeArray index
             int[] degreeArray = new int[degreeCounter.keySet().size()];
             int index = 0;
             for (int degree : degreeCounter.keySet()) {
@@ -90,6 +93,7 @@ public class ExperimentSetting {
                 }
             }
 
+            // Clustering into 3 sets author of their degree (Low Degree Group, Medium Degree Group, High Degree Group)
             int numberOfDegree, numberOfLowDegree, numberOfMidDegree, numberOfHighDegree;
             numberOfDegree = numberOfLowDegree = numberOfMidDegree = numberOfHighDegree = (int) degreeArray.length / 3;
             if (degreeArray.length - numberOfDegree * 3 == 1) {
@@ -136,9 +140,9 @@ public class ExperimentSetting {
                     }
                 }
             }
+            // End of Clustering into 3 sets author of their degree
 
-            //_listAuthorRandom;
-
+            // Genertaing random authors from the degree groups 
             if (generatingOption == GeneratingOption.LOWEST) {
                 _listAuthorRandom.addAll(randomAuthorIdFromList(_numberOfAuthor, listAuthorIdInLow));
             } else if (generatingOption == GeneratingOption.HIGHEST) {
@@ -153,9 +157,80 @@ public class ExperimentSetting {
                         _listAuthorRandom.addAll(randomAuthorIdFromList(_numberOfAuthor / 3, listAuthorIdInLow));
                     }
                 }
-                _listAuthorRandom.addAll(randomAuthorIdFromList(_numberOfAuthor/3, listAuthorIdInMid));
-                _listAuthorRandom.addAll(randomAuthorIdFromList(_numberOfAuthor/3, listAuthorIdInHigh));
+                _listAuthorRandom.addAll(randomAuthorIdFromList(_numberOfAuthor / 3, listAuthorIdInMid));
+                _listAuthorRandom.addAll(randomAuthorIdFromList(_numberOfAuthor / 3, listAuthorIdInHigh));
             }
+
+            // Generating the list of authors for the potential link option
+            // Get the list of authors who exist in future and the past, but their links are in future, not in the past.
+            // authorID1 & authorID2 have a link in the near future net
+            for (int authorID1 : _graph.nearTestingData.keySet()) {
+                if (_graph.rssGraph.containsKey(authorID1) && _graph.farTestingData.containsKey(authorID1)) {
+                    ArrayList<Integer> listCoAuthor = _graph.nearTestingData.get(authorID1);
+                    for (int i = 0; i < listCoAuthor.size(); i++) {
+                        int authorID2 = listCoAuthor.get(i);
+                        if (_graph.rssGraph.containsKey(authorID2) && _graph.farTestingData.containsKey(authorID2)) {
+                            if (!_graph.isLinkExistInRSSGraph(_graph.rssGraph, authorID1, authorID2)) {
+
+                                boolean foundAuthorID1 = false;
+                                boolean foundAuthorID2 = false;
+                                if (_listAuthorRandom != null) {
+                                    for (int j = 0; j < _listAuthorRandom.size(); j++) {
+                                        int currentID = _listAuthorRandom.get(j);
+                                        if (currentID == authorID1) {
+                                            foundAuthorID1 = true;
+                                        }
+                                        if (currentID == authorID2) {
+                                            foundAuthorID2 = true;
+                                        }
+                                    }
+                                    if (!foundAuthorID1) {
+                                        _listAuthorRandom.add(authorID1);
+                                    }
+                                    if (!foundAuthorID2) {
+                                        _listAuthorRandom.add(authorID2);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            while (_listAuthorRandom.size() > _numberOfAuthor) {
+                _listAuthorRandom.remove(0);
+            }
+            // End of Generating the list of authors for the potential link option
+
+            // Get Authors who exist in the training network, but they have no any Connection/Collaboration yet. 
+            ArrayList listAuthorWithoutAnyLink = new ArrayList();
+            StringBuffer buffAuthorWithoutAnyLink = new StringBuffer();
+            String parentDir = (new File(_fileSaveTo)).getParent();
+            buffAuthorWithoutAnyLink.append("Authors have no any links \n");
+            for (int authorID1 : _graph.rssGraph.keySet()) {
+                // authorID not any connection before
+                if (_graph.rssGraph.get(authorID1).size() == 0) {
+                    // If authorID has any link in the future?
+                    boolean hasNewLink = false;
+                    for (int authorID2 : _graph.nearTestingData.keySet()) {
+                        if (((authorID2 == authorID1) && _graph.nearTestingData.get(authorID2).size() > 0)
+                                || (_graph.nearTestingData.get(authorID2) != null
+                                && _graph.nearTestingData.get(authorID2).contains(authorID1))) {
+                            hasNewLink = true;
+                            break;
+                        }
+                    }
+
+                    if (hasNewLink) {
+                        listAuthorWithoutAnyLink.add(authorID1);
+                        buffAuthorWithoutAnyLink.append(authorID1 + "\n");
+                    }
+                }
+            }
+            
+            TextFileUtility.writeTextFile(parentDir + "\\ListAuthorNoAnyLink.txt", buffAuthorWithoutAnyLink.toString());
+            // End of getting authors who exist in the training network, 
+            // but they have no any Connection/Collaboration yet. 
 
             StringBuffer listAuthorBuff = new StringBuffer();
             listAuthorBuff.append("AuthorID" + "\n");
@@ -167,7 +242,6 @@ public class ExperimentSetting {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-
     }
 
     private ArrayList<Integer> randomAuthorIdFromList(int numberOfAuthorId, ArrayList<Integer> listId) {
@@ -187,4 +261,17 @@ public class ExperimentSetting {
 
         return result;
     }
+//    public static void main(String args[]) {
+//        System.out.println("START");
+//        ExperimentSetting experimentSetting = new ExperimentSetting(
+//                10,
+//                "C:\\CRS-Experiment\\Sampledata\\[Training]AuthorId_PaperID.txt",
+//                "C:\\CRS-Experiment\\Sampledata\\[Training]PaperID_Year.txt",
+//                "C:\\CRS-Experiment\\Sampledata\\[NearTesting]AuthorId_PaperID.txt",
+//                "C:\\CRS-Experiment\\Sampledata\\[FarTesting]AuthorId_PaperID.txt",
+//                "C:\\CRS-Experiment\\Sampledata\\Output\\PotentialAuthorList.txt");
+//        
+//        experimentSetting.generateAuthorList(GeneratingOption.POTENTIALLINK);
+//        System.out.println("END");
+//    }
 }

@@ -34,7 +34,7 @@ public class Graph {
     private HashMap<Integer, HashMap<Integer, Integer>> coAuthorGraphFar;
     public HashMap<Integer, HashMap<Integer, Float>> rssGraph; //weighted, directed graph
     public HashMap<Integer, HashMap<Integer, Float>> rtbvsGraph; //weighted, directed graph
-    public HashMap<Integer, ArrayList<Integer>> nearTestingData; //non-weighted, non-directed graph
+    public HashMap<Integer, ArrayList<Integer>> nearTestingData; //non-weighted, non-directed graph <authorID, <Lis of CoAuthorID>>
     public HashMap<Integer, ArrayList<Integer>> farTestingData; //non-weighted, non-directed graph
 
     private Graph() {
@@ -437,6 +437,46 @@ public class Graph {
             }
         }
         return listAuthor;
+    }
+    
+    public boolean isLinkExistInRSSGraph(HashMap<Integer, HashMap<Integer, Float>> rssGraph, int authorID1, int authorID2) {
+        boolean found = false;
+        if (rssGraph.containsKey(authorID1)) {
+            if (rssGraph.get(authorID1).containsKey(authorID2)) {
+                found = true;
+            }
+        }
+        if (rssGraph.containsKey(authorID2)) {
+            if (rssGraph.get(authorID2).containsKey(authorID1)) {
+                found = true;
+            }
+        }
+        
+        return found;
+    }
+    
+    public boolean isLinkExistInFutureNet(HashMap<Integer, ArrayList<Integer>> futureGraph, int authorID1, int authorID2) {
+        boolean found = false;
+        if (futureGraph.containsKey(authorID1)) {
+            ArrayList<Integer> listCoAuthor = futureGraph.get(authorID1);
+            for (int i=0; i<listCoAuthor.size(); i++){
+                int coAuthorID = listCoAuthor.get(i);
+                if (coAuthorID == authorID2) {
+                    found = true;
+                }
+            }
+        }
+        if (futureGraph.containsKey(authorID2)) {
+            ArrayList<Integer> listCoAuthor = futureGraph.get(authorID2);
+            for (int i=0; i<listCoAuthor.size(); i++){
+                int coAuthorID = listCoAuthor.get(i);
+                if (coAuthorID == authorID1) {
+                    found = true;
+                }
+            }
+        }
+        
+        return found;
     }
 
 //    // Testing Functions of Graph
