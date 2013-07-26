@@ -117,7 +117,7 @@ public class TFIDF {
      * tiendv Input for run real TF
      */
     public HashMap<Integer, HashMap<Integer, Float>> process(String inputFile, ArrayList<Integer> listAuthorID, final boolean isTF, final boolean isTFIDF) {
-        System.out.println("START PROCESSING TFIDF");
+        System.out.println("START PROCESSING TF/TFIDF");
         try {
             loadInstancePublication(inputFile);
             String pathFile = (new File(inputFile)).getParent();
@@ -151,7 +151,7 @@ public class TFIDF {
             ex.printStackTrace();
         }
 
-        System.out.println("FINISH PROCESSING TF");
+        System.out.println("FINISH PROCESSING TF/TFIDF");
         return _tfidfHM;
     }
 }
