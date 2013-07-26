@@ -20,6 +20,7 @@ public class TFIDF {
     public static HashMap<Integer, String> _InstancePublicationHM = new HashMap<>();
     private static HashMap<Integer, HashMap<Integer, Float>> _tfidfHM = new HashMap<>();
     DocumentSimilarityTF similarityUsingTF;
+    DocumentSimilarityTFIDF similarityUsingTFIDF;
     private Object lock = new Object();
 
     private void Run(int inputAuthorID, boolean isTF, boolean isTFIDF) {
@@ -28,12 +29,25 @@ public class TFIDF {
             System.out.println("CURRENT INSTANCE IS:" + inputAuthorID);
             int instanceID = getInstanceFromAuthorID(inputAuthorID);
             HashMap<Integer, Float> similarityHM = new HashMap<Integer, Float>();
-            synchronized (lock) {
-                for (int otherInstanceID = 0; otherInstanceID < _InstancePublicationHM.size(); otherInstanceID++) {
-                    if (instanceID != otherInstanceID) {
-                        currentAuthorID = getAuthorIDFromInstanceID(otherInstanceID);
-                        float simValue = (float) similarityUsingTF.getCosineSimilarityWhenIndexAllDocument(instanceID, otherInstanceID);
-                        similarityHM.put(currentAuthorID, simValue);
+            if (isTF == true) {
+                synchronized (lock) {
+                    for (int otherInstanceID = 0; otherInstanceID < _InstancePublicationHM.size(); otherInstanceID++) {
+                        if (instanceID != otherInstanceID) {
+                            currentAuthorID = getAuthorIDFromInstanceID(otherInstanceID);
+                            float simValue = (float) similarityUsingTF.getCosineSimilarityWhenIndexAllDocument(instanceID, otherInstanceID);
+                            similarityHM.put(currentAuthorID, simValue);
+                        }
+                    }
+                }
+            }
+            if (isTFIDF == true) {
+                synchronized (lock) {
+                    for (int otherInstanceID = 0; otherInstanceID < _InstancePublicationHM.size(); otherInstanceID++) {
+                        if (instanceID != otherInstanceID) {
+                            currentAuthorID = getAuthorIDFromInstanceID(otherInstanceID);
+                            float simValue = (float) similarityUsingTFIDF.getCosineSimilarityWhenIndexAllDocument(instanceID, otherInstanceID);
+                            similarityHM.put(currentAuthorID, simValue);
+                        }
                     }
                 }
             }
@@ -108,8 +122,14 @@ public class TFIDF {
             loadInstancePublication(inputFile);
             String pathFile = (new File(inputFile)).getParent();
             loadMappingInstanceIDAuthorID(pathFile + "/CRS-AuthorIDAndInstance.txt");
-            similarityUsingTF = new DocumentSimilarityTF();
-            similarityUsingTF.indexAllDocument(_InstancePublicationHM);
+            if (isTF == true) {
+                similarityUsingTF = new DocumentSimilarityTF();
+                similarityUsingTF.indexAllDocument(_InstancePublicationHM);
+            }
+            if (isTFIDF == true) {
+                similarityUsingTFIDF = new DocumentSimilarityTFIDF();
+                similarityUsingTFIDF.indexAllDocument(_InstancePublicationHM);
+            }
 
             Runtime runtime = Runtime.getRuntime();
             int numOfProcessors = runtime.availableProcessors();

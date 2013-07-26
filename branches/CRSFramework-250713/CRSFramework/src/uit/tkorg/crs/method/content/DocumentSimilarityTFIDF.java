@@ -23,48 +23,17 @@ import org.apache.lucene.search.DocIdSetIterator;
 
 public class DocumentSimilarityTFIDF {
 
-//    public static void main(String[] args) {
-//        
-//            DocumentSimilarityTFIDF cosSim = new DocumentSimilarityTFIDF();
-//
-//            System.out.println( cosSim.getCosineSimilarity() );
-//    }
     public static final String CONTENT = "Content";
-    public static final int N = 2;//Total number of documents
+    public int numberofDocument;//Total number of documents
     Directory _directory;
     private Object lock = new Object();
     private final Set<String> terms = new HashSet<>();
-    private RealVector v1;
-    private RealVector v2;
 
     public DocumentSimilarityTFIDF() {
     }
-
-    DocumentSimilarityTFIDF(String s1, String s2) throws IOException {
-        Directory directory = createIndex(s1, s2);
-        IndexReader reader = DirectoryReader.open(directory);
-        Map<String, Double> f1 = getWieghts(reader, 0);
-        Map<String, Double> f2 = getWieghts(reader, 1);
-        reader.close();
-        v1 = toRealVector(f1);
-        System.out.println("V1: " + v1);
-        v2 = toRealVector(f2);
-        System.out.println("V2: " + v2);
-    }
-
-    Directory createIndex(String s1, String s2) throws IOException {
-        Directory directory = new RAMDirectory();
-        Analyzer analyzer = new SimpleAnalyzer(Version.LUCENE_CURRENT);
-        IndexWriterConfig iwc = new IndexWriterConfig(Version.LUCENE_CURRENT,
-                analyzer);
-        IndexWriter writer = new IndexWriter(directory, iwc);
-        addDocument(writer, s1);
-        addDocument(writer, s2);
-        writer.close();
-        return directory;
-    }
-
-    /* Indexed, tokenized, stored. */
+    /*
+     * Indexed, tokenized, stored.
+     */
     public static final FieldType TYPE_STORED = new FieldType();
 
     static {
@@ -83,30 +52,21 @@ public class DocumentSimilarityTFIDF {
         writer.addDocument(doc);
     }
 
-    double getCosineSimilarity() {
-        double dotProduct = v1.dotProduct(v2);
-//        System.out.println( "Dot: " + dotProduct);
-//        System.out.println( "V1_norm: " + v1.getNorm() + ", V2_norm: " + v2.getNorm() );
-        double normalization = (v1.getNorm() * v2.getNorm());
-//        System.out.println( "Norm: " + normalization);
-        return dotProduct / normalization;
-    }
-
     public double getCosineSimilarityWhenIndexAllDocument(int authorOneID, int authorTwoID) throws IOException {
         IndexReader reader = DirectoryReader.open(_directory);
         Map<String, Double> f1 = getWieghts(reader, authorOneID);
         Map<String, Double> f2 = getWieghts(reader, authorTwoID);
         reader.close();
-        v1 = toRealVector(f1);
-        //   System.out.println( "V1: " +v1 );
-        v2 = toRealVector(f2);
-        //  System.out.println( "V2: " +v2 );
-        double dotProduct = v1.dotProduct(v2);
-//        System.out.println( "Dot: " + dotProduct);
-//        System.out.println( "V1_norm: " + v1.getNorm() + ", V2_norm: " + v2.getNorm() );
-        double normalization = (v1.getNorm() * v2.getNorm());
-//        System.out.println( "Norm: " + normalization);
-        return dotProduct / normalization;
+        RealVector v1 = toRealVector(f1);
+        // System.out.println("V1: " + v1);
+        RealVector v2 = toRealVector(f2);
+        // System.out.println("V2: " + v2);
+
+        if (v1 != null && v2 != null) {
+            return (v1.dotProduct(v2)) / (v1.getNorm() * v2.getNorm());
+        } else {
+            return 0;
+        }
     }
 
     public void indexAllDocument(HashMap<Integer, String> allDocument) throws IOException {
@@ -119,6 +79,7 @@ public class DocumentSimilarityTFIDF {
         for (int i = 0; i < allDocument.size(); i++) {
             addDocument(writer, allDocument.get(i));
         }
+        numberofDocument = allDocument.size();
         writer.close();
         System.out.println("====== End INDEX ALL =====");
     }
@@ -132,7 +93,6 @@ public class DocumentSimilarityTFIDF {
         TermsEnum termsEnum = null;
         DocsEnum docsEnum = null;
 
-
         termsEnum = vector.iterator(termsEnum);
         BytesRef text = null;
         while ((text = termsEnum.next()) != null) {
@@ -144,27 +104,29 @@ public class DocumentSimilarityTFIDF {
             while (docsEnum.nextDoc() != DocIdSetIterator.NO_MORE_DOCS) {
                 termFrequencies.put(term, docsEnum.freq());
             }
-
             terms.add(term);
         }
 
         for (String term : docFrequencies.keySet()) {
             int tf = termFrequencies.get(term);
             int df = docFrequencies.get(term);
-            double idf = (1 + Math.log(N) - Math.log(df));
+
+            // Code cua Tien 
+
+            double idf = 1 + (Math.log(numberofDocument) - Math.log(df));
             double w = tf * idf;
             tf_Idf_Weights.put(term, w);
             // System.out.printf("Term: %s - tf: %d, df: %d, idf: %f, w: %f\n", term, tf, df, idf, w);
         }
-//
-//        System.out.println( "Printing docFrequencies:" );
-//        printMap(docFrequencies);
-//
-//        System.out.println( "Printing termFrequencies:" );
-//        printMap(termFrequencies);
-//
-//        System.out.println( "Printing if/idf weights:" );
-//        printMapDouble(tf_Idf_Weights);
+
+        // System.out.println( "Printing docFrequencies:" );
+        //   printMap(docFrequencies);
+
+        //   System.out.println( "Printing termFrequencies:" );
+        //   printMap(termFrequencies);
+
+        //   System.out.println( "Printing if/idf weights:" );
+        //        printMapDouble(tf_Idf_Weights);
         return tf_Idf_Weights;
     }
 
