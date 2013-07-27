@@ -2135,9 +2135,9 @@
                               <EmptySpace pref="23" max="32767" attributes="0"/>
                               <Group type="103" groupAlignment="1" attributes="0">
                                   <Group type="102" alignment="0" attributes="0">
-                                      <Component id="jRadioButtonLinearHybrid" min="-2" pref="308" max="-2" attributes="0"/>
-                                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                                      <Component id="jRadioButtonOtherCombination" min="-2" pref="199" max="-2" attributes="0"/>
+                                      <Component id="optionLinearHybrid" min="-2" pref="308" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="optionAdaptiveHybrid" min="-2" pref="213" max="-2" attributes="0"/>
                                   </Group>
                                   <Group type="102" alignment="1" attributes="0">
                                       <Group type="103" groupAlignment="1" attributes="0">
@@ -2160,8 +2160,8 @@
                           <Group type="102" alignment="1" attributes="0">
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="jRadioButtonLinearHybrid" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jRadioButtonOtherCombination" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="optionLinearHybrid" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="optionAdaptiveHybrid" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
@@ -2188,7 +2188,7 @@
                     </DimensionLayout>
                   </Layout>
                   <SubComponents>
-                    <Component class="javax.swing.JRadioButton" name="jRadioButtonLinearHybrid">
+                    <Component class="javax.swing.JRadioButton" name="optionLinearHybrid">
                       <Properties>
                         <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
                           <ComponentRef name="groupHybridMethod"/>
@@ -2197,15 +2197,15 @@
                         <Property name="text" type="java.lang.String" value="Linear Combination (k*RSS + (1-k)*TFIDF)"/>
                       </Properties>
                     </Component>
-                    <Component class="javax.swing.JRadioButton" name="jRadioButtonOtherCombination">
+                    <Component class="javax.swing.JRadioButton" name="optionAdaptiveHybrid">
                       <Properties>
                         <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
                           <ComponentRef name="groupContentMethod"/>
                         </Property>
-                        <Property name="text" type="java.lang.String" value="..."/>
+                        <Property name="text" type="java.lang.String" value="Adaptive Hybrid"/>
                       </Properties>
                       <Events>
-                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jRadioButtonOtherCombinationActionPerformed"/>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="optionAdaptiveHybridActionPerformed"/>
                       </Events>
                     </Component>
                     <Component class="javax.swing.JLabel" name="jLabel36">

@@ -66,6 +66,7 @@ public class GenerateInAuthorFrame extends javax.swing.JDialog {
         jLabel7 = new javax.swing.JLabel();
         jButton5 = new javax.swing.JButton();
         potentialLinkOption = new javax.swing.JRadioButton();
+        checkIncludedGroupDegree = new javax.swing.JCheckBox();
 
         jToggleButton1.setText("jToggleButton1");
 
@@ -156,33 +157,28 @@ public class GenerateInAuthorFrame extends javax.swing.JDialog {
         buttonGroup1.add(potentialLinkOption);
         potentialLinkOption.setText("Potential Links (occur in the future but not the past)");
 
+        checkIncludedGroupDegree.setText("Including group degree ");
+
         org.jdesktop.layout.GroupLayout jPanel2Layout = new org.jdesktop.layout.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
             .add(jPanel2Layout.createSequentialGroup()
+                .add(2, 2, 2)
                 .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
                     .add(jPanel2Layout.createSequentialGroup()
-                        .add(2, 2, 2)
                         .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                             .add(degreeHighOption)
                             .add(degreeLowMedHighOption)
-                            .add(jPanel2Layout.createSequentialGroup()
-                                .add(degreeLowOption)
-                                .add(6, 6, 6)))
+                            .add(degreeLowOption))
                         .add(18, 18, 18)
                         .add(potentialLinkOption, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 340, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                     .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                         .add(jPanel2Layout.createSequentialGroup()
-                            .add(10, 10, 10)
                             .add(jLabel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 178, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
                             .add(numberOfRandomAuthor, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 69, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                         .add(jPanel2Layout.createSequentialGroup()
-                            .add(177, 177, 177)
-                            .add(jButtonGenerate))
-                        .add(jPanel2Layout.createSequentialGroup()
-                            .add(10, 10, 10)
                             .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                                 .add(jLabel3)
                                 .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING, false)
@@ -191,12 +187,17 @@ public class GenerateInAuthorFrame extends javax.swing.JDialog {
                                     .add(jLabel4, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
                                     .add(jLabel5, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)))
                             .add(18, 18, 18)
-                            .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                                .add(txtTrainingAuthorIDPaperIDFF, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 480, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                                .add(txtSaveTo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 480, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                                .add(txtTrainingAuthorIDPaperIDNF, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 480, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                                .add(txtTrainingPaperIDYear, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 480, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                                .add(txtTrainingAuthorIDPaperID, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 480, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                            .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING, false)
+                                .add(jPanel2Layout.createSequentialGroup()
+                                    .add(checkIncludedGroupDegree)
+                                    .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .add(jButtonGenerate))
+                                .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                                    .add(txtTrainingAuthorIDPaperIDFF, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 480, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                    .add(txtSaveTo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 480, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                    .add(txtTrainingAuthorIDPaperIDNF, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 480, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                    .add(txtTrainingPaperIDYear, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 480, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                    .add(txtTrainingAuthorIDPaperID, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 480, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
                             .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                             .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                                 .add(jButton1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 42, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
@@ -250,7 +251,9 @@ public class GenerateInAuthorFrame extends javax.swing.JDialog {
                     .add(txtSaveTo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(jButton1))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jButtonGenerate)
+                .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(jButtonGenerate)
+                    .add(checkIncludedGroupDegree))
                 .addContainerGap())
         );
 
@@ -414,12 +417,12 @@ public class GenerateInAuthorFrame extends javax.swing.JDialog {
         System.out.println("START GENERATING AUTHORLIST" + "\n");
         numberOfAuthor = Integer.parseInt(numberOfRandomAuthor.getText());
         ExperimentSetting experimentSetting = new ExperimentSetting(
-                Integer.parseInt(numberOfRandomAuthor.getText()),
-                txtTrainingAuthorIDPaperID.getText(),
-                txtTrainingPaperIDYear.getText(),
-                txtTrainingAuthorIDPaperIDNF.getText(),
-                txtTrainingAuthorIDPaperIDFF.getText(),
-                txtSaveTo.getText());
+                                    Integer.parseInt(numberOfRandomAuthor.getText()),
+                                    txtTrainingAuthorIDPaperID.getText(),
+                                    txtTrainingPaperIDYear.getText(),
+                                    txtTrainingAuthorIDPaperIDNF.getText(),
+                                    txtTrainingAuthorIDPaperIDFF.getText(),
+                                    txtSaveTo.getText(), checkIncludedGroupDegree.isSelected());
         experimentSetting.generateAuthorList(option);
         System.out.println("DONE" + "\n");
     }//GEN-LAST:event_jButtonGenerateActionPerformed
@@ -485,6 +488,7 @@ public class GenerateInAuthorFrame extends javax.swing.JDialog {
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.ButtonGroup buttonGroup2;
     private javax.swing.ButtonGroup buttonGroup3;
+    private javax.swing.JCheckBox checkIncludedGroupDegree;
     private javax.swing.JRadioButton degreeHighOption;
     private javax.swing.JRadioButton degreeLowMedHighOption;
     private javax.swing.JRadioButton degreeLowOption;
