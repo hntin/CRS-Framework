@@ -30,15 +30,15 @@ public class TFIDF {
             int instanceID = getInstanceFromAuthorID(inputAuthorID);
             HashMap<Integer, Float> similarityHM = new HashMap<Integer, Float>();
             if (isTF == true) {
-                synchronized (lock) {
                     for (int otherInstanceID = 0; otherInstanceID < _InstancePublicationHM.size(); otherInstanceID++) {
                         if (instanceID != otherInstanceID) {
                             currentAuthorID = getAuthorIDFromInstanceID(otherInstanceID);
-                            float simValue = (float) similarityUsingTF.getCosineSimilarityWhenIndexAllDocument(instanceID, otherInstanceID);
+                            float simValue = (float) similarityUsingTF.getSimilarityTFNonIndexALL(_InstancePublicationHM.get(instanceID),_InstancePublicationHM.get(otherInstanceID));
+                           // float simValue = (float) similarityUsingTF.getCosineSimilarityWhenIndexAllDocument(instanceID, otherInstanceID);
                             similarityHM.put(currentAuthorID, simValue);
+                            System.out.println("ID:" + instanceID +"Other iD" + otherInstanceID + "valuse:" +simValue);
                         }
                     }
-                }
             }
             if (isTFIDF == true) {
                 synchronized (lock) {
@@ -122,10 +122,11 @@ public class TFIDF {
             loadInstancePublication(inputFile);
             String pathFile = (new File(inputFile)).getParent();
             loadMappingInstanceIDAuthorID(pathFile + "/CRS-AuthorIDAndInstance.txt");
-            if (isTF == true) {
-                similarityUsingTF = new DocumentSimilarityTF();
-                similarityUsingTF.indexAllDocument(_InstancePublicationHM);
-            }
+            similarityUsingTF = new DocumentSimilarityTF();
+//            if (isTF == true) {
+//                similarityUsingTF = new DocumentSimilarityTF();
+//                similarityUsingTF.indexAllDocument(_InstancePublicationHM);
+//            }
             if (isTFIDF == true) {
                 similarityUsingTFIDF = new DocumentSimilarityTFIDF();
                 similarityUsingTFIDF.indexAllDocument(_InstancePublicationHM);
