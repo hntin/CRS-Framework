@@ -37,7 +37,6 @@ public class AdaptiveHybrid {
                 }
             }
         }
-
     }
 
     public HashMap<Integer, HashMap<Integer, Float>> process(HashMap<Integer, HashMap<Integer, Float>> graph,
