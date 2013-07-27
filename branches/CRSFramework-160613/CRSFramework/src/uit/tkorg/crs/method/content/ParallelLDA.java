@@ -24,7 +24,7 @@ public class ParallelLDA {
     public static HashMap<Integer, String> _InstancePublicationHM = new HashMap<>();
     private static HashMap<Integer, HashMap<Integer, Float>> _KLDivergenceHM;
 
-    public HashMap<Integer, HashMap<Integer, Float>> process(String inputFile, ArrayList<Integer> listAuthorID) {
+    public HashMap<Integer, HashMap<Integer, Float>> process(String inputFile, HashMap<Integer, String> listAuthorID) {
         System.out.println("START TRAINING LDA");
         try {
             loadInstancePublication(inputFile);
@@ -72,7 +72,7 @@ public class ParallelLDA {
             System.out.println("NUMBER OF INSTANCES:" + instances.size());
             loadMappingInstanceIDAuthorID(pathFile + "\\CRS-AuthorIDAndInstance.txt");
             
-            for (int inputAuthorID : listAuthorID) {
+            for (int inputAuthorID : listAuthorID.keySet()) {
                 System.out.println("CURRENT INSTANCE IS:" + inputAuthorID);
                 int instanceID = getInstanceFromAuthorID(inputAuthorID);
                 double[] topicDistInputAuthor = model.getTopicProbabilities(instanceID);

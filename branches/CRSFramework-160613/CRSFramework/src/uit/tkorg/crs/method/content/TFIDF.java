@@ -68,7 +68,7 @@ public class TFIDF {
 //        }
 //    }
 
-    public HashMap<Integer, HashMap<Integer, Float>> process(String inputFile, ArrayList<Integer> listAuthorID) {
+    public HashMap<Integer, HashMap<Integer, Float>> process(String inputFile, HashMap<Integer, String> listAuthorID) {
         System.out.println("START PROCESSING TFIDF");
         try {
             loadInstancePublication(inputFile);
@@ -78,8 +78,8 @@ public class TFIDF {
 
             Runtime runtime = Runtime.getRuntime();
             int numOfProcessors = runtime.availableProcessors();
-            ExecutorService executor = Executors.newFixedThreadPool(numOfProcessors / 2);
-            for (final int authorId : listAuthorID) {
+            ExecutorService executor = Executors.newFixedThreadPool(numOfProcessors - 1);
+            for (final int authorId : listAuthorID.keySet()) {
                 executor.submit(new Runnable() {
                     @Override
                     public void run() {

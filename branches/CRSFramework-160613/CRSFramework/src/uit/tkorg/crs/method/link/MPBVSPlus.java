@@ -16,7 +16,7 @@ import java.util.concurrent.Executors;
  */
 public class MPBVSPlus {
 
-    private void Run(int authorId1) {
+    private void runMPBVSPlus(int authorId1) {
         Set<Integer> listAuthorFirstHop = _graph.get(authorId1).keySet();
         HashMap<Integer, Float> listMPBVSPlus = new HashMap<>();
         for (int authorId_FirstHop : listAuthorFirstHop) {
@@ -56,7 +56,7 @@ public class MPBVSPlus {
     private HashMap<Integer, HashMap<Integer, Float>> _graph;
 
     public HashMap<Integer, HashMap<Integer, Float>> Process(HashMap<Integer, HashMap<Integer, Float>> graph,
-            ArrayList<Integer> listAuthor) {
+            HashMap<Integer, String> listAuthor) {
         _mpbvsplusData = new HashMap<>();
         _graph = graph;
 
@@ -64,11 +64,11 @@ public class MPBVSPlus {
         int numOfProcessors = runtime.availableProcessors();
 
         ExecutorService executor = Executors.newFixedThreadPool(numOfProcessors / 2);
-        for (final int authorId : listAuthor) {
+        for (final int authorId : listAuthor.keySet()) {
             executor.submit(new Runnable() {
                 @Override
                 public void run() {
-                    Run(authorId);
+                    runMPBVSPlus(authorId);
                 }
             });
         }
