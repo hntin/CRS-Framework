@@ -134,7 +134,7 @@ public class HybridMethodExperiment {
         if (_isAdaptiveHybrid) {
             HashMap<Integer, HashMap<Integer, Float>> adaptiveHybridResult = null;
             AdaptiveHybrid adaptiveHybridMethod = new AdaptiveHybrid();
-            adaptiveHybridResult = adaptiveHybridMethod.process(_listAuthorRandom);
+            adaptiveHybridResult = adaptiveHybridMethod.process(_graph.rssGraph, _listAuthorRandom);
 
             if (adaptiveHybridResult != null) {
                 for (int i = 1; i <= topN; i++) {
