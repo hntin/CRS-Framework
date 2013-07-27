@@ -16,7 +16,7 @@ import java.util.concurrent.Executors;
  */
 public class Cosine {
 
-    private void Run(int authorId1) {
+    private void runCosine(int authorId1) {
         for (int authorId2 : _graph.keySet()) {
             if (authorId1 != authorId2) {
                 Set<Integer> neighborsOfAuthor1 = _graph.get(authorId1).keySet();
@@ -46,8 +46,8 @@ public class Cosine {
     private HashMap<Integer, HashMap<Integer, Float>> _cosineData;
     private HashMap<Integer, HashMap<Integer, Float>> _graph;
 
-    public HashMap<Integer, HashMap<Integer, Float>> Process(HashMap<Integer, HashMap<Integer, Float>> graph,
-            ArrayList<Integer> listAuthor) {
+    public HashMap<Integer, HashMap<Integer, Float>> process(HashMap<Integer, HashMap<Integer, Float>> graph,
+            HashMap<Integer, String> listAuthor) {
         _cosineData = new HashMap<>();
         _graph = graph;
 
@@ -55,11 +55,11 @@ public class Cosine {
         int numOfProcessors = runtime.availableProcessors();
 
         ExecutorService executor = Executors.newFixedThreadPool(numOfProcessors / 2);
-        for (final int authorId : listAuthor) {
+        for (final int authorId : listAuthor.keySet()) {
             executor.submit(new Runnable() {
                 @Override
                 public void run() {
-                    Run(authorId);
+                    runCosine(authorId);
                 }
             });
         }

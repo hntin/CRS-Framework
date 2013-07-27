@@ -16,7 +16,7 @@ import java.util.concurrent.Executors;
  */
 public class RSS {
 
-    private void Run(int authorId1) {
+    private void runRSS(int authorId1) {
         Set<Integer> listAuthorFirstHop = _graph.get(authorId1).keySet();
         HashMap<Integer, Float> listRSS = new HashMap<>();
         for (int authorId_FirstHop : listAuthorFirstHop) {
@@ -57,20 +57,20 @@ public class RSS {
     private HashMap<Integer, HashMap<Integer, Float>> _rssData;
     private HashMap<Integer, HashMap<Integer, Float>> _graph;
 
-    public HashMap<Integer, HashMap<Integer, Float>> Process(HashMap<Integer, HashMap<Integer, Float>> graph,
-            ArrayList<Integer> listAuthor) {
+    public HashMap<Integer, HashMap<Integer, Float>> process(HashMap<Integer, HashMap<Integer, Float>> graph,
+            HashMap<Integer, String> listAuthor) {
         _rssData = new HashMap<>();
         _graph = graph;
 
         Runtime runtime = Runtime.getRuntime();
         int numOfProcessors = runtime.availableProcessors();
 
-        ExecutorService executor = Executors.newFixedThreadPool(numOfProcessors / 2);
-        for (final int authorId : listAuthor) {
+        ExecutorService executor = Executors.newFixedThreadPool(numOfProcessors - 1);
+        for (final int authorId : listAuthor.keySet()) {
             executor.submit(new Runnable() {
                 @Override
                 public void run() {
-                    Run(authorId);
+                    runRSS(authorId);
                 }
             });
         }

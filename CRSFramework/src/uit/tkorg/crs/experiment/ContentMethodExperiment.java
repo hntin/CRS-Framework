@@ -31,7 +31,7 @@ public class ContentMethodExperiment {
     private boolean _isTFIDF = false;
     private boolean _isContentMethodPredictionNewLink;
     private boolean _isContentMethodPredictionExistAndNewLink;
-    private ArrayList<Integer> _listAuthorRandom;
+    private HashMap<Integer, String> _listAuthorRandom;
     private String _LDA_InputFile;
     private String _training_AuthorId_PaperId_Path;
     private String _training_PaperId_YearPath;
@@ -44,12 +44,13 @@ public class ContentMethodExperiment {
     HashMap<Integer, HashMap<Integer, Float>> topSimilarity;
     int topN = 50;
 
-    public ContentMethodExperiment(){}
-            
+    public ContentMethodExperiment() {
+    }
+
     public ContentMethodExperiment(String LDAInputFile, String Training_PaperId_AuthorIdPath, String Training_PaperId_YearPath,
             String Testing_PaperId_Year_NFPath, String Testing_PaperId_Year_FFPath,
             String Existing_List_AuthorPath, // empty or null if use radom author
-            String ResultPath, boolean isKLDivergence, boolean isTFIDF, 
+            String ResultPath, boolean isKLDivergence, boolean isTFIDF,
             boolean isContentMethodPredictionNewLink, boolean isContentMethodPredictionExistAndNewLink) {
 
         _LDA_InputFile = LDAInputFile;
@@ -61,7 +62,7 @@ public class ContentMethodExperiment {
 
         _isKLDivergence = isKLDivergence;
         _isTFIDF = isTFIDF;
-        
+
         _isContentMethodPredictionNewLink = isContentMethodPredictionNewLink;
         _isContentMethodPredictionExistAndNewLink = isContentMethodPredictionExistAndNewLink;
 
@@ -97,8 +98,7 @@ public class ContentMethodExperiment {
                 for (int i = 1; i <= topN; i++) {
                     if (_isContentMethodPredictionNewLink) {
                         topSimilarity = TopNSimilarity.findTopNSimilarityForKLDivergenceForNewLinkOnly(i, klDivergenceResult, _graph.rssGraph);
-                    }
-                    else {
+                    } else {
                         topSimilarity = TopNSimilarity.findTopNSimilarityForKLDivergence(i, klDivergenceResult);
                     }
                     float precisionNear = EvaluationMetric.Mean_Precision_TopN(topSimilarity, _graph.nearTestingData);
@@ -124,8 +124,7 @@ public class ContentMethodExperiment {
                 for (int i = 1; i <= topN; i++) {
                     if (_isContentMethodPredictionNewLink) {
                         topSimilarity = TopNSimilarity.findTopNSimilarityForNewLinkOnly(i, tfidfResult, _graph.rssGraph);
-                    }
-                    else {
+                    } else {
                         topSimilarity = TopNSimilarity.findTopNSimilarity(i, tfidfResult);
                     }
                     float precisionNear = EvaluationMetric.Mean_Precision_TopN(topSimilarity, _graph.nearTestingData);
@@ -169,169 +168,30 @@ public class ContentMethodExperiment {
     private void selectAuthorsForExperiment() {
         try {
             if (_listAuthorRandom == null || _listAuthorRandom.size() == 0) {
-                _listAuthorRandom = new ArrayList<>();
-                if (_existing_List_AuthorPath == null || _existing_List_AuthorPath.isEmpty()) {
-                    // <editor-fold defaultstate="collapsed" desc="Random Author">
-                    HashMap<Integer, Integer> authorDegree = new HashMap<>();
-                    for (int authorId : _graph.rssGraph.keySet()) {
-                        authorDegree.put(authorId, _graph.rssGraph.get(authorId).size());
-                    }
-
-                    HashMap<Integer, Integer> degreeCounter = new HashMap<>();
-                    for (int authorId : authorDegree.keySet()) {
-                        Integer counter = degreeCounter.get(authorDegree.get(authorId));
-                        if (counter == null) {
-                            counter = 0;
-                        }
-                        counter++;
-                        degreeCounter.put(authorDegree.get(authorId), counter);
-                    }
-
-                    int[] degreeArray = new int[degreeCounter.keySet().size()];
-                    int index = 0;
-                    for (int degree : degreeCounter.keySet()) {
-                        degreeArray[index] = degree;
-                        index++;
-                    }
-
-                    //sort degree Array
-                    for (int i = 0; i < degreeArray.length - 1; i++) {
-                        for (int j = i + 1; j < degreeArray.length; j++) {
-                            if (degreeArray[i] > degreeArray[j]) {
-                                int temp = degreeArray[i];
-                                degreeArray[i] = degreeArray[j];
-                                degreeArray[j] = temp;
-                            }
-                        }
-                    }
-
-                    int numberOfDegree, numberOfLowDegree, numberOfMidDegree, numberOfHighDegree;
-                    numberOfDegree =
-                            numberOfLowDegree =
-                            numberOfMidDegree =
-                            numberOfHighDegree = (int) degreeArray.length / 3;
-                    if (degreeArray.length - numberOfDegree * 3 == 1) {
-                        numberOfLowDegree += 1;
-                    } else if (degreeArray.length - numberOfDegree * 3 == 2) {
-                        numberOfLowDegree += 1;
-                        numberOfMidDegree += 1;
-                    }
-
-                    int maxLowDegree = degreeArray[numberOfLowDegree - 1];
-                    int maxMidDegree = degreeArray[numberOfLowDegree + numberOfMidDegree - 1];
-                    int maxHighDegree = degreeArray[numberOfLowDegree + numberOfMidDegree + numberOfHighDegree - 1];;
-
-                    ArrayList<Integer> listAuthorIdInLow = new ArrayList<>();
-                    ArrayList<Integer> listAuthorIdInMid = new ArrayList<>();
-                    ArrayList<Integer> listAuthorIdInHigh = new ArrayList<>();
-
-                    ArrayList<Integer> listAuthorIdInLowForStatic = new ArrayList<>();
-                    ArrayList<Integer> listAuthorIdInMidForStatic = new ArrayList<>();
-                    ArrayList<Integer> listAuthorIdInHighForStatic = new ArrayList<>();
-
-                    HashSet<Integer> listAuthorNearTesting = _graph.GetAllAuthorNearTest();
-                    HashSet<Integer> listAuthorFarTesting = _graph.GetAllAuthorFarTest();
-                    for (int authorId : authorDegree.keySet()) {
-                        if (authorDegree.get(authorId) < maxLowDegree) {
-                            listAuthorIdInLowForStatic.add(authorId);
-                            if (listAuthorNearTesting.contains(authorId)
-                                    && listAuthorFarTesting.contains(authorId)) {
-                                listAuthorIdInLow.add(authorId);
-                            }
-                        } else if (authorDegree.get(authorId) < maxMidDegree) {
-                            listAuthorIdInMidForStatic.add(authorId);
-                            if (listAuthorNearTesting.contains(authorId)
-                                    && listAuthorFarTesting.contains(authorId)) {
-                                listAuthorIdInMid.add(authorId);
-                            }
+                _listAuthorRandom = new HashMap<>();
+                // <editor-fold defaultstate="collapsed" desc="Load Author">
+                try {
+                    FileInputStream fis = new FileInputStream(_existing_List_AuthorPath);
+                    Reader reader = new InputStreamReader(fis, "UTF8");
+                    BufferedReader bufferReader = new BufferedReader(reader);
+                    bufferReader.readLine();
+                    String line = null;
+                    String[] tokens;
+                    String groupLMD;
+                    int authorId;
+                    while ((line = bufferReader.readLine()) != null) {
+                        tokens = line.split("\t");
+                        authorId = Integer.parseInt(tokens[0]);
+                        if (tokens.length <= 1) {
+                            groupLMD = "";
                         } else {
-                            listAuthorIdInHighForStatic.add(authorId);
-                            if (listAuthorNearTesting.contains(authorId)
-                                    && listAuthorFarTesting.contains(authorId)) {
-                                listAuthorIdInHigh.add(authorId);
-                            }
+                            groupLMD = tokens[1];
                         }
+                        _listAuthorRandom.put(authorId, groupLMD);
                     }
-
-                    Random rd = new Random();
-                    ArrayList<Integer> listRandomAuthorIdInLow = new ArrayList<>();
-                    int counter = 0;
-                    if (listAuthorIdInLow.size() > 200) {
-                        while (counter < 100) {
-                            counter++;
-                            int aid;
-                            while (listRandomAuthorIdInLow.contains(aid = listAuthorIdInLow.get(rd.nextInt(listAuthorIdInLow.size())))) ;
-                            listRandomAuthorIdInLow.add(aid);
-                        }
-                    } else {
-                        int length = listAuthorIdInLow.size() > 100 ? 100 : listAuthorIdInLow.size();
-                        for (int i = 0; i < length; i++) {
-                            listRandomAuthorIdInLow.add(listAuthorIdInLow.get(i));
-                        }
-                    }
-
-                    ArrayList<Integer> listRandomAuthorIdInMid = new ArrayList<>();
-                    counter = 0;
-                    if (listAuthorIdInMid.size() > 200) {
-                        while (counter < 100) {
-                            counter++;
-                            int aid;
-                            while (listRandomAuthorIdInMid.contains(aid = listAuthorIdInMid.get(rd.nextInt(listAuthorIdInMid.size())))) ;
-                            listRandomAuthorIdInMid.add(aid);
-                        }
-                    } else {
-                        int length = listAuthorIdInMid.size() > 100 ? 100 : listAuthorIdInMid.size();
-                        for (int i = 0; i < length; i++) {
-                            listRandomAuthorIdInMid.add(listAuthorIdInMid.get(i));
-                        }
-                    }
-
-                    ArrayList<Integer> listRandomAuthorIdInHigh = new ArrayList<>();
-                    counter = 0;
-                    if (listAuthorIdInHigh.size() > 200) {
-                        while (counter < 100) {
-                            counter++;
-                            int aid;
-                            while (listRandomAuthorIdInHigh.contains(aid = listAuthorIdInHigh.get(rd.nextInt(listAuthorIdInHigh.size())))) ;
-                            listRandomAuthorIdInHigh.add(aid);
-                        }
-                    } else {
-                        int length = listAuthorIdInHigh.size() > 100 ? 100 : listAuthorIdInHigh.size();
-                        for (int i = 0; i < length; i++) {
-                            listRandomAuthorIdInHigh.add(listAuthorIdInHigh.get(i));
-                        }
-                    }
-
-                    _listAuthorRandom.addAll(listRandomAuthorIdInLow);
-                    _listAuthorRandom.addAll(listRandomAuthorIdInMid);
-                    _listAuthorRandom.addAll(listRandomAuthorIdInHigh);
-
-                    FileOutputStream fos = new FileOutputStream(_resultPath + "/" + "ListRandomAuthor.txt");
-                    Writer file = new OutputStreamWriter(fos, "UTF8");
-                    file.write("AuthorID" + "\n");
-                    for (int authorId : _listAuthorRandom) {
-                        file.write(String.valueOf(authorId) + "\n");
-                    }
-                    file.close();
-                    // </editor-fold>
-                } else {
-                    // <editor-fold defaultstate="collapsed" desc="Load Author">
-                    try {
-                        _listAuthorRandom = new ArrayList<>();
-                        FileInputStream fis = new FileInputStream(_existing_List_AuthorPath);
-                        Reader reader = new InputStreamReader(fis, "UTF8");
-                        BufferedReader bufferReader = new BufferedReader(reader);
-                        bufferReader.readLine();
-                        String line = null;
-                        int authorId;
-                        while ((line = bufferReader.readLine()) != null) {
-                            authorId = Integer.parseInt(line);
-                            _listAuthorRandom.add(authorId);
-                        }
-                        bufferReader.close();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                    bufferReader.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
                 // </editor-fold>
             }

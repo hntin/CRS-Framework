@@ -19,13 +19,13 @@ public class AdaptiveHybrid {
     public static HashMap<Integer, String> _InstancePublicationHM = new HashMap<>();
     private static HashMap<Integer, HashMap<Integer, Float>> _adaptiveHybridHM = new HashMap<>();
 
-    public HashMap<Integer, HashMap<Integer, Float>> process(ArrayList<Integer> listAuthorID) {
+    public HashMap<Integer, HashMap<Integer, Float>> process(HashMap<Integer, String> listAuthorID) {
         System.out.println("START PROCESSING TFIDF");
         try {
             Runtime runtime = Runtime.getRuntime();
             int numOfProcessors = runtime.availableProcessors();
             ExecutorService executor = Executors.newFixedThreadPool(numOfProcessors - 1);
-            for (final int authorId : listAuthorID) {
+            for (final int authorId : listAuthorID.keySet()) {
                 executor.submit(new Runnable() {
                     @Override
                     public void run() {
