@@ -3,6 +3,7 @@
  * and open the template in the editor.
  */
 package uit.tkorg.crs.method.content;;
+
 /**
  *
  * @author tiendv
@@ -22,12 +23,16 @@ import org.apache.lucene.util.*;
 public class DocumentSimilarityTF {
 
     public static final String CONTENT = "Content";
-
+    public static Directory _directory;
     private final Set<String> terms = new HashSet<>();
-    private final RealVector v1;
-    private final RealVector v2;
+    private Object lock = new Object();
 
-    DocumentSimilarityTF(String s1, String s2) throws IOException {
+    public DocumentSimilarityTF() {
+    }
+    
+     public double getSimilarityTFNonIndexALL(String s1, String s2) throws IOException {
+        RealVector v1;
+        RealVector v2;
         if(s1!=""&& s1!=null && s2!=null &&s2 !="")
         {
             Directory directory = createIndex(s1, s2);
@@ -42,8 +47,29 @@ public class DocumentSimilarityTF {
         {
             v1=null;
             v2=null;
-                    
+                   
         }
+        terms.clear();
+        if(v1!=null && v2!=null)
+        return (v1.dotProduct(v2)) / (v1.getNorm() * v2.getNorm());
+        else
+            return 0;
+    }
+     
+
+    public void indexAllDocument(HashMap<Integer, String> allDocument) throws IOException {
+        _directory = new RAMDirectory();
+        Analyzer analyzer = new SimpleAnalyzer(Version.LUCENE_CURRENT);
+        IndexWriterConfig iwc = new IndexWriterConfig(Version.LUCENE_CURRENT,
+                analyzer);
+        System.out.println("======START INDEX ALL DOCUMENTS=====");
+        IndexWriter writer = new IndexWriter(_directory, iwc);
+        for (int i = 0; i < allDocument.size(); i++) {
+            addDocument(writer, allDocument.get(i));
+        }
+        writer.close();
+        System.out.println(_directory);
+        System.out.println("====== End INDEX ALL =====");
     }
 
     Directory createIndex(String s1, String s2) throws IOException {
@@ -58,7 +84,9 @@ public class DocumentSimilarityTF {
         return directory;
     }
 
-    /* Indexed, tokenized, stored. */
+    /*
+     * Indexed, tokenized, stored.
+     */
     public static final FieldType TYPE_STORED = new FieldType();
 
     static {
@@ -77,16 +105,23 @@ public class DocumentSimilarityTF {
         writer.addDocument(doc);
     }
 
-    double getCosineSimilarity() {
-        if(v1!=null && v2!=null)
-        return (v1.dotProduct(v2)) / (v1.getNorm() * v2.getNorm());
-        else
-            return 0;
-    }
-
-    public static double getCosineSimilarity(String s1, String s2)
+    public double getCosineSimilarityWhenIndexAllDocument(int authorIDOne, int authorIDTwo)
             throws IOException {
-        return new DocumentSimilarityTF(s1, s2).getCosineSimilarity();
+        IndexReader reader = DirectoryReader.open(_directory);
+        Map<String, Integer> f1 = getTermFrequencies(reader, authorIDOne);
+        Map<String, Integer> f2 = getTermFrequencies(reader, authorIDTwo);
+        reader.close();
+        RealVector v1 = toRealVector(f1);
+        //System.out.println("V1"+ v1);
+        RealVector v2 = toRealVector(f2);
+        terms.clear();
+        //System.out.println("V2"+ v2);
+        if (v1 != null && v2 != null) {
+            //System.out.println( "Similarity: "+ (v1.dotProduct(v2)) / (v1.getNorm() * v2.getNorm()));
+            return (v1.dotProduct(v2)) / (v1.getNorm() * v2.getNorm());
+        } else {
+            return 0;
+        }        
     }
 
     Map<String, Integer> getTermFrequencies(IndexReader reader, int docId)
@@ -108,10 +143,10 @@ public class DocumentSimilarityTF {
     RealVector toRealVector(Map<String, Integer> map) {
         RealVector vector = new ArrayRealVector(terms.size());
         int i = 0;
-        for (String term : terms) {
-            int value = map.containsKey(term) ? map.get(term) : 0;
-            vector.setEntry(i++, value);
-        }
+            for (String term : terms) {
+                int value = map.containsKey(term) ? map.get(term) : 0;
+                vector.setEntry(i++, value);
+            }
         return (RealVector) vector.mapDivide(vector.getL1Norm());
     }
 }

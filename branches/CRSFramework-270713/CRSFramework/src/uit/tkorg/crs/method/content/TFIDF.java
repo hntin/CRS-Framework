@@ -12,7 +12,7 @@ import org.apache.commons.lang.StringUtils;
 
 /**
  *
- * @author TinHuynh
+ * @author tiendv
  */
 public class TFIDF {
 
@@ -20,53 +20,27 @@ public class TFIDF {
     public static HashMap<Integer, Integer> _InstanceAuthorHM = new HashMap<>();
     public static HashMap<Integer, String> _InstancePublicationHM = new HashMap<>();
     private static HashMap<Integer, HashMap<Integer, Float>> _tfidfHM = new HashMap<>();
-    DocumentSimilarityTFIDF similarityUsingTFIDF; 
-    private Object lock = new Object();
+    CollectionDocument indexAllDocument;
 
-    private void runTF(int inputAuthorID) {
+    private void Run(int inputAuthorID) {
         try {
             int currentAuthorID;
             System.out.println("CURRENT INSTANCE IS:" + inputAuthorID);
             int instanceID = getInstanceFromAuthorID(inputAuthorID);
-
             HashMap<Integer, Float> similarityHM = new HashMap<Integer, Float>();
-            for (int otherInstanceID = 0; otherInstanceID < _InstancePublicationHM.size(); otherInstanceID++) {
-                if (instanceID != otherInstanceID) {
-                    // calculate  similarity using TF only
-                    DocumentSimilarityTF similarityUsingTF = new DocumentSimilarityTF(
-                            _InstancePublicationHM.get(instanceID), _InstancePublicationHM.get(otherInstanceID));
-                    float simValue = (float) similarityUsingTF.getCosineSimilarity();
-                    currentAuthorID = getAuthorIDFromInstanceID(otherInstanceID);
-                    similarityHM.put(currentAuthorID, simValue);
+                for (int otherInstanceID = 0; otherInstanceID < _InstancePublicationHM.size(); otherInstanceID++) {
+                    if (instanceID != otherInstanceID) {
+                        currentAuthorID = getAuthorIDFromInstanceID(otherInstanceID);
+                        SimilarityTF similarityUsingTF = new SimilarityTF();
+                        float simValue = (float) similarityUsingTF.getCosineSimilarityWhenIndexAllDocument(indexAllDocument.getTermWithAuthorID(instanceID), indexAllDocument.getTermWithAuthorID(otherInstanceID)); 
+                        similarityHM.put(currentAuthorID, simValue);
+                    }
                 }
-            }
-
             _tfidfHM.put(inputAuthorID, similarityHM);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
-    
-//    private void Run(int inputAuthorID) {
-//        try {
-//            int currentAuthorID;
-//            System.out.println("CURRENT INSTANCE IS:" + inputAuthorID);
-//            int instanceID = getInstanceFromAuthorID(inputAuthorID);
-//            HashMap<Integer, Float> similarityHM = new HashMap<Integer, Float>();
-//
-//            for (int otherInstanceID = 0; otherInstanceID < _InstancePublicationHM.size(); otherInstanceID++) {
-//                if (instanceID != otherInstanceID) {
-//                    float simValue = (float) similarityUsingTF.getCosineSimilarityWhenIndexAllDocument(instanceID, otherInstanceID);
-//                    currentAuthorID = getAuthorIDFromInstanceID(otherInstanceID);
-//                    System.out.println("AuthorID: " +instanceID + " AuthorID : "+otherInstanceID +"Value:" +simValue );
-//                    similarityHM.put(currentAuthorID, simValue);
-//                }
-//            }
-//            _tfidfHM.put(inputAuthorID, similarityHM);
-//        } catch (Exception ex) {
-//            ex.printStackTrace();
-//        }
-//    }
 
     public HashMap<Integer, HashMap<Integer, Float>> process(String inputFile, HashMap<Integer, String> listAuthorID) {
         System.out.println("START PROCESSING TFIDF");
@@ -74,7 +48,9 @@ public class TFIDF {
             loadInstancePublication(inputFile);
             String pathFile = (new File(inputFile)).getParent();
             loadMappingInstanceIDAuthorID(pathFile + "/CRS-AuthorIDAndInstance.txt");
-            //similarityUsingTF.indexAllDocument(_InstancePublicationHM);
+            indexAllDocument = new CollectionDocument();
+            indexAllDocument.indexAllDocument(_InstancePublicationHM);
+            indexAllDocument.openReader();
 
             Runtime runtime = Runtime.getRuntime();
             int numOfProcessors = runtime.availableProcessors();
@@ -83,7 +59,7 @@ public class TFIDF {
                 executor.submit(new Runnable() {
                     @Override
                     public void run() {
-                        runTF(authorId);
+                        Run(authorId);
                     }
                 });
             }
@@ -91,6 +67,7 @@ public class TFIDF {
             executor.shutdown();
             while (!executor.isTerminated()) {
             }
+            indexAllDocument.closeReader();
 
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -147,12 +124,6 @@ public class TFIDF {
             String[] tokens;
             int instanceID = 0;
             while ((line = bufferReader.readLine()) != null) {
-//                tokens = line.split("X\t");
-//                if (tokens.length != 2) {
-//                    continue;
-//                }
-//                String publications = tokens[1];
-                //line = StringUtils.substringAfter(line,"X");
                 _InstancePublicationHM.put(instanceID, line);
                 instanceID++;
             }
@@ -161,64 +132,4 @@ public class TFIDF {
             ex.printStackTrace();
         }
     }
-    /**
-     * tiendv Input for run real TFIDF
-     */
-//        public HashMap<Integer, HashMap<Integer, Float>> process(String inputFile, ArrayList<Integer> listAuthorID) {
-//        System.out.println("START PROCESSING TFIDF");
-//        try {
-//            loadInstancePublication(inputFile);
-//            String pathFile = (new File(inputFile)).getParent();
-//            loadMappingInstanceIDAuthorID(pathFile + "/CRS-AuthorIDAndInstance.txt");
-//            similarityUsingTFIDF = new DocumentSimilarityTFIDF();
-//            similarityUsingTFIDF.indexAllDocument(_InstancePublicationHM);
-//            
-//            Runtime runtime = Runtime.getRuntime();
-//            int numOfProcessors = runtime.availableProcessors();
-//            ExecutorService executor = Executors.newFixedThreadPool(numOfProcessors - 2);
-//            for (final int authorId : listAuthorID) {
-//                executor.submit(new Runnable() {
-//
-//                    @Override
-//                    public void run() {
-//                        Run(authorId);
-//                    }
-//                });
-//            }
-//            executor.shutdown();
-//            while (!executor.isTerminated()) {
-//            }
-//
-//        } catch (Exception ex) {
-//            ex.printStackTrace();
-//        }
-//
-//        System.out.println("FINISH PROCESSING TFIDF");
-//        return _tfidfHM;
-//    }
-    
-    /**
-     * Run of IFIDF 
-     */
-//        private void Run(int inputAuthorID) {
-//        try {
-//            int currentAuthorID;
-//            System.out.println("CURRENT INSTANCE IS:" + inputAuthorID);
-//            int instanceID = getInstanceFromAuthorID(inputAuthorID);
-//            HashMap<Integer, Float> similarityHM = new HashMap<Integer, Float>();
-//            synchronized (lock) {
-//                for (int otherInstanceID = 0; otherInstanceID < _InstancePublicationHM.size(); otherInstanceID++) {
-//                    if (instanceID != otherInstanceID) {
-//                        float simValue = (float) similarityUsingTFIDF.getCosineSimilarityWhenIndexAllDocument(instanceID, otherInstanceID);
-//                        currentAuthorID = getAuthorIDFromInstanceID(otherInstanceID);
-//                        System.out.println("AuthorID: " + instanceID + " AuthorID : " + otherInstanceID + "Value:" + simValue);
-//                        similarityHM.put(currentAuthorID, simValue);
-//                    }
-//                }
-//            }
-//            _tfidfHM.put(inputAuthorID, similarityHM);
-//        } catch (Exception ex) {
-//            ex.printStackTrace();
-//        }
-//    }
 }
