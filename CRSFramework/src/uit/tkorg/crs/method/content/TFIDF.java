@@ -19,7 +19,7 @@ public class TFIDF {
     public static HashMap<Integer, Integer> _InstanceAuthorHM = new HashMap<>();
     public static HashMap<Integer, String> _InstancePublicationHM = new HashMap<>();
     private static HashMap<Integer, HashMap<Integer, Float>> _tfidfHM = new HashMap<>();
-    DocumentSimilarityTF similarityUsingTF;
+
     DocumentSimilarityTFIDF similarityUsingTFIDF;
     private Object lock = new Object();
 
@@ -33,6 +33,7 @@ public class TFIDF {
                     for (int otherInstanceID = 0; otherInstanceID < _InstancePublicationHM.size(); otherInstanceID++) {
                         if (instanceID != otherInstanceID) {
                             currentAuthorID = getAuthorIDFromInstanceID(otherInstanceID);
+                            DocumentSimilarityTF similarityUsingTF = new DocumentSimilarityTF();
                             float simValue = (float) similarityUsingTF.getSimilarityTFNonIndexALL(_InstancePublicationHM.get(instanceID),_InstancePublicationHM.get(otherInstanceID));
                            // float simValue = (float) similarityUsingTF.getCosineSimilarityWhenIndexAllDocument(instanceID, otherInstanceID);
                             similarityHM.put(currentAuthorID, simValue);
@@ -122,7 +123,6 @@ public class TFIDF {
             loadInstancePublication(inputFile);
             String pathFile = (new File(inputFile)).getParent();
             loadMappingInstanceIDAuthorID(pathFile + "/CRS-AuthorIDAndInstance.txt");
-            similarityUsingTF = new DocumentSimilarityTF();
 //            if (isTF == true) {
 //                similarityUsingTF = new DocumentSimilarityTF();
 //                similarityUsingTF.indexAllDocument(_InstancePublicationHM);
