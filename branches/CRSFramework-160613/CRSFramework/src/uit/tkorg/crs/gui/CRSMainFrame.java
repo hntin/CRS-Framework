@@ -194,8 +194,8 @@ public class CRSMainFrame extends javax.swing.JFrame {
         jButtonBrowse24 = new javax.swing.JButton();
         jButtonBrowse25 = new javax.swing.JButton();
         jPanelMethod5 = new javax.swing.JPanel();
-        jRadioButtonLinearHybrid = new javax.swing.JRadioButton();
-        jRadioButtonOtherCombination = new javax.swing.JRadioButton();
+        optionLinearHybrid = new javax.swing.JRadioButton();
+        optionAdaptiveHybrid = new javax.swing.JRadioButton();
         jLabel36 = new javax.swing.JLabel();
         txtInputDataFileHybrid = new javax.swing.JTextField();
         jButton7 = new javax.swing.JButton();
@@ -1426,15 +1426,15 @@ public class CRSMainFrame extends javax.swing.JFrame {
 
         jPanelMethod5.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Hybrid", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 10))); // NOI18N
 
-        groupHybridMethod.add(jRadioButtonLinearHybrid);
-        jRadioButtonLinearHybrid.setSelected(true);
-        jRadioButtonLinearHybrid.setText("Linear Combination (k*RSS + (1-k)*TFIDF)");
+        groupHybridMethod.add(optionLinearHybrid);
+        optionLinearHybrid.setSelected(true);
+        optionLinearHybrid.setText("Linear Combination (k*RSS + (1-k)*TFIDF)");
 
-        groupContentMethod.add(jRadioButtonOtherCombination);
-        jRadioButtonOtherCombination.setText("...");
-        jRadioButtonOtherCombination.addActionListener(new java.awt.event.ActionListener() {
+        groupContentMethod.add(optionAdaptiveHybrid);
+        optionAdaptiveHybrid.setText("Adaptive Hybrid");
+        optionAdaptiveHybrid.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jRadioButtonOtherCombinationActionPerformed(evt);
+                optionAdaptiveHybridActionPerformed(evt);
             }
         });
 
@@ -1468,9 +1468,9 @@ public class CRSMainFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
                 .addGroup(jPanelMethod5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanelMethod5Layout.createSequentialGroup()
-                        .addComponent(jRadioButtonLinearHybrid, javax.swing.GroupLayout.PREFERRED_SIZE, 308, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jRadioButtonOtherCombination, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(optionLinearHybrid, javax.swing.GroupLayout.PREFERRED_SIZE, 308, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(optionAdaptiveHybrid, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanelMethod5Layout.createSequentialGroup()
                         .addGroup(jPanelMethod5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(txtExistingAuthorFileHybrid, javax.swing.GroupLayout.PREFERRED_SIZE, 691, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1486,8 +1486,8 @@ public class CRSMainFrame extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelMethod5Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanelMethod5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jRadioButtonLinearHybrid)
-                    .addComponent(jRadioButtonOtherCombination))
+                    .addComponent(optionLinearHybrid)
+                    .addComponent(optionAdaptiveHybrid))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanelMethod5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanelMethod5Layout.createSequentialGroup()
@@ -2398,9 +2398,9 @@ public class CRSMainFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButtonBrowse25ActionPerformed
 
-    private void jRadioButtonOtherCombinationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButtonOtherCombinationActionPerformed
+    private void optionAdaptiveHybridActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_optionAdaptiveHybridActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jRadioButtonOtherCombinationActionPerformed
+    }//GEN-LAST:event_optionAdaptiveHybridActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         final JFileChooser fc = new JFileChooser();
@@ -2475,7 +2475,7 @@ public class CRSMainFrame extends javax.swing.JFrame {
                 txtTrainingPaperYearFileHybrid.getText(),
                 txtNFAuthorPaperFileHybrid.getText(), txtFFAuthorPaperFileHybrid.getText(),
                 txtExistingAuthorFileHybrid.getText(),
-                txtResultPathHybrid.getText(), jRadioButtonLinearHybrid.isSelected(),
+                txtResultPathHybrid.getText(), optionLinearHybrid.isSelected(), optionAdaptiveHybrid.isSelected(),
                 hybridMethodPredictionNewLink.isSelected(), hybridMethodPredictionExistAndNewLink.isSelected());
 
         final DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
@@ -2656,8 +2656,6 @@ public class CRSMainFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jPanelTrainingNet;
     private javax.swing.JPanel jPanelTrainingNet1;
     private javax.swing.JRadioButton jRadioButtonKLDivergence;
-    private javax.swing.JRadioButton jRadioButtonLinearHybrid;
-    private javax.swing.JRadioButton jRadioButtonOtherCombination;
     private javax.swing.JRadioButton jRadioButtonTF;
     private javax.swing.JRadioButton jRadioButtonTFIDF;
     private javax.swing.JTabbedPane jTabbedPaneCRS;
@@ -2675,6 +2673,8 @@ public class CRSMainFrame extends javax.swing.JFrame {
     private javax.swing.JRadioButton linkMethodPredictionNewLink;
     private javax.swing.ButtonGroup linkMethodPredictionOptionGroup;
     private javax.swing.JMenuBar mainMenuBar;
+    private javax.swing.JRadioButton optionAdaptiveHybrid;
+    private javax.swing.JRadioButton optionLinearHybrid;
     private javax.swing.JRadioButton radbtnUseExistingList1;
     private javax.swing.JTextField txtExistingAuthorFile;
     private javax.swing.JTextField txtExistingAuthorFileHybrid;

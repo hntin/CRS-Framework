@@ -111,33 +111,24 @@
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="1" attributes="0">
                   <Group type="102" alignment="1" attributes="0">
+                      <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="1" attributes="0">
                           <Group type="102" attributes="0">
-                              <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="degreeHighOption" alignment="0" min="-2" max="-2" attributes="0"/>
                                   <Component id="degreeLowMedHighOption" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <Component id="degreeLowOption" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
-                                  </Group>
+                                  <Component id="degreeLowOption" alignment="0" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Component id="potentialLinkOption" min="-2" pref="340" max="-2" attributes="0"/>
                           </Group>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" attributes="0">
-                                  <EmptySpace min="10" pref="10" max="-2" attributes="0"/>
                                   <Component id="jLabel1" min="-2" pref="178" max="-2" attributes="0"/>
                                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                   <Component id="numberOfRandomAuthor" min="-2" pref="69" max="-2" attributes="0"/>
                               </Group>
-                              <Group type="102" attributes="0">
-                                  <EmptySpace min="177" pref="177" max="-2" attributes="0"/>
-                                  <Component id="jButtonGenerate" min="-2" max="-2" attributes="0"/>
-                              </Group>
                               <Group type="102" alignment="0" attributes="0">
-                                  <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
                                       <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="1" max="-2" attributes="0">
@@ -148,12 +139,19 @@
                                       </Group>
                                   </Group>
                                   <EmptySpace type="separate" max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="txtTrainingAuthorIDPaperIDFF" alignment="0" min="-2" pref="480" max="-2" attributes="0"/>
-                                      <Component id="txtSaveTo" alignment="0" min="-2" pref="480" max="-2" attributes="0"/>
-                                      <Component id="txtTrainingAuthorIDPaperIDNF" alignment="0" min="-2" pref="480" max="-2" attributes="0"/>
-                                      <Component id="txtTrainingPaperIDYear" alignment="0" min="-2" pref="480" max="-2" attributes="0"/>
-                                      <Component id="txtTrainingAuthorIDPaperID" alignment="0" min="-2" pref="480" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                                      <Group type="102" attributes="0">
+                                          <Component id="checkIncludedGroupDegree" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace max="32767" attributes="0"/>
+                                          <Component id="jButtonGenerate" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Component id="txtTrainingAuthorIDPaperIDFF" alignment="0" min="-2" pref="480" max="-2" attributes="0"/>
+                                          <Component id="txtSaveTo" alignment="0" min="-2" pref="480" max="-2" attributes="0"/>
+                                          <Component id="txtTrainingAuthorIDPaperIDNF" alignment="0" min="-2" pref="480" max="-2" attributes="0"/>
+                                          <Component id="txtTrainingPaperIDYear" alignment="0" min="-2" pref="480" max="-2" attributes="0"/>
+                                          <Component id="txtTrainingAuthorIDPaperID" alignment="0" min="-2" pref="480" max="-2" attributes="0"/>
+                                      </Group>
                                   </Group>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
@@ -224,7 +222,10 @@
                           <Component id="jButton1" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jButtonGenerate" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="jButtonGenerate" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="checkIncludedGroupDegree" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -362,6 +363,11 @@
                   <ComponentRef name="buttonGroup1"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Potential Links (occur in the future but not the past)"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JCheckBox" name="checkIncludedGroupDegree">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Including group degree "/>
               </Properties>
             </Component>
           </SubComponents>

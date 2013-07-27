@@ -20,6 +20,7 @@ import uit.tkorg.crs.common.EvaluationMetric;
 import uit.tkorg.crs.common.TopNSimilarity;
 import uit.tkorg.crs.graph.Graph;
 import uit.tkorg.crs.method.content.TFIDF;
+import uit.tkorg.crs.method.hybrid.AdaptiveHybrid;
 import uit.tkorg.crs.method.hybrid.LinearHybrid;
 import uit.tkorg.crs.method.link.RSS;
 import uit.tkorg.utility.TextFileUtility;
@@ -43,6 +44,7 @@ public class HybridMethodExperiment {
     private StringBuffer _ffContentPredictionBuffer = new StringBuffer();
     HashMap<Integer, HashMap<Integer, Float>> topSimilarity;
     boolean _isLinearHybrid;
+    boolean _isAdaptiveHybrid;
     boolean _isHybridMethodPredictionNewLink;
     boolean _isHybridMethodPredictionExistAndNewLink;
     int topN = 50;
@@ -50,7 +52,7 @@ public class HybridMethodExperiment {
     public HybridMethodExperiment(String inputFileLDA, String training_AuthorId_PaperIdPath, String training_PaperId_YearPath,
             String testing_AuthorId_PaperId_NFPath, String testing_AuthorId_PaperId_FFPath,
             String existing_ListAuthorPath,
-            String ResultPath, boolean isLinearHybrid, 
+            String ResultPath, boolean isLinearHybrid, boolean isAdaptiveHybrid,
             boolean isHybridMethodPredictionNewLink, boolean isHybridMethodPredictionExistAndNewLink) {
 
         _LDA_InputFile = inputFileLDA;
@@ -61,6 +63,7 @@ public class HybridMethodExperiment {
         _existing_List_AuthorPath = existing_ListAuthorPath;
         _resultPath = ResultPath;
         _isLinearHybrid = isLinearHybrid;
+        _isAdaptiveHybrid = isAdaptiveHybrid;
         _isHybridMethodPredictionNewLink = isHybridMethodPredictionNewLink;
         _isHybridMethodPredictionExistAndNewLink = isHybridMethodPredictionExistAndNewLink;
     }
@@ -110,9 +113,35 @@ public class HybridMethodExperiment {
                 for (int i = 1; i <= topN; i++) {
                     if (_isHybridMethodPredictionNewLink) {
                         topSimilarity = TopNSimilarity.findTopNSimilarityForNewLinkOnly(i, linearHybridResult, _graph.rssGraph);
-                    }
-                    else {
+                    } else {
                         topSimilarity = TopNSimilarity.findTopNSimilarity(i, linearHybridResult);
+                    }
+                    float precisionNear = EvaluationMetric.Mean_Precision_TopN(topSimilarity, _graph.nearTestingData);
+                    float precisionFar = EvaluationMetric.Mean_Precision_TopN(topSimilarity, _graph.farTestingData);
+                    _nfContentPredictionBuffer.append(df.format(precisionNear) + "\t");
+                    _ffContentPredictionBuffer.append(df.format(precisionFar) + "\t");
+
+                    float recallNear = EvaluationMetric.Mean_Recall_TopN(topSimilarity, _graph.nearTestingData);
+                    float recallFar = EvaluationMetric.Mean_Recall_TopN(topSimilarity, _graph.farTestingData);
+                    _nfContentPredictionBuffer.append(df.format(recallNear) + "\t");
+                    _ffContentPredictionBuffer.append(df.format(recallFar) + "\t");
+                }
+            }
+        }
+        // </editor-fold>
+
+        //<editor-fold defaultstate="collapsed" desc="Adaptive Hybrid">
+        if (_isAdaptiveHybrid) {
+            HashMap<Integer, HashMap<Integer, Float>> adaptiveHybridResult = null;
+            AdaptiveHybrid adaptiveHybridMethod = new AdaptiveHybrid();
+            adaptiveHybridResult = adaptiveHybridMethod.process(_listAuthorRandom);
+
+            if (adaptiveHybridResult != null) {
+                for (int i = 1; i <= topN; i++) {
+                    if (_isHybridMethodPredictionNewLink) {
+                        topSimilarity = TopNSimilarity.findTopNSimilarityForNewLinkOnly(i, adaptiveHybridResult, _graph.rssGraph);
+                    } else {
+                        topSimilarity = TopNSimilarity.findTopNSimilarity(i, adaptiveHybridResult);
                     }
                     float precisionNear = EvaluationMetric.Mean_Precision_TopN(topSimilarity, _graph.nearTestingData);
                     float precisionFar = EvaluationMetric.Mean_Precision_TopN(topSimilarity, _graph.farTestingData);
