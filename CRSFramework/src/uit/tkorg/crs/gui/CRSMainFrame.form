@@ -2200,7 +2200,7 @@
                     <Component class="javax.swing.JRadioButton" name="optionAdaptiveHybrid">
                       <Properties>
                         <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
-                          <ComponentRef name="groupContentMethod"/>
+                          <ComponentRef name="groupHybridMethod"/>
                         </Property>
                         <Property name="text" type="java.lang.String" value="Adaptive Hybrid"/>
                       </Properties>
