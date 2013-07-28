@@ -1430,7 +1430,7 @@ public class CRSMainFrame extends javax.swing.JFrame {
         optionLinearHybrid.setSelected(true);
         optionLinearHybrid.setText("Linear Combination (k*RSS + (1-k)*TFIDF)");
 
-        groupContentMethod.add(optionAdaptiveHybrid);
+        groupHybridMethod.add(optionAdaptiveHybrid);
         optionAdaptiveHybrid.setText("Adaptive Hybrid");
         optionAdaptiveHybrid.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
