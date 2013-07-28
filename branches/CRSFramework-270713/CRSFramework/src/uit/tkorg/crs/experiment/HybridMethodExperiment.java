@@ -106,11 +106,14 @@ public class HybridMethodExperiment {
             // </editor-fold>
 
             //<editor-fold defaultstate="collapsed" desc="Calculating Similarity based on link based method - RSS">
+            System.out.println("START calculating RSS for Linear Combination");
             HashMap<Integer, HashMap<Integer, Float>> rssResult = null;
             RSS rssMethod = new RSS();
             rssResult = rssMethod.process(_graph.rssGraph, _listAuthorRandom);
+            System.out.println("END calculating RSS for Linear Combination");
             // </editor-fold>
 
+            System.out.println("START Linear Hybrid");
             HashMap<Integer, HashMap<Integer, Float>> linearHybridResult = null;
             LinearHybrid linearHybridMethod = new LinearHybrid();
             linearHybridResult = linearHybridMethod.calculatingLinearHybriđ(rssResult, tfidfResult);
@@ -132,6 +135,7 @@ public class HybridMethodExperiment {
                     _ffContentPredictionBuffer.append(df.format(recallFar) + "\t");
                 }
             }
+            System.out.println("START Linear Hybrid");
         }
         // </editor-fold>
 
