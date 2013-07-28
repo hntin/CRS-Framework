@@ -11,11 +11,16 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.Writer;
+import java.text.DateFormat;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Random;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import uit.tkorg.crs.common.EvaluationMetric;
 import uit.tkorg.crs.common.TopNSimilarity;
 import uit.tkorg.crs.graph.Graph;
@@ -134,7 +139,7 @@ public class HybridMethodExperiment {
         if (_isAdaptiveHybrid) {
             HashMap<Integer, HashMap<Integer, Float>> adaptiveHybridResult = null;
             AdaptiveHybrid adaptiveHybridMethod = new AdaptiveHybrid();
-            adaptiveHybridResult = adaptiveHybridMethod.process(_graph.rssGraph, _listAuthorRandom);
+            adaptiveHybridResult = adaptiveHybridMethod.process(_LDA_InputFile, _graph.rssGraph, _listAuthorRandom);
 
             if (adaptiveHybridResult != null) {
                 for (int i = 1; i <= topN; i++) {
@@ -196,4 +201,28 @@ public class HybridMethodExperiment {
             ex.printStackTrace();
         }
     }
+
+//    public static void main(String args[]) {
+//        try {
+//            final HybridMethodExperiment experiment = new HybridMethodExperiment(
+//                    "C:\\CRS-Experiment\\Sampledata\\Input\\CRS-InputParallelLDA.txt",
+//                    "C:\\CRS-Experiment\\Sampledata\\Input\\Link-Net\\[Training]AuthorId_PaperID.txt",
+//                    "C:\\CRS-Experiment\\Sampledata\\Input\\Link-Net\\[Training]PaperID_Year.txt",
+//                    "C:\\CRS-Experiment\\Sampledata\\Input\\Link-Net\\[NearTesting]AuthorId_PaperID.txt",
+//                    "C:\\CRS-Experiment\\Sampledata\\Input\\Link-Net\\[FarTesting]AuthorId_PaperID.txt",
+//                    "C:\\CRS-Experiment\\Sampledata\\Input\\SampleInput_LowMedHigh_GroupDegree.txt",
+//                    "C:\\CRS-Experiment\\Sampledata\\Output\\AdaptiveHybridResult.txt",
+//                    false, true,
+//                    true, false);
+//
+//            final DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+//            Date date = new Date();
+//            System.out.println("Started Time : " + dateFormat.format(date) + "\n");
+//            System.out.println("START PROCESSING HYBRID METHOD ..." + "\n");
+//            experiment.runHybridMethodExperiment();
+//            System.out.println("END PROCESSING HYBRID METHOD ..." + "\n");
+//        } catch (Exception ex) {
+//            ex.printStackTrace();
+//        }
+//    }
 }
