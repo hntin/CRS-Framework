@@ -12,7 +12,7 @@ import org.apache.commons.lang.StringUtils;
 
 /**
  *
- * @author tiendv
+ * @author TinHuynh
  */
 public class TFIDF {
 
@@ -22,7 +22,7 @@ public class TFIDF {
     private static HashMap<Integer, HashMap<Integer, Float>> _tfidfHM = new HashMap<>();
     CollectionDocument indexAllDocument;
 
-    private void Run(int inputAuthorID) {
+    private void runTF(int inputAuthorID) {
         try {
             int currentAuthorID;
             System.out.println("CURRENT INSTANCE IS:" + inputAuthorID);
@@ -59,7 +59,7 @@ public class TFIDF {
                 executor.submit(new Runnable() {
                     @Override
                     public void run() {
-                        Run(authorId);
+                        runTF(authorId);
                     }
                 });
             }
