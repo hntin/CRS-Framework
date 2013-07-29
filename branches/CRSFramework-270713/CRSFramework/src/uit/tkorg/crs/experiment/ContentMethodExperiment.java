@@ -180,14 +180,16 @@ public class ContentMethodExperiment {
                     String groupLMD;
                     int authorId;
                     while ((line = bufferReader.readLine()) != null) {
-                        tokens = line.split("\t");
-                        authorId = Integer.parseInt(tokens[0]);
-                        if (tokens.length <= 1) {
-                            groupLMD = "";
-                        } else {
-                            groupLMD = tokens[1];
+                        if (!line.equals("")) {
+                            tokens = line.split("\t");
+                            authorId = Integer.parseInt(tokens[0]);
+                            if (tokens.length <= 1) {
+                                groupLMD = "";
+                            } else {
+                                groupLMD = tokens[1];
+                            }
+                            _listAuthorRandom.put(authorId, groupLMD);
                         }
-                        _listAuthorRandom.put(authorId, groupLMD);
                     }
                     bufferReader.close();
                 } catch (Exception e) {
