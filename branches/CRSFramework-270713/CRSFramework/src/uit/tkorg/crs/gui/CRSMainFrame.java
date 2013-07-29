@@ -2099,6 +2099,7 @@ public class CRSMainFrame extends javax.swing.JFrame {
         boolean isMVVSPlusMethod = jCheckBoxMPVSPlus.isSelected();
         boolean isPredictionOnlyNewLink = linkMethodPredictionNewLink.isSelected();
         boolean isPredictionExistAndNewLink = linkMethodPredictionExistAndNewLink.isSelected();
+        boolean isRandomPrediction = false; 
 
         final LinkMethodExperiment experiment = new LinkMethodExperiment(txtTrainingAuthorPaperPath.getText(),
                 txtTrainingPaperYearPath.getText(), txtNFAuthorPaperPath.getText(),
@@ -2106,7 +2107,7 @@ public class CRSMainFrame extends javax.swing.JFrame {
                 txtValueK.getText(), txtValueYear.getText(),
                 txtResultPath.getText(),
                 isCosineMethod, isJaccardMethod, isAdarMethod, isRSSMethod,
-                isRSSPlusMethod, isMPVSMethod, isMVVSPlusMethod, isPredictionOnlyNewLink, isPredictionExistAndNewLink);
+                isRSSPlusMethod, isMPVSMethod, isMVVSPlusMethod, isPredictionOnlyNewLink, isPredictionExistAndNewLink, isRandomPrediction);
 
         final DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         Date date = new Date();

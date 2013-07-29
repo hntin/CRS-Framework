@@ -51,6 +51,7 @@ public class LinkMethodExperiment {
     private boolean _isMVVSPlusMethod;
     private boolean _isPredictionOnlyNewLink;
     private boolean _isPredictionExistAndNewLink;
+    private boolean _isRandomPrediction;
     private StringBuffer _nfAdamicAdarBuffer = new StringBuffer();
     private StringBuffer _nfCosineBuffer = new StringBuffer();
     private StringBuffer _nfJaccardBuffer = new StringBuffer();
@@ -74,13 +75,15 @@ public class LinkMethodExperiment {
             String ResultPath,
             boolean isCosineMethod, boolean isJaccardMethod, boolean isAdarMethod, boolean isRSSMethod,
             boolean isRSSPlusMethod, boolean isMPVSMethod, boolean isMVVSPlusMethod,
-            boolean isPredictionOnlyNewLink, boolean isPredictionExistAndNewLink) {
+            boolean isPredictionOnlyNewLink, boolean isPredictionExistAndNewLink,
+            boolean isRandomPrediction) {
 
         _training_PaperId_AuthorIdPath = Training_PaperId_AuthorIdPath;
         _training_PaperId_YearPath = Training_PaperId_YearPath;
         _testing_PaperId_Year_NFPath = Testing_PaperId_Year_NFPath;
         _testing_PaperId_Year_FFPath = Testing_PaperId_Year_FFPath;
         _existing_List_AuthorPath = Existing_List_AuthorPath;
+        _isRandomPrediction = isRandomPrediction;
 
         String str = ";";
         if (K.contains(",")) {
@@ -262,8 +265,13 @@ public class LinkMethodExperiment {
             // Creating the header of the output text file
             file.write("Near Future Testing" + "\n");
             for (int i = 1; i <= topN; i++) {
-                file.write("\t" + "P@" + i + "\t" + "R@" + i);
+                file.write("\t" + "P@" + i);
             }
+            
+//            for (int i = 1; i <= topN; i++) {
+//                file.write("\t" + "P@" + i + "\t" + "R@" + i);
+//            }
+            
             //file.write("\t" + "Recall@" + topN);
             //file.write("\t" + "MAP");
             file.write("\n");
@@ -281,8 +289,12 @@ public class LinkMethodExperiment {
             //<editor-fold defaultstate="collapsed" desc="Far future testing">
             file.write("Far Future Testing" + "\n");
             for (int i = 1; i <= topN; i++) {
-                file.write("\t" + "P@" + i + "\t" + "R@" + i);
+                file.write("\t" + "P@" + i);
             }
+            
+//            for (int i = 1; i <= topN; i++) {
+//                file.write("\t" + "P@" + i + "\t" + "R@" + i);
+//            }
             //file.write("\t" + "Recall@" + topN);
             //file.write("\t" + "MAP");
             file.write("\n");
@@ -365,7 +377,7 @@ public class LinkMethodExperiment {
                     }
                     
                     // Randomly select similar authors in the training net for link prediction
-                    if (topSimilarity.size() == 0) {
+                    if (_isRandomPrediction) {
                         topSimilarity = getTopNRandomly(i);
                     }
                     
@@ -388,7 +400,7 @@ public class LinkMethodExperiment {
                         topSimilarity = TopNSimilarity.findTopNSimilarity(i, jaccardResult);
                     }
                     // Randomly select similar authors in the training net for link prediction
-                    if (topSimilarity.size() == 0) {
+                    if (_isRandomPrediction) {
                         topSimilarity = getTopNRandomly(topN);
                     }
                     
@@ -410,7 +422,7 @@ public class LinkMethodExperiment {
                         topSimilarity = TopNSimilarity.findTopNSimilarity(i, adamicAdarResult);
                     }
                     // Randomly select similar authors in the training net for link prediction
-                    if (topSimilarity.size() == 0) {
+                    if (_isRandomPrediction) {
                         topSimilarity = getTopNRandomly(topN);
                     }
                     
@@ -432,7 +444,7 @@ public class LinkMethodExperiment {
                         topSimilarity = TopNSimilarity.findTopNSimilarity(i, rssResult);
                     }
                     // Randomly select similar authors in the training net for link prediction
-                    if (topSimilarity.size() == 0) {
+                    if (_isRandomPrediction) {
                         topSimilarity = getTopNRandomly(topN);
                     }
                     
@@ -454,7 +466,7 @@ public class LinkMethodExperiment {
                         topSimilarity = TopNSimilarity.findTopNSimilarity(i, rssplusResult);
                     }
                     // Randomly select similar authors in the training net for link prediction
-                    if (topSimilarity.size() == 0) {
+                    if (_isRandomPrediction) {
                         topSimilarity = getTopNRandomly(topN);
                     }
                     
@@ -476,7 +488,7 @@ public class LinkMethodExperiment {
                         topSimilarity = TopNSimilarity.findTopNSimilarity(i, mpbvsResult);
                     }
                     // Randomly select similar authors in the training net for link prediction
-                    if (topSimilarity.size() == 0) {
+                    if (_isRandomPrediction) {
                         topSimilarity = getTopNRandomly(topN);
                     }
                     
@@ -498,7 +510,7 @@ public class LinkMethodExperiment {
                         topSimilarity = TopNSimilarity.findTopNSimilarity(i, mpbvsplusResult);
                     }
                     // Randomly select similar authors in the training net for link prediction
-                    if (topSimilarity.size() == 0) {
+                    if (_isRandomPrediction) {
                         topSimilarity = getTopNRandomly(topN);
                     }
                     
@@ -531,6 +543,7 @@ public class LinkMethodExperiment {
         boolean isMVVSPlusMethod = true;
         boolean isPredictionOnlyNewLink = true;
         boolean isPredictionExistAndNewLink = false;
+        boolean isRandomPrediction = true;
 
         final LinkMethodExperiment experiment = new LinkMethodExperiment(
                 "C:\\CRS-Experiment\\MAS\\Input\\Input2\\[TrainingData]AuthorID_PaperID_1995_2005.txt",
@@ -542,7 +555,10 @@ public class LinkMethodExperiment {
                 "2005",
                 "C:\\CRS-Experiment\\MAS\\Output\\OnlyNewLink\\LinkBasedMethod_300AuthorNoAnyLink.txt",
                 isCosineMethod, isJaccardMethod, isAdarMethod, isRSSMethod,
-                isRSSPlusMethod, isMPVSMethod, isMVVSPlusMethod, isPredictionOnlyNewLink, isPredictionExistAndNewLink);
+                isRSSPlusMethod, isMPVSMethod, isMVVSPlusMethod, 
+                isPredictionOnlyNewLink, 
+                isPredictionExistAndNewLink, 
+                isRandomPrediction);
         
         try {
             experiment.runLinkMethodExperiment();
