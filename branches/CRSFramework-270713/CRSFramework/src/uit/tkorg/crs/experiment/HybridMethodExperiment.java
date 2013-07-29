@@ -52,7 +52,7 @@ public class HybridMethodExperiment {
     boolean _isAdaptiveHybrid;
     boolean _isHybridMethodPredictionNewLink;
     boolean _isHybridMethodPredictionExistAndNewLink;
-    int topN = 50;
+    int topN = 20;
 
     public HybridMethodExperiment(String inputFileLDA, String training_AuthorId_PaperIdPath, String training_PaperId_YearPath,
             String testing_AuthorId_PaperId_NFPath, String testing_AuthorId_PaperId_FFPath,

@@ -131,7 +131,7 @@ public class LinkMethodExperiment {
         RSSPlus measureRSSPlus = new RSSPlus();
 
         HashMap<Integer, HashMap<Integer, Float>> topSimilarity;
-        int topN = 50;
+        int topN = 20;
         //<editor-fold defaultstate="collapsed" desc="Run for different K and Year">
         for (int year : _yearArray) {
             for (float k : _kArray) {
