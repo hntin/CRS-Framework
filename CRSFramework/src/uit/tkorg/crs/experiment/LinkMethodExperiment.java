@@ -117,185 +117,35 @@ public class LinkMethodExperiment {
 
         _resultPath = ResultPath;
     }
-
-    public void runLinkMethodExperiment() throws Exception {
-        _graph.LoadTrainingData(_training_PaperId_AuthorIdPath, _training_PaperId_YearPath);
-        _graph.LoadTestingData(_testing_PaperId_Year_NFPath, _testing_PaperId_Year_FFPath);
-
-        AdamicAdar measureAdamicAdar = new AdamicAdar();
-        Cosine measureCosine = new Cosine();
-        Jaccard measureJaccard = new Jaccard();
-        MPBVS measureMPBVS = new MPBVS();
-        MPBVSPlus measureMPBVSPlus = new MPBVSPlus();
-        RSS measureRSS = new RSS();
-        RSSPlus measureRSSPlus = new RSSPlus();
-
-        HashMap<Integer, HashMap<Integer, Float>> topSimilarity;
-        int topN = 20;
-        //<editor-fold defaultstate="collapsed" desc="Run for different K and Year">
-        for (int year : _yearArray) {
-            for (float k : _kArray) {
-                _graph.BuildAllGraph(k, year);
-                selectAuthorsForExperiment();
-
-                //<editor-fold defaultstate="collapsed" desc="Execute different methods">
-                HashMap<Integer, HashMap<Integer, Float>> cosineResult = null;
-                HashMap<Integer, HashMap<Integer, Float>> jaccardResult = null;
-                HashMap<Integer, HashMap<Integer, Float>> adamicAdarResult = null;
-                HashMap<Integer, HashMap<Integer, Float>> rssResult = null;
-                HashMap<Integer, HashMap<Integer, Float>> mpbvsResult = null;
-                HashMap<Integer, HashMap<Integer, Float>> rssplusResult = null;
-                HashMap<Integer, HashMap<Integer, Float>> mpbvsplusResult = null;
-                if (_isCosineMethod) {
-                    cosineResult = measureCosine.process(_graph.rssGraph, _listAuthorRandom);
-                }
-                if (_isJaccardMethod) {
-                    jaccardResult = measureJaccard.process(_graph.rssGraph, _listAuthorRandom);
-                }
-                if (_isAdarMethod) {
-                    adamicAdarResult = measureAdamicAdar.process(_graph.rssGraph, _listAuthorRandom);
-                }
-                if (_isRSSMethod) {
-                    rssResult = measureRSS.process(_graph.rssGraph, _listAuthorRandom);
-                }
-                if (_isMPVSMethod) {
-                    mpbvsResult = measureMPBVS.process(_graph.rssGraph, _listAuthorRandom);
-                }
-                if (_isRSSPlusMethod) {
-                    mpbvsplusResult = measureRSSPlus.process(_graph.rtbvsGraph, _listAuthorRandom);
-                }
-                if (_isMVVSPlusMethod) {
-                    rssplusResult = measureMPBVSPlus.Process(_graph.rtbvsGraph, _listAuthorRandom);
-                }
-                //</editor-fold>
-
-                for (int i = 1; i <= topN; i++) {
-                    //<editor-fold defaultstate="collapsed" desc="Cosine">
-                    if (_isPredictionOnlyNewLink) {
-                        topSimilarity = TopNSimilarity.findTopNSimilarityForNewLinkOnly(i, cosineResult, _graph.rssGraph);
-                    } else {
-                        topSimilarity = TopNSimilarity.findTopNSimilarity(i, cosineResult);
-                    }
-                    float precisionNear = EvaluationMetric.Mean_Precision_TopN(topSimilarity, _graph.nearTestingData);
-                    float precisionFar = EvaluationMetric.Mean_Precision_TopN(topSimilarity, _graph.farTestingData);
-                    bufferingExperimentResult(true, "Cosine", precisionNear);
-                    bufferingExperimentResult(false, "Cosine", precisionFar);
-
-                    float recall = EvaluationMetric.Mean_Recall_TopN(topSimilarity, _graph.nearTestingData);
-                    bufferingExperimentResult(true, "Cosine", recall);
-                    recall = EvaluationMetric.Mean_Recall_TopN(topSimilarity, _graph.farTestingData);
-                    bufferingExperimentResult(false, "Cosine", recall);
-                    System.out.println("Cosine PrecisionNear - Top:" + i + "  is :" + precisionNear);
-                    //</editor-fold>
-
-                    //<editor-fold defaultstate="collapsed" desc="Jaccard">
-                    if (_isPredictionOnlyNewLink) {
-                        topSimilarity = TopNSimilarity.findTopNSimilarityForNewLinkOnly(i, jaccardResult, _graph.rssGraph);
-                    } else {
-                        topSimilarity = TopNSimilarity.findTopNSimilarity(i, jaccardResult);
-                    }
-                    precisionNear = EvaluationMetric.Mean_Precision_TopN(topSimilarity, _graph.nearTestingData);
-                    precisionFar = EvaluationMetric.Mean_Precision_TopN(topSimilarity, _graph.farTestingData);
-                    bufferingExperimentResult(true, "Jaccard", precisionNear);
-                    bufferingExperimentResult(false, "Jaccard", precisionFar);
-
-                    recall = EvaluationMetric.Mean_Recall_TopN(topSimilarity, _graph.nearTestingData);
-                    bufferingExperimentResult(true, "Jaccard", recall);
-                    recall = EvaluationMetric.Mean_Recall_TopN(topSimilarity, _graph.farTestingData);
-                    bufferingExperimentResult(false, "Jaccard", recall);
-                    //</editor-fold>
-
-                    //<editor-fold defaultstate="collapsed" desc="AdamicAdar">
-                    if (_isPredictionOnlyNewLink) {
-                        topSimilarity = TopNSimilarity.findTopNSimilarityForNewLinkOnly(i, adamicAdarResult, _graph.rssGraph);
-                    } else {
-                        topSimilarity = TopNSimilarity.findTopNSimilarity(i, adamicAdarResult);
-                    }
-                    precisionNear = EvaluationMetric.Mean_Precision_TopN(topSimilarity, _graph.nearTestingData);
-                    precisionFar = EvaluationMetric.Mean_Precision_TopN(topSimilarity, _graph.farTestingData);
-                    bufferingExperimentResult(true, "AdamicAdar", precisionNear);
-                    bufferingExperimentResult(false, "AdamicAdar", precisionFar);
-
-                    recall = EvaluationMetric.Mean_Recall_TopN(topSimilarity, _graph.nearTestingData);
-                    bufferingExperimentResult(true, "AdamicAdar", recall);
-                    recall = EvaluationMetric.Mean_Recall_TopN(topSimilarity, _graph.farTestingData);
-                    bufferingExperimentResult(false, "AdamicAdar", recall);
-                    //</editor-fold>
-
-                    //<editor-fold defaultstate="collapsed" desc="RSS">
-                    if (_isPredictionOnlyNewLink) {
-                        topSimilarity = TopNSimilarity.findTopNSimilarityForNewLinkOnly(i, rssResult, _graph.rssGraph);
-                    } else {
-                        topSimilarity = TopNSimilarity.findTopNSimilarity(i, rssResult);
-                    }
-                    precisionNear = EvaluationMetric.Mean_Precision_TopN(topSimilarity, _graph.nearTestingData);
-                    precisionFar = EvaluationMetric.Mean_Precision_TopN(topSimilarity, _graph.farTestingData);
-                    bufferingExperimentResult(true, "RSS", precisionNear);
-                    bufferingExperimentResult(false, "RSS", precisionFar);
-
-                    recall = EvaluationMetric.Mean_Recall_TopN(topSimilarity, _graph.nearTestingData);
-                    bufferingExperimentResult(true, "RSS", recall);
-                    recall = EvaluationMetric.Mean_Recall_TopN(topSimilarity, _graph.farTestingData);
-                    bufferingExperimentResult(false, "RSS", recall);
-                    //</editor-fold>
-
-                    //<editor-fold defaultstate="collapsed" desc="RSSPlus">
-                    if (_isPredictionOnlyNewLink) {
-                        topSimilarity = TopNSimilarity.findTopNSimilarityForNewLinkOnly(i, rssplusResult, _graph.rssGraph);
-                    } else {
-                        topSimilarity = TopNSimilarity.findTopNSimilarity(i, rssplusResult);
-                    }
-                    precisionNear = EvaluationMetric.Mean_Precision_TopN(topSimilarity, _graph.nearTestingData);
-                    precisionFar = EvaluationMetric.Mean_Precision_TopN(topSimilarity, _graph.farTestingData);
-                    bufferingExperimentResult(true, "RSSPlus", precisionNear);
-                    bufferingExperimentResult(false, "RSSPlus", precisionFar);
-
-                    recall = EvaluationMetric.Mean_Recall_TopN(topSimilarity, _graph.nearTestingData);
-                    bufferingExperimentResult(true, "RSSPlus", recall);
-                    recall = EvaluationMetric.Mean_Recall_TopN(topSimilarity, _graph.farTestingData);
-                    bufferingExperimentResult(false, "RSSPlus", recall);
-                    //</editor-fold>
-
-                    //<editor-fold defaultstate="collapsed" desc="MPBVS">
-                    if (_isPredictionOnlyNewLink) {
-                        topSimilarity = TopNSimilarity.findTopNSimilarityForNewLinkOnly(i, mpbvsResult, _graph.rssGraph);
-                    } else {
-                        topSimilarity = TopNSimilarity.findTopNSimilarity(i, mpbvsResult);
-                    }
-                    precisionNear = EvaluationMetric.Mean_Precision_TopN(topSimilarity, _graph.nearTestingData);
-                    precisionFar = EvaluationMetric.Mean_Precision_TopN(topSimilarity, _graph.farTestingData);
-                    bufferingExperimentResult(true, "MPBVS", precisionNear);
-                    bufferingExperimentResult(false, "MPBVS", precisionFar);
-
-                    recall = EvaluationMetric.Mean_Recall_TopN(topSimilarity, _graph.nearTestingData);
-                    bufferingExperimentResult(true, "MPBVS", recall);
-                    recall = EvaluationMetric.Mean_Recall_TopN(topSimilarity, _graph.farTestingData);
-                    bufferingExperimentResult(false, "MPBVS", recall);
-                    //</editor-fold>
-
-                    //<editor-fold defaultstate="collapsed" desc="MPBVSPlus">
-                    if (_isPredictionOnlyNewLink) {
-                        topSimilarity = TopNSimilarity.findTopNSimilarityForNewLinkOnly(i, mpbvsplusResult, _graph.rssGraph);
-                    } else {
-                        topSimilarity = TopNSimilarity.findTopNSimilarity(i, mpbvsplusResult);
-                    }
-                    precisionNear = EvaluationMetric.Mean_Precision_TopN(topSimilarity, _graph.nearTestingData);
-                    precisionFar = EvaluationMetric.Mean_Precision_TopN(topSimilarity, _graph.farTestingData);
-                    bufferingExperimentResult(true, "MPBVSPlus", precisionNear);
-                    bufferingExperimentResult(false, "MPBVSPlus", precisionFar);
-
-                    recall = EvaluationMetric.Mean_Recall_TopN(topSimilarity, _graph.nearTestingData);
-                    bufferingExperimentResult(true, "MPBVSPlus", recall);
-                    recall = EvaluationMetric.Mean_Recall_TopN(topSimilarity, _graph.farTestingData);
-                    bufferingExperimentResult(false, "MPBVSPlus", recall);
-                    //</editor-fold>
-                }
-
-                writeToTxtFileForLinkMethods(k, year, topN);
-            }
+    
+    private ArrayList<Integer> getRSSGraphNodeID(HashMap<Integer, HashMap<Integer, Float>> rssGraph) {
+        ArrayList<Integer> nodeIDList = new ArrayList<>();
+        for (int nodeID : rssGraph.keySet()) {
+            nodeIDList.add(nodeID);
         }
-        //</editor-fold>
+        return nodeIDList;
+    }
 
+    private HashMap<Integer, HashMap<Integer, Float>> getTopNRandomly(int n) {
+        //<InputAuthorID, <TopN, SimValue>>
+        HashMap<Integer, HashMap<Integer, Float>> randomResult = new HashMap<>();
+        ArrayList<Integer> nodeIDList = getRSSGraphNodeID(_graph.rssGraph);
+        Random randomGenerator = new Random();
+
+        for (int authorID : _listAuthorRandom.keySet()) {
+            HashMap<Integer, Float> topNSimilarHM = new HashMap<>();
+            for (int i=0; i<n; i++) {
+                int sizeOfList = nodeIDList.size();
+                int randomIndex = randomGenerator.nextInt(sizeOfList-1);
+                int randomAuthorID = nodeIDList.get(randomIndex);
+                if (!topNSimilarHM.containsKey(randomAuthorID)) {
+                    topNSimilarHM.put(randomAuthorID, 0f);
+                    nodeIDList.remove(randomIndex);
+                }
+            }
+            randomResult.put(authorID, topNSimilarHM);
+        }
+        return randomResult;         
     }
 
     private void selectAuthorsForExperiment() {
@@ -453,5 +303,252 @@ public class LinkMethodExperiment {
             ex.printStackTrace();
         }
         //</editor-fold>
+    }
+    
+    public void runLinkMethodExperiment() throws Exception {
+        _graph.LoadTrainingData(_training_PaperId_AuthorIdPath, _training_PaperId_YearPath);
+        _graph.LoadTestingData(_testing_PaperId_Year_NFPath, _testing_PaperId_Year_FFPath);
+
+        AdamicAdar measureAdamicAdar = new AdamicAdar();
+        Cosine measureCosine = new Cosine();
+        Jaccard measureJaccard = new Jaccard();
+        MPBVS measureMPBVS = new MPBVS();
+        MPBVSPlus measureMPBVSPlus = new MPBVSPlus();
+        RSS measureRSS = new RSS();
+        RSSPlus measureRSSPlus = new RSSPlus();
+
+        HashMap<Integer, HashMap<Integer, Float>> topSimilarity;
+        int topN = 20;
+        //<editor-fold defaultstate="collapsed" desc="Run for different K and Year">
+        for (int year : _yearArray) {
+            for (float k : _kArray) {
+                _graph.BuildAllGraph(k, year);
+                selectAuthorsForExperiment();
+
+                //<editor-fold defaultstate="collapsed" desc="Execute different methods">
+                HashMap<Integer, HashMap<Integer, Float>> cosineResult = null;
+                HashMap<Integer, HashMap<Integer, Float>> jaccardResult = null;
+                HashMap<Integer, HashMap<Integer, Float>> adamicAdarResult = null;
+                HashMap<Integer, HashMap<Integer, Float>> rssResult = null;
+                HashMap<Integer, HashMap<Integer, Float>> mpbvsResult = null;
+                HashMap<Integer, HashMap<Integer, Float>> rssplusResult = null;
+                HashMap<Integer, HashMap<Integer, Float>> mpbvsplusResult = null;
+                if (_isCosineMethod) {
+                    cosineResult = measureCosine.process(_graph.rssGraph, _listAuthorRandom);
+                }
+                if (_isJaccardMethod) {
+                    jaccardResult = measureJaccard.process(_graph.rssGraph, _listAuthorRandom);
+                }
+                if (_isAdarMethod) {
+                    adamicAdarResult = measureAdamicAdar.process(_graph.rssGraph, _listAuthorRandom);
+                }
+                if (_isRSSMethod) {
+                    rssResult = measureRSS.process(_graph.rssGraph, _listAuthorRandom);
+                }
+                if (_isMPVSMethod) {
+                    mpbvsResult = measureMPBVS.process(_graph.rssGraph, _listAuthorRandom);
+                }
+                if (_isRSSPlusMethod) {
+                    mpbvsplusResult = measureRSSPlus.process(_graph.rtbvsGraph, _listAuthorRandom);
+                }
+                if (_isMVVSPlusMethod) {
+                    rssplusResult = measureMPBVSPlus.Process(_graph.rtbvsGraph, _listAuthorRandom);
+                }
+                //</editor-fold>
+
+                for (int i = 1; i <= topN; i++) {
+                    //<editor-fold defaultstate="collapsed" desc="Cosine">
+                    if (_isPredictionOnlyNewLink) {
+                        topSimilarity = TopNSimilarity.findTopNSimilarityForNewLinkOnly(i, cosineResult, _graph.rssGraph);
+                    } else {
+                        topSimilarity = TopNSimilarity.findTopNSimilarity(i, cosineResult);
+                    }
+                    
+                    // Randomly select similar authors in the training net for link prediction
+                    if (topSimilarity.size() == 0) {
+                        topSimilarity = getTopNRandomly(i);
+                    }
+                    
+                    float precisionNear = EvaluationMetric.Mean_Precision_TopN(topSimilarity, _graph.nearTestingData);
+                    float precisionFar = EvaluationMetric.Mean_Precision_TopN(topSimilarity, _graph.farTestingData);
+                    bufferingExperimentResult(true, "Cosine", precisionNear);
+                    bufferingExperimentResult(false, "Cosine", precisionFar);
+
+//                    float recall = EvaluationMetric.Mean_Recall_TopN(topSimilarity, _graph.nearTestingData);
+//                    bufferingExperimentResult(true, "Cosine", recall);
+//                    recall = EvaluationMetric.Mean_Recall_TopN(topSimilarity, _graph.farTestingData);
+//                    bufferingExperimentResult(false, "Cosine", recall);
+//                    System.out.println("Cosine PrecisionNear - Top:" + i + "  is :" + precisionNear);
+                    //</editor-fold>
+
+                    //<editor-fold defaultstate="collapsed" desc="Jaccard">
+                    if (_isPredictionOnlyNewLink) {
+                        topSimilarity = TopNSimilarity.findTopNSimilarityForNewLinkOnly(i, jaccardResult, _graph.rssGraph);
+                    } else {
+                        topSimilarity = TopNSimilarity.findTopNSimilarity(i, jaccardResult);
+                    }
+                    // Randomly select similar authors in the training net for link prediction
+                    if (topSimilarity.size() == 0) {
+                        topSimilarity = getTopNRandomly(topN);
+                    }
+                    
+                    precisionNear = EvaluationMetric.Mean_Precision_TopN(topSimilarity, _graph.nearTestingData);
+                    precisionFar = EvaluationMetric.Mean_Precision_TopN(topSimilarity, _graph.farTestingData);
+                    bufferingExperimentResult(true, "Jaccard", precisionNear);
+                    bufferingExperimentResult(false, "Jaccard", precisionFar);
+
+//                    recall = EvaluationMetric.Mean_Recall_TopN(topSimilarity, _graph.nearTestingData);
+//                    bufferingExperimentResult(true, "Jaccard", recall);
+//                    recall = EvaluationMetric.Mean_Recall_TopN(topSimilarity, _graph.farTestingData);
+//                    bufferingExperimentResult(false, "Jaccard", recall);
+                    //</editor-fold>
+
+                    //<editor-fold defaultstate="collapsed" desc="AdamicAdar">
+                    if (_isPredictionOnlyNewLink) {
+                        topSimilarity = TopNSimilarity.findTopNSimilarityForNewLinkOnly(i, adamicAdarResult, _graph.rssGraph);
+                    } else {
+                        topSimilarity = TopNSimilarity.findTopNSimilarity(i, adamicAdarResult);
+                    }
+                    // Randomly select similar authors in the training net for link prediction
+                    if (topSimilarity.size() == 0) {
+                        topSimilarity = getTopNRandomly(topN);
+                    }
+                    
+                    precisionNear = EvaluationMetric.Mean_Precision_TopN(topSimilarity, _graph.nearTestingData);
+                    precisionFar = EvaluationMetric.Mean_Precision_TopN(topSimilarity, _graph.farTestingData);
+                    bufferingExperimentResult(true, "AdamicAdar", precisionNear);
+                    bufferingExperimentResult(false, "AdamicAdar", precisionFar);
+
+//                    recall = EvaluationMetric.Mean_Recall_TopN(topSimilarity, _graph.nearTestingData);
+//                    bufferingExperimentResult(true, "AdamicAdar", recall);
+//                    recall = EvaluationMetric.Mean_Recall_TopN(topSimilarity, _graph.farTestingData);
+//                    bufferingExperimentResult(false, "AdamicAdar", recall);
+                    //</editor-fold>
+
+                    //<editor-fold defaultstate="collapsed" desc="RSS">
+                    if (_isPredictionOnlyNewLink) {
+                        topSimilarity = TopNSimilarity.findTopNSimilarityForNewLinkOnly(i, rssResult, _graph.rssGraph);
+                    } else {
+                        topSimilarity = TopNSimilarity.findTopNSimilarity(i, rssResult);
+                    }
+                    // Randomly select similar authors in the training net for link prediction
+                    if (topSimilarity.size() == 0) {
+                        topSimilarity = getTopNRandomly(topN);
+                    }
+                    
+                    precisionNear = EvaluationMetric.Mean_Precision_TopN(topSimilarity, _graph.nearTestingData);
+                    precisionFar = EvaluationMetric.Mean_Precision_TopN(topSimilarity, _graph.farTestingData);
+                    bufferingExperimentResult(true, "RSS", precisionNear);
+                    bufferingExperimentResult(false, "RSS", precisionFar);
+
+//                    recall = EvaluationMetric.Mean_Recall_TopN(topSimilarity, _graph.nearTestingData);
+//                    bufferingExperimentResult(true, "RSS", recall);
+//                    recall = EvaluationMetric.Mean_Recall_TopN(topSimilarity, _graph.farTestingData);
+//                    bufferingExperimentResult(false, "RSS", recall);
+                    //</editor-fold>
+
+                    //<editor-fold defaultstate="collapsed" desc="RSSPlus">
+                    if (_isPredictionOnlyNewLink) {
+                        topSimilarity = TopNSimilarity.findTopNSimilarityForNewLinkOnly(i, rssplusResult, _graph.rssGraph);
+                    } else {
+                        topSimilarity = TopNSimilarity.findTopNSimilarity(i, rssplusResult);
+                    }
+                    // Randomly select similar authors in the training net for link prediction
+                    if (topSimilarity.size() == 0) {
+                        topSimilarity = getTopNRandomly(topN);
+                    }
+                    
+                    precisionNear = EvaluationMetric.Mean_Precision_TopN(topSimilarity, _graph.nearTestingData);
+                    precisionFar = EvaluationMetric.Mean_Precision_TopN(topSimilarity, _graph.farTestingData);
+                    bufferingExperimentResult(true, "RSSPlus", precisionNear);
+                    bufferingExperimentResult(false, "RSSPlus", precisionFar);
+
+//                    recall = EvaluationMetric.Mean_Recall_TopN(topSimilarity, _graph.nearTestingData);
+//                    bufferingExperimentResult(true, "RSSPlus", recall);
+//                    recall = EvaluationMetric.Mean_Recall_TopN(topSimilarity, _graph.farTestingData);
+//                    bufferingExperimentResult(false, "RSSPlus", recall);
+                    //</editor-fold>
+
+                    //<editor-fold defaultstate="collapsed" desc="MPBVS">
+                    if (_isPredictionOnlyNewLink) {
+                        topSimilarity = TopNSimilarity.findTopNSimilarityForNewLinkOnly(i, mpbvsResult, _graph.rssGraph);
+                    } else {
+                        topSimilarity = TopNSimilarity.findTopNSimilarity(i, mpbvsResult);
+                    }
+                    // Randomly select similar authors in the training net for link prediction
+                    if (topSimilarity.size() == 0) {
+                        topSimilarity = getTopNRandomly(topN);
+                    }
+                    
+                    precisionNear = EvaluationMetric.Mean_Precision_TopN(topSimilarity, _graph.nearTestingData);
+                    precisionFar = EvaluationMetric.Mean_Precision_TopN(topSimilarity, _graph.farTestingData);
+                    bufferingExperimentResult(true, "MPBVS", precisionNear);
+                    bufferingExperimentResult(false, "MPBVS", precisionFar);
+
+//                    recall = EvaluationMetric.Mean_Recall_TopN(topSimilarity, _graph.nearTestingData);
+//                    bufferingExperimentResult(true, "MPBVS", recall);
+//                    recall = EvaluationMetric.Mean_Recall_TopN(topSimilarity, _graph.farTestingData);
+//                    bufferingExperimentResult(false, "MPBVS", recall);
+                    //</editor-fold>
+
+                    //<editor-fold defaultstate="collapsed" desc="MPBVSPlus">
+                    if (_isPredictionOnlyNewLink) {
+                        topSimilarity = TopNSimilarity.findTopNSimilarityForNewLinkOnly(i, mpbvsplusResult, _graph.rssGraph);
+                    } else {
+                        topSimilarity = TopNSimilarity.findTopNSimilarity(i, mpbvsplusResult);
+                    }
+                    // Randomly select similar authors in the training net for link prediction
+                    if (topSimilarity.size() == 0) {
+                        topSimilarity = getTopNRandomly(topN);
+                    }
+                    
+                    precisionNear = EvaluationMetric.Mean_Precision_TopN(topSimilarity, _graph.nearTestingData);
+                    precisionFar = EvaluationMetric.Mean_Precision_TopN(topSimilarity, _graph.farTestingData);
+                    bufferingExperimentResult(true, "MPBVSPlus", precisionNear);
+                    bufferingExperimentResult(false, "MPBVSPlus", precisionFar);
+
+//                    recall = EvaluationMetric.Mean_Recall_TopN(topSimilarity, _graph.nearTestingData);
+//                    bufferingExperimentResult(true, "MPBVSPlus", recall);
+//                    recall = EvaluationMetric.Mean_Recall_TopN(topSimilarity, _graph.farTestingData);
+//                    bufferingExperimentResult(false, "MPBVSPlus", recall);
+                    //</editor-fold>
+                }
+
+                writeToTxtFileForLinkMethods(k, year, topN);
+            }
+        }
+        //</editor-fold>
+
+    }
+    
+    public static void main(String args[]) {
+        boolean isCosineMethod = true;
+        boolean isJaccardMethod = true;
+        boolean isAdarMethod = true;
+        boolean isRSSMethod = true;
+        boolean isRSSPlusMethod = true;
+        boolean isMPVSMethod = true;
+        boolean isMVVSPlusMethod = true;
+        boolean isPredictionOnlyNewLink = true;
+        boolean isPredictionExistAndNewLink = false;
+
+        final LinkMethodExperiment experiment = new LinkMethodExperiment(
+                "C:\\CRS-Experiment\\MAS\\Input\\Input2\\[TrainingData]AuthorID_PaperID_1995_2005.txt",
+                "C:\\CRS-Experiment\\MAS\\Input\\Input2\\[TrainingData]PaperID_Year_1995_2005.txt", 
+                "C:\\CRS-Experiment\\MAS\\Input\\Input2\\[TestingData]AuthorID_PaperID_2006_2008.txt",
+                "C:\\CRS-Experiment\\MAS\\Input\\Input2\\[TestingData]AuthorID_PaperID_2009_2011.txt", 
+                "C:\\CRS-Experiment\\MAS\\Input\\RandonAuthorListWithDegree\\ListAuthorNoAnyLink_300_WithGroup.txt",
+                "0.9", 
+                "2005",
+                "C:\\CRS-Experiment\\MAS\\Output\\OnlyNewLink\\LinkBasedMethod_300AuthorNoAnyLink.txt",
+                isCosineMethod, isJaccardMethod, isAdarMethod, isRSSMethod,
+                isRSSPlusMethod, isMPVSMethod, isMVVSPlusMethod, isPredictionOnlyNewLink, isPredictionExistAndNewLink);
+        
+        try {
+            experiment.runLinkMethodExperiment();
+        }
+        catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 }
