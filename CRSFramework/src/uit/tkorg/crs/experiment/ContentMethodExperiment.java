@@ -42,7 +42,7 @@ public class ContentMethodExperiment {
     private StringBuffer _nfContentPredictionBuffer = new StringBuffer();
     private StringBuffer _ffContentPredictionBuffer = new StringBuffer();
     HashMap<Integer, HashMap<Integer, Float>> topSimilarity;
-    int topN = 50;
+    int topN = 20;
 
     public ContentMethodExperiment() {
     }
