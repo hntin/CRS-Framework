@@ -158,9 +158,10 @@ public class ExperimentSetting {
         int count = 0;
         for (int authorID1 : _graph.nearTestingData.keySet()) {
             count++;
-            if (count % 100 == 0)
+            if (count % 100 == 0) {
                 System.out.println(count);
-            
+            }
+
             if (_graph.rssGraph.containsKey(authorID1) && _graph.farTestingData.containsKey(authorID1)) {
                 ArrayList<Integer> listCoAuthor = _graph.nearTestingData.get(authorID1);
                 for (int i = 0; i < listCoAuthor.size(); i++) {
@@ -199,10 +200,11 @@ public class ExperimentSetting {
             for (int authorID : listPotentialAuthor.keySet()) {
                 resultList.put(authorID, listPotentialAuthor.get(authorID));
                 count++;
-                if (count == _numberOfAuthor) break;
+                if (count == _numberOfAuthor) {
+                    break;
+                }
             }
-        }
-        else {
+        } else {
             resultList = listPotentialAuthor;
         }
 
@@ -216,28 +218,32 @@ public class ExperimentSetting {
         for (int authorID1 : _graph.rssGraph.keySet()) {
             // authorID1 HAS NO any connection in the training net
             count1++;
-            if (count1 % 100 == 0)
+            if (count1 % 100 == 0) {
                 System.out.println(count1);
-            
+            }
+
             if (_graph.rssGraph.get(authorID1).size() == 0) {
                 // If authorID1 HAS any link in the future?
-                boolean hasNewLink = false;
-                for (int authorID2 : _graph.nearTestingData.keySet()) {
-                    if (((authorID2 == authorID1) && _graph.nearTestingData.get(authorID2).size() > 0)
-                            || (_graph.nearTestingData.get(authorID2) != null
-                            && _graph.nearTestingData.get(authorID2).contains(authorID1))) {
-                        hasNewLink = true;
-                        break;
-                    }
-                }
+//                boolean hasNewLink = false;
+//                for (int authorID2 : _graph.nearTestingData.keySet()) {
+//                    if (((authorID2 == authorID1) && _graph.nearTestingData.get(authorID2).size() > 0)
+//                            || (_graph.nearTestingData.get(authorID2) != null
+//                            && _graph.nearTestingData.get(authorID2).contains(authorID1))) {
+//                        hasNewLink = true;
+//                        break;
+//                    }
+//                }
+//
+//                if (hasNewLink) {
+//                    listAuthorWithoutAnyLink.add(authorID1);
+//                    buffAuthorWithoutAnyLink.append(authorID1 + "\t" + _authorGroup.get(authorID1) + "\n");
+//                }
 
-                if (hasNewLink) {
-                    listAuthorWithoutAnyLink.add(authorID1);
-                    buffAuthorWithoutAnyLink.append(authorID1 + "\t" + _authorGroup.get(authorID1) + "\n");
-                }
+                listAuthorWithoutAnyLink.add(authorID1);
+                buffAuthorWithoutAnyLink.append(authorID1 + "\t" + _authorGroup.get(authorID1) + "\n");
             }
         }
-        TextFileUtility.writeTextFile(parentDir + "\\ListAuthorNoAnyLink.txt", buffAuthorWithoutAnyLink.toString());
+        TextFileUtility.writeTextFile(parentDir + "\\AllAuthorWithouAnyLinkInTrainingNet.txt", buffAuthorWithoutAnyLink.toString());
         // </editor-fold>
 
         return resultList;
@@ -317,7 +323,7 @@ public class ExperimentSetting {
                 "C:\\CRS-Experiment\\MAS\\Input\\Input2\\[TrainingData]PaperID_Year_1995_2005.txt",
                 "C:\\CRS-Experiment\\MAS\\Input\\Input2\\[TestingData]AuthorID_PaperID_2006_2008.txt",
                 "C:\\CRS-Experiment\\MAS\\Input\\Input2\\[TestingData]AuthorID_PaperID_2009_2011.txt",
-                "C:\\CRS-Experiment\\MAS\\Input\\RandonAuthorListWithDegree\\PotentialAuthorList_300_WithGroup.txt",
+                "C:\\CRS-Experiment\\MAS\\Input\\RandonAuthorListWithDegree\\PotentialAuthorList_300_WithGroup_1.txt",
                 true);
 
 //        ExperimentSetting experimentSetting = new ExperimentSetting(
@@ -328,7 +334,7 @@ public class ExperimentSetting {
 //                "C:\\CRS-Experiment\\Sampledata\\Input\\Link-Net\\[FarTesting]AuthorId_PaperID.txt",
 //                "C:\\CRS-Experiment\\Sampledata\\Input\\Sample_PotentialAuthor.txt",
 //                true);
-        
+
         experimentSetting.generateAuthorList(GeneratingOption.POTENTIALLINK);
         System.out.println("END");
     }
