@@ -2099,7 +2099,7 @@ public class CRSMainFrame extends javax.swing.JFrame {
         boolean isMVVSPlusMethod = jCheckBoxMPVSPlus.isSelected();
         boolean isPredictionOnlyNewLink = linkMethodPredictionNewLink.isSelected();
         boolean isPredictionExistAndNewLink = linkMethodPredictionExistAndNewLink.isSelected();
-        boolean isRandomPrediction = true; 
+        boolean isRandomPrediction = false; 
 
         final LinkMethodExperiment experiment = new LinkMethodExperiment(txtTrainingAuthorPaperPath.getText(),
                 txtTrainingPaperYearPath.getText(), txtNFAuthorPaperPath.getText(),

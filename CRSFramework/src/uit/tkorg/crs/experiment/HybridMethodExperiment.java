@@ -135,12 +135,13 @@ public class HybridMethodExperiment {
                     _ffContentPredictionBuffer.append(df.format(recallFar) + "\t");
                 }
             }
-            System.out.println("START Linear Hybrid");
+            System.out.println("END Linear Hybrid");
         }
         // </editor-fold>
 
         //<editor-fold defaultstate="collapsed" desc="Adaptive Hybrid">
         if (_isAdaptiveHybrid) {
+            System.out.println("START Adaptive Hybrid");
             HashMap<Integer, HashMap<Integer, Float>> adaptiveHybridResult = null;
             AdaptiveHybrid adaptiveHybridMethod = new AdaptiveHybrid();
             adaptiveHybridResult = adaptiveHybridMethod.process(_LDA_InputFile, _graph.rssGraph, _listAuthorRandom);
@@ -163,6 +164,7 @@ public class HybridMethodExperiment {
                     _ffContentPredictionBuffer.append(df.format(recallFar) + "\t");
                 }
             }
+            System.out.println("END Adaptive Hybrid");
         }
         // </editor-fold>
 
