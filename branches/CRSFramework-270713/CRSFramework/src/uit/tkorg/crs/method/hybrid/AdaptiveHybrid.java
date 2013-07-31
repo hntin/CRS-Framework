@@ -157,7 +157,7 @@ public class AdaptiveHybrid {
         } else {
             if (degreeGroup.equalsIgnoreCase("L")) {
                 // apply content based approach
-                runTF(authorId);
+                runRSS(authorId);
             } else {
                 if (degreeGroup.equalsIgnoreCase("M")) {
                     // APPLY link based approach
