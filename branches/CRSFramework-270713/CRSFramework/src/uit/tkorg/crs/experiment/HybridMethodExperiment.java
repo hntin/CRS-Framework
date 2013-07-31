@@ -119,6 +119,7 @@ public class HybridMethodExperiment {
             linearHybridResult = linearHybridMethod.calculatingLinearHybriđ(rssResult, tfidfResult);
             if (linearHybridResult != null) {
                 for (int i = 1; i <= topN; i++) {
+                    System.out.println("TopN:" + topN);
                     if (_isHybridMethodPredictionNewLink) {
                         topSimilarity = TopNSimilarity.findTopNSimilarityForNewLinkOnly(i, linearHybridResult, _graph.rssGraph);
                     } else {
@@ -158,10 +159,10 @@ public class HybridMethodExperiment {
                     _nfContentPredictionBuffer.append(df.format(precisionNear) + "\t");
                     _ffContentPredictionBuffer.append(df.format(precisionFar) + "\t");
 
-                    float recallNear = EvaluationMetric.Mean_Recall_TopN(topSimilarity, _graph.nearTestingData);
-                    float recallFar = EvaluationMetric.Mean_Recall_TopN(topSimilarity, _graph.farTestingData);
-                    _nfContentPredictionBuffer.append(df.format(recallNear) + "\t");
-                    _ffContentPredictionBuffer.append(df.format(recallFar) + "\t");
+//                    float recallNear = EvaluationMetric.Mean_Recall_TopN(topSimilarity, _graph.nearTestingData);
+//                    float recallFar = EvaluationMetric.Mean_Recall_TopN(topSimilarity, _graph.farTestingData);
+//                    _nfContentPredictionBuffer.append(df.format(recallNear) + "\t");
+//                    _ffContentPredictionBuffer.append(df.format(recallFar) + "\t");
                 }
             }
             System.out.println("END Adaptive Hybrid");
