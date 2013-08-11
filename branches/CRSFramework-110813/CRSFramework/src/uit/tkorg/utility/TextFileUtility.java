@@ -40,6 +40,22 @@ public class TextFileUtility {
             e.printStackTrace();
         }
     }
+    
+    public static void writeTextFile(String textFile, HashMap<Integer,Float> hashMap) {
+        try {
+            FileWriter fstream = new FileWriter(textFile, false);
+            BufferedWriter out = new BufferedWriter(fstream);
+            StringBuffer buff = new StringBuffer();
+            buff.append("Key" + "\t" + "Value");
+            for (int key : hashMap.keySet()) {
+                buff.append(key + "\t" + hashMap.get(key) + "\n");
+            }
+            out.write(buff.toString());
+            out.close();
+        } catch (Exception e) {//Catch exception if any
+            System.err.println("Error: " + e.getMessage());
+        }
+    }
 
     public static void writeTextFileFromHM(String textFilePath, HashMap<Integer, HashMap<Integer, Float>> hashMap) {
         try {
