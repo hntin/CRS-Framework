@@ -23,10 +23,10 @@ public class ContentSimilarity {
     private String _input_Author_List_File;
     private String _resultPath;
 
-    public ContentSimilarity(String author_Publication_Content_File, String input_Author_List_File, String resultFile) {
+    public ContentSimilarity(String author_Publication_Content_File, String input_Author_List_File, String resultPath) {
         _author_Publication_Content_File = author_Publication_Content_File;
         _input_Author_List_File = input_Author_List_File;
-        _resultPath = _resultPath;
+        _resultPath = resultPath;
     }
 
     public static enum ContentSimOption {
@@ -91,7 +91,10 @@ public class ContentSimilarity {
     }
 
     public static void main(String args[]) {
-        ContentSimilarity contentSim = new ContentSimilarity("author_Publication_Content_File", "input_Author_List_File", "resultFile");
+        ContentSimilarity contentSim = new ContentSimilarity(
+                "C:\\CRS-Experiment\\Sampledata\\LDATest\\MALLET-LDA\\Output\\CRS-InputParallelLDA.txt", 
+                "C:\\CRS-Experiment\\Sampledata\\LDATest\\MALLET-LDA\\Output\\ListRandomAuthor_.txt", 
+                "C:\\CRS-Experiment\\Sampledata\\LDATest\\MALLET-LDA\\Output\\ContentSimilarity");
         contentSim.loadInputAuthorList();
         contentSim.processContentSimilarity(ContentSimOption.TFIDF);
     }

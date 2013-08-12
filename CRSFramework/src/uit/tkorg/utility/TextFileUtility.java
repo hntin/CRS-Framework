@@ -46,7 +46,7 @@ public class TextFileUtility {
             FileWriter fstream = new FileWriter(textFile, false);
             BufferedWriter out = new BufferedWriter(fstream);
             StringBuffer buff = new StringBuffer();
-            buff.append("Key" + "\t" + "Value");
+            buff.append("Key" + "\t" + "Value" + "\n");
             for (int key : hashMap.keySet()) {
                 buff.append(key + "\t" + hashMap.get(key) + "\n");
             }
