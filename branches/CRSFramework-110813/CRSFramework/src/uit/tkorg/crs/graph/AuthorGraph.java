@@ -18,13 +18,13 @@ import uit.tkorg.crs.common.PageRank;
  *
  * @author daolv
  */
-public class Graph {
+public class AuthorGraph {
 
-    private static Graph _instance;
+    private static AuthorGraph _instance;
 
-    public static Graph getInstance() {
+    public static AuthorGraph getInstance() {
         if (_instance == null) {
-            _instance = new Graph();
+            _instance = new AuthorGraph();
         }
         return _instance;
     }
@@ -37,7 +37,7 @@ public class Graph {
     public HashMap<Integer, ArrayList<Integer>> nearTestingData; //non-weighted, non-directed graph <authorID, <Lis of CoAuthorID>>
     public HashMap<Integer, ArrayList<Integer>> farTestingData; //non-weighted, non-directed graph
 
-    private Graph() {
+    private AuthorGraph() {
         coAuthorGraph = new HashMap<>();
         coAuthorGraphNear = new HashMap<>();
         coAuthorGraphFar = new HashMap<>();
@@ -110,6 +110,7 @@ public class Graph {
                 paperAuthor.put(paperId, listAuthor);
             }
         } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -229,7 +230,7 @@ public class Graph {
      * @param year
      */
     public void BuildAllGraph(float k, int year) {
-        BuidCoAuthorGraph();
+        BuildCoAuthorGraph();
         BuildNearFarCoAuthorGraph(year);
         BuildingRSSGraph();
         BuildingTrendGraph(k, year);
@@ -238,7 +239,7 @@ public class Graph {
     /**
      * Build graphs coAuthorGraph (weight is number of collations), rssGraph
      */
-    public void BuidCoAuthorGraph() {
+    public void BuildCoAuthorGraph() {
         for (int pubId : paperAuthor.keySet()) {
             ArrayList<Integer> listAuthors = paperAuthor.get(pubId);
             if (listAuthors.size() == 1 && !coAuthorGraph.containsKey(listAuthors.get(0))) {
@@ -479,10 +480,10 @@ public class Graph {
         return found;
     }
 
-//    // Testing Functions of Graph
+//    // Testing Functions of AuthorGraph
 //    public static void main(String args[]) {
 //        System.out.println("START LOADING TRAINING DATA");
-//        Graph _graph = Graph.getInstance();
+//        AuthorGraph _graph = AuthorGraph.getInstance();
 //        
 //        _graph.LoadTrainingData("C:\\CRS-Experiment\\Sampledata\\[Training]AuthorId_PaperID.txt", 
 //                "C:\\CRS-Experiment\\Sampledata\\[Training]PaperID_Year.txt");

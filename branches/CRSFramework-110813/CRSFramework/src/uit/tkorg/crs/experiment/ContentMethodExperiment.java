@@ -15,7 +15,7 @@ import java.util.HashSet;
 import java.util.Random;
 import uit.tkorg.crs.common.EvaluationMetric;
 import uit.tkorg.crs.common.TopNSimilarity;
-import uit.tkorg.crs.graph.Graph;
+import uit.tkorg.crs.graph.AuthorGraph;
 import uit.tkorg.crs.method.content.ParallelLDA;
 import uit.tkorg.crs.method.content.TFIDF;
 import uit.tkorg.utility.TextFileUtility;
@@ -26,7 +26,7 @@ import uit.tkorg.utility.TextFileUtility;
  */
 public class ContentMethodExperiment {
 
-    private Graph _graph = Graph.getInstance();
+    private AuthorGraph _graph = AuthorGraph.getInstance();
     private boolean _isKLDivergence = false;
     private boolean _isTFIDF = false;
     private boolean _isContentMethodPredictionNewLink;

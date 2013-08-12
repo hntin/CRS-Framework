@@ -1,7 +1,7 @@
 package uit.tkorg.crs.experiment;
 
 import uit.tkorg.crs.common.EvaluationMetric;
-import uit.tkorg.crs.graph.Graph;
+import uit.tkorg.crs.graph.AuthorGraph;
 import uit.tkorg.crs.method.link.AdamicAdar;
 import uit.tkorg.crs.method.link.Cosine;
 import uit.tkorg.crs.method.link.Jaccard;
@@ -32,7 +32,7 @@ import uit.tkorg.utility.TextFileUtility;
 public class LinkMethodExperiment {
     //<editor-fold defaultstate="collapsed" desc="Class variables">
 
-    private Graph _graph = Graph.getInstance();
+    private AuthorGraph _graph = AuthorGraph.getInstance();
     private String _training_PaperId_AuthorIdPath;
     private String _training_PaperId_YearPath;
     private String _testing_PaperId_Year_NFPath;

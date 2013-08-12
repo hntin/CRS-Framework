@@ -7,7 +7,7 @@ package uit.tkorg.crs.experiment;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import uit.tkorg.crs.graph.Graph;
+import uit.tkorg.crs.graph.AuthorGraph;
 import uit.tkorg.utility.TextFileUtility;
 
 /**
@@ -15,7 +15,7 @@ import uit.tkorg.utility.TextFileUtility;
  * @author TinHuynh
  */
 public class Statistics {
-    private Graph _graph = Graph.getInstance();
+    private AuthorGraph _graph = AuthorGraph.getInstance();
     private String _file_TraingAuthorIDPaperID;
     private String _file_TraingPaperID_Year;
     private String _file_NF_AuthorIDPaperID;
@@ -49,7 +49,7 @@ public class Statistics {
         try {
             _graph.LoadTrainingData(_file_TraingAuthorIDPaperID, _file_TraingPaperID_Year);
             _graph.LoadTestingData(_file_NF_AuthorIDPaperID, _file_FF_AuthorIDPaperID);
-            _graph.BuidCoAuthorGraph();
+            _graph.BuildCoAuthorGraph();
             _graph.BuildingRSSGraph();
         } catch (Exception ex) {
             ex.printStackTrace();
