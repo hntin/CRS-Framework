@@ -23,7 +23,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import uit.tkorg.crs.common.EvaluationMetric;
 import uit.tkorg.crs.common.TopNSimilarity;
-import uit.tkorg.crs.graph.Graph;
+import uit.tkorg.crs.graph.AuthorGraph;
 import uit.tkorg.crs.method.content.TFIDF;
 import uit.tkorg.crs.method.hybrid.AdaptiveHybrid;
 import uit.tkorg.crs.method.hybrid.LinearHybrid;
@@ -36,7 +36,7 @@ import uit.tkorg.utility.TextFileUtility;
  */
 public class HybridMethodExperiment {
 
-    private Graph _graph = Graph.getInstance();
+    private AuthorGraph _graph = AuthorGraph.getInstance();
     private HashMap<Integer, String> _listAuthorRandom;
     private String _LDA_InputFile;
     private String _training_AuthorId__PaperIdPath;
@@ -81,7 +81,7 @@ public class HybridMethodExperiment {
         System.out.println("FINISH LOADING TRAINING DATA");
 
         // Building Graphs
-        _graph.BuidCoAuthorGraph();
+        _graph.BuildCoAuthorGraph();
         _graph.BuildingRSSGraph();
 
         // Loading the list of inputed authors

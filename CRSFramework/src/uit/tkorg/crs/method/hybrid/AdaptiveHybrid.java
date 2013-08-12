@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import uit.tkorg.crs.graph.Graph;
+import uit.tkorg.crs.graph.AuthorGraph;
 import uit.tkorg.crs.method.content.CollectionDocument;
 import uit.tkorg.crs.method.content.SimilarityTF;
 import static uit.tkorg.crs.method.content.TFIDF._AuthorInstanceHM;

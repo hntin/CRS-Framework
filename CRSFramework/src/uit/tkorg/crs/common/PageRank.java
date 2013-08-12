@@ -1,7 +1,7 @@
 package uit.tkorg.crs.common;
 
 import java.util.HashMap;
-import uit.tkorg.crs.graph.Graph;
+import uit.tkorg.crs.graph.AuthorGraph;
 
 /**
  *
@@ -10,11 +10,11 @@ import uit.tkorg.crs.graph.Graph;
 public class PageRank {
     // _PageRankResult<NodeID, RankOfNode>
     HashMap<Integer, Float> _PageRankResult = new HashMap<>();
-    // Direct Graph <BeginID, <EndID, Weight>>
+    // Direct AuthorGraph <BeginID, <EndID, Weight>>
     HashMap<Integer, HashMap<Integer, Float>> _graph = null;
-    // Direct Graph <CurrentID, <FromID, Weight>>
+    // Direct AuthorGraph <CurrentID, <FromID, Weight>>
     HashMap<Integer, HashMap<Integer, Float>> _inLinkHM = new HashMap<>();
-    // Direct Graph <CurrentID, <OutID, Weight>>
+    // Direct AuthorGraph <CurrentID, <OutID, Weight>>
     HashMap<Integer, HashMap<Integer, Float>> _outLinkHM = new HashMap<>(); 
     int N; // Number of Page/Node
     public float d; // damping factor
@@ -97,7 +97,7 @@ public class PageRank {
         _outLinkHM = graph;
     }
 
-    // Testing Functions of Graph
+    // Testing Functions of AuthorGraph
     public static void main(String args[]) {
         System.out.println("START LOADING TRAINING DATA");
 //        HashMap<Integer, HashMap<Integer, Float>> graph = new HashMap<>();
@@ -138,12 +138,12 @@ public class PageRank {
 //        graph.put(6, link_Node6);
         
         System.out.println("START LOADING TRAINING DATA");
-        Graph _graph = Graph.getInstance();
+        AuthorGraph _graph = AuthorGraph.getInstance();
         _graph.LoadTrainingData("C:\\CRS-Experiment\\Sampledata\\[Training]AuthorId_PaperID.txt", 
                 "C:\\CRS-Experiment\\Sampledata\\[Training]PaperID_Year.txt");
 
         // Building Graphs
-        _graph.BuidCoAuthorGraph();
+        _graph.BuildCoAuthorGraph();
         _graph.BuildingRSSGraph();
         
         HashMap temp1 = _graph.coAuthorGraph;

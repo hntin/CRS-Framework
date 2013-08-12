@@ -6,7 +6,7 @@ package uit.tkorg.crs.common;
 
 import java.util.HashMap;
 import uit.tkorg.crs.experiment.ContentMethodExperiment;
-import uit.tkorg.crs.graph.Graph;
+import uit.tkorg.crs.graph.AuthorGraph;
 
 /**
  *
@@ -178,7 +178,7 @@ public class TopNSimilarity {
 //        valueHM.put(8, 0.8f);
 //        data.put(2, valueHM);
 //
-//        Graph _graph = Graph.getInstance();
+//        AuthorGraph _graph = AuthorGraph.getInstance();
 //        _graph.LoadTrainingData(
 //                "C:\\CRS-Experiment\\Sampledata\\[Training]AuthorId_PaperID.txt",
 //                "C:\\CRS-Experiment\\Sampledata\\[Training]PaperID_Year.txt");
