@@ -84,27 +84,34 @@ public class OrganizationGraph {
             if (listOrgs.size() == 1 && !_collaborativeOrgGraph.containsKey(listOrgs.get(0))) {
                 _collaborativeOrgGraph.put(listOrgs.get(0), new HashMap<Integer, Integer>());
             } else {
-                for (int author1 : listOrgs) {
-                    for (int author2 : listOrgs) {
-                        if (author1 != author2) {
+                for (int org1 : listOrgs) {
+                    for (int org2 : listOrgs) {
+                        if (org1 != org2) {
                             HashMap<Integer, Integer> collaboration;
-                            collaboration = _collaborativeOrgGraph.get(author1);
+                            collaboration = _collaborativeOrgGraph.get(org1);
                             if (collaboration == null) {
                                 collaboration = new HashMap<>();
                             }
 
-                            Integer numofPaper = collaboration.get(author2);
+                            Integer numofPaper = collaboration.get(org2);
                             if (numofPaper == null) {
                                 numofPaper = 0;
                             }
                             numofPaper++;
-                            collaboration.put(author2, numofPaper);
-                            _collaborativeOrgGraph.put(author1, collaboration);
+                            collaboration.put(org2, numofPaper);
+                            _collaborativeOrgGraph.put(org1, collaboration);
                         }
                     }
                 }
             }
         }
+    }
+    
+    /**
+     * Build RSSOrgGraph (weight is relation strength of different organizations.)
+     */
+    public void buildRSSOrgGraph() {
+        
     }
 
     public static void main(String args[]) {
