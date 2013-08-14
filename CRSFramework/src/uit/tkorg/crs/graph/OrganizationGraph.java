@@ -13,6 +13,15 @@ import java.util.HashMap;
  */
 public class OrganizationGraph {
 
+    private static OrganizationGraph _instance;
+
+    public static OrganizationGraph getInstance() {
+        if (_instance == null) {
+            _instance = new OrganizationGraph();
+        }
+        return _instance;
+    }
+    
     public HashMap<Integer, HashMap<Integer, Float>> _rssORGGraph;
     public HashMap<Integer, HashMap<Integer, Integer>> _collaborativeOrgGraph;
     public HashMap<Integer, Integer> _authorID_OrgID;
@@ -24,7 +33,7 @@ public class OrganizationGraph {
         _rssORGGraph = new HashMap<>();
     }
 
-    public void loadDataFromTextFile(String file_AuthorID_PubID_OrgID) {
+    public void load_AuthorID_PaperID_OrgID(String file_AuthorID_PubID_OrgID) {
         try {
             _paperOrganization = new HashMap<>();
             _organizationPaper = new HashMap<>();
@@ -111,12 +120,39 @@ public class OrganizationGraph {
      * Build RSSOrgGraph (weight is relation strength of different organizations.)
      */
     public void buildRSSOrgGraph() {
-        
+        for (int orgId1 : _collaborativeOrgGraph.keySet()) {
+            if (_collaborativeOrgGraph.get(orgId1).size() == 0) {
+                _rssORGGraph.put(orgId1, new HashMap<Integer, Float>());
+            } else {
+                int totalCollaborationOfOrg1 = 0;
+                for (int orgId2 : _collaborativeOrgGraph.get(orgId1).keySet()) {
+                    totalCollaborationOfOrg1 += _collaborativeOrgGraph.get(orgId1).get(orgId2);
+                }
+
+                for (int orgId2 : _collaborativeOrgGraph.get(orgId1).keySet()) {
+                    if (orgId1 != orgId2) {
+                        float weight = ((float) _collaborativeOrgGraph.get(orgId1).get(orgId2)) / ((float) totalCollaborationOfOrg1);
+                        HashMap<Integer, Float> rssWeight = _rssORGGraph.get(orgId1);
+                        if (rssWeight == null) {
+                            rssWeight = new HashMap<>();
+                        }
+
+                        Float _weight = rssWeight.get(orgId2);
+                        if (_weight == null) {
+                            _weight = weight;
+                            rssWeight.put(orgId2, _weight);
+                        }
+                        _rssORGGraph.put(orgId1, rssWeight);
+                    }
+                }
+            }
+        }
     }
 
     public static void main(String args[]) {
         OrganizationGraph orgGraph = new OrganizationGraph();
-        orgGraph.loadDataFromTextFile("C:\\CRS-Experiment\\Sampledata\\Input\\Link-Net\\[Training]AuthorId_PaperID_OrgID.txt");
+        orgGraph.load_AuthorID_PaperID_OrgID("C:\\CRS-Experiment\\Sampledata\\Input\\Link-Net\\[Training]AuthorId_PaperID_OrgID.txt");
         orgGraph.buildCollaborativeOrgGraph();
+        orgGraph.buildRSSOrgGraph();
     }
 }
