@@ -44,12 +44,12 @@ public class OrganizationRSS {
             int orgId;
             while ((line = bufferReader.readLine()) != null && !line.equals("")) {
                 tokens = line.split(",");
-                if (tokens[0] != null && !tokens[0].equals("")) {
+                if (tokens.length > 0 && tokens[0] != null && !tokens[0].equals("")) {
                     authorId = Integer.parseInt(tokens[0]);
                 } else {
                     authorId = -1;
                 }
-                if (tokens[1] != null && !tokens[1].equals("")) {
+                if (tokens.length > 1 && tokens[1] != null && !tokens[1].equals("")) {
                     orgId = Integer.parseInt(tokens[1]);
                 } else {
                     orgId = -1;
@@ -65,16 +65,6 @@ public class OrganizationRSS {
     }
 
     private void runOrgRSS(int inputAuthorId) {
-        if (inputAuthorId == 1) {
-            System.out.println("1");
-        }
-        if (inputAuthorId == 3) {
-            System.out.println("1");
-        }
-        if (inputAuthorId == 4) {
-            System.out.println("1");
-        }
-
         int inputAuthorOrgId = _authorID_OrgID.get(inputAuthorId);
         HashMap<Integer, Float> listRSS = new HashMap<>();
         listRSS.put(inputAuthorOrgId, 1f);
@@ -176,25 +166,28 @@ public class OrganizationRSS {
             HashMap<Integer, Float> authorOrgRSSValueHM = authorOrgRSSResult.get(authorID);
             TextFileUtility.writeTextFile(pathName + "\\" + authorID + ".txt", authorOrgRSSValueHM);
         }
-
     }
 
     public static void main(String args[]) {
-        OrganizationRSS orgRSS = new OrganizationRSS();
-        OrganizationGraph orgGraph = OrganizationGraph.getInstance();
-        orgGraph.load_AuthorID_PaperID_OrgID("C:\\CRS-Experiment\\Sampledata\\Input\\Link-Net\\[Training]AuthorId_PaperID_OrgID.txt");
-        orgRSS.load_All_AuthorID_OrgID("C:\\CRS-Experiment\\Sampledata\\Input\\Link-Net\\[Training]AuthorId_OrgID.txt");
-        HashMap<Integer, String> listInputAuthor = new HashMap<>();
-        listInputAuthor.put(1, "L");
-        listInputAuthor.put(3, "L");
-        listInputAuthor.put(4, "L");
+        try {
+            OrganizationRSS orgRSS = new OrganizationRSS();
+            OrganizationGraph orgGraph = OrganizationGraph.getInstance();
+            orgGraph.load_AuthorID_PaperID_OrgID("C:\\CRS-Experiment\\Sampledata\\Input\\Link-Net\\[Training]AuthorId_PaperID_OrgID.txt");
+            orgRSS.load_All_AuthorID_OrgID("C:\\CRS-Experiment\\Sampledata\\Input\\Link-Net\\[Training]AuthorId_OrgID.txt");
+            HashMap<Integer, String> listInputAuthor = new HashMap<>();
+            listInputAuthor.put(1, "L");
+            listInputAuthor.put(3, "L");
+            listInputAuthor.put(4, "L");
 
-        orgGraph.buildCollaborativeOrgGraph();
-        orgGraph.buildRSSOrgGraph();
+            orgGraph.buildCollaborativeOrgGraph();
+            orgGraph.buildRSSOrgGraph();
 
-        orgRSS.processOrgRSS(orgGraph._rssORGGraph, listInputAuthor);
-        orgRSS.writeOrgRSSofInputAuthorToFile(
-                "C:\\CRS-Experiment\\Sampledata\\Output\\OrgRSS",
-                listInputAuthor);
+            orgRSS.processOrgRSS(orgGraph._rssORGGraph, listInputAuthor);
+            orgRSS.writeOrgRSSofInputAuthorToFile(
+                    "C:\\CRS-Experiment\\Sampledata\\Output\\OrgRSS",
+                    listInputAuthor);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 }
