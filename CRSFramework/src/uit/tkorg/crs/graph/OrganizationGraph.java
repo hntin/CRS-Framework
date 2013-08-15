@@ -49,17 +49,17 @@ public class OrganizationGraph {
             int orgId;
             while ((line = bufferReader.readLine()) != null && !line.equals("")) {
                 tokens = line.split(",");
-                if (tokens[0] != null && !tokens[0].equals("")) {
+                if (tokens.length > 0 && tokens[0] != null && !tokens[0].equals("")) {
                     authorId = Integer.parseInt(tokens[0]);
                 } else {
                     authorId = -1;
                 }
-                if (tokens[1] != null && !tokens[1].equals("")) {
+                if (tokens.length > 1 && tokens[1] != null && !tokens[1].equals("")) {
                     paperId = Integer.parseInt(tokens[1]);
                 } else {
                     paperId = -1;
                 }
-                if (tokens[2] != null && !tokens[2].equals("")) {
+                if (tokens.length > 2 && tokens[2] != null && !tokens[2].equals("")) {
                     orgId = Integer.parseInt(tokens[2]);
                 } else {
                     orgId = -1;
