@@ -30,6 +30,38 @@ public class OrganizationRSS {
         _rssOrgData = new HashMap<>();
     }
 
+    private HashMap<Integer, String> loadInputAuthorList(String input_Author_List_File) {
+        HashMap<Integer, String> listAuthorRandom = new HashMap<>();
+        // <editor-fold defaultstate="collapsed" desc="Load Author">
+        try {
+            FileInputStream fis = new FileInputStream(input_Author_List_File);
+            Reader reader = new InputStreamReader(fis, "UTF8");
+            BufferedReader bufferReader = new BufferedReader(reader);
+            bufferReader.readLine();
+            String line = null;
+            String[] tokens;
+            String groupLMD;
+            int authorId;
+            while ((line = bufferReader.readLine()) != null) {
+                if (!line.equals("")) {
+                    tokens = line.split("\t");
+                    authorId = Integer.parseInt(tokens[0]);
+                    if (tokens.length <= 1) {
+                        groupLMD = "";
+                    } else {
+                        groupLMD = tokens[1];
+                    }
+                    listAuthorRandom.put(authorId, groupLMD);
+                }
+            }
+            bufferReader.close();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        // </editor-fold>
+        return listAuthorRandom;
+    }
+
     private void load_All_AuthorID_OrgID(String file_AuthorID_OrgID) {
         try {
             _authorID_OrgID = new HashMap<>();
@@ -174,10 +206,7 @@ public class OrganizationRSS {
             OrganizationGraph orgGraph = OrganizationGraph.getInstance();
             orgGraph.load_AuthorID_PaperID_OrgID("C:\\CRS-Experiment\\Sampledata\\Input\\Link-Net\\[Training]AuthorId_PaperID_OrgID.txt");
             orgRSS.load_All_AuthorID_OrgID("C:\\CRS-Experiment\\Sampledata\\Input\\Link-Net\\[Training]AuthorId_OrgID.txt");
-            HashMap<Integer, String> listInputAuthor = new HashMap<>();
-            listInputAuthor.put(1, "L");
-            listInputAuthor.put(3, "L");
-            listInputAuthor.put(4, "L");
+            HashMap<Integer, String> listInputAuthor = orgRSS.loadInputAuthorList("C:\\CRS-Experiment\\Sampledata\\Input\\ListRandomAuthor_.txt");
 
             orgGraph.buildCollaborativeOrgGraph();
             orgGraph.buildRSSOrgGraph();
