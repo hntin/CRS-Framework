@@ -14,13 +14,9 @@ import uit.tkorg.utility.TextFileUtility;
  * @author TinHuynh
  */
 public class CitationGraph {
-    // <AuthorID, <AuthorID_Cited, NumberOfCitation>>
     // <AuthorID, <AuthorID_RefTo, NumberOfRef>>
-
     private HashMap<Integer, HashMap<Integer, Integer>> _referenceNumberGraph;
     private HashMap<Integer, HashMap<Integer, Float>> _referenceRSSGraph;
-    private HashMap<Integer, HashMap<Integer, Integer>> _citationNumberGraph;
-    private HashMap<Integer, HashMap<Integer, Float>> _citationRSSGraph;
     private HashMap<Integer, ArrayList<Integer>> _paperID_RefID_List;
     private HashMap<Integer, ArrayList<Integer>> _paperID_CitedID_List;
     private HashMap<Integer, ArrayList<Integer>> _paperID_AuthorID_List;
@@ -159,12 +155,6 @@ public class CitationGraph {
         }
         
         return _referenceRSSGraph;
-    }
-
-    private void buildCitationGraph() {
-    }
-
-    private void buildCitationRSSGraph() {
     }
 
     public static void main(String args[]) {
