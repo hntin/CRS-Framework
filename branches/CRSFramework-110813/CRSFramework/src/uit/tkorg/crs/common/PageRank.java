@@ -66,6 +66,7 @@ public class PageRank {
             }
             
             iterationNumber = iterationNumber - 1;
+            System.out.println("PageRank IterationNumber:" + iterationNumber);
         }
 
         return _PageRankResult;

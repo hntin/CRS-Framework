@@ -172,11 +172,14 @@ public class CitationGraph {
         try {
             System.out.println("START...");
             CitationGraph citedGraph = new CitationGraph();
-            citedGraph.load_AuthorID_PaperID("C:\\CRS-Experiment\\MAS\\Input\\Input2\\[TrainingData]AuthorID_PaperID_All.txt");
-            citedGraph.load_PaperID_RefID("C:\\CRS-Experiment\\MAS\\Input\\Input2\\[TrainingData]PaperID_Year_ReferenceID_1995_2005.txt");
+            citedGraph.load_AuthorID_PaperID("C:\\CRS-Experiment\\Input\\MAS\\Input2\\[TrainingData]AuthorID_PaperID_All.txt");
+            citedGraph.load_PaperID_RefID("C:\\CRS-Experiment\\Input\\MAS\\Input2\\[TrainingData]PaperID_Year_ReferenceID_1995_2005.txt");
             citedGraph.buildRefGraph();
+            System.out.println("Finish building RefGraph");
             HashMap<Integer, HashMap<Integer, Float>> refRSSGraph = citedGraph.buildRefRSSGraph();
+            System.out.println("Finish building RefRSSGraph");
 
+            System.out.println("START PAGE RANK... ");
             PageRank pr = new PageRank(refRSSGraph, 2000, 0.85f);
             HashMap<Integer, Float> authorID_PageRank_HM = pr.calculatePR();
 
@@ -186,7 +189,7 @@ public class CitationGraph {
             for (int authorID : authorID_PageRank_HM.keySet()) {
                 strBuff.append(authorID + "\t" + authorID_PageRank_HM.get(authorID) + "\n");
             }
-            TextFileUtility.writeTextFile("C:\\CRS-Experiment\\MAS\\Output\\pagerank.txt", strBuff.toString());
+            TextFileUtility.writeTextFile("C:\\CRS-Experiment\\Output\\MAS\\IsolatedAuthor\\ImportantRate\\pagerank.txt", strBuff.toString());
             System.out.println("END...");
         } catch (Exception ex) {
             ex.printStackTrace();
