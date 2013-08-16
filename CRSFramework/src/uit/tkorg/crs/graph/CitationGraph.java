@@ -15,6 +15,7 @@ import uit.tkorg.utility.TextFileUtility;
  */
 public class CitationGraph {
     // <AuthorID, <AuthorID_RefTo, NumberOfRef>>
+
     private HashMap<Integer, HashMap<Integer, Integer>> _referenceNumberGraph;
     private HashMap<Integer, HashMap<Integer, Float>> _referenceRSSGraph;
     private HashMap<Integer, ArrayList<Integer>> _paperID_RefID_List;
@@ -102,37 +103,56 @@ public class CitationGraph {
     }
 
     private void buildRefGraph() throws Exception {
-        _referenceNumberGraph = new HashMap<>();
-        for (int paperID : _paperID_RefID_List.keySet()) {
-            ArrayList<Integer> refIDList = _paperID_RefID_List.get(paperID);
-            ArrayList<Integer> authorIDList = _paperID_AuthorID_List.get(paperID);
-            for (int paperIDRef : refIDList) {
-                ArrayList<Integer> refAuthorIDList = _paperID_AuthorID_List.get(paperIDRef);
-                for (int authorID : authorIDList) {
-                    HashMap<Integer, Integer> refHM = _referenceNumberGraph.get(authorID);
-                    if (refHM == null) {
-                        refHM = new HashMap<>();
-                    }
 
-                    for (int refAuthorID : refAuthorIDList) {
-                        int numberOfRef = 0;
-                        if (refHM.containsKey(refAuthorID)) {
-                            numberOfRef = refHM.get(refAuthorID);
+        try {
+            _referenceNumberGraph = new HashMap<>();
+            for (int paperID : _paperID_RefID_List.keySet()) {
+                ArrayList<Integer> refIDList = _paperID_RefID_List.get(paperID);
+                ArrayList<Integer> authorIDList = _paperID_AuthorID_List.get(paperID);
+                if (refIDList != null && refIDList.size() > 0) {
+                    for (int paperIDRef : refIDList) {
+                        ArrayList<Integer> refAuthorIDList = _paperID_AuthorID_List.get(paperIDRef);
+                        if (authorIDList != null && authorIDList.size() > 0) {
+                            for (int authorID : authorIDList) {
+                                HashMap<Integer, Integer> refHM = _referenceNumberGraph.get(authorID);
+                                if (refHM == null) {
+                                    refHM = new HashMap<>();
+                                }
+
+                                if (refAuthorIDList != null) {
+                                    for (int refAuthorID : refAuthorIDList) {
+                                        int numberOfRef = 0;
+                                        if (refHM.containsKey(refAuthorID)) {
+                                            numberOfRef = refHM.get(refAuthorID);
+                                        }
+
+                                        numberOfRef++;
+                                        refHM.put(refAuthorID, numberOfRef);
+                                    }
+                                } else {
+                                    System.out.println("**************************");
+                                    System.out.println("refAuthorIDList = NULL");
+                                    System.out.println("paperIDRef" + paperIDRef);
+                                }
+
+                                _referenceNumberGraph.put(authorID, refHM);
+                            }
+                        } else {
+                            System.out.println("-----------------------------");
+                            System.out.println("authorIDList = NULL");
+                            System.out.println("paperID" + paperID);
                         }
 
-                        numberOfRef++;
-                        refHM.put(refAuthorID, numberOfRef);
                     }
-
-                    _referenceNumberGraph.put(authorID, refHM);
                 }
             }
-        }
-        
-        for (int authorID : _authorID_PaperID_List.keySet()){
-            if (!_referenceNumberGraph.containsKey(authorID)) {
-                _referenceNumberGraph.put(authorID, new HashMap<Integer, Integer>());
+            for (int authorID : _authorID_PaperID_List.keySet()) {
+                if (!_referenceNumberGraph.containsKey(authorID)) {
+                    _referenceNumberGraph.put(authorID, new HashMap<Integer, Integer>());
+                }
             }
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
 
@@ -153,7 +173,7 @@ public class CitationGraph {
             }
             _referenceRSSGraph.put(authorID, rssRefIDHM);
         }
-        
+
         return _referenceRSSGraph;
     }
 
@@ -161,12 +181,12 @@ public class CitationGraph {
         try {
             System.out.println("START...");
             CitationGraph citedGraph = new CitationGraph();
-            citedGraph.load_AuthorID_PaperID("C:\\CRS-Experiment\\Sampledata\\Input\\Link-Net\\[Training]AuthorId_PaperID_Before_2005.txt");
-            citedGraph.load_PaperID_RefID("C:\\CRS-Experiment\\Sampledata\\Input\\Link-Net\\[Training]PaperID_Year_RefID_Before_2005.txt");
+            citedGraph.load_AuthorID_PaperID("C:\\CRS-Experiment\\Input\\MAS\\Input2\\[TrainingData]AuthorID_PaperID_Before_2005.txt");
+            citedGraph.load_PaperID_RefID("C:\\CRS-Experiment\\Input\\MAS\\Input2\\[TrainingData]PaperID_Year_ReferenceID_1995_2005.txt");
             citedGraph.buildRefGraph();
             HashMap<Integer, HashMap<Integer, Float>> refRSSGraph = citedGraph.buildRefRSSGraph();
 
-            PageRank pr = new PageRank(refRSSGraph, 1000, 0.85f);
+            PageRank pr = new PageRank(refRSSGraph, 2000, 0.85f);
             HashMap<Integer, Float> authorID_PageRank_HM = pr.calculatePR();
 
             System.out.println("PAGE RANK RESULT ...");
@@ -175,7 +195,7 @@ public class CitationGraph {
             for (int authorID : authorID_PageRank_HM.keySet()) {
                 strBuff.append(authorID + "\t" + authorID_PageRank_HM.get(authorID) + "\n");
             }
-            TextFileUtility.writeTextFile("C:\\CRS-Experiment\\Sampledata\\Output\\ImportantRate\\pagerank.txt", strBuff.toString());
+            TextFileUtility.writeTextFile("C:\\CRS-Experiment\\Output\\MAS\\IsolatedAuthor\\ImportantRate\\pagerank.txt", strBuff.toString());
             System.out.println("END...");
         } catch (Exception ex) {
             ex.printStackTrace();
