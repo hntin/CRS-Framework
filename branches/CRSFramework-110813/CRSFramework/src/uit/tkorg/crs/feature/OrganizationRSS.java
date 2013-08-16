@@ -202,19 +202,21 @@ public class OrganizationRSS {
 
     public static void main(String args[]) {
         try {
+            System.out.println("START Calculating OrgRSS");
             OrganizationRSS orgRSS = new OrganizationRSS();
             OrganizationGraph orgGraph = OrganizationGraph.getInstance();
-            orgGraph.load_AuthorID_PaperID_OrgID("C:\\CRS-Experiment\\Sampledata\\Input\\Link-Net\\[Training]AuthorId_PaperID_OrgID.txt");
-            orgRSS.load_All_AuthorID_OrgID("C:\\CRS-Experiment\\Sampledata\\Input\\Link-Net\\[Training]AuthorId_OrgID.txt");
-            HashMap<Integer, String> listInputAuthor = orgRSS.loadInputAuthorList("C:\\CRS-Experiment\\Sampledata\\Input\\ListRandomAuthor_.txt");
+            orgGraph.load_AuthorID_PaperID_OrgID("C:\\CRS-Experiment\\Input\\MAS\\Input2\\[TrainingData]AuthorID_PaperID_OrgID_1995_2005.txt");
+            orgRSS.load_All_AuthorID_OrgID("C:\\CRS-Experiment\\Input\\MAS\\Input2\\[TrainingData]AuthorID_OrgID_1995_2005.txt");
+            HashMap<Integer, String> listInputAuthor = orgRSS.loadInputAuthorList("C:\\CRS-Experiment\\Input\\MAS\\RandonAuthorListWithDegree\\PotentialIsolatedAuthorList_6.txt");
 
             orgGraph.buildCollaborativeOrgGraph();
             orgGraph.buildRSSOrgGraph();
 
             orgRSS.processOrgRSS(orgGraph._rssORGGraph, listInputAuthor);
             orgRSS.writeOrgRSSofInputAuthorToFile(
-                    "C:\\CRS-Experiment\\Sampledata\\Output\\OrgRSS",
+                    "C:\\CRS-Experiment\\Output\\MAS\\IsolatedAuthor\\OrgRSS",
                     listInputAuthor);
+            System.out.println("END Calculating OrgRSS");
         } catch (Exception ex) {
             ex.printStackTrace();
         }
