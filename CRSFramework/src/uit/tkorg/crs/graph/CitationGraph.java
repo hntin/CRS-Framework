@@ -103,23 +103,22 @@ public class CitationGraph {
     }
 
     private void buildRefGraph() throws Exception {
-
         try {
             _referenceNumberGraph = new HashMap<>();
             for (int paperID : _paperID_RefID_List.keySet()) {
-                ArrayList<Integer> refIDList = _paperID_RefID_List.get(paperID);
-                ArrayList<Integer> authorIDList = _paperID_AuthorID_List.get(paperID);
-                if (refIDList != null && refIDList.size() > 0) {
-                    for (int paperIDRef : refIDList) {
-                        ArrayList<Integer> refAuthorIDList = _paperID_AuthorID_List.get(paperIDRef);
-                        if (authorIDList != null && authorIDList.size() > 0) {
-                            for (int authorID : authorIDList) {
-                                HashMap<Integer, Integer> refHM = _referenceNumberGraph.get(authorID);
-                                if (refHM == null) {
-                                    refHM = new HashMap<>();
-                                }
+                if (_paperID_AuthorID_List.containsKey(paperID)) {
+                    ArrayList<Integer> refIDList = _paperID_RefID_List.get(paperID);
+                    ArrayList<Integer> authorIDList = _paperID_AuthorID_List.get(paperID);
+                    if (refIDList != null && refIDList.size() > 0) {
+                        for (int paperIDRef : refIDList) {
+                            if (_paperID_AuthorID_List.containsKey(paperIDRef)) {
+                                ArrayList<Integer> refAuthorIDList = _paperID_AuthorID_List.get(paperIDRef);
+                                for (int authorID : authorIDList) {
+                                    HashMap<Integer, Integer> refHM = _referenceNumberGraph.get(authorID);
+                                    if (refHM == null) {
+                                        refHM = new HashMap<>();
+                                    }
 
-                                if (refAuthorIDList != null) {
                                     for (int refAuthorID : refAuthorIDList) {
                                         int numberOfRef = 0;
                                         if (refHM.containsKey(refAuthorID)) {
@@ -129,23 +128,15 @@ public class CitationGraph {
                                         numberOfRef++;
                                         refHM.put(refAuthorID, numberOfRef);
                                     }
-                                } else {
-                                    System.out.println("**************************");
-                                    System.out.println("refAuthorIDList = NULL");
-                                    System.out.println("paperIDRef" + paperIDRef);
+
+                                    _referenceNumberGraph.put(authorID, refHM);
                                 }
-
-                                _referenceNumberGraph.put(authorID, refHM);
                             }
-                        } else {
-                            System.out.println("-----------------------------");
-                            System.out.println("authorIDList = NULL");
-                            System.out.println("paperID" + paperID);
                         }
-
                     }
                 }
             }
+            
             for (int authorID : _authorID_PaperID_List.keySet()) {
                 if (!_referenceNumberGraph.containsKey(authorID)) {
                     _referenceNumberGraph.put(authorID, new HashMap<Integer, Integer>());
@@ -181,8 +172,8 @@ public class CitationGraph {
         try {
             System.out.println("START...");
             CitationGraph citedGraph = new CitationGraph();
-            citedGraph.load_AuthorID_PaperID("C:\\CRS-Experiment\\Input\\MAS\\Input2\\[TrainingData]AuthorID_PaperID_Before_2005.txt");
-            citedGraph.load_PaperID_RefID("C:\\CRS-Experiment\\Input\\MAS\\Input2\\[TrainingData]PaperID_Year_ReferenceID_1995_2005.txt");
+            citedGraph.load_AuthorID_PaperID("C:\\CRS-Experiment\\MAS\\Input\\Input2\\[TrainingData]AuthorID_PaperID_All.txt");
+            citedGraph.load_PaperID_RefID("C:\\CRS-Experiment\\MAS\\Input\\Input2\\[TrainingData]PaperID_Year_ReferenceID_1995_2005.txt");
             citedGraph.buildRefGraph();
             HashMap<Integer, HashMap<Integer, Float>> refRSSGraph = citedGraph.buildRefRSSGraph();
 
@@ -195,7 +186,7 @@ public class CitationGraph {
             for (int authorID : authorID_PageRank_HM.keySet()) {
                 strBuff.append(authorID + "\t" + authorID_PageRank_HM.get(authorID) + "\n");
             }
-            TextFileUtility.writeTextFile("C:\\CRS-Experiment\\Output\\MAS\\IsolatedAuthor\\ImportantRate\\pagerank.txt", strBuff.toString());
+            TextFileUtility.writeTextFile("C:\\CRS-Experiment\\MAS\\Output\\pagerank.txt", strBuff.toString());
             System.out.println("END...");
         } catch (Exception ex) {
             ex.printStackTrace();
