@@ -139,8 +139,8 @@ public class PageRank {
         
         System.out.println("START LOADING TRAINING DATA");
         AuthorGraph _graph = AuthorGraph.getInstance();
-        _graph.LoadTrainingData("C:\\CRS-Experiment\\Sampledata\\[Training]AuthorId_PaperID.txt", 
-                "C:\\CRS-Experiment\\Sampledata\\[Training]PaperID_Year.txt");
+        _graph.LoadTrainingData("C:\\CRS-Experiment\\Sampledata\\Input\\Link-Net\\[Training]AuthorId_PaperID.txt", 
+                "C:\\CRS-Experiment\\Sampledata\\Input\\Link-Net\\[Training]PaperID_Year.txt");
 
         // Building Graphs
         _graph.BuildCoAuthorGraph();
@@ -154,7 +154,7 @@ public class PageRank {
 
         System.out.println("PAGE RANK RESULT ...");
         for (int id : resultPR.keySet()) {
-            System.out.println(resultPR.get(id));
+            System.out.println("ID:" + id + "\tRank:" + resultPR.get(id));
         }
         System.out.println("DONE");
     }
