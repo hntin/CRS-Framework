@@ -21,9 +21,9 @@ public class CitationGraph {
     private HashMap<Integer, ArrayList<Integer>> _paperID_CitedID_List;
     private HashMap<Integer, ArrayList<Integer>> _paperID_AuthorID_List;
     private HashMap<Integer, ArrayList<Integer>> _authorID_PaperID_List;
-    
     private String _file_All_AuthorID_PaperID;
     private String _file_PaperID_RefID;
+    
     public CitationGraph(String file_All_AuthorID_PaperID, String file_PaperID_RefID){
         _file_All_AuthorID_PaperID = file_All_AuthorID_PaperID;
         _file_PaperID_RefID = file_PaperID_RefID;
