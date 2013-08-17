@@ -15,19 +15,25 @@ import uit.tkorg.utility.TextFileUtility;
  */
 public class CitationGraph {
     // <AuthorID, <AuthorID_RefTo, NumberOfRef>>
-
     private HashMap<Integer, HashMap<Integer, Integer>> _referenceNumberGraph;
     private HashMap<Integer, HashMap<Integer, Float>> _referenceRSSGraph;
     private HashMap<Integer, ArrayList<Integer>> _paperID_RefID_List;
     private HashMap<Integer, ArrayList<Integer>> _paperID_CitedID_List;
     private HashMap<Integer, ArrayList<Integer>> _paperID_AuthorID_List;
     private HashMap<Integer, ArrayList<Integer>> _authorID_PaperID_List;
+    
+    private String _file_All_AuthorID_PaperID;
+    private String _file_PaperID_RefID;
+    public CitationGraph(String file_All_AuthorID_PaperID, String file_PaperID_RefID){
+        _file_All_AuthorID_PaperID = file_All_AuthorID_PaperID;
+        _file_PaperID_RefID = file_PaperID_RefID;
+    }
 
-    private void load_AuthorID_PaperID(String file_AuthorID_PaperID) throws Exception {
+    private void load_AuthorID_PaperID() throws Exception {
         try {
             _authorID_PaperID_List = new HashMap<>();
             _paperID_AuthorID_List = new HashMap<>();
-            FileInputStream fis = new FileInputStream(file_AuthorID_PaperID);
+            FileInputStream fis = new FileInputStream(_file_All_AuthorID_PaperID);
             Reader reader = new InputStreamReader(fis, "UTF8");
             BufferedReader bufferReader = new BufferedReader(reader);
             bufferReader.readLine();
@@ -61,12 +67,12 @@ public class CitationGraph {
         }
     }
 
-    private void load_PaperID_RefID(String file_PaperID_RefID) throws Exception {
+    private void load_PaperID_RefID() throws Exception {
         try {
             _paperID_RefID_List = new HashMap<>();
             _paperID_CitedID_List = new HashMap<>();
 
-            FileInputStream fis = new FileInputStream(file_PaperID_RefID);
+            FileInputStream fis = new FileInputStream(_file_PaperID_RefID);
             Reader reader = new InputStreamReader(fis, "UTF8");
             BufferedReader bufferReader = new BufferedReader(reader);
             bufferReader.readLine();
@@ -168,28 +174,37 @@ public class CitationGraph {
         return _referenceRSSGraph;
     }
 
-    public static void main(String args[]) {
+    public void calculateImportantRate(String outputFile) {
         try {
-            System.out.println("START...");
-            CitationGraph citedGraph = new CitationGraph();
-            citedGraph.load_AuthorID_PaperID("C:\\CRS-Experiment\\Input\\MAS\\Input2\\[TrainingData]AuthorID_PaperID_All.txt");
-            citedGraph.load_PaperID_RefID("C:\\CRS-Experiment\\Input\\MAS\\Input2\\[TrainingData]PaperID_Year_ReferenceID_1995_2005.txt");
-            citedGraph.buildRefGraph();
-            System.out.println("Finish building RefGraph");
-            HashMap<Integer, HashMap<Integer, Float>> refRSSGraph = citedGraph.buildRefRSSGraph();
-            System.out.println("Finish building RefRSSGraph");
-
+            load_AuthorID_PaperID();
+            load_PaperID_RefID();
+            buildRefGraph();
+            HashMap<Integer, HashMap<Integer, Float>> refRSSGraph = buildRefRSSGraph();
             System.out.println("START PAGE RANK... ");
             PageRank pr = new PageRank(refRSSGraph, 2000, 0.85f);
             HashMap<Integer, Float> authorID_PageRank_HM = pr.calculatePR();
+            System.out.println("END PAGERANK");
 
-            System.out.println("PAGE RANK RESULT ...");
             StringBuffer strBuff = new StringBuffer();
             strBuff.append("AuthorID" + "\t" + "ImportantRate(PageRank)" + "\n");
             for (int authorID : authorID_PageRank_HM.keySet()) {
                 strBuff.append(authorID + "\t" + authorID_PageRank_HM.get(authorID) + "\n");
             }
-            TextFileUtility.writeTextFile("C:\\CRS-Experiment\\Output\\MAS\\IsolatedAuthor\\ImportantRate\\pagerank.txt", strBuff.toString());
+
+            TextFileUtility.writeTextFile(outputFile, strBuff.toString());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }    
+    }
+    
+    public static void main(String args[]) {
+        try {
+            System.out.println("START...");
+            CitationGraph citedGraph = new CitationGraph(
+                    "C:\\CRS-Experiment\\MAS\\Input\\Input2\\[TrainingData]AuthorID_PaperID_All.txt",
+                    "C:\\CRS-Experiment\\MAS\\Input\\Input2\\[TrainingData]PaperID_Year_ReferenceID_1995_2005.txt"
+                    );
+            citedGraph.calculateImportantRate("C:\\CRS-Experiment\\MAS\\Output\\pagerank.txt");
             System.out.println("END...");
         } catch (Exception ex) {
             ex.printStackTrace();
