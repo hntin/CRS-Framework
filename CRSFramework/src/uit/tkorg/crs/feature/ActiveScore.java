@@ -146,8 +146,8 @@ public class ActiveScore {
 
     public static void main(String args[]) {
         ActiveScore activeScore = new ActiveScore(
-                "C:\\CRS-Experiment\\MAS\\Input\\Input2\\[TrainingData]AuthorID_PaperID_1995_2005.txt",
-                "C:\\CRS-Experiment\\MAS\\Input\\Input2\\[TrainingData]PaperID_Year_1995_2005.txt",
+                "C:\\CRS-Experiment\\Sampledata\\Input\\Link-Net\\[Training]AuthorId_PaperID_Before_2005.txt",
+                "C:\\CRS-Experiment\\Sampledata\\Input\\Link-Net\\[Training]PaperID_Year.txt",
                 1995, 2005);
         
         activeScore.load_PaperID_Year();
@@ -158,7 +158,7 @@ public class ActiveScore {
         for (int authorID : activeScoreHM.keySet()) {
             strBuff.append(authorID + "\t" + activeScoreHM.get(authorID) + "\n");
         }
-        TextFileUtility.writeTextFile("C:\\CRS-Experiment\\MAS\\Output\\ActiveScore.txt", strBuff.toString());
+        TextFileUtility.writeTextFile("C:\\CRS-Experiment\\Sampledata\\Output\\ActiveScore\\ActiveScore.txt", strBuff.toString());
         System.out.println("DONE");
                 
 //
