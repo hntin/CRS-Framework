@@ -100,7 +100,12 @@ public class ActiveScore {
 
     private HashMap<Integer, Float> calculateActiveScore() {
         HashMap<Integer, Float> activeScoreHM = new HashMap<>();
+        int count = 0;
         for (int authorID : _authorID_PaperID_List.keySet()) {
+            count++;
+            if (count%100==0)
+                System.out.println(count);
+            
             int minYear = Integer.MAX_VALUE;
             ArrayList<Integer> paperIDList = _authorID_PaperID_List.get(authorID);
 
