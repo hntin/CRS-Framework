@@ -103,9 +103,10 @@ public class ActiveScore {
         int count = 0;
         for (int authorID : _authorID_PaperID_List.keySet()) {
             count++;
-            if (count%100==0)
+            if (count % 100 == 0) {
                 System.out.println(count);
-            
+            }
+
             int minYear = Integer.MAX_VALUE;
             ArrayList<Integer> paperIDList = _authorID_PaperID_List.get(authorID);
 
@@ -128,39 +129,41 @@ public class ActiveScore {
 
             float activeScore = 0.f;
             for (int startYear = minYear; startYear <= _currentYear; startYear++) {
-                int num_Pub_In_Year = year_NumOfPub.get(startYear);
-                activeScore += (float) num_Pub_In_Year * (1 / Math.exp(_currentYear - startYear));
+                if (year_NumOfPub.containsKey(startYear)) {
+                    int num_Pub_In_Year = year_NumOfPub.get(startYear);
+                    activeScore += (float) num_Pub_In_Year * (1 / Math.exp(_currentYear - startYear));
+                }
             }
-            
+
             activeScoreHM.put(authorID, activeScore);
         }
 
         return activeScoreHM;
     }
-    
-    private HashMap<Integer,Float> normalizeActiveScore(HashMap<Integer,Float> activeScoreHM) {
-        HashMap<Integer,Float> activeScoreNormalizedHM = new HashMap<>();
+
+    private HashMap<Integer, Float> normalizeActiveScore(HashMap<Integer, Float> activeScoreHM) {
+        HashMap<Integer, Float> activeScoreNormalizedHM = new HashMap<>();
         float minValue = Float.MAX_VALUE;
         float maxValue = Float.MIN_VALUE;
         float activeValue = 0.f;
-        for (int authorID : activeScoreHM.keySet()){
+        for (int authorID : activeScoreHM.keySet()) {
             activeValue = activeScoreHM.get(authorID);
             if (activeValue < minValue) {
                 minValue = activeValue;
             }
-            
+
             if (activeValue > maxValue) {
                 maxValue = activeValue;
             }
         }
 
         float normalizedValue = 0.f;
-        for (int authorID : activeScoreHM.keySet()){
+        for (int authorID : activeScoreHM.keySet()) {
             activeValue = activeScoreHM.get(authorID);
-            normalizedValue = (activeValue - minValue)/(maxValue - minValue);
+            normalizedValue = (activeValue - minValue) / (maxValue - minValue);
             activeScoreNormalizedHM.put(authorID, normalizedValue);
         }
-        
+
         return activeScoreNormalizedHM;
     }
 
@@ -169,10 +172,11 @@ public class ActiveScore {
                 "C:\\CRS-Experiment\\Sampledata\\Input\\Link-Net\\[Training]AuthorId_PaperID_Before_2005.txt",
                 "C:\\CRS-Experiment\\Sampledata\\Input\\Link-Net\\[Training]PaperID_Year.txt",
                 1995, 2005);
-        
+
         activeScore.load_PaperID_Year();
         activeScore.load_AuthorID_PaperID();
-        HashMap<Integer,Float> activeScoreHM = activeScore.calculateActiveScore();
+        HashMap<Integer, Float> activeScoreHM = activeScore.calculateActiveScore();
+        activeScoreHM = activeScore.normalizeActiveScore(activeScoreHM);
         StringBuffer strBuff = new StringBuffer();
         strBuff.append("AuthorID" + "\t" + "ActiveScore" + "\n");
         for (int authorID : activeScoreHM.keySet()) {
@@ -180,7 +184,7 @@ public class ActiveScore {
         }
         TextFileUtility.writeTextFile("C:\\CRS-Experiment\\Sampledata\\Output\\ActiveScore\\ActiveScore.txt", strBuff.toString());
         System.out.println("DONE");
-                
+
 //
 //        int minYear = 2000;
 //        int _currentYear = 2005;
