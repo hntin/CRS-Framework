@@ -140,6 +140,26 @@ public class ActiveScore {
     
     private HashMap<Integer,Float> normalizeActiveScore(HashMap<Integer,Float> activeScoreHM) {
         HashMap<Integer,Float> activeScoreNormalizedHM = new HashMap<>();
+        float minValue = Float.MAX_VALUE;
+        float maxValue = Float.MIN_VALUE;
+        float activeValue = 0.f;
+        for (int authorID : activeScoreHM.keySet()){
+            activeValue = activeScoreHM.get(authorID);
+            if (activeValue < minValue) {
+                minValue = activeValue;
+            }
+            
+            if (activeValue > maxValue) {
+                maxValue = activeValue;
+            }
+        }
+
+        float normalizedValue = 0.f;
+        for (int authorID : activeScoreHM.keySet()){
+            activeValue = activeScoreHM.get(authorID);
+            normalizedValue = (activeValue - minValue)/(maxValue - minValue);
+            activeScoreNormalizedHM.put(authorID, normalizedValue);
+        }
         
         return activeScoreNormalizedHM;
     }
