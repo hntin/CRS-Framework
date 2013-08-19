@@ -112,17 +112,19 @@ public class ActiveScore {
 
             HashMap<Integer, Integer> year_NumOfPub = new HashMap<>();
             for (int paperID : paperIDList) {
-                int paperYear = _paperID_Year.get(paperID);
-                if (paperYear != 0) {
-                    int numOfPub = 0;
-                    if (year_NumOfPub.containsKey(paperYear)) {
-                        numOfPub = year_NumOfPub.get(paperYear);
-                    }
-                    numOfPub++;
-                    year_NumOfPub.put(paperYear, numOfPub);
+                if (_paperID_Year.containsKey(paperID)) {
+                    int paperYear = _paperID_Year.get(paperID);
+                    if (paperYear != 0) {
+                        int numOfPub = 0;
+                        if (year_NumOfPub.containsKey(paperYear)) {
+                            numOfPub = year_NumOfPub.get(paperYear);
+                        }
+                        numOfPub++;
+                        year_NumOfPub.put(paperYear, numOfPub);
 
-                    if (paperYear < minYear) {
-                        minYear = paperYear;
+                        if (paperYear < minYear) {
+                            minYear = paperYear;
+                        }
                     }
                 }
             }
@@ -169,8 +171,8 @@ public class ActiveScore {
 
     public static void main(String args[]) {
         ActiveScore activeScore = new ActiveScore(
-                "C:\\CRS-Experiment\\Sampledata\\Input\\Link-Net\\[Training]AuthorId_PaperID_Before_2005.txt",
-                "C:\\CRS-Experiment\\Sampledata\\Input\\Link-Net\\[Training]PaperID_Year.txt",
+                "C:\\CRS-Experiment\\Input\\MAS\\Input2\\[TrainingData]AuthorID_PaperID_Before_2005.txt",
+                "C:\\CRS-Experiment\\Input\\MAS\\Input2\\Link-Net\\[TrainingData]PaperID_Year_1995_2005.txt",
                 1995, 2005);
 
         activeScore.load_PaperID_Year();
@@ -182,7 +184,7 @@ public class ActiveScore {
         for (int authorID : activeScoreHM.keySet()) {
             strBuff.append(authorID + "\t" + activeScoreHM.get(authorID) + "\n");
         }
-        TextFileUtility.writeTextFile("C:\\CRS-Experiment\\Sampledata\\Output\\ActiveScore\\ActiveScore.txt", strBuff.toString());
+        TextFileUtility.writeTextFile("C:\\CRS-Experiment\\Output\\MAS\\IsolatedAuthor\\ActiveScore\\ActiveScore.txt", strBuff.toString());
         System.out.println("DONE");
 
 //
