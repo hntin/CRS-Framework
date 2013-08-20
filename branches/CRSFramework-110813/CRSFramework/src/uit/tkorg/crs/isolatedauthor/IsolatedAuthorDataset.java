@@ -4,11 +4,15 @@
  */
 package uit.tkorg.crs.isolatedauthor;
 
+import java.util.HashMap;
+
 /**
  *
  * @author TinHuynh
  */
 public class IsolatedAuthorDataset {
+    private HashMap<Integer, AuthorObj> _authorObjHM;
+    private HashMap<Integer,String> _isolatedAuthorList;
     
     private void load_Author_Information() {
         
@@ -18,5 +22,8 @@ public class IsolatedAuthorDataset {
         
     }
     
+    private void buildIsolatedDataset() {
+        
+    }
 
 }
