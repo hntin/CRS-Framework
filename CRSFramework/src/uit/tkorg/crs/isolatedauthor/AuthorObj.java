@@ -10,10 +10,8 @@ public class AuthorObj {
     private int _authorID;
     private String _authorName;
     private int _orgID;
-    private String _orgName;
     private float _importantRate;
     private float _activeScore;
-    private ArrayList<AuthorObj> _coAuthorList;
 
     public int getAuthorID() {
         return _authorID;
@@ -39,14 +37,6 @@ public class AuthorObj {
         this._orgID = _orgID;
     }
 
-    public String getOrgName() {
-        return _orgName;
-    }
-
-    public void setOrgName(String _orgName) {
-        this._orgName = _orgName;
-    }
-
     public float getImportantRate() {
         return _importantRate;
     }
@@ -63,14 +53,4 @@ public class AuthorObj {
         this._activeScore = _activeScore;
     }
 
-    public ArrayList<AuthorObj> getCoAuthorList() {
-        return _coAuthorList;
-    }
-
-    public void setCoAuthorList(ArrayList<AuthorObj> _coAuthorList) {
-        this._coAuthorList = _coAuthorList;
-    }
-    
-    
-    
 }
