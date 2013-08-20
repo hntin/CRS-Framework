@@ -181,6 +181,12 @@ public class IsolatedAuthorDataset {
 
     private void build_TrueCollaborationPairs( HashMap<Integer, String> listIsolatedAuthor) {
         for (int authorID : listIsolatedAuthor.keySet()) {
+            
+        }
+    }
+    
+    private void build_FalseCollaborationPairs( HashMap<Integer, String> listIsolatedAuthor) {
+        for (int authorID : listIsolatedAuthor.keySet()) {
 
         }
     }
