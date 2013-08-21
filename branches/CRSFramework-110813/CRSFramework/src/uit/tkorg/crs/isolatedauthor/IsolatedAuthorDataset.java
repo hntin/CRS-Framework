@@ -40,9 +40,9 @@ public class IsolatedAuthorDataset {
     private String _file_ImportantRate;
     private String _file_ActiveScore;
 
-    public IsolatedAuthorDataset(String file_Isolated_Researcher_List, String file_TrainingNet, 
-                                    String file_CoAuthor_NF, String file_CoAuthor_FF,
-                                    String file_ContentSim, String file_OrgRSS, String file_ImportantRate, String file_ActiveScore) {
+    public IsolatedAuthorDataset(String file_Isolated_Researcher_List, String file_TrainingNet,
+            String file_CoAuthor_NF, String file_CoAuthor_FF,
+            String file_ContentSim, String file_OrgRSS, String file_ImportantRate, String file_ActiveScore) {
 
         _file_Isolated_Researcher_List = file_Isolated_Researcher_List;
         _file_TrainingNet = file_TrainingNet;
@@ -164,6 +164,60 @@ public class IsolatedAuthorDataset {
                 }
                 listAuthor.add(authorId);
                 _paperAuthorFF.put(paperId, listAuthor);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void load_AuthorID_AuthorName_OrgID(String file_AuthorID_Name_OrgID) {
+        try {
+            _authorID_AuthorName = new HashMap<>();
+            _authorID_OrgID = new HashMap<>();
+            FileInputStream fis = new FileInputStream(file_AuthorID_Name_OrgID);
+            Reader reader = new InputStreamReader(fis, "UTF8");
+            BufferedReader bufferReader = new BufferedReader(reader);
+            bufferReader.readLine();
+            String line = null;
+            String[] tokens;
+            int authorID;
+            String authorName;
+            int orgID;
+            while ((line = bufferReader.readLine()) != null) {
+                tokens = line.split(",");
+                if (tokens.length >= 2 && tokens.length <= 3) {
+                    authorID = Integer.parseInt(tokens[0]);
+                    authorName = tokens[1];
+                    if (tokens.length == 3)
+                        orgID = Integer.parseInt(tokens[2]);
+                    else 
+                        orgID = -1;
+                    
+                    _authorID_AuthorName.put(authorID, authorName);
+                    _authorID_OrgID.put(authorID, orgID);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void load_OrgID_OrgName(String file_OrgID_OrgName) {
+        try {
+            _orgID_OrgName = new HashMap<>();
+            FileInputStream fis = new FileInputStream(file_OrgID_OrgName);
+            Reader reader = new InputStreamReader(fis, "UTF8");
+            BufferedReader bufferReader = new BufferedReader(reader);
+            bufferReader.readLine();
+            String line = null;
+            String[] tokens;
+            int orgID;
+            String orgName;
+            while ((line = bufferReader.readLine()) != null) {
+                tokens = line.split(",");
+                orgID = Integer.parseInt(tokens[0]);
+                orgName = tokens[1];
+                _orgID_OrgName.put(orgID, orgName);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -309,21 +363,38 @@ public class IsolatedAuthorDataset {
             for (int isolatedAuthorID : pairOfAuthorHM.keySet()) {
                 ArrayList<Integer> coAuthorList = pairOfAuthorHM.get(isolatedAuthorID);
                 for (int coAuthorID : coAuthorList) {
-                    Element pair = root.addElement("pair").addAttribute("id", String.valueOf(count++) );
+                    int orgID; String orgName;
+                    Element pair = root.addElement("pair").addAttribute("id", String.valueOf(count++));
                     Element isolatedElement = pair.addElement("IsolatedAuthor");
                     isolatedElement.addElement("AuthorID").addText(String.valueOf(isolatedAuthorID));
-                    isolatedElement.addElement("AuthorName").addText(String.valueOf(isolatedAuthorID));
-                    isolatedElement.addElement("OrgID").addText(String.valueOf(isolatedAuthorID));
+                    isolatedElement.addElement("AuthorName").addText(_authorID_AuthorName.get(isolatedAuthorID));
+                    orgID = _authorID_OrgID.get(isolatedAuthorID);
+                    isolatedElement.addElement("OrgID").addText(String.valueOf(orgID));
+                    if (orgID != -1){
+                        orgName = _orgID_OrgName.get(orgID);
+                        isolatedElement.addElement("OrgName").addText(orgName);
+                    }
+                    else {
+                        isolatedElement.addElement("OrgName").addText("NULL");
+                    }
                     isolatedElement.addElement("ActiveScore").addText(String.valueOf(isolatedAuthorID));
                     isolatedElement.addElement("ImportantRate").addText(String.valueOf(isolatedAuthorID));
-                            
+
                     Element coAuthorElement = pair.addElement("CoAuthor");
                     coAuthorElement.addElement("AuthorID").addText(String.valueOf(coAuthorID));
-                    coAuthorElement.addElement("AuthorName").addText(String.valueOf(coAuthorID));
-                    coAuthorElement.addElement("OrgID").addText(String.valueOf(coAuthorID));
+                    coAuthorElement.addElement("AuthorName").addText(_authorID_AuthorName.get(coAuthorID));
+                    orgID = _authorID_OrgID.get(coAuthorID);
+                    coAuthorElement.addElement("OrgID").addText(String.valueOf(orgID));
+                    if (orgID != -1) {
+                        orgName = _orgID_OrgName.get(orgID);
+                        coAuthorElement.addElement("OrgName").addText(orgName);
+                    }
+                    else {
+                        coAuthorElement.addElement("OrgName").addText("NULL");    
+                    }
                     coAuthorElement.addElement("ActiveScore").addText(String.valueOf(coAuthorID));
                     coAuthorElement.addElement("ImportantRate").addText(String.valueOf(coAuthorID));
-                    
+
                     pair.addElement("OrgRSS").addText("Org RSS Value");
                     pair.addElement("ContentSim").addText("ContentSim Value");
 
@@ -331,10 +402,10 @@ public class IsolatedAuthorDataset {
                         pair.addElement("tag").addText(String.valueOf(1));
                     } else {
                         pair.addElement("tag").addText(String.valueOf(-1));
-                    }                   
+                    }
                 }
             }
-            
+
             XMLFileUtility.writeXMLFile(fileName, document);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -370,6 +441,11 @@ public class IsolatedAuthorDataset {
         HashMap<Integer, String> isolatedAuthorList = isolatedDataset.loadInputAuthorList(
                 "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\PotentialIsolatedAuthorList.txt");
         HashMap<Integer, ArrayList<Integer>> truePairHM = isolatedDataset.build_TrueCollaborationPairs(isolatedAuthorList);
+
+        isolatedDataset.load_OrgID_OrgName(
+                "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\[TrainingData]OrgID_OrgName_All.txt");
+        isolatedDataset.load_AuthorID_AuthorName_OrgID(
+                "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\[TrainingData]AuthorID_AuthorName_OrgID_1995_2005.txt");
         
         isolatedDataset.writePairOfAuthorToXMLFile(
                 "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\truepair.xml", truePairHM, true);
