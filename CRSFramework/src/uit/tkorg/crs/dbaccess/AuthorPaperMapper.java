@@ -75,7 +75,6 @@ public class AuthorPaperMapper extends MapperDB {
                 sqlString.append(" SELECT ap.idPaper, p.title, p.abstract ");
                 sqlString.append(" FROM mas.author_paper ap join mas.paper p on ap.idPaper = p.idPaper");
                 sqlString.append(" WHERE p.year <= " + yearTo + " AND ap.idAuthor = '" + idAuthor + "'");
-                System.out.println(sqlString.toString());
                 rs = st.executeQuery(sqlString.toString());
 
                 String idPaper = null;
