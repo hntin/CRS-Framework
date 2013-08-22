@@ -276,8 +276,10 @@ public class IsolatedAuthorDataset {
         File[] fileList = mainFolder.listFiles();
         for (int i = 0; i < fileList.length; i++) {
             if (fileList[i].isFile()) {
-                String fileName = fileList[i].getName();
-                int iSolatedAuthorID = Integer.parseInt(fileName.substring(fileName.indexOf(".txt")));
+                String fileName = fileList[i].getName();  
+                System.out.println("fileName" + fileName);
+                int iSolatedAuthorID = Integer.parseInt(fileName.substring(0,fileName.indexOf(".txt")));
+                System.out.println("iSolatedAuthorID" + iSolatedAuthorID);
 
                 HashMap<Integer, Float> contentSimList = new HashMap<>();
                 try {
@@ -311,7 +313,9 @@ public class IsolatedAuthorDataset {
         for (int i = 0; i < fileList.length; i++) {
             if (fileList[i].isFile()) {
                 String fileName = fileList[i].getName();
-                int iSolatedAuthorID = Integer.parseInt(fileName.substring(fileName.indexOf(".txt")));
+                System.out.println("fileName" + fileName);
+                int iSolatedAuthorID = Integer.parseInt(fileName.substring(0,fileName.indexOf(".txt")));
+                System.out.println("iSolatedAuthorID" + iSolatedAuthorID);
 
                 HashMap<Integer, Float> orgRSSList = new HashMap<>();
                 try {
@@ -550,6 +554,7 @@ public class IsolatedAuthorDataset {
 //                "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\",
 //                "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\");
 
+        System.out.println("Loading & Building Networks");
         isolatedDataset.load_Training_NetworkData();
         isolatedDataset.load_NF_FF_NetworkData();
         isolatedDataset.build_NF_FF_Graph();
