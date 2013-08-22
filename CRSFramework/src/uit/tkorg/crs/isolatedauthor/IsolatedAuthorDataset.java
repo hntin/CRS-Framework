@@ -87,7 +87,7 @@ public class IsolatedAuthorDataset {
         return listIsolatedAuthor;
     }
 
-    private void load_Training_Networkdata() {
+    private void load_Training_NetworkData() {
         try {
             _authorID_PaperID_List = new HashMap<>();
             _paperID_AuthorID_List = new HashMap<>();
@@ -550,7 +550,7 @@ public class IsolatedAuthorDataset {
 //                "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\",
 //                "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\");
 
-        isolatedDataset.load_Training_Networkdata();
+        isolatedDataset.load_Training_NetworkData();
         isolatedDataset.load_NF_FF_NetworkData();
         isolatedDataset.build_NF_FF_Graph();
         isolatedDataset.build_CoAuthorGraph();
