@@ -30,6 +30,9 @@ public class ConnectionService {
 
     public static Connection getConnection() throws Exception {
         Connection connect = null;
+        dbURL = "jdbc:mysql://localhost:3306/MAS?useUnicode=true&characterEncoding=UTF-8";
+        dbUserName = "root";
+        dbPassword = "root";
         if (connect == null) {
             loadJDBCDriver();
             try {
