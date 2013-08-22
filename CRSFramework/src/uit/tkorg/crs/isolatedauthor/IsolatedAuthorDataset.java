@@ -1,6 +1,7 @@
 package uit.tkorg.crs.isolatedauthor;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
@@ -188,11 +189,12 @@ public class IsolatedAuthorDataset {
                 if (tokens.length >= 2 && tokens.length <= 3) {
                     authorID = Integer.parseInt(tokens[0]);
                     authorName = tokens[1];
-                    if (tokens.length == 3)
+                    if (tokens.length == 3) {
                         orgID = Integer.parseInt(tokens[2]);
-                    else 
+                    } else {
                         orgID = -1;
-                    
+                    }
+
                     _authorID_AuthorName.put(authorID, authorName);
                     _authorID_OrgID.put(authorID, orgID);
                 }
@@ -221,6 +223,118 @@ public class IsolatedAuthorDataset {
             }
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    private void load_ActiveScore(String file_ActiveScore) {
+        _authorID_ActiveScore = new HashMap<>();
+        try {
+            FileInputStream fis = new FileInputStream(file_ActiveScore);
+            Reader reader = new InputStreamReader(fis, "UTF8");
+            BufferedReader bufferReader = new BufferedReader(reader);
+            bufferReader.readLine();
+            String line = null;
+            String[] tokens;
+            int authorID;
+            float activeScore;
+            while ((line = bufferReader.readLine()) != null) {
+                tokens = line.split("\t");
+                authorID = Integer.parseInt(tokens[0]);
+                activeScore = Float.valueOf(tokens[1]);
+                _authorID_ActiveScore.put(authorID, activeScore);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void load_ImportantRate(String file_ImportantRate) {
+        _authorID_ImportantRate = new HashMap<>();
+        try {
+            FileInputStream fis = new FileInputStream(file_ImportantRate);
+            Reader reader = new InputStreamReader(fis, "UTF8");
+            BufferedReader bufferReader = new BufferedReader(reader);
+            bufferReader.readLine();
+            String line = null;
+            String[] tokens;
+            int authorID;
+            float importantRate;
+            while ((line = bufferReader.readLine()) != null) {
+                tokens = line.split("\t");
+                authorID = Integer.parseInt(tokens[0]);
+                importantRate = Float.valueOf(tokens[1]);
+                _authorID_ImportantRate.put(authorID, importantRate);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void load_ContentSim(String dirPath_ContentSim) {
+        _ContentSimHM = new HashMap<>();
+        File mainFolder = new File(dirPath_ContentSim);
+        File[] fileList = mainFolder.listFiles();
+        for (int i = 0; i < fileList.length; i++) {
+            if (fileList[i].isFile()) {
+                String fileName = fileList[i].getName();
+                int iSolatedAuthorID = Integer.parseInt(fileName);
+
+                HashMap<Integer, Float> contentSimList = new HashMap<>();
+                try {
+                    FileInputStream fis = new FileInputStream(fileList[i]);
+                    Reader reader = new InputStreamReader(fis, "UTF8");
+                    BufferedReader bufferReader = new BufferedReader(reader);
+                    bufferReader.readLine();
+                    String line = null;
+                    String[] tokens;
+                    int otherAuthorID;
+                    float contentSim;
+                    while ((line = bufferReader.readLine()) != null && !line.equals("")) {
+                        tokens = line.split("\t");
+                        otherAuthorID = Integer.parseInt(tokens[0]);
+                        contentSim = Float.valueOf(tokens[1]);
+                        contentSimList.put(otherAuthorID, contentSim);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                
+                _ContentSimHM.put(iSolatedAuthorID, contentSimList);
+            }
+        }
+    }
+
+    private void load_OrgRSS(String dirPath_OrgRSS) {
+        _OrgRSSHM = new HashMap<>();
+        File mainFolder = new File(dirPath_OrgRSS);
+        File[] fileList = mainFolder.listFiles();
+        for (int i = 0; i < fileList.length; i++) {
+            if (fileList[i].isFile()) {
+                String fileName = fileList[i].getName();
+                int iSolatedAuthorID = Integer.parseInt(fileName);
+
+                HashMap<Integer, Float> orgRSSList = new HashMap<>();
+                try {
+                    FileInputStream fis = new FileInputStream(fileList[i]);
+                    Reader reader = new InputStreamReader(fis, "UTF8");
+                    BufferedReader bufferReader = new BufferedReader(reader);
+                    bufferReader.readLine();
+                    String line = null;
+                    String[] tokens;
+                    int otherAuthorID;
+                    float orgRSSValue;
+                    while ((line = bufferReader.readLine()) != null && !line.equals("")) {
+                        tokens = line.split("\t");
+                        otherAuthorID = Integer.parseInt(tokens[0]);
+                        orgRSSValue = Float.valueOf(tokens[1]);
+                        orgRSSList.put(otherAuthorID, orgRSSValue);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                
+                _OrgRSSHM.put(iSolatedAuthorID, orgRSSList);
+            }
         }
     }
 
@@ -285,7 +399,7 @@ public class IsolatedAuthorDataset {
         }
     }
 
-    public void build_CoAuthorGraph() {
+    private void build_CoAuthorGraph() {
         _coAuthorTrainingNet = new HashMap<>();
         for (int pubId : _paperID_AuthorID_List.keySet()) {
             ArrayList<Integer> listAuthors = _paperID_AuthorID_List.get(pubId);
@@ -363,22 +477,22 @@ public class IsolatedAuthorDataset {
             for (int isolatedAuthorID : pairOfAuthorHM.keySet()) {
                 ArrayList<Integer> coAuthorList = pairOfAuthorHM.get(isolatedAuthorID);
                 for (int coAuthorID : coAuthorList) {
-                    int orgID; String orgName;
+                    int orgID;
+                    String orgName;
                     Element pair = root.addElement("pair").addAttribute("id", String.valueOf(count++));
                     Element isolatedElement = pair.addElement("IsolatedAuthor");
                     isolatedElement.addElement("AuthorID").addText(String.valueOf(isolatedAuthorID));
                     isolatedElement.addElement("AuthorName").addText(_authorID_AuthorName.get(isolatedAuthorID));
                     orgID = _authorID_OrgID.get(isolatedAuthorID);
                     isolatedElement.addElement("OrgID").addText(String.valueOf(orgID));
-                    if (orgID != -1){
+                    if (orgID != -1) {
                         orgName = _orgID_OrgName.get(orgID);
                         isolatedElement.addElement("OrgName").addText(orgName);
-                    }
-                    else {
+                    } else {
                         isolatedElement.addElement("OrgName").addText("NULL");
                     }
-                    isolatedElement.addElement("ActiveScore").addText(String.valueOf(isolatedAuthorID));
-                    isolatedElement.addElement("ImportantRate").addText(String.valueOf(isolatedAuthorID));
+                    isolatedElement.addElement("ActiveScore").addText(String.valueOf(_authorID_ActiveScore.get(isolatedAuthorID)));
+                    isolatedElement.addElement("ImportantRate").addText(String.valueOf(_authorID_ImportantRate.get(isolatedAuthorID)));
 
                     Element coAuthorElement = pair.addElement("CoAuthor");
                     coAuthorElement.addElement("AuthorID").addText(String.valueOf(coAuthorID));
@@ -388,15 +502,17 @@ public class IsolatedAuthorDataset {
                     if (orgID != -1) {
                         orgName = _orgID_OrgName.get(orgID);
                         coAuthorElement.addElement("OrgName").addText(orgName);
+                    } else {
+                        coAuthorElement.addElement("OrgName").addText("NULL");
                     }
-                    else {
-                        coAuthorElement.addElement("OrgName").addText("NULL");    
-                    }
-                    coAuthorElement.addElement("ActiveScore").addText(String.valueOf(coAuthorID));
-                    coAuthorElement.addElement("ImportantRate").addText(String.valueOf(coAuthorID));
+                    coAuthorElement.addElement("ActiveScore").addText(String.valueOf(_authorID_ActiveScore.get(coAuthorID)));
+                    coAuthorElement.addElement("ImportantRate").addText(String.valueOf(_authorID_ImportantRate.get(coAuthorID)));
 
-                    pair.addElement("OrgRSS").addText("Org RSS Value");
-                    pair.addElement("ContentSim").addText("ContentSim Value");
+                    // Chua kiem tra NULL pointer Exception
+                    float orgRSSValue = _OrgRSSHM.get(isolatedAuthorID).get(coAuthorID) ;
+                    float contentSim = _ContentSimHM.get(isolatedAuthorID).get(coAuthorID);
+                    pair.addElement("OrgRSS").addText(String.valueOf(orgRSSValue));
+                    pair.addElement("ContentSim").addText(String.valueOf(contentSim));
 
                     if (tag) {
                         pair.addElement("tag").addText(String.valueOf(1));
@@ -415,10 +531,10 @@ public class IsolatedAuthorDataset {
     public static void main(String args[]) {
         System.out.println("START");
         IsolatedAuthorDataset isolatedDataset = new IsolatedAuthorDataset(
-                "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\PotentialIsolatedAuthorList.txt",
-                "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\[TrainingData]AuthorID_PaperID_1995_2005.txt",
-                "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\[TestingData]AuthorID_PaperID_2006_2008.txt",
-                "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\[TestingData]AuthorID_PaperID_2009_2011.txt",
+                "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input2\\PotentialIsolatedAuthorList.txt",
+                "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input2\\[TrainingData]AuthorID_PaperID_1995_2005.txt",
+                "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input2\\[TestingData]AuthorID_PaperID_2006_2008.txt",
+                "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input2\\[TestingData]AuthorID_PaperID_2009_2011.txt",
                 "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\",
                 "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\",
                 "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\",
@@ -439,16 +555,23 @@ public class IsolatedAuthorDataset {
         isolatedDataset.build_NF_FF_Graph();
         isolatedDataset.build_CoAuthorGraph();
         HashMap<Integer, String> isolatedAuthorList = isolatedDataset.loadInputAuthorList(
-                "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\PotentialIsolatedAuthorList.txt");
+                "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input2\\PotentialIsolatedAuthorList.txt");
         HashMap<Integer, ArrayList<Integer>> truePairHM = isolatedDataset.build_TrueCollaborationPairs(isolatedAuthorList);
 
         isolatedDataset.load_OrgID_OrgName(
-                "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\[TrainingData]OrgID_OrgName_All.txt");
+                "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input2\\[TrainingData]OrgID_OrgName_All.txt");
         isolatedDataset.load_AuthorID_AuthorName_OrgID(
-                "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\[TrainingData]AuthorID_AuthorName_OrgID_1995_2005.txt");
+                "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input2\\[TrainingData]AuthorID_AuthorName_OrgID_1995_2005.txt");
+        isolatedDataset.load_ActiveScore(
+                "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input2\\ActiveScore\\ActiveScore.txt");
+        isolatedDataset.load_ImportantRate(
+                "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input2\\ImportantRate\\pagerank.txt");
         
+        isolatedDataset.load_ContentSim("C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input1\\ContentSim");
+        isolatedDataset.load_OrgRSS("C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input1\\OrgRSS");
+
         isolatedDataset.writePairOfAuthorToXMLFile(
-                "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\truepair.xml", truePairHM, true);
+                "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input2\\truepair.xml", truePairHM, true);
 
         System.out.println("END");
     }
