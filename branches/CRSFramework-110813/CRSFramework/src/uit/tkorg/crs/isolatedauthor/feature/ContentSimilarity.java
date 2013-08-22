@@ -92,9 +92,9 @@ public class ContentSimilarity {
 
     public static void main(String args[]) {
         ContentSimilarity contentSim = new ContentSimilarity(
-                "C:\\CRS-Experiment\\Sampledata\\LDATest\\MALLET-LDA\\Output\\CRS-InputParallelLDA.txt", 
-                "C:\\CRS-Experiment\\Sampledata\\LDATest\\MALLET-LDA\\Output\\ListRandomAuthor_.txt", 
-                "C:\\CRS-Experiment\\Sampledata\\Output\\ContentSimilarity");
+                "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input1\\CRS-InputParallelLDA.txt", 
+                "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input1\\PotentialIsolatedAuthorList_1_300.txt", 
+                "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input1\\ContentSim");
         contentSim.loadInputAuthorList();
         contentSim.processContentSimilarity(ContentSimOption.TFIDF);
     }
