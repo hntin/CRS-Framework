@@ -567,11 +567,11 @@ public class IsolatedAuthorDataset {
         isolatedDataset.load_ImportantRate(
                 "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input2\\ImportantRate\\pagerank.txt");
         
-        isolatedDataset.load_ContentSim("C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input1\\ContentSim");
-        isolatedDataset.load_OrgRSS("C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input1\\OrgRSS");
+        isolatedDataset.load_ContentSim("C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input2\\ContentSim");
+        isolatedDataset.load_OrgRSS("C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input2\\OrgRSS");
 
         isolatedDataset.writePairOfAuthorToXMLFile(
-                "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input2\\truepair.xml", truePairHM, true);
+                "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input2\\truepair1.xml", truePairHM, true);
 
         System.out.println("END");
     }
