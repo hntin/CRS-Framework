@@ -586,11 +586,6 @@ public class IsolatedAuthorDataset {
         isolatedDataset.load_NF_FF_NetworkData();
         isolatedDataset.build_NF_FF_Graph();
         isolatedDataset.build_CoAuthorGraph();
-        HashMap<Integer, String> isolatedAuthorList = isolatedDataset.loadInputAuthorList(
-                "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input1\\PotentialIsolatedAuthorList_1_300.txt");
-        HashMap<Integer, ArrayList<Integer>> truePairHM = isolatedDataset.build_TrueCollaborationPairs(isolatedAuthorList);
-        HashMap<Integer, ArrayList<Integer>> falsePair_All_HM = isolatedDataset.build_All_FalseCollaborationPairs(isolatedAuthorList);
-        
 
         System.out.println("load_All_AuthorID_OrgID");
         isolatedDataset.load_All_AuthorID_OrgID("C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input1\\[TrainingData]AuthorID_OrgID_All.txt");
@@ -616,6 +611,11 @@ public class IsolatedAuthorDataset {
         
         System.out.println("load_OrgRSS");
         isolatedDataset.load_OrgRSS("C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input1\\OrgRSS");
+        
+        HashMap<Integer, String> isolatedAuthorList = isolatedDataset.loadInputAuthorList(
+                "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input1\\PotentialIsolatedAuthorList_1_300.txt");
+        HashMap<Integer, ArrayList<Integer>> truePairHM = isolatedDataset.build_TrueCollaborationPairs(isolatedAuthorList);
+        HashMap<Integer, ArrayList<Integer>> falsePair_All_HM = isolatedDataset.build_All_FalseCollaborationPairs(isolatedAuthorList);
 
         System.out.println("writePairOfAuthorToXMLFile");
         isolatedDataset.writePairOfAuthorToXMLFile(
