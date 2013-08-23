@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
@@ -479,26 +480,28 @@ public class IsolatedAuthorDataset {
     // Getting about 300 x 5 False cases
     private HashMap<Integer, ArrayList<Integer>> build_FalseCollaborationPairs(HashMap<Integer, String> listIsolatedAuthor) {
         HashMap<Integer, ArrayList<Integer>> falsePairHM = new HashMap<>();
+        Random randomGenerator = new Random();
         for (int isolatedAuthorID : listIsolatedAuthor.keySet()) {
             ArrayList<Integer> falseCoAuthorList = new ArrayList<>();
 
             // For each Isolated author, Select out the list of authors 
             // who exist in the training and testing net, have Org's Infor but no connection with Isolated
-            int countFalseForEachIsolatedAuthor = 0;
-            for (int authorID : _coAuthorTrainingNet.keySet()) {
-                // NOT IS 'Isolated author' and have ORGID
-                if (authorID != isolatedAuthorID && _authorID_OrgID_All.get(authorID) != -1) {
-                    // Exist in 'Testing Nets' and HAVE NO ANY connections with 'Isolated author'
-                    if (_coAuthorNF.containsKey(authorID) && _coAuthorFF.containsKey(authorID)) {
-                        if (!_coAuthorNF.get(authorID).containsKey(isolatedAuthorID)
-                                && !_coAuthorFF.get(authorID).containsKey(isolatedAuthorID)) {
+            int numberFalseForEachIsolatedAuthor = 5;
+            for (int i = 0; i <= numberFalseForEachIsolatedAuthor; i++) {
+                int randomAuthorID = Integer.MAX_VALUE;
+                boolean found = false;
+                while (!found) {
+                    randomAuthorID = randomGenerator.nextInt(1000000);
+                    if (randomAuthorID != isolatedAuthorID && _authorID_OrgID_All.containsKey(randomAuthorID)
+                            && _authorID_OrgID_All.get(randomAuthorID) != -1) {
+                        // Exist in 'Testing Nets' and HAVE NO ANY connections with 'Isolated author'
+                        if (_coAuthorNF.containsKey(randomAuthorID) && _coAuthorFF.containsKey(randomAuthorID)) {
+                            if (!_coAuthorNF.get(randomAuthorID).containsKey(isolatedAuthorID)
+                                    && !_coAuthorFF.get(randomAuthorID).containsKey(isolatedAuthorID)) {
 
-                            if (countFalseForEachIsolatedAuthor == 4) {
-                                break;
-                            } else {
-                                falseCoAuthorList.add(authorID);
+                                falseCoAuthorList.add(randomAuthorID);
+                                found = true;
                             }
-
                         }
                     }
                 }
