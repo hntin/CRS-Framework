@@ -92,6 +92,55 @@ public class OrganizationRSS {
         }
     }
 
+//    private void runOrgRSS(int inputAuthorId) {
+//        int inputAuthorOrgId = _authorID_OrgID.get(inputAuthorId);
+//        HashMap<Integer, Float> listRSS = new HashMap<>();
+//        listRSS.put(inputAuthorOrgId, 1f);
+//        Set<Integer> listOrgFirstHop = _rssOrgGraph.get(inputAuthorOrgId).keySet();
+//        for (int orgId_FirstHop : listOrgFirstHop) {
+//            if (orgId_FirstHop == -1) continue;
+//            Set<Integer> listOrgSecondHop = _rssOrgGraph.get(orgId_FirstHop).keySet();
+//            for (int orgId_SecondHop : listOrgSecondHop) {
+//                if (orgId_SecondHop == -1) continue;
+//                if (inputAuthorOrgId != orgId_SecondHop) {
+//                    Float weight = _rssOrgGraph.get(inputAuthorOrgId).get(orgId_FirstHop);
+//                    Float weight2 = _rssOrgGraph.get(orgId_FirstHop).get(orgId_SecondHop);
+//                    if (weight != null && weight2 != null) {
+//                        weight *= weight2;
+//                    } else {
+//                        weight = 0f;
+//                    }
+//
+//                    if (weight > 0f) {
+//                        Float totalWeight = listRSS.get(orgId_SecondHop);
+//                        if (totalWeight == null) {
+//                            totalWeight = 0f;
+//                        }
+//                        totalWeight += weight;
+//                        listRSS.put(orgId_SecondHop, totalWeight);
+//                    }
+//                }
+//            }
+//        }
+//
+//        Set<Integer> listId = listRSS.keySet();
+//        for (int orgId : listId) {
+//            Float weight = _rssOrgGraph.get(inputAuthorOrgId).get(orgId);
+//            if (weight != null && weight > 0f) {
+//                Float totalWeight = listRSS.get(orgId);
+//                totalWeight += weight;
+//                listRSS.put(orgId, totalWeight);
+//            }
+//        }
+//
+//        for (int otherOrgId : _rssOrgGraph.get(inputAuthorOrgId).keySet()) {
+//            if (!listId.contains(otherOrgId)) {
+//                listRSS.put(otherOrgId, _rssOrgGraph.get(inputAuthorOrgId).get(otherOrgId));
+//            }
+//        }
+//        _rssOrgData.put(inputAuthorOrgId, listRSS);
+//    }
+
     private void runOrgRSS(int inputAuthorId) {
         int inputAuthorOrgId = _authorID_OrgID.get(inputAuthorId);
         HashMap<Integer, Float> listRSS = new HashMap<>();
@@ -140,7 +189,7 @@ public class OrganizationRSS {
         }
         _rssOrgData.put(inputAuthorOrgId, listRSS);
     }
-
+    
     public HashMap<Integer, HashMap<Integer, Float>> processOrgRSS(HashMap<Integer, HashMap<Integer, Float>> rssOrgGraph,
             HashMap<Integer, String> listAuthor) {
 
@@ -203,17 +252,33 @@ public class OrganizationRSS {
             System.out.println("START Calculating OrgRSS");
             OrganizationRSS orgRSS = new OrganizationRSS();
             OrganizationGraph orgGraph = OrganizationGraph.getInstance();
-            orgGraph.load_AuthorID_PaperID_OrgID("C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input1\\[TrainingData]AuthorID_PaperID_OrgID_2001_2005.txt");
-            orgRSS.load_All_AuthorID_OrgID("C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input1\\[TrainingData]AuthorID_OrgID_2001_2005.txt");
-            HashMap<Integer, String> listInputAuthor = orgRSS.loadInputAuthorList("C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input1\\PotentialIsolatedAuthorList_1_300.txt");
+            
+            orgGraph.load_AuthorID_PaperID_OrgID(
+                    "C:\\CRS-Experiment\\Sampledata\\Input\\Link-Net\\[Training]AuthorId_PaperID_OrgID.txt");
+            orgRSS.load_All_AuthorID_OrgID(
+                    "C:\\CRS-Experiment\\Sampledata\\Input\\Link-Net\\[Training]AuthorId_OrgID.txt");
+            HashMap<Integer, String> listInputAuthor = orgRSS.loadInputAuthorList(
+                    "C:\\CRS-Experiment\\Sampledata\\Input\\Link-Net\\IsolatedAuthor.txt");
 
+//            orgGraph.load_AuthorID_PaperID_OrgID(
+//                    "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input1\\[TrainingData]AuthorID_PaperID_OrgID_2001_2005.txt");
+//            orgRSS.load_All_AuthorID_OrgID(
+//                    "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input1\\[TrainingData]AuthorID_OrgID_2001_2005.txt");
+//            HashMap<Integer, String> listInputAuthor = orgRSS.loadInputAuthorList(
+//                    "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input1\\PotentialIsolatedAuthorList_1_300.txt");
+            
             orgGraph.buildCollaborativeOrgGraph();
             orgGraph.buildRSSOrgGraph();
 
             orgRSS.processOrgRSS(orgGraph._rssORGGraph, listInputAuthor);
             orgRSS.writeOrgRSSofInputAuthorToFile(
-                    "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input1\\OrgRSS",
+                    "C:\\CRS-Experiment\\Sampledata\\Output\\OrgRSS",
                     listInputAuthor);
+            
+//            orgRSS.writeOrgRSSofInputAuthorToFile(
+//                    "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input1\\OrgRSS",
+//                    listInputAuthor);
+            
             System.out.println("END Calculating OrgRSS");
         } catch (Exception ex) {
             ex.printStackTrace();
