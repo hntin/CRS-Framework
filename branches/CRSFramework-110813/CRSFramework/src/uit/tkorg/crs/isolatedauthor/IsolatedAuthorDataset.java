@@ -495,7 +495,7 @@ public class IsolatedAuthorDataset {
                     if (randomAuthorID != isolatedAuthorID && _authorID_OrgID_All.containsKey(randomAuthorID)
                             && _authorID_OrgID_All.get(randomAuthorID) != -1) {
                         // Exist in 'Testing Nets' and HAVE NO ANY connections with 'Isolated author'
-                        if (_coAuthorNF.containsKey(randomAuthorID) && _coAuthorFF.containsKey(randomAuthorID)) {
+                        if (_coAuthorTrainingNet.containsKey(randomAuthorID) && _coAuthorNF.containsKey(randomAuthorID) && _coAuthorFF.containsKey(randomAuthorID)) {
                             if (!_coAuthorNF.get(randomAuthorID).containsKey(isolatedAuthorID)
                                     && !_coAuthorFF.get(randomAuthorID).containsKey(isolatedAuthorID)) {
 
