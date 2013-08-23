@@ -326,10 +326,8 @@ public class IsolatedAuthorDataset {
         for (int i = 0; i < fileList.length; i++) {
             if (fileList[i].isFile()) {
                 String fileName = fileList[i].getName();
-                System.out.println("fileName" + fileName);
+                System.out.println("fileName:" + fileName);
                 int iSolatedAuthorID = Integer.parseInt(fileName.substring(0,fileName.indexOf(".txt")));
-                System.out.println("iSolatedAuthorID" + iSolatedAuthorID);
-
                 HashMap<Integer, Float> orgRSSList = new HashMap<>();
                 try {
                     FileInputStream fis = new FileInputStream(fileList[i]);
@@ -615,13 +613,14 @@ public class IsolatedAuthorDataset {
         HashMap<Integer, String> isolatedAuthorList = isolatedDataset.loadInputAuthorList(
                 "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input1\\PotentialIsolatedAuthorList_1_300.txt");
         HashMap<Integer, ArrayList<Integer>> truePairHM = isolatedDataset.build_TrueCollaborationPairs(isolatedAuthorList);
-        HashMap<Integer, ArrayList<Integer>> falsePair_All_HM = isolatedDataset.build_All_FalseCollaborationPairs(isolatedAuthorList);
+        //HashMap<Integer, ArrayList<Integer>> falsePair_All_HM = isolatedDataset.build_All_FalseCollaborationPairs(isolatedAuthorList);
 
-        System.out.println("writePairOfAuthorToXMLFile");
+        System.out.println("writePairOfAuthorToXMLFile1");
         isolatedDataset.writePairOfAuthorToXMLFile(
-                "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input1\\Truepair1.xml", truePairHM, true);
-        isolatedDataset.writePairOfAuthorToXMLFile(
-                "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input1\\Truepair1.xml", falsePair_All_HM, true);
+                "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input1\\TruePair1.xml", truePairHM, true);
+        //System.out.println("writePairOfAuthorToXMLFile2");
+        //isolatedDataset.writePairOfAuthorToXMLFile(
+        //        "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input1\\FalsePair1.xml", falsePair_All_HM, false);
 
         System.out.println("END");
     }
