@@ -474,7 +474,40 @@ public class IsolatedAuthorDataset {
 
         return truePairHM;
     }
+    
+    // Getting about 300 x 5 False cases
+    private HashMap<Integer, ArrayList<Integer>> build_FalseCollaborationPairs(HashMap<Integer, String> listIsolatedAuthor) {
+        HashMap<Integer,ArrayList<Integer>> falsePairHM = new HashMap<>();
+        for (int isolatedAuthorID : listIsolatedAuthor.keySet()) {
+            ArrayList<Integer> falseCoAuthorList = new ArrayList<>();
+            
+            // For each Isolated author, Select out the list of authors 
+            // who exist in the training and testing net, have Org's Infor but no connection with Isolated
+            int countFalseForEachIsolatedAuthor = 0;
+            for (int authorID : _coAuthorTrainingNet.keySet()){
+                // NOT IS 'Isolated author' and have ORGID
+                if (authorID != isolatedAuthorID && _authorID_OrgID_All.get(authorID) != -1) {
+                    // Exist in 'Testing Nets' and HAVE NO ANY connections with 'Isolated author'
+                    if (_coAuthorNF.containsKey(authorID) && _coAuthorFF.containsKey(authorID)) {
+                        if (!_coAuthorNF.get(authorID).containsKey(isolatedAuthorID) && 
+                                !_coAuthorFF.get(authorID).containsKey(isolatedAuthorID)) {
+                            
+                            if (countFalseForEachIsolatedAuthor > 5)
+                                break;
+                            else
+                                falseCoAuthorList.add(authorID);
+                        }
+                    }
+                }
+            }
+            
+            falsePairHM.put(isolatedAuthorID, falseCoAuthorList);
+        }
 
+        return falsePairHM;
+    }
+
+    // Out of Memory
     private HashMap<Integer, ArrayList<Integer>> build_All_FalseCollaborationPairs(HashMap<Integer, String> listIsolatedAuthor) {
         HashMap<Integer,ArrayList<Integer>> allFalsePairHM = new HashMap<>();
         for (int isolatedAuthorID : listIsolatedAuthor.keySet()) {
@@ -615,14 +648,14 @@ public class IsolatedAuthorDataset {
         
         System.out.println("build_TrueCollaborationPairs");
         //HashMap<Integer, ArrayList<Integer>> truePairHM = isolatedDataset.build_TrueCollaborationPairs(isolatedAuthorList);
-        HashMap<Integer, ArrayList<Integer>> falsePair_All_HM = isolatedDataset.build_All_FalseCollaborationPairs(isolatedAuthorList);
+        HashMap<Integer, ArrayList<Integer>> falsePairHM = isolatedDataset.build_FalseCollaborationPairs(isolatedAuthorList);
 
         //System.out.println("writePairOfAuthorToXMLFile1");
         //isolatedDataset.writePairOfAuthorToXMLFile(
         //        "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input1\\TruePair1.xml", truePairHM, true);
         System.out.println("writePairOfAuthorToXMLFile2");
         isolatedDataset.writePairOfAuthorToXMLFile(
-                "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input1\\FalsePair1.xml", falsePair_All_HM, false);
+                "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input1\\FalsePair1.xml", falsePairHM, false);
 
         System.out.println("END");
     }
