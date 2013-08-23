@@ -418,6 +418,7 @@ public class GenerateInAuthorFrame extends javax.swing.JDialog {
         numberOfAuthor = Integer.parseInt(numberOfRandomAuthor.getText());
         ExperimentSetting experimentSetting = new ExperimentSetting(
                                     Integer.parseInt(numberOfRandomAuthor.getText()),
+                                    "...",
                                     txtTrainingAuthorIDPaperID.getText(),
                                     txtTrainingPaperIDYear.getText(),
                                     txtTrainingAuthorIDPaperIDNF.getText(),
