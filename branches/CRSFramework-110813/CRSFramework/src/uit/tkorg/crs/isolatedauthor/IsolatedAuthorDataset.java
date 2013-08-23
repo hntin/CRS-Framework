@@ -27,6 +27,7 @@ public class IsolatedAuthorDataset {
     private HashMap<Integer, ArrayList<Integer>> _paperAuthorFF;
     private HashMap<Integer, String> _authorID_AuthorName;
     private HashMap<Integer, Integer> _authorID_OrgID;
+    private HashMap<Integer, Integer> _authorID_OrgID_All;
     private HashMap<Integer, String> _orgID_OrgName;
     private HashMap<Integer, Float> _authorID_ActiveScore;
     private HashMap<Integer, Float> _authorID_ImportantRate;
@@ -170,6 +171,32 @@ public class IsolatedAuthorDataset {
             e.printStackTrace();
         }
     }
+    
+    private void load_All_AuthorID_OrgID(String file_All_AuthorID_OrgID) {
+        try {
+            _authorID_OrgID_All = new HashMap<>();
+            FileInputStream fis = new FileInputStream(file_All_AuthorID_OrgID);
+            Reader reader = new InputStreamReader(fis, "UTF8");
+            BufferedReader bufferReader = new BufferedReader(reader);
+            bufferReader.readLine();
+            String line = null;
+            String[] tokens;
+            int authorID;
+            int orgID;
+            while ((line = bufferReader.readLine()) != null) {
+                tokens = line.split(",");
+                authorID = Integer.parseInt(tokens[0]);
+                if (tokens.length == 2)
+                    orgID = Integer.parseInt(tokens[1]);
+                else 
+                    orgID = -1;
+                
+                _authorID_OrgID_All.put(authorID, orgID);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    } 
 
     private void load_AuthorID_AuthorName_OrgID(String file_AuthorID_Name_OrgID) {
         try {
@@ -204,7 +231,7 @@ public class IsolatedAuthorDataset {
         }
     }
 
-    private void load_OrgID_OrgName(String file_OrgID_OrgName) {
+    private void load_All_OrgID_OrgName(String file_OrgID_OrgName) {
         try {
             _orgID_OrgName = new HashMap<>();
             FileInputStream fis = new FileInputStream(file_OrgID_OrgName);
@@ -463,12 +490,31 @@ public class IsolatedAuthorDataset {
         return truePairHM;
     }
 
-    private HashMap<Integer, ArrayList<Integer>> build_FalseCollaborationPairs(HashMap<Integer, String> listIsolatedAuthor) {
-        HashMap<Integer, ArrayList<Integer>> falsePairHM = new HashMap<>();
-        for (int authorID : listIsolatedAuthor.keySet()) {
+    private HashMap<Integer, ArrayList<Integer>> build_All_FalseCollaborationPairs(HashMap<Integer, String> listIsolatedAuthor) {
+        HashMap<Integer,ArrayList<Integer>> allFalsePairHM = new HashMap<>();
+        for (int isolatedAuthorID : listIsolatedAuthor.keySet()) {
+            ArrayList<Integer> falseCoAuthorList = new ArrayList<>();
+            
+            // For each Isolated author, Select out the list of authors 
+            // who exist in the training and testing net, have Org's Infor but no connection with Isolated
+            for (int authorID : _coAuthorTrainingNet.keySet()){
+                // NOT IS 'Isolated author' and have ORGID
+                if (authorID != isolatedAuthorID && _authorID_OrgID_All.get(authorID) != -1) {
+                    // Exist in 'Testing Nets' and HAVE NO ANY connections with 'Isolated author'
+                    if (_coAuthorNF.containsKey(authorID) && _coAuthorFF.containsKey(authorID)) {
+                        if (!_coAuthorNF.get(authorID).containsKey(isolatedAuthorID) && 
+                                !_coAuthorFF.get(authorID).containsKey(isolatedAuthorID)) {
+                            
+                            falseCoAuthorList.add(authorID);
+                        }
+                    }
+                }
+            }
+            
+            allFalsePairHM.put(isolatedAuthorID, falseCoAuthorList);
         }
 
-        return falsePairHM;
+        return allFalsePairHM;
     }
 
     private void writePairOfAuthorToXMLFile(String fileName, HashMap<Integer, ArrayList<Integer>> pairOfAuthorHM, boolean tag) {
@@ -561,9 +607,14 @@ public class IsolatedAuthorDataset {
         HashMap<Integer, String> isolatedAuthorList = isolatedDataset.loadInputAuthorList(
                 "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input1\\PotentialIsolatedAuthorList_1_300.txt");
         HashMap<Integer, ArrayList<Integer>> truePairHM = isolatedDataset.build_TrueCollaborationPairs(isolatedAuthorList);
+        HashMap<Integer, ArrayList<Integer>> falsePair_All_HM = isolatedDataset.build_All_FalseCollaborationPairs(isolatedAuthorList);
+        
 
-        System.out.println("load_OrgID_OrgName");
-        isolatedDataset.load_OrgID_OrgName(
+        System.out.println("load_All_AuthorID_OrgID");
+        isolatedDataset.load_All_AuthorID_OrgID("C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input1\\[TrainingData]AuthorID_OrgID_All.txt");
+        
+        System.out.println("load_All_OrgID_OrgName");
+        isolatedDataset.load_All_OrgID_OrgName(
                 "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input1\\[TrainingData]OrgID_OrgName_All.txt");
         
         System.out.println("load_AuthorID_AuthorName_OrgID");
@@ -587,6 +638,8 @@ public class IsolatedAuthorDataset {
         System.out.println("writePairOfAuthorToXMLFile");
         isolatedDataset.writePairOfAuthorToXMLFile(
                 "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input1\\Truepair1.xml", truePairHM, true);
+        isolatedDataset.writePairOfAuthorToXMLFile(
+                "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input1\\Truepair1.xml", falsePair_All_HM, true);
 
         System.out.println("END");
     }
