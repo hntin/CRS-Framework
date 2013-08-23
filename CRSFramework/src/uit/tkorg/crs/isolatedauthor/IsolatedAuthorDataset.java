@@ -612,15 +612,17 @@ public class IsolatedAuthorDataset {
         
         HashMap<Integer, String> isolatedAuthorList = isolatedDataset.loadInputAuthorList(
                 "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input1\\PotentialIsolatedAuthorList_1_300.txt");
-        HashMap<Integer, ArrayList<Integer>> truePairHM = isolatedDataset.build_TrueCollaborationPairs(isolatedAuthorList);
-        //HashMap<Integer, ArrayList<Integer>> falsePair_All_HM = isolatedDataset.build_All_FalseCollaborationPairs(isolatedAuthorList);
+        
+        System.out.println("build_TrueCollaborationPairs");
+        //HashMap<Integer, ArrayList<Integer>> truePairHM = isolatedDataset.build_TrueCollaborationPairs(isolatedAuthorList);
+        HashMap<Integer, ArrayList<Integer>> falsePair_All_HM = isolatedDataset.build_All_FalseCollaborationPairs(isolatedAuthorList);
 
-        System.out.println("writePairOfAuthorToXMLFile1");
-        isolatedDataset.writePairOfAuthorToXMLFile(
-                "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input1\\TruePair1.xml", truePairHM, true);
-        //System.out.println("writePairOfAuthorToXMLFile2");
+        //System.out.println("writePairOfAuthorToXMLFile1");
         //isolatedDataset.writePairOfAuthorToXMLFile(
-        //        "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input1\\FalsePair1.xml", falsePair_All_HM, false);
+        //        "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input1\\TruePair1.xml", truePairHM, true);
+        System.out.println("writePairOfAuthorToXMLFile2");
+        isolatedDataset.writePairOfAuthorToXMLFile(
+                "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input1\\FalsePair1.xml", falsePair_All_HM, false);
 
         System.out.println("END");
     }
