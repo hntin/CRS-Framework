@@ -33,27 +33,14 @@ public class IsolatedAuthorDataset {
     private HashMap<Integer, Float> _authorID_ImportantRate;
     private HashMap<Integer, HashMap<Integer, Float>> _ContentSimHM;
     private HashMap<Integer, HashMap<Integer, Float>> _OrgRSSHM;
-    private String _file_Isolated_Researcher_List;
     private String _file_TrainingNet;
     private String _file_CoAuthor_NF;
     private String _file_CoAuthor_FF;
-    private String _file_ContentSim;
-    private String _file_OrgRSS;
-    private String _file_ImportantRate;
-    private String _file_ActiveScore;
 
-    public IsolatedAuthorDataset(String file_Isolated_Researcher_List, String file_TrainingNet,
-            String file_CoAuthor_NF, String file_CoAuthor_FF,
-            String file_ContentSim, String file_OrgRSS, String file_ImportantRate, String file_ActiveScore) {
-
-        _file_Isolated_Researcher_List = file_Isolated_Researcher_List;
+    public IsolatedAuthorDataset(String file_TrainingNet, String file_CoAuthor_NF, String file_CoAuthor_FF) {
         _file_TrainingNet = file_TrainingNet;
         _file_CoAuthor_NF = file_CoAuthor_NF;
         _file_CoAuthor_FF = file_CoAuthor_FF;
-        _file_ContentSim = file_ContentSim;
-        _file_OrgRSS = file_OrgRSS;
-        _file_ImportantRate = file_ImportantRate;
-        _file_ActiveScore = file_ActiveScore;
     }
 
     private HashMap<Integer, String> loadInputAuthorList(String input_Author_List_File) {
@@ -580,14 +567,9 @@ public class IsolatedAuthorDataset {
     public static void main(String args[]) {
         System.out.println("START");
         IsolatedAuthorDataset isolatedDataset = new IsolatedAuthorDataset(
-                "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input1\\PotentialIsolatedAuthorList_1_300.txt",
                 "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input1\\[TrainingData]AuthorID_PaperID_2001_2005.txt",
                 "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input1\\[TestingData]AuthorID_PaperID_2006_2008.txt",
-                "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input1\\[TestingData]AuthorID_PaperID_2009_2011.txt",
-                "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input1",
-                "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input1",
-                "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input1",
-                "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input1");
+                "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input1\\[TestingData]AuthorID_PaperID_2009_2011.txt");
 
 //        IsolatedAuthorDataset isolatedDataset = new IsolatedAuthorDataset(
 //                "C:\\CRS-Experiment\\Sampledata\\Input\\Link-Net\\IsolatedAuthor.txt",
