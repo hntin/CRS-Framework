@@ -119,7 +119,7 @@ public class OrganizationGraph {
     /**
      * Build RSSOrgGraph (weight is relation strength of different organizations.)
      */
-    public void buildRSSOrgGraph() {
+    public HashMap<Integer, HashMap<Integer, Float>> buildRSSOrgGraph() {
         for (int orgId1 : _collaborativeOrgGraph.keySet()) {
             if (_collaborativeOrgGraph.get(orgId1).size() == 0) {
                 _rssORGGraph.put(orgId1, new HashMap<Integer, Float>());
@@ -147,6 +147,7 @@ public class OrganizationGraph {
                 }
             }
         }
+        return _rssORGGraph;
     }
 
     public static void main(String args[]) {
