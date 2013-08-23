@@ -277,9 +277,9 @@ public class IsolatedAuthorDataset {
         for (int i = 0; i < fileList.length; i++) {
             if (fileList[i].isFile()) {
                 String fileName = fileList[i].getName();  
-                System.out.println("fileName" + fileName);
+                System.out.println("fileName:" + fileName);
                 int iSolatedAuthorID = Integer.parseInt(fileName.substring(0,fileName.indexOf(".txt")));
-                System.out.println("iSolatedAuthorID" + iSolatedAuthorID);
+                System.out.println("iSolatedAuthorID:" + iSolatedAuthorID);
 
                 HashMap<Integer, Float> contentSimList = new HashMap<>();
                 try {
@@ -535,14 +535,14 @@ public class IsolatedAuthorDataset {
     public static void main(String args[]) {
         System.out.println("START");
         IsolatedAuthorDataset isolatedDataset = new IsolatedAuthorDataset(
-                "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input2\\PotentialIsolatedAuthorList.txt",
-                "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input2\\[TrainingData]AuthorID_PaperID_1995_2005.txt",
-                "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input2\\[TestingData]AuthorID_PaperID_2006_2008.txt",
-                "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input2\\[TestingData]AuthorID_PaperID_2009_2011.txt",
-                "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\",
-                "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\",
-                "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\",
-                "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\");
+                "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input1\\PotentialIsolatedAuthorList_1_300.txt",
+                "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input1\\[TrainingData]AuthorID_PaperID_2001_2005.txt",
+                "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input1\\[TestingData]AuthorID_PaperID_2006_2008.txt",
+                "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input1\\[TestingData]AuthorID_PaperID_2009_2011.txt",
+                "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input1",
+                "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input1",
+                "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input1",
+                "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input1");
 
 //        IsolatedAuthorDataset isolatedDataset = new IsolatedAuthorDataset(
 //                "C:\\CRS-Experiment\\Sampledata\\Input\\Link-Net\\IsolatedAuthor.txt",
@@ -560,34 +560,34 @@ public class IsolatedAuthorDataset {
         isolatedDataset.build_NF_FF_Graph();
         isolatedDataset.build_CoAuthorGraph();
         HashMap<Integer, String> isolatedAuthorList = isolatedDataset.loadInputAuthorList(
-                "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input2\\PotentialIsolatedAuthorList.txt");
+                "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input1\\PotentialIsolatedAuthorList_1_300.txt");
         HashMap<Integer, ArrayList<Integer>> truePairHM = isolatedDataset.build_TrueCollaborationPairs(isolatedAuthorList);
 
         System.out.println("load_OrgID_OrgName");
         isolatedDataset.load_OrgID_OrgName(
-                "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input2\\[TrainingData]OrgID_OrgName_All.txt");
+                "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input1\\[TrainingData]OrgID_OrgName_All.txt");
         
         System.out.println("load_AuthorID_AuthorName_OrgID");
         isolatedDataset.load_AuthorID_AuthorName_OrgID(
-                "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input2\\[TrainingData]AuthorID_AuthorName_OrgID_1995_2005.txt");
+                "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input1\\[TrainingData]AuthorID_AuthorName_OrgID_2001_2005.txt");
         
         System.out.println("load_ActiveScore");
         isolatedDataset.load_ActiveScore(
-                "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input2\\ActiveScore\\ActiveScore.txt");
+                "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input1\\ActiveScore\\ActiveScore.txt");
         
         System.out.println("load_ImportantRate");
         isolatedDataset.load_ImportantRate(
-                "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input2\\ImportantRate\\pagerank.txt");
+                "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input1\\ImportantRate\\pagerank.txt");
         
         System.out.println("load_ContentSim");
-        isolatedDataset.load_ContentSim("C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input2\\ContentSim");
+        isolatedDataset.load_ContentSim("C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input1\\ContentSim");
         
         System.out.println("load_OrgRSS");
-        isolatedDataset.load_OrgRSS("C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input2\\OrgRSS");
+        isolatedDataset.load_OrgRSS("C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input1\\OrgRSS");
 
         System.out.println("writePairOfAuthorToXMLFile");
         isolatedDataset.writePairOfAuthorToXMLFile(
-                "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input2\\truepair1.xml", truePairHM, true);
+                "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input1\\Truepair1.xml", truePairHM, true);
 
         System.out.println("END");
     }
