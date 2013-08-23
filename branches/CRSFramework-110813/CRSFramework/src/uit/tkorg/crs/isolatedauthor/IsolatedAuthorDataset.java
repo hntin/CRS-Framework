@@ -279,7 +279,6 @@ public class IsolatedAuthorDataset {
                 String fileName = fileList[i].getName();  
                 System.out.println("fileName:" + fileName);
                 int iSolatedAuthorID = Integer.parseInt(fileName.substring(0,fileName.indexOf(".txt")));
-                System.out.println("iSolatedAuthorID:" + iSolatedAuthorID);
 
                 HashMap<Integer, Float> contentSimList = new HashMap<>();
                 try {
