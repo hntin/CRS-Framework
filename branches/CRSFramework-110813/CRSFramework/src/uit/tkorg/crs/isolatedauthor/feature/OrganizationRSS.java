@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package uit.tkorg.crs.isolatedauthor.feature;
 
 import java.io.BufferedReader;
@@ -102,8 +98,10 @@ public class OrganizationRSS {
         listRSS.put(inputAuthorOrgId, 1f);
         Set<Integer> listOrgFirstHop = _rssOrgGraph.get(inputAuthorOrgId).keySet();
         for (int orgId_FirstHop : listOrgFirstHop) {
+            if (orgId_FirstHop == -1) continue;
             Set<Integer> listOrgSecondHop = _rssOrgGraph.get(orgId_FirstHop).keySet();
             for (int orgId_SecondHop : listOrgSecondHop) {
+                if (orgId_SecondHop == -1) continue;
                 if (inputAuthorOrgId != orgId_SecondHop) {
                     Float weight = _rssOrgGraph.get(inputAuthorOrgId).get(orgId_FirstHop);
                     Float weight2 = _rssOrgGraph.get(orgId_FirstHop).get(orgId_SecondHop);
