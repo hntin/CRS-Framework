@@ -158,7 +158,7 @@ public class IsolatedAuthorDataset {
             e.printStackTrace();
         }
     }
-    
+
     private void load_All_AuthorID_OrgID(String file_All_AuthorID_OrgID) {
         try {
             _authorID_OrgID_All = new HashMap<>();
@@ -173,17 +173,18 @@ public class IsolatedAuthorDataset {
             while ((line = bufferReader.readLine()) != null) {
                 tokens = line.split(",");
                 authorID = Integer.parseInt(tokens[0]);
-                if (tokens.length == 2)
+                if (tokens.length == 2) {
                     orgID = Integer.parseInt(tokens[1]);
-                else 
+                } else {
                     orgID = -1;
-                
+                }
+
                 _authorID_OrgID_All.put(authorID, orgID);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-    } 
+    }
 
     private void load_AuthorID_AuthorName_OrgID(String file_AuthorID_Name_OrgID) {
         try {
@@ -290,9 +291,9 @@ public class IsolatedAuthorDataset {
         File[] fileList = mainFolder.listFiles();
         for (int i = 0; i < fileList.length; i++) {
             if (fileList[i].isFile()) {
-                String fileName = fileList[i].getName();  
+                String fileName = fileList[i].getName();
                 System.out.println("fileName:" + fileName);
-                int iSolatedAuthorID = Integer.parseInt(fileName.substring(0,fileName.indexOf(".txt")));
+                int iSolatedAuthorID = Integer.parseInt(fileName.substring(0, fileName.indexOf(".txt")));
 
                 HashMap<Integer, Float> contentSimList = new HashMap<>();
                 try {
@@ -313,7 +314,7 @@ public class IsolatedAuthorDataset {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                
+
                 _ContentSimHM.put(iSolatedAuthorID, contentSimList);
             }
         }
@@ -327,7 +328,7 @@ public class IsolatedAuthorDataset {
             if (fileList[i].isFile()) {
                 String fileName = fileList[i].getName();
                 System.out.println("fileName:" + fileName);
-                int iSolatedAuthorID = Integer.parseInt(fileName.substring(0,fileName.indexOf(".txt")));
+                int iSolatedAuthorID = Integer.parseInt(fileName.substring(0, fileName.indexOf(".txt")));
                 HashMap<Integer, Float> orgRSSList = new HashMap<>();
                 try {
                     FileInputStream fis = new FileInputStream(fileList[i]);
@@ -347,7 +348,7 @@ public class IsolatedAuthorDataset {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                
+
                 _OrgRSSHM.put(iSolatedAuthorID, orgRSSList);
             }
         }
@@ -474,65 +475,39 @@ public class IsolatedAuthorDataset {
 
         return truePairHM;
     }
-    
+
     // Getting about 300 x 5 False cases
     private HashMap<Integer, ArrayList<Integer>> build_FalseCollaborationPairs(HashMap<Integer, String> listIsolatedAuthor) {
-        HashMap<Integer,ArrayList<Integer>> falsePairHM = new HashMap<>();
+        HashMap<Integer, ArrayList<Integer>> falsePairHM = new HashMap<>();
         for (int isolatedAuthorID : listIsolatedAuthor.keySet()) {
             ArrayList<Integer> falseCoAuthorList = new ArrayList<>();
-            
+
             // For each Isolated author, Select out the list of authors 
             // who exist in the training and testing net, have Org's Infor but no connection with Isolated
             int countFalseForEachIsolatedAuthor = 0;
-            for (int authorID : _coAuthorTrainingNet.keySet()){
+            for (int authorID : _coAuthorTrainingNet.keySet()) {
                 // NOT IS 'Isolated author' and have ORGID
                 if (authorID != isolatedAuthorID && _authorID_OrgID_All.get(authorID) != -1) {
                     // Exist in 'Testing Nets' and HAVE NO ANY connections with 'Isolated author'
                     if (_coAuthorNF.containsKey(authorID) && _coAuthorFF.containsKey(authorID)) {
-                        if (!_coAuthorNF.get(authorID).containsKey(isolatedAuthorID) && 
-                                !_coAuthorFF.get(authorID).containsKey(isolatedAuthorID)) {
-                            
-                            if (countFalseForEachIsolatedAuthor > 5)
+                        if (!_coAuthorNF.get(authorID).containsKey(isolatedAuthorID)
+                                && !_coAuthorFF.get(authorID).containsKey(isolatedAuthorID)) {
+
+                            if (countFalseForEachIsolatedAuthor == 4) {
                                 break;
-                            else
+                            } else {
                                 falseCoAuthorList.add(authorID);
+                            }
+
                         }
                     }
                 }
             }
-            
+
             falsePairHM.put(isolatedAuthorID, falseCoAuthorList);
         }
 
         return falsePairHM;
-    }
-
-    // Out of Memory
-    private HashMap<Integer, ArrayList<Integer>> build_All_FalseCollaborationPairs(HashMap<Integer, String> listIsolatedAuthor) {
-        HashMap<Integer,ArrayList<Integer>> allFalsePairHM = new HashMap<>();
-        for (int isolatedAuthorID : listIsolatedAuthor.keySet()) {
-            ArrayList<Integer> falseCoAuthorList = new ArrayList<>();
-            
-            // For each Isolated author, Select out the list of authors 
-            // who exist in the training and testing net, have Org's Infor but no connection with Isolated
-            for (int authorID : _coAuthorTrainingNet.keySet()){
-                // NOT IS 'Isolated author' and have ORGID
-                if (authorID != isolatedAuthorID && _authorID_OrgID_All.get(authorID) != -1) {
-                    // Exist in 'Testing Nets' and HAVE NO ANY connections with 'Isolated author'
-                    if (_coAuthorNF.containsKey(authorID) && _coAuthorFF.containsKey(authorID)) {
-                        if (!_coAuthorNF.get(authorID).containsKey(isolatedAuthorID) && 
-                                !_coAuthorFF.get(authorID).containsKey(isolatedAuthorID)) {
-                            
-                            falseCoAuthorList.add(authorID);
-                        }
-                    }
-                }
-            }
-            
-            allFalsePairHM.put(isolatedAuthorID, falseCoAuthorList);
-        }
-
-        return allFalsePairHM;
     }
 
     private void writePairOfAuthorToXMLFile(String fileName, HashMap<Integer, ArrayList<Integer>> pairOfAuthorHM, boolean tag) {
@@ -541,9 +516,12 @@ public class IsolatedAuthorDataset {
             Element root = document.addElement("Pairs_Of_Author");
 
             int count = 0;
+            System.out.println("Size:" + pairOfAuthorHM.size());
             for (int isolatedAuthorID : pairOfAuthorHM.keySet()) {
+                System.out.println("Pair No:" + count);
                 ArrayList<Integer> coAuthorList = pairOfAuthorHM.get(isolatedAuthorID);
                 for (int coAuthorID : coAuthorList) {
+                    System.out.println("coAuthorList" + coAuthorList.size());
                     int orgID;
                     String orgName;
                     Element pair = root.addElement("pair").addAttribute("id", String.valueOf(count++));
@@ -576,7 +554,7 @@ public class IsolatedAuthorDataset {
                     coAuthorElement.addElement("ImportantRate").addText(String.valueOf(_authorID_ImportantRate.get(coAuthorID)));
 
                     // Chua kiem tra NULL pointer Exception
-                    float orgRSSValue = _OrgRSSHM.get(isolatedAuthorID).get(coAuthorID) ;
+                    float orgRSSValue = _OrgRSSHM.get(isolatedAuthorID).get(coAuthorID);
                     float contentSim = _ContentSimHM.get(isolatedAuthorID).get(coAuthorID);
                     pair.addElement("OrgRSS").addText(String.valueOf(orgRSSValue));
                     pair.addElement("ContentSim").addText(String.valueOf(contentSim));
@@ -620,35 +598,36 @@ public class IsolatedAuthorDataset {
 
         System.out.println("load_All_AuthorID_OrgID");
         isolatedDataset.load_All_AuthorID_OrgID("C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input1\\[TrainingData]AuthorID_OrgID_All.txt");
-        
+
         System.out.println("load_All_OrgID_OrgName");
         isolatedDataset.load_All_OrgID_OrgName(
                 "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input1\\[TrainingData]OrgID_OrgName_All.txt");
-        
+
         System.out.println("load_AuthorID_AuthorName_OrgID");
         isolatedDataset.load_AuthorID_AuthorName_OrgID(
                 "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input1\\[TrainingData]AuthorID_AuthorName_OrgID_2001_2005.txt");
-        
+
         System.out.println("load_ActiveScore");
         isolatedDataset.load_ActiveScore(
                 "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input1\\ActiveScore\\ActiveScore.txt");
-        
+
         System.out.println("load_ImportantRate");
         isolatedDataset.load_ImportantRate(
                 "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input1\\ImportantRate\\pagerank.txt");
-        
+
         System.out.println("load_ContentSim");
         isolatedDataset.load_ContentSim("C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input1\\ContentSim");
-        
+
         System.out.println("load_OrgRSS");
         isolatedDataset.load_OrgRSS("C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input1\\OrgRSS");
-        
+
         HashMap<Integer, String> isolatedAuthorList = isolatedDataset.loadInputAuthorList(
                 "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input1\\PotentialIsolatedAuthorList_1_300.txt");
-        
-        System.out.println("build_TrueCollaborationPairs");
+
+        System.out.println("build_FalseCollaborationPairs");
         //HashMap<Integer, ArrayList<Integer>> truePairHM = isolatedDataset.build_TrueCollaborationPairs(isolatedAuthorList);
         HashMap<Integer, ArrayList<Integer>> falsePairHM = isolatedDataset.build_FalseCollaborationPairs(isolatedAuthorList);
+
 
         //System.out.println("writePairOfAuthorToXMLFile1");
         //isolatedDataset.writePairOfAuthorToXMLFile(
