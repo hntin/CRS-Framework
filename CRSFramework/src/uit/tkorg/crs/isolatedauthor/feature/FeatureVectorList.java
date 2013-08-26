@@ -1,5 +1,6 @@
 package uit.tkorg.crs.isolatedauthor.feature;
 
+import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -22,38 +23,45 @@ import weka.core.SparseInstance;
  */
 public class FeatureVectorList {
 
-    public List<FeatureVectorObject> buildingFeatureVectorListFromXMLFile(String file_TrueOrFalsePairs) {
+    public ArrayList<FeatureVectorObject> buildingFeatureVectorListFromXMLFile(String file_TrueOrFalsePairs) {
         ArrayList<FeatureVectorObject> featureVectorList = new ArrayList<>();
 
-        // Loadding file_TruePairs
-        Document domObject = XMLFileUtility.readXMLFile(file_TrueOrFalsePairs);
-        Element root = domObject.getRootElement();
-        // iterate through child elements of root with element name "pair"
-        for (Iterator i = root.elementIterator("pair"); i.hasNext();) {
-            FeatureVectorObject featureVectorObject = new FeatureVectorObject();
+        try {
+            // Loadding file_TruePairs
+            Document domObject = XMLFileUtility.readXMLFile(file_TrueOrFalsePairs);
+            Element root = domObject.getRootElement();
+            // iterate through child elements of root with element name "pair"
+            for (Iterator i = root.elementIterator("pair"); i.hasNext();) {
+                FeatureVectorObject featureVectorObject = new FeatureVectorObject();
 
-            Element pairElement = (Element) i.next();
-            Node contentSimNode = pairElement.selectSingleNode("ContentSim");
-            float contentSimValue = Float.parseFloat(contentSimNode.getText());
-            Node orgRSSNode = pairElement.selectSingleNode("OrgRSS");
-            float orgRSSValue = Float.parseFloat(orgRSSNode.getText());
-            
-            Node coAuthorNode = pairElement.selectSingleNode("CoAuthor");
-            Node importantRateNode = coAuthorNode.selectSingleNode("ImportantRate");
-            Node activeScoreNode = coAuthorNode.selectSingleNode("ActiveScore");
-            float importantRateValue = Float.parseFloat(importantRateNode.getText());
-            float activeScoreValue = Float.parseFloat(activeScoreNode.getText());
-            
-            featureVectorObject.setContentSimValue(contentSimValue);
-            featureVectorObject.setOrgRSSValue(orgRSSValue);
-            featureVectorObject.setImportantRateValue(importantRateValue);
-            featureVectorObject.setActiveScoreValue(activeScoreValue);
-            
-            Node labelNode = pairElement.selectSingleNode("tag");
-            if (labelNode.getText().equalsIgnoreCase("1"))
-                featureVectorObject.setLabelValue("YES");
-            else 
-                featureVectorObject.setLabelValue("NO");
+                Element pairElement = (Element) i.next();
+                Element contentSimNode = pairElement.element("ContentSim");
+                float contentSimValue = Float.parseFloat(contentSimNode.getText());
+                Element orgRSSNode = pairElement.element("OrgRSS");
+                float orgRSSValue = Float.parseFloat(orgRSSNode.getText());
+
+                Element coAuthorNode = pairElement.element("CoAuthor");
+                Element importantRateNode = coAuthorNode.element("ImportantRate");
+                Element activeScoreNode = coAuthorNode.element("ActiveScore");
+                float importantRateValue = Float.parseFloat(importantRateNode.getText());
+                float activeScoreValue = Float.parseFloat(activeScoreNode.getText());
+
+                featureVectorObject.setContentSimValue(contentSimValue);
+                featureVectorObject.setOrgRSSValue(orgRSSValue);
+                featureVectorObject.setImportantRateValue(importantRateValue);
+                featureVectorObject.setActiveScoreValue(activeScoreValue);
+
+                Element labelNode = pairElement.element("tag");
+                if (labelNode.getText().equalsIgnoreCase("1")) {
+                    featureVectorObject.setLabelValue("YES");
+                } else {
+                    featureVectorObject.setLabelValue("NO");
+                }
+
+                featureVectorList.add(featureVectorObject);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
 
         return featureVectorList;
@@ -113,34 +121,61 @@ public class FeatureVectorList {
     }
 
     public static void main(String args[]) {
-        // Loading data from XML file and build the feature vector list
-        FeatureVectorList temp = new FeatureVectorList();
-        List<FeatureVectorObject> featureVectorList1 = temp.buildingFeatureVectorListFromXMLFile(
-                "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input1\\TruePair1.xml");
-        
-        List<FeatureVectorObject> featureVectorList2 = temp.buildingFeatureVectorListFromXMLFile(
-                "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input1\\FalsePair1.xml");
+        System.out.println("START ...");
+        try {
+            // Loading data from XML file and build the feature vector list
+            FeatureVectorList temp = new FeatureVectorList();
+            ArrayList<FeatureVectorObject> featureVectorList1 = temp.buildingFeatureVectorListFromXMLFile(
+                    "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input1\\TruePair1.xml");
 
-        // Tach featureVectorList thanh tap train va tap test 
+            ArrayList<FeatureVectorObject> featureVectorList2 = temp.buildingFeatureVectorListFromXMLFile(
+                    "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input1\\FalsePair1.xml");
 
-        // Dua cac Instances cho tap train vao
+            ArrayList<FeatureVectorObject> featureVectorList = new ArrayList<>();
+            featureVectorList.addAll(featureVectorList1);
+            featureVectorList.addAll(featureVectorList2);
 
-        // Dua cac Instances cho tap test vao
+            // Tach featureVectorList thanh tap train va tap test 
+            int sizeOfTrainingSet = (int) 60 * featureVectorList.size() / 100;
+            int sizeOfTestingSet = featureVectorList.size() - sizeOfTrainingSet;
+            ArrayList<FeatureVectorObject> trainingSet = new ArrayList<>();
+            ArrayList<FeatureVectorObject> testingSet = new ArrayList<>();
 
-        // Call Weka API to build classifier and evaluate
+            int numOfTruePairInTrainingSet = sizeOfTrainingSet / 2;
+            int numOfFalsePairInTrainingSet = sizeOfTrainingSet - numOfTruePairInTrainingSet;
 
-//        // TODO code application logic here
-//        Instances train = BuildVector.buildVector(listTrain, 100); // Dữ liệu train
-//        Instances test =  BuildVector.buildVector(listTest, 50); // Dữ liệu Test
-//        // train classifier Gọi thuật toán phân lớp 
-//        
-//        Classifier cls = new J48(); //Gọi thuật toán phân lớp 
-//        cls.buildClassifier(train); //Build model đối với dữ liệu train
-//        
-//        // evaluate classifier and print some statistics
-//        Evaluation eval = new Evaluation(train); //Chạy đánh giá model xây dựng
-//        eval.evaluateModel(cls, test);
-//        System.out.println(eval.toSummaryString("\nResults\n======\n", false));
+            // Duyet qua cac truepair
+            for (int i = 0; i < featureVectorList1.size(); i++) {
+                if (i <= numOfTruePairInTrainingSet) {
+                    trainingSet.add(featureVectorList1.get(i));
+                } else {
+                    testingSet.add(featureVectorList1.get(i));
+                }
+            }
 
+            for (int i = 0; i < featureVectorList2.size(); i++) {
+                if (i <= numOfFalsePairInTrainingSet) {
+                    trainingSet.add(featureVectorList2.get(i));
+                } else {
+                    testingSet.add(featureVectorList2.get(i));
+                }
+            }
+
+            // Initial Instance for the training & testing set
+            Instances train = temp.formatFeatureVectorAsInstances(trainingSet, trainingSet.size()); // Train Data
+            Instances test = temp.formatFeatureVectorAsInstances(testingSet, testingSet.size()); // Testing Data
+
+            // Call Weka API to build classifier and evaluate
+            Classifier cls = new J48();
+            cls.buildClassifier(train);
+
+            Evaluation eval = new Evaluation(train);
+            eval.evaluateModel(cls, test);
+            System.out.println(eval.toSummaryString("\nResults\n======\n", false));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        System.out.println("END...");
     }
 }
