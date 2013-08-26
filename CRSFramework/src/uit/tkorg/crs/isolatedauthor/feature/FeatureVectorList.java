@@ -1,5 +1,6 @@
 package uit.tkorg.crs.isolatedauthor.feature;
 
+import java.util.ArrayList;
 import java.util.List;
 import weka.classifiers.Classifier;
 import weka.classifiers.Evaluation;
@@ -16,8 +17,10 @@ import weka.core.SparseInstance;
  */
 public class FeatureVectorList {
     
-    public void buildingFeatureVectorListFromXMLFile(String file_TruePairs, String file_FalsePairs) {
+    public List<FeatureVectorObject> buildingFeatureVectorListFromXMLFile(String file_TruePairs, String file_FalsePairs) {
+        ArrayList<FeatureVectorObject> featureVectorList = new ArrayList<>();
         
+        return featureVectorList;
     }
 
     public static Instances formatFeatureVectorAsWekaStructure(int numberOfFeatures, int numberOfVectors) {
