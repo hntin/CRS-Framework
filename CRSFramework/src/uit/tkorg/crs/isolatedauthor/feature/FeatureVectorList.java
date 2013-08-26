@@ -10,8 +10,11 @@ import org.dom4j.Node;
 import uit.tkorg.utility.XMLFileUtility;
 import weka.classifiers.Classifier;
 import weka.classifiers.Evaluation;
+import weka.classifiers.bayes.NaiveBayes;
 import weka.classifiers.trees.J48;
 import weka.classifiers.functions.LibSVM;
+import weka.classifiers.lazy.IBk;
+import weka.classifiers.trees.RandomForest;
 import weka.core.Attribute;
 import weka.core.FastVector;
 import weka.core.Instance;
@@ -127,10 +130,10 @@ public class FeatureVectorList {
             // Loading data from XML file and build the feature vector list
             FeatureVectorList temp = new FeatureVectorList();
             ArrayList<FeatureVectorObject> featureVectorList1 = temp.buildingFeatureVectorListFromXMLFile(
-                    "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input1\\TruePair1.xml");
+                    "C:\\TruePair1.xml");
 
             ArrayList<FeatureVectorObject> featureVectorList2 = temp.buildingFeatureVectorListFromXMLFile(
-                    "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input1\\FalsePair1.xml");
+                    "C:\\FalsePair1.xml");
 
             ArrayList<FeatureVectorObject> featureVectorList = new ArrayList<>();
             featureVectorList.addAll(featureVectorList1);
@@ -167,13 +170,43 @@ public class FeatureVectorList {
             Instances test = temp.formatFeatureVectorAsInstances(testingSet, testingSet.size()); // Testing Data
 
             // Call Weka API to build classifier and evaluate
-            Classifier cls = new LibSVM();
-            cls.buildClassifier(train);
-
+            
+            // Using LIbSVM
+            Classifier clsSVM = new LibSVM();
+            clsSVM.buildClassifier(train);
             Evaluation eval = new Evaluation(train);
-            eval.evaluateModel(cls, test);
-            System.out.println(eval.toSummaryString("\nResults\n======\n", false));
-            System.out.println("\nCorrect\n======\n" + eval.correct());
+            eval.evaluateModel(clsSVM, test);
+            System.out.println(eval.toSummaryString("\nResults Using SVM \n======\n", false));
+            
+            // Using RandomForest
+            
+            Classifier clsRF = new RandomForest();
+            clsRF.buildClassifier(train);
+            eval.evaluateModel(clsRF, test);
+            System.out.println(eval.toSummaryString("\nResults Using Random Forest \n======\n", false));
+            
+            // Using NaiveBayes
+            
+            Classifier clsNB = new RandomForest();
+            clsNB.buildClassifier(train);
+            eval.evaluateModel(clsNB, test);
+            System.out.println(eval.toSummaryString("\nResults Using Random NaiveBayes \n======\n", false));
+            
+            // Using KNN
+            
+            Classifier clsKNN = new IBk();
+            clsKNN.buildClassifier(train);
+            eval.evaluateModel(clsKNN, test);
+            System.out.println(eval.toSummaryString("\nResults Using KNN \n======\n", false));
+            
+            // Using C45
+            
+            Classifier clsC45 = new J48();
+            clsC45.buildClassifier(train);
+            eval.evaluateModel(clsC45, test);
+            System.out.println(eval.toSummaryString("\nResults Using C45 \n======\n", false));
+            
+            
             
         } catch (Exception ex) {
             ex.printStackTrace();
