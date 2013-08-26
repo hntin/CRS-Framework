@@ -130,10 +130,10 @@ public class FeatureVectorList {
             // Loading data from XML file and build the feature vector list
             FeatureVectorList temp = new FeatureVectorList();
             ArrayList<FeatureVectorObject> featureVectorList1 = temp.buildingFeatureVectorListFromXMLFile(
-                    "C:\\TruePair1.xml");
+                    "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input1\\TruePair1.xml");
 
             ArrayList<FeatureVectorObject> featureVectorList2 = temp.buildingFeatureVectorListFromXMLFile(
-                    "C:\\FalsePair1.xml");
+                    "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input1\\FalsePair1.xml");
 
             ArrayList<FeatureVectorObject> featureVectorList = new ArrayList<>();
             featureVectorList.addAll(featureVectorList1);
@@ -166,12 +166,13 @@ public class FeatureVectorList {
             }
 
             // Initial Instance for the training & testing set
+            System.out.println("TrainingSet size:" + trainingSet.size());
+            System.out.println("TestingSet size:" + testingSet.size());
             Instances train = temp.formatFeatureVectorAsInstances(trainingSet, trainingSet.size()); // Train Data
             Instances test = temp.formatFeatureVectorAsInstances(testingSet, testingSet.size()); // Testing Data
 
             // Call Weka API to build classifier and evaluate
-            
-            // Using LIbSVM
+            // Using LibSVM
             Classifier clsSVM = new LibSVM();
             clsSVM.buildClassifier(train);
             Evaluation eval = new Evaluation(train);
@@ -179,35 +180,28 @@ public class FeatureVectorList {
             System.out.println(eval.toSummaryString("\nResults Using SVM \n======\n", false));
             
             // Using RandomForest
-            
             Classifier clsRF = new RandomForest();
             clsRF.buildClassifier(train);
             eval.evaluateModel(clsRF, test);
             System.out.println(eval.toSummaryString("\nResults Using Random Forest \n======\n", false));
             
             // Using NaiveBayes
-            
             Classifier clsNB = new RandomForest();
             clsNB.buildClassifier(train);
             eval.evaluateModel(clsNB, test);
             System.out.println(eval.toSummaryString("\nResults Using Random NaiveBayes \n======\n", false));
             
             // Using KNN
-            
             Classifier clsKNN = new IBk();
             clsKNN.buildClassifier(train);
             eval.evaluateModel(clsKNN, test);
             System.out.println(eval.toSummaryString("\nResults Using KNN \n======\n", false));
             
-            // Using C45
-            
+            // Using C45            
             Classifier clsC45 = new J48();
             clsC45.buildClassifier(train);
             eval.evaluateModel(clsC45, test);
             System.out.println(eval.toSummaryString("\nResults Using C45 \n======\n", false));
-            
-            
-            
         } catch (Exception ex) {
             ex.printStackTrace();
         }
