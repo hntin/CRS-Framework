@@ -11,6 +11,7 @@ import uit.tkorg.utility.XMLFileUtility;
 import weka.classifiers.Classifier;
 import weka.classifiers.Evaluation;
 import weka.classifiers.trees.J48;
+import weka.classifiers.functions.LibSVM;
 import weka.core.Attribute;
 import weka.core.FastVector;
 import weka.core.Instance;
@@ -166,12 +167,14 @@ public class FeatureVectorList {
             Instances test = temp.formatFeatureVectorAsInstances(testingSet, testingSet.size()); // Testing Data
 
             // Call Weka API to build classifier and evaluate
-            Classifier cls = new J48();
+            Classifier cls = new LibSVM();
             cls.buildClassifier(train);
 
             Evaluation eval = new Evaluation(train);
             eval.evaluateModel(cls, test);
             System.out.println(eval.toSummaryString("\nResults\n======\n", false));
+            System.out.println("\nCorrect\n======\n" + eval.correct());
+            
         } catch (Exception ex) {
             ex.printStackTrace();
         }
