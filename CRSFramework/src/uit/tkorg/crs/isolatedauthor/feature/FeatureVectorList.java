@@ -1,6 +1,9 @@
 package uit.tkorg.crs.isolatedauthor.feature;
 
 import java.awt.BorderLayout;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -25,6 +28,7 @@ import weka.core.Instance;
 import weka.core.Instances;
 import weka.core.SparseInstance;
 import weka.core.Utils;
+import weka.gui.visualize.Plot2D;
 import weka.gui.visualize.PlotData2D;
 import weka.gui.visualize.ThresholdVisualizePanel;
 
@@ -46,20 +50,20 @@ public class FeatureVectorList {
                 FeatureVectorObject featureVectorObject = new FeatureVectorObject();
 
                 Element pairElement = (Element) i.next();
-                Element contentSimNode = pairElement.element("ContentSim");
-                float contentSimValue = Float.parseFloat(contentSimNode.getText());
+//                Element contentSimNode = pairElement.element("ContentSim");
+//                float contentSimValue = Float.parseFloat(contentSimNode.getText());
                 Element orgRSSNode = pairElement.element("OrgRSS");
                 float orgRSSValue = Float.parseFloat(orgRSSNode.getText());
 
                 Element coAuthorNode = pairElement.element("CoAuthor");
-                Element importantRateNode = coAuthorNode.element("ImportantRate");
-                Element activeScoreNode = coAuthorNode.element("ActiveScore");
-                float importantRateValue = Float.parseFloat(importantRateNode.getText());
-                float activeScoreValue = Float.parseFloat(activeScoreNode.getText());
+//                Element importantRateNode = coAuthorNode.element("ImportantRate");
+//                Element activeScoreNode = coAuthorNode.element("ActiveScore");
+//                float importantRateValue = Float.parseFloat(importantRateNode.getText());
+//                float activeScoreValue = Float.parseFloat(activeScoreNode.getText());
 
-                featureVectorObject.setContentSimValue(contentSimValue);
+//                featureVectorObject.setContentSimValue(contentSimValue);
                 featureVectorObject.setOrgRSSValue(orgRSSValue);
-                featureVectorObject.setImportantRateValue(importantRateValue);
+//                featureVectorObject.setImportantRateValue(importantRateValue);
 //                featureVectorObject.setActiveScoreValue(activeScoreValue);
 
                 Element labelNode = pairElement.element("tag");
@@ -92,14 +96,14 @@ public class FeatureVectorList {
         Instances instances;
 
         FastVector featureVector = new FastVector(numberOfFeatures + 1);
-        Attribute contentSim = new Attribute(FeatureVectorObject.CONTENT_SIM);
-        featureVector.addElement(contentSim);
+//        Attribute contentSim = new Attribute(FeatureVectorObject.CONTENT_SIM);
+//        featureVector.addElement(contentSim);
         Attribute orgRSS = new Attribute(FeatureVectorObject.ORGANIZATION_RSS);
         featureVector.addElement(orgRSS);
-        Attribute importantRate = new Attribute(FeatureVectorObject.IMPORTANT_RATE);
-        featureVector.addElement(importantRate);
-        Attribute activeScore = new Attribute(FeatureVectorObject.ACTIVE_SCORE);
-        featureVector.addElement(activeScore);
+//        Attribute importantRate = new Attribute(FeatureVectorObject.IMPORTANT_RATE);
+//        featureVector.addElement(importantRate);
+//        Attribute activeScore = new Attribute(FeatureVectorObject.ACTIVE_SCORE);
+//        featureVector.addElement(activeScore);
 
         // Create a attribute for the output's Label of classification
         FastVector classLabel = new FastVector(2);
@@ -116,10 +120,10 @@ public class FeatureVectorList {
 
     public static Instance insertFeatureValue(Instances instancesData, FeatureVectorObject featureVector, int dimension) {
         Instance oneInstance = new SparseInstance(dimension);
-        oneInstance.setValue((Attribute) instancesData.attribute(FeatureVectorObject.CONTENT_SIM), featureVector.contentSimValue);
+//        oneInstance.setValue((Attribute) instancesData.attribute(FeatureVectorObject.CONTENT_SIM), featureVector.contentSimValue);
         oneInstance.setValue((Attribute) instancesData.attribute(FeatureVectorObject.ORGANIZATION_RSS), featureVector.orgRSSValue);
-        oneInstance.setValue((Attribute) instancesData.attribute(FeatureVectorObject.IMPORTANT_RATE), featureVector.importantRateValue);
-        oneInstance.setValue((Attribute) instancesData.attribute(FeatureVectorObject.ACTIVE_SCORE), featureVector.activeScoreValue);
+//        oneInstance.setValue((Attribute) instancesData.attribute(FeatureVectorObject.IMPORTANT_RATE), featureVector.importantRateValue);
+//        oneInstance.setValue((Attribute) instancesData.attribute(FeatureVectorObject.ACTIVE_SCORE), featureVector.activeScoreValue);
 
         // Set value for label of classification
         oneInstance.setValue((Attribute) instancesData.attribute(FeatureVectorObject.LABEL_CLASS), featureVector.labelValue);
@@ -149,17 +153,45 @@ public class FeatureVectorList {
             eval.crossValidateModel(cslSVM, data, 10, new Random(1));
 
             StringBuffer strBuff = new StringBuffer();
-            strBuff.append("Feature" + "\t" + "Class" + "\t" + "Correctly Classified Instances" + "\t" + 
-                    "Incorrectly Classified Instances" + "\t" + "Precision" + "\t" + "Recall" + "\t" + "F-Measure" + "\n");
-            strBuff.append("ContentSim & OrgRSS & I.Rate & A.Score" + "\t" + "HasLink (Yes)" + "\t" + eval.pctCorrect() + "\t" + eval.pctIncorrect() + "\t" + eval.precision(0)*100 + "\t" + eval.recall(0)*100 + "\t" + eval.fMeasure(0)*100 + "\n");
-            strBuff.append("" + "\t" + "HasLink (No)" + "\t" + eval.pctCorrect() + "\t" + eval.pctIncorrect() + "\t" + eval.precision(1)*100 + "\t" + eval.recall(1)*100 + "\t" + eval.fMeasure(1)*100 + "\n");
-            strBuff.append("" + "\t" + "Weighted Average" + "\t" + eval.pctCorrect() + "\t" + eval.pctIncorrect() + "\t" + eval.weightedPrecision()*100 + "\t" + eval.weightedRecall()*100 + "\t" + eval.weightedFMeasure()*100 + "\n");
-            
+            strBuff.append("Feature" + "\t" + "Class" + "\t" + "Correctly Classified Instances" + "\t"
+                    + "Incorrectly Classified Instances" + "\t" + "Precision" + "\t" + "Recall" + "\t" + "F-Measure" + "\n");
+            strBuff.append("ContentSim & OrgRSS & I.Rate & A.Score" + "\t" + "HasLink (Yes)" + "\t" + eval.pctCorrect() + "\t" + eval.pctIncorrect() + "\t" + eval.precision(0) * 100 + "\t" + eval.recall(0) * 100 + "\t" + eval.fMeasure(0) * 100 + "\n");
+            strBuff.append("" + "\t" + "HasLink (No)" + "\t" + eval.pctCorrect() + "\t" + eval.pctIncorrect() + "\t" + eval.precision(1) * 100 + "\t" + eval.recall(1) * 100 + "\t" + eval.fMeasure(1) * 100 + "\n");
+            strBuff.append("" + "\t" + "Weighted Average" + "\t" + eval.pctCorrect() + "\t" + eval.pctIncorrect() + "\t" + eval.weightedPrecision() * 100 + "\t" + eval.weightedRecall() * 100 + "\t" + eval.weightedFMeasure() * 100 + "\n");
+
             System.out.println(eval.toSummaryString("\nResults Using C45 \n======\n", false));
             System.out.println(eval.weightedPrecision());
             System.out.println(eval.weightedRecall());
             System.out.println(eval.weightedFMeasure());
             TextFileUtility.writeTextFile("C:\\CRS-Experiment\\MAS\\ColdStart\\Output\\4_Features_Result.txt", strBuff.toString());
+
+            // plot curve
+            ThresholdVisualizePanel vmc = new ThresholdVisualizePanel();
+            PlotData2D tempd = new PlotData2D(data);
+            tempd.setPlotName(data.relationName());
+            tempd.addInstanceNumberAttribute();
+            // specify which points are connected
+            boolean[] cp = new boolean[data.numInstances()];
+            for (int n = 1; n < cp.length; n++) {
+                cp[n] = true;
+            }
+            //tempd.setConnectPoints(cp);
+            // add plot
+            vmc.addPlot(tempd);
+
+            // display curve
+            String plotName = vmc.getName();
+            final javax.swing.JFrame jf =
+                    new javax.swing.JFrame("Weka Classifier Visualize: " + plotName);
+            jf.setSize(500, 400);
+            jf.getContentPane().setLayout(new BorderLayout());
+            jf.getContentPane().add(vmc, BorderLayout.CENTER);
+            jf.addWindowListener(new java.awt.event.WindowAdapter() {
+                public void windowClosing(java.awt.event.WindowEvent e) {
+                    jf.dispose();
+                }
+            });
+            jf.setVisible(true);
 
         } catch (Exception ex) {
             ex.printStackTrace();
