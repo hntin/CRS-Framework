@@ -9,9 +9,12 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
+import javax.swing.JFrame;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.Node;
+import org.jfree.data.xy.XYSeries;
+import org.jfree.data.xy.XYSeriesCollection;
 import uit.tkorg.utility.TextFileUtility;
 import uit.tkorg.utility.XMLFileUtility;
 import weka.classifiers.Classifier;
@@ -137,9 +140,9 @@ public class FeatureVectorList {
             // Loading data from XML file and build the feature vector list
             FeatureVectorList temp = new FeatureVectorList();
             ArrayList<FeatureVectorObject> featureVectorList1 = temp.buildingFeatureVectorListFromXMLFile(
-                    "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input1\\TruePair1.xml");
+                    "C:\\TruePair1.xml");
             ArrayList<FeatureVectorObject> featureVectorList2 = temp.buildingFeatureVectorListFromXMLFile(
-                    "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input1\\FalsePair1.xml");
+                    "C:\\FalsePair1.xml");
             ArrayList<FeatureVectorObject> featureVectorList = new ArrayList<>();
             featureVectorList.addAll(featureVectorList1);
             featureVectorList.addAll(featureVectorList2);
@@ -192,6 +195,29 @@ public class FeatureVectorList {
                 }
             });
             jf.setVisible(true);
+            
+            // tiendv chart
+            int numberOfInstances = data.numInstances();
+            XYSeries yesCollection= new XYSeries("YES"); 
+            XYSeries noCollection= new XYSeries("NO");; 
+            
+            for(int j=1 ; j<numberOfInstances;j++)
+            {
+                Instance currentInstance = data.instance(j);
+                if(currentInstance.value(1)==0)                   
+                    yesCollection.add(j,currentInstance.value(0));
+                else
+                    noCollection.add(j,currentInstance.value(0));
+            }
+             XYSeriesCollection xySeriesCollection = new XYSeriesCollection();
+             xySeriesCollection.addSeries(yesCollection);
+             xySeriesCollection.addSeries(noCollection);
+             
+            XYChart demo = new XYChart("Result Chart",xySeriesCollection);
+            demo.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            demo.pack();
+            demo.setLocationRelativeTo(null);
+            demo.setVisible(true);
 
         } catch (Exception ex) {
             ex.printStackTrace();
