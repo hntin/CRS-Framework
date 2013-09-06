@@ -53,21 +53,21 @@ public class FeatureVectorList {
                 FeatureVectorObject featureVectorObject = new FeatureVectorObject();
 
                 Element pairElement = (Element) i.next();
-//                Element contentSimNode = pairElement.element("ContentSim");
-//                float contentSimValue = Float.parseFloat(contentSimNode.getText());
+                Element contentSimNode = pairElement.element("ContentSim");
+                float contentSimValue = Float.parseFloat(contentSimNode.getText());
                 Element orgRSSNode = pairElement.element("OrgRSS");
                 float orgRSSValue = Float.parseFloat(orgRSSNode.getText());
 
                 Element coAuthorNode = pairElement.element("CoAuthor");
-//                Element importantRateNode = coAuthorNode.element("ImportantRate");
-//                Element activeScoreNode = coAuthorNode.element("ActiveScore");
-//                float importantRateValue = Float.parseFloat(importantRateNode.getText());
-//                float activeScoreValue = Float.parseFloat(activeScoreNode.getText());
+                Element importantRateNode = coAuthorNode.element("ImportantRate");
+                Element activeScoreNode = coAuthorNode.element("ActiveScore");
+                float importantRateValue = Float.parseFloat(importantRateNode.getText());
+                float activeScoreValue = Float.parseFloat(activeScoreNode.getText());
 
-//                featureVectorObject.setContentSimValue(contentSimValue);
+                featureVectorObject.setContentSimValue(contentSimValue);
                 featureVectorObject.setOrgRSSValue(orgRSSValue);
-//                featureVectorObject.setImportantRateValue(importantRateValue);
-//                featureVectorObject.setActiveScoreValue(activeScoreValue);
+                featureVectorObject.setImportantRateValue(importantRateValue);
+                featureVectorObject.setActiveScoreValue(activeScoreValue);
 
                 Element labelNode = pairElement.element("tag");
                 if (labelNode.getText().equalsIgnoreCase("1")) {
@@ -99,14 +99,14 @@ public class FeatureVectorList {
         Instances instances;
 
         FastVector featureVector = new FastVector(numberOfFeatures + 1);
-//        Attribute contentSim = new Attribute(FeatureVectorObject.CONTENT_SIM);
-//        featureVector.addElement(contentSim);
+        Attribute contentSim = new Attribute(FeatureVectorObject.CONTENT_SIM);
+        featureVector.addElement(contentSim);
         Attribute orgRSS = new Attribute(FeatureVectorObject.ORGANIZATION_RSS);
         featureVector.addElement(orgRSS);
-//        Attribute importantRate = new Attribute(FeatureVectorObject.IMPORTANT_RATE);
-//        featureVector.addElement(importantRate);
-//        Attribute activeScore = new Attribute(FeatureVectorObject.ACTIVE_SCORE);
-//        featureVector.addElement(activeScore);
+        Attribute importantRate = new Attribute(FeatureVectorObject.IMPORTANT_RATE);
+        featureVector.addElement(importantRate);
+        Attribute activeScore = new Attribute(FeatureVectorObject.ACTIVE_SCORE);
+        featureVector.addElement(activeScore);
 
         // Create a attribute for the output's Label of classification
         FastVector classLabel = new FastVector(2);
@@ -123,10 +123,10 @@ public class FeatureVectorList {
 
     public static Instance insertFeatureValue(Instances instancesData, FeatureVectorObject featureVector, int dimension) {
         Instance oneInstance = new SparseInstance(dimension);
-//        oneInstance.setValue((Attribute) instancesData.attribute(FeatureVectorObject.CONTENT_SIM), featureVector.contentSimValue);
+        oneInstance.setValue((Attribute) instancesData.attribute(FeatureVectorObject.CONTENT_SIM), featureVector.contentSimValue);
         oneInstance.setValue((Attribute) instancesData.attribute(FeatureVectorObject.ORGANIZATION_RSS), featureVector.orgRSSValue);
-//        oneInstance.setValue((Attribute) instancesData.attribute(FeatureVectorObject.IMPORTANT_RATE), featureVector.importantRateValue);
-//        oneInstance.setValue((Attribute) instancesData.attribute(FeatureVectorObject.ACTIVE_SCORE), featureVector.activeScoreValue);
+        oneInstance.setValue((Attribute) instancesData.attribute(FeatureVectorObject.IMPORTANT_RATE), featureVector.importantRateValue);
+        oneInstance.setValue((Attribute) instancesData.attribute(FeatureVectorObject.ACTIVE_SCORE), featureVector.activeScoreValue);
 
         // Set value for label of classification
         oneInstance.setValue((Attribute) instancesData.attribute(FeatureVectorObject.LABEL_CLASS), featureVector.labelValue);
