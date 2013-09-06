@@ -140,9 +140,9 @@ public class FeatureVectorList {
             // Loading data from XML file and build the feature vector list
             FeatureVectorList temp = new FeatureVectorList();
             ArrayList<FeatureVectorObject> featureVectorList1 = temp.buildingFeatureVectorListFromXMLFile(
-                    "C:\\TruePair1.xml");
+                    "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input1\\TruePair1.xml");
             ArrayList<FeatureVectorObject> featureVectorList2 = temp.buildingFeatureVectorListFromXMLFile(
-                    "C:\\FalsePair1.xml");
+                    "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input1\\FalsePair1.xml");
             ArrayList<FeatureVectorObject> featureVectorList = new ArrayList<>();
             featureVectorList.addAll(featureVectorList1);
             featureVectorList.addAll(featureVectorList2);
