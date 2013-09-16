@@ -5,7 +5,7 @@ package uit.tkorg.crs.isolatedauthor.feature;
  * @author TinHuynh
  */
 public class FeatureVectorObject {
-    public static final int NUMBER_OF_FEATURE = 1;
+    public static final int NUMBER_OF_FEATURE = 4;
     public static final String CONTENT_SIM = "contentSim";
     float contentSimValue;
     public static final String ORGANIZATION_RSS = "orgRSS";
