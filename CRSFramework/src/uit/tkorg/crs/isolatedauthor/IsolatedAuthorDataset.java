@@ -481,13 +481,14 @@ public class IsolatedAuthorDataset {
     public HashMap<Integer, ArrayList<Integer>> build_FalseCollaborationPairs(HashMap<Integer, String> listIsolatedAuthor) {
         HashMap<Integer, ArrayList<Integer>> falsePairHM = new HashMap<>();
         Random randomGenerator = new Random();
+        int count = 0; // get 1263 false pairs
         for (int isolatedAuthorID : listIsolatedAuthor.keySet()) {
             ArrayList<Integer> falseCoAuthorList = new ArrayList<>();
 
             // For each Isolated author, Select out the list of authors 
             // who exist in the training and testing net, have Org's Infor but no connection with Isolated
             int numberFalseForEachIsolatedAuthor = 5;
-            for (int i = 0; i <= numberFalseForEachIsolatedAuthor; i++) {
+            for (int i = 0; i < numberFalseForEachIsolatedAuthor; i++) {
                 int randomAuthorID = Integer.MAX_VALUE;
                 boolean found = false;
                 while (!found) {
@@ -501,6 +502,7 @@ public class IsolatedAuthorDataset {
 
                                 falseCoAuthorList.add(randomAuthorID);
                                 found = true;
+                                count++;
                             }
                         }
                     }
@@ -508,6 +510,7 @@ public class IsolatedAuthorDataset {
             }
 
             falsePairHM.put(isolatedAuthorID, falseCoAuthorList);
+            if (count == 1263) break;
         }
 
         return falsePairHM;
