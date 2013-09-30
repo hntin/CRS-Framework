@@ -19,11 +19,11 @@ import uit.tkorg.utility.XMLFileUtility;
  */
 public class IsolatedAuthorDataset {
 
+    public static HashMap<Integer, HashMap<Integer, Integer>> _coAuthorTrainingNet;
+    public static HashMap<Integer, HashMap<Integer, Integer>> _coAuthorNF;
+    public static HashMap<Integer, HashMap<Integer, Integer>> _coAuthorFF;
     private HashMap<Integer, ArrayList<Integer>> _paperID_AuthorID_List;
     private HashMap<Integer, ArrayList<Integer>> _authorID_PaperID_List;
-    private HashMap<Integer, HashMap<Integer, Integer>> _coAuthorTrainingNet;
-    private HashMap<Integer, HashMap<Integer, Integer>> _coAuthorNF;
-    private HashMap<Integer, HashMap<Integer, Integer>> _coAuthorFF;
     private HashMap<Integer, ArrayList<Integer>> _paperAuthorNF;
     private HashMap<Integer, ArrayList<Integer>> _paperAuthorFF;
     private HashMap<Integer, String> _authorID_AuthorName;
@@ -44,7 +44,7 @@ public class IsolatedAuthorDataset {
         _file_CoAuthor_FF = file_CoAuthor_FF;
     }
 
-    private HashMap<Integer, String> loadInputAuthorList(String input_Author_List_File) {
+    public HashMap<Integer, String> loadInputAuthorList(String input_Author_List_File) {
         HashMap<Integer, String> listIsolatedAuthor = new HashMap<>();
         // <editor-fold defaultstate="collapsed" desc="Load Author">
         try {
@@ -76,7 +76,7 @@ public class IsolatedAuthorDataset {
         return listIsolatedAuthor;
     }
 
-    private void load_Training_NetworkData() {
+    public void load_Training_NetworkData() {
         try {
             _authorID_PaperID_List = new HashMap<>();
             _paperID_AuthorID_List = new HashMap<>();
@@ -112,7 +112,7 @@ public class IsolatedAuthorDataset {
         }
     }
 
-    private void load_NF_FF_NetworkData() {
+    public void load_NF_FF_NetworkData() {
         try {
             // Loading PaperID_AuthorID for NF Graph
             _paperAuthorNF = new HashMap<>();
@@ -355,7 +355,7 @@ public class IsolatedAuthorDataset {
         }
     }
 
-    private void build_NF_FF_Graph() {
+    public void build_NF_FF_Graph() {
         _coAuthorNF = new HashMap<>();
         _coAuthorFF = new HashMap<>();
 
@@ -416,7 +416,7 @@ public class IsolatedAuthorDataset {
         }
     }
 
-    private void build_CoAuthorGraph() {
+    public void build_CoAuthorGraph() {
         _coAuthorTrainingNet = new HashMap<>();
         for (int pubId : _paperID_AuthorID_List.keySet()) {
             ArrayList<Integer> listAuthors = _paperID_AuthorID_List.get(pubId);
@@ -478,7 +478,7 @@ public class IsolatedAuthorDataset {
     }
 
     // Getting about 300 x 5 False cases
-    private HashMap<Integer, ArrayList<Integer>> build_FalseCollaborationPairs(HashMap<Integer, String> listIsolatedAuthor) {
+    public HashMap<Integer, ArrayList<Integer>> build_FalseCollaborationPairs(HashMap<Integer, String> listIsolatedAuthor) {
         HashMap<Integer, ArrayList<Integer>> falsePairHM = new HashMap<>();
         Random randomGenerator = new Random();
         for (int isolatedAuthorID : listIsolatedAuthor.keySet()) {
@@ -513,7 +513,7 @@ public class IsolatedAuthorDataset {
         return falsePairHM;
     }
 
-    private void writePairOfAuthorToXMLFile(String fileName, HashMap<Integer, ArrayList<Integer>> pairOfAuthorHM, boolean tag) {
+    public void writePairOfAuthorToXMLFile(String fileName, HashMap<Integer, ArrayList<Integer>> pairOfAuthorHM, boolean tag) {
         try {
             Document document = DocumentHelper.createDocument();
             Element root = document.addElement("Pairs_Of_Author");
@@ -628,16 +628,16 @@ public class IsolatedAuthorDataset {
                 "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input1\\PotentialIsolatedAuthorList_1_300.txt");
 
         System.out.println("build_FalseCollaborationPairs");
-        //HashMap<Integer, ArrayList<Integer>> truePairHM = isolatedDataset.build_TrueCollaborationPairs(isolatedAuthorList);
-        HashMap<Integer, ArrayList<Integer>> falsePairHM = isolatedDataset.build_FalseCollaborationPairs(isolatedAuthorList);
+        HashMap<Integer, ArrayList<Integer>> truePairHM = isolatedDataset.build_TrueCollaborationPairs(isolatedAuthorList);
+        //HashMap<Integer, ArrayList<Integer>> falsePairHM = isolatedDataset.build_FalseCollaborationPairs(isolatedAuthorList);
 
 
-        //System.out.println("writePairOfAuthorToXMLFile1");
-        //isolatedDataset.writePairOfAuthorToXMLFile(
-        //        "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input1\\TruePair1.xml", truePairHM, true);
-        System.out.println("writePairOfAuthorToXMLFile2");
+        System.out.println("writePairOfAuthorToXMLFile1");
         isolatedDataset.writePairOfAuthorToXMLFile(
-                "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input1\\FalsePair1.xml", falsePairHM, false);
+                "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input1\\TruePair1.xml", truePairHM, true);
+//        System.out.println("writePairOfAuthorToXMLFile2");
+//        isolatedDataset.writePairOfAuthorToXMLFile(
+//                "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input1\\FalsePair1.xml", falsePairHM, false);
 
         System.out.println("END");
     }

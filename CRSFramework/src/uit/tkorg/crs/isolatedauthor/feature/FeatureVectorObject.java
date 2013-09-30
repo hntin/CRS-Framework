@@ -17,6 +17,9 @@ public class FeatureVectorObject {
     
     public static final String LABEL_CLASS = "label";
     public String labelValue;
+    
+    private int isolatedAuthorID;
+    private int coAuthorID;
 
     public float getContentSimValue() {
         return contentSimValue;
@@ -58,4 +61,21 @@ public class FeatureVectorObject {
         this.labelValue = labelValue;
     }
 
+    public int getIsolatedAuthorID() {
+        return isolatedAuthorID;
+    }
+
+    public void setIsolatedAuthorID(int isolatedAuthorID) {
+        this.isolatedAuthorID = isolatedAuthorID;
+    }
+
+    public int getCoAuthorID() {
+        return coAuthorID;
+    }
+
+    public void setCoAuthorID(int coAuthorID) {
+        this.coAuthorID = coAuthorID;
+    }
+
+    
 }

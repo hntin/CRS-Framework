@@ -41,7 +41,35 @@ import weka.gui.visualize.ThresholdVisualizePanel;
  */
 public class FeatureVectorList {
 
-    public ArrayList<FeatureVectorObject> buildingFeatureVectorListFromXMLFile(String file_TrueOrFalsePairs) {
+    public static void writingFeatureVectorListToTextFile(ArrayList<FeatureVectorObject> featureVectors, String fileName, String mappingFile) {
+        StringBuffer strBuff = new StringBuffer();
+        StringBuffer mappingStrBuff = new StringBuffer();
+        
+        strBuff.append("IsolatedID" + "\t" + "CoAuthorID" + "\t" + 
+                "contentSim" + "\t" + "orgRSSValue" + "\t" + "importantRateValue" + "\t" + "activeScore" + "\t" + "ClassLabel" + "\n");
+        mappingStrBuff.append("InstanceID" + "\t" + "IsolatedAuthorID" + "\t" + "CoAuthorID" + "\n");
+        
+        for (int i = 0; i < featureVectors.size(); i++) {
+            FeatureVectorObject vectorObj = featureVectors.get(i);
+
+            int isolatedAuthorID = vectorObj.getIsolatedAuthorID();
+            int coAuthorID = vectorObj.getCoAuthorID();
+            float contentSim = vectorObj.getContentSimValue();
+            float orgRSSValue = vectorObj.getOrgRSSValue();
+            float importantRateValue = vectorObj.getImportantRateValue();
+            float activeScore = vectorObj.getActiveScoreValue();
+            
+            strBuff.append(isolatedAuthorID + "\t" + coAuthorID + "\t" 
+                    + contentSim + "\t" + orgRSSValue + "\t" + importantRateValue + "\t" + activeScore + "\t" + vectorObj.getLabelValue() + "\n");
+            
+            mappingStrBuff.append(i + "\t" + isolatedAuthorID + "\t" + coAuthorID + "\n");
+        }
+        
+        TextFileUtility.writeTextFile(fileName, strBuff.toString());
+        TextFileUtility.writeTextFile(mappingFile, mappingStrBuff.toString());
+    }
+
+    public static ArrayList<FeatureVectorObject> buildingFeatureVectorListFromXMLFile(String file_TrueOrFalsePairs) {
         ArrayList<FeatureVectorObject> featureVectorList = new ArrayList<>();
 
         try {
@@ -53,17 +81,25 @@ public class FeatureVectorList {
                 FeatureVectorObject featureVectorObject = new FeatureVectorObject();
 
                 Element pairElement = (Element) i.next();
+                Element isolatedAuthorNode = pairElement.element("IsolatedAuthor");
+                Element isolatedAuthorIDNode = isolatedAuthorNode.element("AuthorID");
+                int isolatedAuthorID = Integer.parseInt(isolatedAuthorIDNode.getText());
+
                 Element contentSimNode = pairElement.element("ContentSim");
                 float contentSimValue = Float.parseFloat(contentSimNode.getText());
                 Element orgRSSNode = pairElement.element("OrgRSS");
                 float orgRSSValue = Float.parseFloat(orgRSSNode.getText());
 
                 Element coAuthorNode = pairElement.element("CoAuthor");
+                Element coAuthorIDNode = coAuthorNode.element("AuthorID");
+                int coAuthorID = Integer.parseInt(coAuthorIDNode.getText());
                 Element importantRateNode = coAuthorNode.element("ImportantRate");
                 Element activeScoreNode = coAuthorNode.element("ActiveScore");
                 float importantRateValue = Float.parseFloat(importantRateNode.getText());
                 float activeScoreValue = Float.parseFloat(activeScoreNode.getText());
 
+                featureVectorObject.setIsolatedAuthorID(isolatedAuthorID);
+                featureVectorObject.setCoAuthorID(coAuthorID);
                 featureVectorObject.setContentSimValue(contentSimValue);
                 featureVectorObject.setOrgRSSValue(orgRSSValue);
                 featureVectorObject.setImportantRateValue(importantRateValue);
@@ -71,9 +107,9 @@ public class FeatureVectorList {
 
                 Element labelNode = pairElement.element("tag");
                 if (labelNode.getText().equalsIgnoreCase("1")) {
-                    featureVectorObject.setLabelValue("YES");
+                    featureVectorObject.setLabelValue("+1");
                 } else {
-                    featureVectorObject.setLabelValue("NO");
+                    featureVectorObject.setLabelValue("-1");
                 }
 
                 featureVectorList.add(featureVectorObject);
@@ -110,8 +146,8 @@ public class FeatureVectorList {
 
         // Create a attribute for the output's Label of classification
         FastVector classLabel = new FastVector(2);
-        classLabel.addElement("YES");
-        classLabel.addElement("NO");
+        classLabel.addElement("+1");
+        classLabel.addElement("-1");
         Attribute labelAttribute = new Attribute(FeatureVectorObject.LABEL_CLASS, classLabel);
         featureVector.addElement(labelAttribute);
 
@@ -195,25 +231,25 @@ public class FeatureVectorList {
                 }
             });
             jf.setVisible(true);
-            
+
             // tiendv chart
             int numberOfInstances = data.numInstances();
-            XYSeries yesCollection= new XYSeries("YES"); 
-            XYSeries noCollection= new XYSeries("NO");; 
-            
-            for(int j=1 ; j<numberOfInstances;j++)
-            {
+            XYSeries yesCollection = new XYSeries("YES");
+            XYSeries noCollection = new XYSeries("NO");;
+
+            for (int j = 1; j < numberOfInstances; j++) {
                 Instance currentInstance = data.instance(j);
-                if(currentInstance.value(1)==0)                   
-                    yesCollection.add(j,currentInstance.value(0));
-                else
-                    noCollection.add(j,currentInstance.value(0));
+                if (currentInstance.value(1) == 0) {
+                    yesCollection.add(j, currentInstance.value(0));
+                } else {
+                    noCollection.add(j, currentInstance.value(0));
+                }
             }
-             XYSeriesCollection xySeriesCollection = new XYSeriesCollection();
-             xySeriesCollection.addSeries(yesCollection);
-             xySeriesCollection.addSeries(noCollection);
-             
-            XYChart demo = new XYChart("Result Chart",xySeriesCollection);
+            XYSeriesCollection xySeriesCollection = new XYSeriesCollection();
+            xySeriesCollection.addSeries(yesCollection);
+            xySeriesCollection.addSeries(noCollection);
+
+            XYChart demo = new XYChart("Result Chart", xySeriesCollection);
             demo.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             demo.pack();
             demo.setLocationRelativeTo(null);
