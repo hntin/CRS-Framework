@@ -503,10 +503,12 @@ public class IsolatedAuthorDataset {
                                 falseCoAuthorList.add(randomAuthorID);
                                 found = true;
                                 count++;
+                                if (count == 1263) break;
                             }
                         }
                     }
                 }
+                if (count == 1263) break;
             }
 
             falsePairHM.put(isolatedAuthorID, falseCoAuthorList);
@@ -631,16 +633,16 @@ public class IsolatedAuthorDataset {
                 "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input1\\PotentialIsolatedAuthorList_1_300.txt");
 
         System.out.println("build_FalseCollaborationPairs");
-        HashMap<Integer, ArrayList<Integer>> truePairHM = isolatedDataset.build_TrueCollaborationPairs(isolatedAuthorList);
-        //HashMap<Integer, ArrayList<Integer>> falsePairHM = isolatedDataset.build_FalseCollaborationPairs(isolatedAuthorList);
+        //HashMap<Integer, ArrayList<Integer>> truePairHM = isolatedDataset.build_TrueCollaborationPairs(isolatedAuthorList);
+        HashMap<Integer, ArrayList<Integer>> falsePairHM = isolatedDataset.build_FalseCollaborationPairs(isolatedAuthorList);
 
 
-        System.out.println("writePairOfAuthorToXMLFile1");
-        isolatedDataset.writePairOfAuthorToXMLFile(
-                "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input1\\TruePair1.xml", truePairHM, true);
-//        System.out.println("writePairOfAuthorToXMLFile2");
+//        System.out.println("writePairOfAuthorToXMLFile1");
 //        isolatedDataset.writePairOfAuthorToXMLFile(
-//                "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input1\\FalsePair1.xml", falsePairHM, false);
+//                "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input1\\TruePair1.xml", truePairHM, true);
+        System.out.println("writePairOfAuthorToXMLFile2");
+        isolatedDataset.writePairOfAuthorToXMLFile(
+                "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input1\\FalsePair1_Equal_TruePairs.xml", falsePairHM, false);
 
         System.out.println("END");
     }
