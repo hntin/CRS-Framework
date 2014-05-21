@@ -41,7 +41,6 @@ public class ExperimentSetting {
     int _maxHighDegree;
 
     public static enum GeneratingOption {
-
         NONE,
         LOWEST,
         HIGHEST,

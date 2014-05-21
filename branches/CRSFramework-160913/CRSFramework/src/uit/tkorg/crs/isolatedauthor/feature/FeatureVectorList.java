@@ -202,7 +202,7 @@ public class FeatureVectorList {
             System.out.println(eval.weightedPrecision());
             System.out.println(eval.weightedRecall());
             System.out.println(eval.weightedFMeasure());
-            TextFileUtility.writeTextFile("C:\\CRS-Experiment\\MAS\\ColdStart\\Output\\4_Features_Result.txt", strBuff.toString());
+            TextFileUtility.writeTextFile("C:\\CRS-Experiment\\MAS\\ColdStart\\Output\\4_Features_Result_New.txt", strBuff.toString());
 
             // plot curve
             ThresholdVisualizePanel vmc = new ThresholdVisualizePanel();
