@@ -181,7 +181,7 @@ public class GoodnessEvaluation {
     }
 
     public static void main(String args[]) {
-        int topN = 40;
+        int topN = 50;
         System.out.println("START");
         IsolatedAuthorDataset isolatedDataset = new IsolatedAuthorDataset(
                 "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input1\\[TrainingData]AuthorID_PaperID_2001_2005.txt",
@@ -195,13 +195,13 @@ public class GoodnessEvaluation {
         isolatedDataset.build_CoAuthorGraph();
 
         GoodnessEvaluation goodnessEvaluation = new GoodnessEvaluation();
-        goodnessEvaluation.load_Decsion_Value("C:\\CRS-Experiment\\MAS\\ColdStart\\Output\\TestDataset_1Features_results.txt");
+        goodnessEvaluation.load_Decsion_Value("C:\\CRS-Experiment\\MAS\\ColdStart\\Output\\TestDataset_2Features_OrgRS_ActiveScore_results.txt");
 
         goodnessEvaluation.load_InstanceID_Pair("C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input1\\TestDatasetMapping.txt");
         HashMap<Integer, Float> topN_HM = goodnessEvaluation.getTopNOfDecisionValue(topN);
         topN_HM = HashMapUtility.getSortedMapDescending(topN_HM);
         double goodnessValueMetric1 = goodnessEvaluation.getCoAuthorshipGoodness_Metric1(
-                topN_HM, "C:\\CRS-Experiment\\MAS\\ColdStart\\Output\\GoodnessResult_1Features_Top40.txt");
+                topN_HM, "C:\\CRS-Experiment\\MAS\\ColdStart\\Output\\GoodnessResult_2Features_OrgRS_ActiveScore_Top50.txt");
 
         System.out.println("Goodness Value for top" + topN + " is: " + goodnessValueMetric1);
         System.out.println("END");

@@ -4,14 +4,14 @@
  */
 package uit.tkorg.crs.gui;
 
-import uit.tkorg.crs.dblp.MappingNameToId;
+import uit.tkorg.crs.dataimport.MappingNameToId;
 import java.io.File;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 import uit.tkorg.crs.artnetminer.PreprocessingANMData;
-import uit.tkorg.crs.dblp.MappingNameToId;
+import uit.tkorg.crs.dataimport.MappingNameToId;
 
 /**
  *
