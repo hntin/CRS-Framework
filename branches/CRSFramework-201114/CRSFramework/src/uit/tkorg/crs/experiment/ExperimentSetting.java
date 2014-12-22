@@ -9,8 +9,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Random;
-import uit.tkorg.crs.graph.AuthorGraph;
-import uit.tkorg.utility.TextFileUtility;
+import uit.tkorg.crs.model.AuthorGraph;
+import uit.tkorg.utility.common.TextFileUtility;
 
 /**
  *

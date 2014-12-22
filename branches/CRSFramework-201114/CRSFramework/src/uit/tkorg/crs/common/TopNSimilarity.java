@@ -6,7 +6,7 @@ package uit.tkorg.crs.common;
 
 import java.util.HashMap;
 import uit.tkorg.crs.experiment.ContentMethodExperiment;
-import uit.tkorg.crs.graph.AuthorGraph;
+import uit.tkorg.crs.model.AuthorGraph;
 
 /**
  *

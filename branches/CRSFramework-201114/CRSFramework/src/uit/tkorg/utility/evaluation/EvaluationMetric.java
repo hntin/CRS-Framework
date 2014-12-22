@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package uit.tkorg.crs.common;
+package uit.tkorg.utility.evaluation;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;

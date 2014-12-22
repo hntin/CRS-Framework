@@ -9,8 +9,8 @@ import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.HashMap;
-import uit.tkorg.crs.method.content.TFIDF;
-import uit.tkorg.utility.TextFileUtility;
+import uit.tkorg.crs.method.cbf.TFIDF;
+import uit.tkorg.utility.common.TextFileUtility;
 
 /**
  *
