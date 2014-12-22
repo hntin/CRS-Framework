@@ -10,12 +10,12 @@ import java.util.HashMap;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import uit.tkorg.crs.graph.AuthorGraph;
-import uit.tkorg.crs.method.content.CollectionDocument;
-import uit.tkorg.crs.method.content.SimilarityTF;
-import static uit.tkorg.crs.method.content.TFIDF._AuthorInstanceHM;
-import static uit.tkorg.crs.method.content.TFIDF._InstanceAuthorHM;
-import static uit.tkorg.crs.method.content.TFIDF._InstancePublicationHM;
+import uit.tkorg.crs.model.AuthorGraph;
+import uit.tkorg.crs.method.cbf.CollectionDocument;
+import uit.tkorg.crs.method.cbf.SimilarityTF;
+import static uit.tkorg.crs.method.cbf.TFIDF._AuthorInstanceHM;
+import static uit.tkorg.crs.method.cbf.TFIDF._InstanceAuthorHM;
+import static uit.tkorg.crs.method.cbf.TFIDF._InstancePublicationHM;
 
 /**
  *

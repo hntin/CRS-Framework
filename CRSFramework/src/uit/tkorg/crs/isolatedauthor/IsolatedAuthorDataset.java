@@ -11,7 +11,7 @@ import java.util.Random;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
-import uit.tkorg.utility.XMLFileUtility;
+import uit.tkorg.utility.common.XMLFileUtility;
 
 /**
  *

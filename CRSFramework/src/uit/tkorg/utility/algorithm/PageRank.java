@@ -1,7 +1,7 @@
-package uit.tkorg.crs.common;
+package uit.tkorg.utility.algorithm;
 
 import java.util.HashMap;
-import uit.tkorg.crs.graph.AuthorGraph;
+import uit.tkorg.crs.model.AuthorGraph;
 
 /**
  *
