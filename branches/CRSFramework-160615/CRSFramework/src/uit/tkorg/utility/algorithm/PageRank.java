@@ -140,7 +140,9 @@ public class PageRank {
         
         System.out.println("START LOADING TRAINING DATA");
         AuthorGraph _graph = AuthorGraph.getInstance();
-        _graph.LoadTrainingData("C:\\CRS-Experiment\\Sampledata\\Input\\Link-Net\\[Training]AuthorId_PaperID.txt", 
+        _graph.loadTrainingData_AuthorID_PaperID_File(
+                "C:\\CRS-Experiment\\Sampledata\\Input\\Link-Net\\[Training]AuthorId_PaperID.txt");
+        _graph.loadTrainingData_PaperID_Year_File(
                 "C:\\CRS-Experiment\\Sampledata\\Input\\Link-Net\\[Training]PaperID_Year.txt");
 
         // Building Graphs

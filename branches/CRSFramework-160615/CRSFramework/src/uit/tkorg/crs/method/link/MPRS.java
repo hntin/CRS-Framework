@@ -14,17 +14,17 @@ import java.util.concurrent.Executors;
  *
  * @author daolv
  */
-public class MPBVSPlus {
+public class MPRS {
 
-    private void runMPBVSPlus(int authorId1) {
+    private void runMPRS(int authorId1) {
         Set<Integer> listAuthorFirstHop = _graph.get(authorId1).keySet();
-        HashMap<Integer, Float> listMPBVSPlus = new HashMap<>();
+        HashMap<Integer, Float> listMPBVS = new HashMap<>();
         for (int authorId_FirstHop : listAuthorFirstHop) {
             Float weight = _graph.get(authorId1).get(authorId_FirstHop);
             if (weight == null) {
                 weight = 0f;
             }
-            listMPBVSPlus.put(authorId_FirstHop, weight);
+            listMPBVS.put(authorId_FirstHop, weight);
             Set<Integer> listAuthorSecondHop = _graph.get(authorId_FirstHop).keySet();
 
             for (int authorId_SecondHop : listAuthorSecondHop) {
@@ -38,37 +38,37 @@ public class MPBVSPlus {
                     }
 
                     if (weight1 > 0f) {
-                        Float totalWeight = listMPBVSPlus.get(authorId_SecondHop);
+                        Float totalWeight = listMPBVS.get(authorId_SecondHop);
                         if (totalWeight == null) {
                             totalWeight = 0f;
                         }
                         if (weight1 > totalWeight) {
                             totalWeight = weight1;
                         }
-                        listMPBVSPlus.put(authorId_SecondHop, totalWeight);
+                        listMPBVS.put(authorId_SecondHop, totalWeight);
                     }
                 }
             }
         }
-        _mpbvsplusData.put(authorId1, listMPBVSPlus);
+        _mprsData.put(authorId1, listMPBVS);
     }
-    private HashMap<Integer, HashMap<Integer, Float>> _mpbvsplusData;
+    private HashMap<Integer, HashMap<Integer, Float>> _mprsData;
     private HashMap<Integer, HashMap<Integer, Float>> _graph;
 
-    public HashMap<Integer, HashMap<Integer, Float>> Process(HashMap<Integer, HashMap<Integer, Float>> graph,
+    public HashMap<Integer, HashMap<Integer, Float>> process(HashMap<Integer, HashMap<Integer, Float>> graph,
             HashMap<Integer, String> listAuthor) {
-        _mpbvsplusData = new HashMap<>();
+        _mprsData = new HashMap<>();
         _graph = graph;
 
         Runtime runtime = Runtime.getRuntime();
         int numOfProcessors = runtime.availableProcessors();
 
-        ExecutorService executor = Executors.newFixedThreadPool(numOfProcessors / 2);
+        ExecutorService executor = Executors.newFixedThreadPool(numOfProcessors - 1);
         for (final int authorId : listAuthor.keySet()) {
             executor.submit(new Runnable() {
                 @Override
                 public void run() {
-                    runMPBVSPlus(authorId);
+                    runMPRS(authorId);
                 }
             });
         }
@@ -76,6 +76,6 @@ public class MPBVSPlus {
         executor.shutdown();
         while (!executor.isTerminated()) {
         }
-        return _mpbvsplusData;
+        return _mprsData;
     }
 }
