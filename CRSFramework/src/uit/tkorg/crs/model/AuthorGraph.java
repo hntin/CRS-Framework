@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package uit.tkorg.crs.model;
 
 import java.io.BufferedReader;
@@ -28,61 +24,29 @@ public class AuthorGraph {
         }
         return _instance;
     }
-    
+
     public HashMap<Integer, HashMap<Integer, Integer>> coAuthorGraph;
     private HashMap<Integer, HashMap<Integer, Integer>> coAuthorGraphNear;
     private HashMap<Integer, HashMap<Integer, Integer>> coAuthorGraphFar;
     public HashMap<Integer, HashMap<Integer, Float>> rssGraph; //weighted, directed graph
     public HashMap<Integer, HashMap<Integer, Float>> rtbvsGraph; //weighted, directed graph
     public HashMap<Integer, ArrayList<Integer>> nearTestingData; //non-weighted, non-directed graph <authorID, <Lis of CoAuthorID>>
-    public HashMap<Integer, ArrayList<Integer>> farTestingData; //non-weighted, non-directed graph
+    public HashMap<Integer, Integer> paperId_year;
+    public HashMap<Integer, ArrayList<Integer>> authorPaper;
+    public HashMap<Integer, ArrayList<Integer>> paperAuthor;
+    public HashMap<Integer, String> listRandomAuthor;
 
     private AuthorGraph() {
         coAuthorGraph = new HashMap<>();
         coAuthorGraphNear = new HashMap<>();
         coAuthorGraphFar = new HashMap<>();
     }
-    public HashMap<Integer, Integer> paperId_year;
-    public HashMap<Integer, ArrayList<Integer>> authorPaper;
-    public HashMap<Integer, ArrayList<Integer>> paperAuthor;
 
-    /**
-     * Load Training data from 2 text files are AuthorID_PaperID.txt and
-     * PaperID_Year.txt and put into HashMaps are paperId_year, authorPaper,
-     * paperAuthor
-     *
-     * @param fileAuthorIdPubId
-     * @param filePubIdYear
-     */
-    public void LoadTrainingData(String fileAuthorIdPubId, String filePubIdYear) {
-        try {
-            paperId_year = new HashMap<>();
-            FileInputStream fis = new FileInputStream(filePubIdYear);
-            Reader reader = new InputStreamReader(fis, "UTF8");
-            BufferedReader bufferReader = new BufferedReader(reader);
-            bufferReader.readLine();
-            String line = null;
-            String[] tokens;
-            int paperId;
-            Integer year;
-            while ((line = bufferReader.readLine()) != null) {
-                tokens = line.split("\t");
-                paperId = Integer.parseInt(tokens[0]);
-                if (tokens.length <= 1) {
-                    year = 0;
-                } else {
-                    year = Integer.parseInt(tokens[1]);
-                }
-                paperId_year.put(paperId, year);
-            }
-            bufferReader.close();
-        } catch (Exception e) {
-        }
-
+    public void loadTrainingData_AuthorID_PaperID_File(String file_AuthorID_PaperID) {
         try {
             authorPaper = new HashMap<>();
             paperAuthor = new HashMap<>();
-            FileInputStream fis = new FileInputStream(fileAuthorIdPubId);
+            FileInputStream fis = new FileInputStream(file_AuthorID_PaperID);
             Reader reader = new InputStreamReader(fis, "UTF8");
             BufferedReader bufferReader = new BufferedReader(reader);
             bufferReader.readLine();
@@ -114,19 +78,37 @@ public class AuthorGraph {
         }
     }
 
-    /**
-     * Load testing data from 2 text files [NearTesting]AuthorId_PaperID.txt and
-     * [FarTesting]AuthorId_PaperID.txt put into HashMaps are: nearTestingData,
-     * farTestingData
-     *
-     * @param fileNearTestingData
-     * @param fileFarTestingData
-     */
-    public void LoadTestingData(String fileNearTestingData, String fileFarTestingData) {
+    public void loadTrainingData_PaperID_Year_File(String file_PaperID_Year) {
+        try {
+            paperId_year = new HashMap<>();
+            FileInputStream fis = new FileInputStream(file_PaperID_Year);
+            Reader reader = new InputStreamReader(fis, "UTF8");
+            BufferedReader bufferReader = new BufferedReader(reader);
+            bufferReader.readLine();
+            String line = null;
+            String[] tokens;
+            int paperId;
+            Integer year;
+            while ((line = bufferReader.readLine()) != null) {
+                tokens = line.split("\t");
+                paperId = Integer.parseInt(tokens[0]);
+                if (tokens.length <= 1) {
+                    year = 0;
+                } else {
+                    year = Integer.parseInt(tokens[1]);
+                }
+                paperId_year.put(paperId, year);
+            }
+            bufferReader.close();
+        } catch (Exception e) {
+        }
+    }
+
+    public void loadTestingData_GroundTruthFile(String fileGroundTruth) {
         HashMap<Integer, ArrayList<Integer>> paperAuthorTmp = new HashMap<>();
         try {
             nearTestingData = new HashMap<>();
-            FileInputStream fis = new FileInputStream(fileNearTestingData);
+            FileInputStream fis = new FileInputStream(fileGroundTruth);
             Reader reader = new InputStreamReader(fis, "UTF8");
             BufferedReader bufferReader = new BufferedReader(reader);
             bufferReader.readLine();
@@ -152,6 +134,7 @@ public class AuthorGraph {
             }
             bufferReader.close();
         } catch (Exception e) {
+            e.printStackTrace();
         }
 
         for (int paperId : paperAuthorTmp.keySet()) {
@@ -171,56 +154,6 @@ public class AuthorGraph {
                 }
             }
         }
-
-        // Loading for the FarFuture Network
-        paperAuthorTmp.clear();
-        try {
-            farTestingData = new HashMap<>();
-            FileInputStream fis = new FileInputStream(fileFarTestingData);
-            Reader reader = new InputStreamReader(fis, "UTF8");
-            BufferedReader bufferReader = new BufferedReader(reader);
-            bufferReader.readLine();
-            String line = null;
-            String[] tokens;
-            int authorId;
-            int paperId;
-            while ((line = bufferReader.readLine()) != null) {
-                tokens = line.split("\t");
-                if (tokens.length != 2) {
-                    continue;
-                }
-
-                authorId = Integer.parseInt(tokens[0]);
-                paperId = Integer.parseInt(tokens[1]);
-
-                ArrayList<Integer> listAuthor = paperAuthorTmp.get(paperId);
-                if (listAuthor == null) {
-                    listAuthor = new ArrayList<>();
-                }
-                listAuthor.add(authorId);
-                paperAuthorTmp.put(paperId, listAuthor);
-            }
-            bufferReader.close();
-        } catch (Exception e) {
-        }
-
-        for (int paperId : paperAuthorTmp.keySet()) {
-            ArrayList<Integer> listAuthorId = paperAuthorTmp.get(paperId);
-            for (int authorId1 : listAuthorId) {
-                for (int authorId2 : listAuthorId) {
-                    if (authorId2 > authorId1) {
-                        ArrayList<Integer> listCollaboration = farTestingData.get(authorId1);
-                        if (listCollaboration == null) {
-                            listCollaboration = new ArrayList<>();
-                        }
-                        if (!listCollaboration.contains(authorId2)) {
-                            listCollaboration.add(authorId2);
-                            farTestingData.put(authorId1, listCollaboration);
-                        }
-                    }
-                }
-            }
-        }
     }
 
     /**
@@ -229,7 +162,7 @@ public class AuthorGraph {
      * @param k
      * @param year
      */
-    public void BuildAllGraph(float k, int year) {
+    public void BuildAllCoAuthorGraph(float k, int year) {
         BuildCoAuthorGraph();
         BuildNearFarCoAuthorGraph(year);
         BuildingRSSGraph();
@@ -425,21 +358,6 @@ public class AuthorGraph {
         return listAuthor;
     }
 
-    public HashSet<Integer> GetAllAuthorFarTest() {
-        HashSet<Integer> listAuthor = new HashSet<>();
-        for (int aid : farTestingData.keySet()) {
-            if (!listAuthor.contains(aid)) {
-                listAuthor.add(aid);
-            }
-            for (int aid2 : farTestingData.get(aid)) {
-                if (!listAuthor.contains(aid2)) {
-                    listAuthor.add(aid2);
-                }
-            }
-        }
-        return listAuthor;
-    }
-    
     public boolean isLinkExistInRSSGraph(HashMap<Integer, HashMap<Integer, Float>> rssGraph, int authorID1, int authorID2) {
         boolean found = false;
         if (rssGraph.containsKey(authorID1)) {
@@ -452,15 +370,15 @@ public class AuthorGraph {
                 found = true;
             }
         }
-        
+
         return found;
     }
-    
+
     public boolean isLinkExistInFutureNet(HashMap<Integer, ArrayList<Integer>> futureGraph, int authorID1, int authorID2) {
         boolean found = false;
         if (futureGraph.containsKey(authorID1)) {
             ArrayList<Integer> listCoAuthor = futureGraph.get(authorID1);
-            for (int i=0; i<listCoAuthor.size(); i++){
+            for (int i = 0; i < listCoAuthor.size(); i++) {
                 int coAuthorID = listCoAuthor.get(i);
                 if (coAuthorID == authorID2) {
                     found = true;
@@ -469,14 +387,14 @@ public class AuthorGraph {
         }
         if (futureGraph.containsKey(authorID2)) {
             ArrayList<Integer> listCoAuthor = futureGraph.get(authorID2);
-            for (int i=0; i<listCoAuthor.size(); i++){
+            for (int i = 0; i < listCoAuthor.size(); i++) {
                 int coAuthorID = listCoAuthor.get(i);
                 if (coAuthorID == authorID1) {
                     found = true;
                 }
             }
         }
-        
+
         return found;
     }
 

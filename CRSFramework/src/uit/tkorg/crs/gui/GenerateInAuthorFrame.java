@@ -424,7 +424,7 @@ public class GenerateInAuthorFrame extends javax.swing.JDialog {
                                     txtTrainingAuthorIDPaperIDNF.getText(),
                                     txtTrainingAuthorIDPaperIDFF.getText(),
                                     txtSaveTo.getText(), checkIncludedGroupDegree.isSelected());
-        experimentSetting.generateAuthorList(option);
+       //experimentSetting.generateAuthorList(option);
         System.out.println("DONE" + "\n");
     }//GEN-LAST:event_jButtonGenerateActionPerformed
 

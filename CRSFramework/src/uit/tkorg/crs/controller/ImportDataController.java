@@ -11,21 +11,15 @@ import uit.tkorg.crs.model.AuthorGraph;
  *
  * @author Huynh Ngoc Tin
  */
-public class CRSMainController {
+public class ImportDataController {
+    private static ImportDataController instance;
     private AuthorGraph authorGraph = AuthorGraph.getInstance();
-    private HashMap<Integer, String> listRandomAuthor;
-    
-    public void loadDataIntoModel() {
-       // coAuthorGraph.LoadTrainingData(_training_PaperId_AuthorIdPath, _training_PaperId_YearPath);
-       // coAuthorGraph.LoadTestingData(_testing_PaperId_Year_NFPath, _testing_PaperId_Year_FFPath);
-    }
-    
-    public void runRecommendation() {
-        
-    }
-    
-    public void runEvaluation() {
-        
+
+    public static ImportDataController getInstance() {
+        if (instance == null) {
+            instance = new ImportDataController();
+        }
+        return instance;
     }
     
     public void load_AuthorID_PaperID(String trainingFile_AuthorID_PaperID) {
@@ -33,7 +27,7 @@ public class CRSMainController {
     }
     
     public void load_PaperID_Year(String trainingFile_PaperID_Year) {
-        authorGraph.loadTrainingData_AuthorID_PaperID_File(trainingFile_PaperID_Year);
+        authorGraph.loadTrainingData_PaperID_Year_File(trainingFile_PaperID_Year);
     }
     
     public void load_Ground_Truth_File(String testingFile_AuthorID_PaperID){
@@ -42,8 +36,8 @@ public class CRSMainController {
     
     public void loadInputRandomAuthor(String inputAuthorFile) {
         try {
-            if (listRandomAuthor == null || listRandomAuthor.size() == 0) {
-                listRandomAuthor = new HashMap<>();
+            if (authorGraph.listRandomAuthor == null || authorGraph.listRandomAuthor.size() == 0) {
+                authorGraph.listRandomAuthor = new HashMap<>();
                 // <editor-fold defaultstate="collapsed" desc="Load Author">
                 try {
                     FileInputStream fis = new FileInputStream(inputAuthorFile);
@@ -63,7 +57,7 @@ public class CRSMainController {
                             } else {
                                 groupLMD = tokens[1];
                             }
-                            listRandomAuthor.put(authorId, groupLMD);
+                            authorGraph.listRandomAuthor.put(authorId, groupLMD);
                         }
                     }
                     bufferReader.close();

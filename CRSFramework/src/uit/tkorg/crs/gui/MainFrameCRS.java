@@ -1,16 +1,31 @@
 package uit.tkorg.crs.gui;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.io.File;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFileChooser;
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.filechooser.FileFilter;
+import uit.tkorg.crs.controller.ImportDataController;
+import uit.tkorg.crs.controller.RecommendationController;
+import uit.tkorg.crs.model.AuthorGraph;
 
 /**
  *
  * @author Huynh Ngoc Tin
  */
-public class MainFrameCRS extends javax.swing.JFrame {
-
+public class MainFrameCRS extends javax.swing.JFrame {   
+    private ImportDataController loadDataController = ImportDataController.getInstance();
+    
     public MainFrameCRS() {
         initComponents();
         this.setTitle("CRS Framework");
@@ -26,8 +41,6 @@ public class MainFrameCRS extends javax.swing.JFrame {
         jButton3 = new javax.swing.JButton();
         LoadSampleData = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
-        jPanel2 = new javax.swing.JPanel();
-        StatusBarLabel = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         ConsoleTextArea = new javax.swing.JTextArea();
@@ -37,9 +50,17 @@ public class MainFrameCRS extends javax.swing.JFrame {
         jPanel8 = new javax.swing.JPanel();
         DataDescriptionTabPane = new javax.swing.JTabbedPane();
         AuthorFilePane = new javax.swing.JPanel();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        jTextArea2 = new javax.swing.JTextArea();
         jPanel9 = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        authorIDPaperIDTextArea = new javax.swing.JTextArea();
         jPanel10 = new javax.swing.JPanel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jTextPane1 = new javax.swing.JTextPane();
         jPanel11 = new javax.swing.JPanel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
         jPanel12 = new javax.swing.JPanel();
         SelectAuthorIDPaperIDFile = new javax.swing.JButton();
         SelectPaperIDYearFile = new javax.swing.JButton();
@@ -48,13 +69,13 @@ public class MainFrameCRS extends javax.swing.JFrame {
         SelectGroundTruth = new javax.swing.JButton();
         jPanel6 = new javax.swing.JPanel();
         jPanel14 = new javax.swing.JPanel();
-        jCheckBox1 = new javax.swing.JCheckBox();
-        jCheckBox2 = new javax.swing.JCheckBox();
-        jCheckBox3 = new javax.swing.JCheckBox();
-        jCheckBox4 = new javax.swing.JCheckBox();
-        jCheckBox5 = new javax.swing.JCheckBox();
-        jCheckBox6 = new javax.swing.JCheckBox();
-        jCheckBox7 = new javax.swing.JCheckBox();
+        jCheckBoxCosine = new javax.swing.JCheckBox();
+        jCheckBoxJaccard = new javax.swing.JCheckBox();
+        jCheckBoxAdamicAdar = new javax.swing.JCheckBox();
+        jCheckBoxRSS = new javax.swing.JCheckBox();
+        jCheckBoxMPRS = new javax.swing.JCheckBox();
+        jCheckBoxRSSPlus = new javax.swing.JCheckBox();
+        jCheckBoxMPRSPlus = new javax.swing.JCheckBox();
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
@@ -62,20 +83,20 @@ public class MainFrameCRS extends javax.swing.JFrame {
         jButton8 = new javax.swing.JButton();
         jButton9 = new javax.swing.JButton();
         jButton10 = new javax.swing.JButton();
-        jCheckBox8 = new javax.swing.JCheckBox();
+        jCheckBoxTrust = new javax.swing.JCheckBox();
         jButton12 = new javax.swing.JButton();
         jPanel15 = new javax.swing.JPanel();
         jTextField1 = new javax.swing.JTextField();
         jPanel16 = new javax.swing.JPanel();
-        jTextField2 = new javax.swing.JTextField();
-        jButton11 = new javax.swing.JButton();
+        jTextFieldTopN = new javax.swing.JTextField();
+        jButtonRecommend = new javax.swing.JButton();
         jPanel17 = new javax.swing.JPanel();
-        jCheckBox9 = new javax.swing.JCheckBox();
+        jCheckBoxTFIDF = new javax.swing.JCheckBox();
         jButton13 = new javax.swing.JButton();
-        jCheckBox10 = new javax.swing.JCheckBox();
+        jCheckBoxLDA = new javax.swing.JCheckBox();
         jButton14 = new javax.swing.JButton();
         jPanel19 = new javax.swing.JPanel();
-        jCheckBox11 = new javax.swing.JCheckBox();
+        jCheckBoxHybridTFIDFAndRSSPlus = new javax.swing.JCheckBox();
         jButton15 = new javax.swing.JButton();
         jCheckBox12 = new javax.swing.JCheckBox();
         jButton16 = new javax.swing.JButton();
@@ -134,51 +155,34 @@ public class MainFrameCRS extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(204, 204, 204));
 
-        jPanel2.setBackground(new java.awt.Color(204, 204, 204));
-        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Status"));
-
-        StatusBarLabel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        StatusBarLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(StatusBarLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(StatusBarLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE))
-        );
-
-        StatusBarLabel.getAccessibleContext().setAccessibleName("Status");
-
         jPanel3.setBackground(new java.awt.Color(204, 204, 204));
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Console"));
 
         ConsoleTextArea.setEditable(false);
         ConsoleTextArea.setColumns(20);
         ConsoleTextArea.setRows(5);
+        ConsoleTextArea.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                ConsoleTextAreaMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(ConsoleTextArea);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 1019, Short.MAX_VALUE)
             .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 671, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 130, Short.MAX_VALUE)
+            .addGap(0, 178, Short.MAX_VALUE)
             .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE))
+                .addGroup(jPanel3Layout.createSequentialGroup()
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 167, Short.MAX_VALUE)
+                    .addContainerGap()))
         );
 
         jPanel4.setBackground(new java.awt.Color(204, 204, 204));
@@ -190,54 +194,87 @@ public class MainFrameCRS extends javax.swing.JFrame {
         jPanel8.setBackground(new java.awt.Color(204, 204, 204));
         jPanel8.setBorder(javax.swing.BorderFactory.createTitledBorder("Data Description"));
 
+        jTextArea2.setEditable(false);
+        jTextArea2.setColumns(20);
+        jTextArea2.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
+        jTextArea2.setRows(5);
+        jTextArea2.setText("- Each line is a input authorID for testing co-author link prediction.\n\n- An example of the Inputed AuthorID file:\nAuthorId\n1\n2\n3\n\n");
+        jScrollPane5.setViewportView(jTextArea2);
+
         javax.swing.GroupLayout AuthorFilePaneLayout = new javax.swing.GroupLayout(AuthorFilePane);
         AuthorFilePane.setLayout(AuthorFilePaneLayout);
         AuthorFilePaneLayout.setHorizontalGroup(
             AuthorFilePaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1021, Short.MAX_VALUE)
+            .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 1009, Short.MAX_VALUE)
         );
         AuthorFilePaneLayout.setVerticalGroup(
             AuthorFilePaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 128, Short.MAX_VALUE)
+            .addGroup(AuthorFilePaneLayout.createSequentialGroup()
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 50, Short.MAX_VALUE))
         );
 
         DataDescriptionTabPane.addTab("Input Authors File", AuthorFilePane);
+
+        authorIDPaperIDTextArea.setEditable(false);
+        authorIDPaperIDTextArea.setColumns(20);
+        authorIDPaperIDTextArea.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
+        authorIDPaperIDTextArea.setRows(5);
+        authorIDPaperIDTextArea.setText("- The \\Tab character is  used to seperate AuthorID and PaperID on a line.\n\n- An example of the AuthorID_PaperID file:\nAuthorId\t PaperId\n1\t1\n2\t1\n\n");
+        jScrollPane2.setViewportView(authorIDPaperIDTextArea);
 
         javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
         jPanel9.setLayout(jPanel9Layout);
         jPanel9Layout.setHorizontalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1021, Short.MAX_VALUE)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 1009, Short.MAX_VALUE)
         );
         jPanel9Layout.setVerticalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 128, Short.MAX_VALUE)
+            .addGroup(jPanel9Layout.createSequentialGroup()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 49, Short.MAX_VALUE))
         );
 
         DataDescriptionTabPane.addTab("AuthorID_PaperID File", jPanel9);
+
+        jTextPane1.setEditable(false);
+        jTextPane1.setText("- The \\Tab character is  used to seperate PaperID and Year on a line.\n\n- An example of the PaperID_Year file:\nPaperID\t Year\n1\t2001\n2\t2002");
+        jScrollPane3.setViewportView(jTextPane1);
 
         javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
         jPanel10.setLayout(jPanel10Layout);
         jPanel10Layout.setHorizontalGroup(
             jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1021, Short.MAX_VALUE)
+            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 1009, Short.MAX_VALUE)
         );
         jPanel10Layout.setVerticalGroup(
             jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 128, Short.MAX_VALUE)
+            .addGroup(jPanel10Layout.createSequentialGroup()
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 49, Short.MAX_VALUE))
         );
 
         DataDescriptionTabPane.addTab("PaperID_Year", jPanel10);
+
+        jTextArea1.setEditable(false);
+        jTextArea1.setColumns(20);
+        jTextArea1.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
+        jTextArea1.setRows(5);
+        jTextArea1.setText("- The \\Tab character is  used to seperate AuthorID and PaperID on a line in the Ground-Truth file.\n\n- An example of the Ground-Truth file:\nAuthorID\t PaperID\n1\t5\n2\t5");
+        jScrollPane4.setViewportView(jTextArea1);
 
         javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
         jPanel11.setLayout(jPanel11Layout);
         jPanel11Layout.setHorizontalGroup(
             jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1021, Short.MAX_VALUE)
+            .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 1009, Short.MAX_VALUE)
         );
         jPanel11Layout.setVerticalGroup(
             jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 128, Short.MAX_VALUE)
+            .addGroup(jPanel11Layout.createSequentialGroup()
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 48, Short.MAX_VALUE))
         );
 
         DataDescriptionTabPane.addTab("AuthorID_PaperID Ground Truth File", jPanel11);
@@ -262,11 +299,21 @@ public class MainFrameCRS extends javax.swing.JFrame {
         SelectAuthorIDPaperIDFile.setText("Browse..."); // NOI18N
         SelectAuthorIDPaperIDFile.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "AuthorID_PaperID File", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.TOP));
         SelectAuthorIDPaperIDFile.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        SelectAuthorIDPaperIDFile.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SelectAuthorIDPaperIDFileActionPerformed(evt);
+            }
+        });
 
         SelectPaperIDYearFile.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         SelectPaperIDYearFile.setText("Browse..."); // NOI18N
         SelectPaperIDYearFile.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "PaperID_Year File", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.TOP));
         SelectPaperIDYearFile.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        SelectPaperIDYearFile.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SelectPaperIDYearFileActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel12Layout = new javax.swing.GroupLayout(jPanel12);
         jPanel12.setLayout(jPanel12Layout);
@@ -296,11 +343,21 @@ public class MainFrameCRS extends javax.swing.JFrame {
         SelectInputAuthors.setText("Browse..."); // NOI18N
         SelectInputAuthors.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Input Authors File", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.TOP));
         SelectInputAuthors.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        SelectInputAuthors.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SelectInputAuthorsActionPerformed(evt);
+            }
+        });
 
         SelectGroundTruth.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         SelectGroundTruth.setText("Browse..."); // NOI18N
         SelectGroundTruth.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Ground Truth File", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.TOP));
         SelectGroundTruth.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        SelectGroundTruth.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SelectGroundTruthActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel13Layout = new javax.swing.GroupLayout(jPanel13);
         jPanel13.setLayout(jPanel13Layout);
@@ -342,7 +399,7 @@ public class MainFrameCRS extends javax.swing.JFrame {
                     .addComponent(jPanel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         jTabbedPane2.addTab("Step 1: Import Data", jPanel5);
@@ -353,26 +410,26 @@ public class MainFrameCRS extends javax.swing.JFrame {
         jPanel14.setBackground(new java.awt.Color(204, 204, 204));
         jPanel14.setBorder(javax.swing.BorderFactory.createTitledBorder("Link Based Algorithms"));
 
-        jCheckBox1.setBackground(new java.awt.Color(204, 204, 204));
-        jCheckBox1.setText("Cosine");
+        jCheckBoxCosine.setBackground(new java.awt.Color(204, 204, 204));
+        jCheckBoxCosine.setText("Cosine");
 
-        jCheckBox2.setBackground(new java.awt.Color(204, 204, 204));
-        jCheckBox2.setText("Jaccard");
+        jCheckBoxJaccard.setBackground(new java.awt.Color(204, 204, 204));
+        jCheckBoxJaccard.setText("Jaccard");
 
-        jCheckBox3.setBackground(new java.awt.Color(204, 204, 204));
-        jCheckBox3.setText("Adamic Adar");
+        jCheckBoxAdamicAdar.setBackground(new java.awt.Color(204, 204, 204));
+        jCheckBoxAdamicAdar.setText("Adamic Adar");
 
-        jCheckBox4.setBackground(new java.awt.Color(204, 204, 204));
-        jCheckBox4.setText("RSS");
+        jCheckBoxRSS.setBackground(new java.awt.Color(204, 204, 204));
+        jCheckBoxRSS.setText("RSS");
 
-        jCheckBox5.setBackground(new java.awt.Color(204, 204, 204));
-        jCheckBox5.setText("MPRS");
+        jCheckBoxMPRS.setBackground(new java.awt.Color(204, 204, 204));
+        jCheckBoxMPRS.setText("MPRS");
 
-        jCheckBox6.setBackground(new java.awt.Color(204, 204, 204));
-        jCheckBox6.setText("RSS+");
+        jCheckBoxRSSPlus.setBackground(new java.awt.Color(204, 204, 204));
+        jCheckBoxRSSPlus.setText("RSS+");
 
-        jCheckBox7.setBackground(new java.awt.Color(204, 204, 204));
-        jCheckBox7.setText("MPRS+");
+        jCheckBoxMPRSPlus.setBackground(new java.awt.Color(204, 204, 204));
+        jCheckBoxMPRSPlus.setText("MPRS+");
 
         jButton4.setText("Config");
 
@@ -388,8 +445,8 @@ public class MainFrameCRS extends javax.swing.JFrame {
 
         jButton10.setText("Config");
 
-        jCheckBox8.setBackground(new java.awt.Color(204, 204, 204));
-        jCheckBox8.setText("Trust");
+        jCheckBoxTrust.setBackground(new java.awt.Color(204, 204, 204));
+        jCheckBoxTrust.setText("Trust");
 
         jButton12.setText("Config");
 
@@ -400,14 +457,14 @@ public class MainFrameCRS extends javax.swing.JFrame {
             .addGroup(jPanel14Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jCheckBox8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jCheckBox6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jCheckBox5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jCheckBox4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jCheckBox3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
-                    .addComponent(jCheckBox2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jCheckBox1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jCheckBox7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jCheckBoxTrust, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jCheckBoxRSSPlus, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jCheckBoxMPRS, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jCheckBoxRSS, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jCheckBoxAdamicAdar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
+                    .addComponent(jCheckBoxJaccard, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jCheckBoxCosine, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jCheckBoxMPRSPlus, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jButton10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -425,36 +482,36 @@ public class MainFrameCRS extends javax.swing.JFrame {
             .addGroup(jPanel14Layout.createSequentialGroup()
                 .addGroup(jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel14Layout.createSequentialGroup()
-                        .addComponent(jCheckBox1)
+                        .addComponent(jCheckBoxCosine)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jCheckBox2)
+                            .addComponent(jCheckBoxJaccard)
                             .addComponent(jButton6)))
                     .addComponent(jButton4))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jCheckBox3)
+                    .addComponent(jCheckBoxAdamicAdar)
                     .addComponent(jButton5))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jButton7)
                     .addGroup(jPanel14Layout.createSequentialGroup()
-                        .addComponent(jCheckBox4)
+                        .addComponent(jCheckBoxRSS)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jCheckBox5)
+                            .addComponent(jCheckBoxMPRS)
                             .addComponent(jButton8))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jCheckBox6)
+                            .addComponent(jCheckBoxRSSPlus)
                             .addComponent(jButton9))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jCheckBox7)
+                            .addComponent(jCheckBoxMPRSPlus)
                             .addComponent(jButton10))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jCheckBox8)
+                    .addComponent(jCheckBoxTrust)
                     .addComponent(jButton12))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -481,8 +538,8 @@ public class MainFrameCRS extends javax.swing.JFrame {
         jPanel16.setBackground(new java.awt.Color(204, 204, 204));
         jPanel16.setBorder(javax.swing.BorderFactory.createTitledBorder("TopN"));
 
-        jTextField2.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        jTextField2.setText("100");
+        jTextFieldTopN.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        jTextFieldTopN.setText("100");
 
         javax.swing.GroupLayout jPanel16Layout = new javax.swing.GroupLayout(jPanel16);
         jPanel16.setLayout(jPanel16Layout);
@@ -490,29 +547,34 @@ public class MainFrameCRS extends javax.swing.JFrame {
             jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel16Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jTextFieldTopN, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel16Layout.setVerticalGroup(
             jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jTextFieldTopN, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
-        jTextField2.getAccessibleContext().setAccessibleName("TopN");
+        jTextFieldTopN.getAccessibleContext().setAccessibleName("TopN");
 
-        jButton11.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jButton11.setText("Recommend");
+        jButtonRecommend.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jButtonRecommend.setText("Recommend");
+        jButtonRecommend.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonRecommendActionPerformed(evt);
+            }
+        });
 
         jPanel17.setBackground(new java.awt.Color(204, 204, 204));
         jPanel17.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder("CB Algorithms")));
 
-        jCheckBox9.setBackground(new java.awt.Color(204, 204, 204));
-        jCheckBox9.setText("TFIDF");
+        jCheckBoxTFIDF.setBackground(new java.awt.Color(204, 204, 204));
+        jCheckBoxTFIDF.setText("TFIDF");
 
         jButton13.setText("Config");
 
-        jCheckBox10.setBackground(new java.awt.Color(204, 204, 204));
-        jCheckBox10.setText("LDA");
+        jCheckBoxLDA.setBackground(new java.awt.Color(204, 204, 204));
+        jCheckBoxLDA.setText("LDA");
 
         jButton14.setText("Config");
 
@@ -523,8 +585,8 @@ public class MainFrameCRS extends javax.swing.JFrame {
             .addGroup(jPanel17Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jCheckBox9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jCheckBox10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jCheckBoxTFIDF, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jCheckBoxLDA, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jButton14)
@@ -536,11 +598,11 @@ public class MainFrameCRS extends javax.swing.JFrame {
             .addGroup(jPanel17Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jCheckBox9)
+                    .addComponent(jCheckBoxTFIDF)
                     .addComponent(jButton13))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jCheckBox10)
+                    .addComponent(jCheckBoxLDA)
                     .addComponent(jButton14))
                 .addContainerGap(37, Short.MAX_VALUE))
         );
@@ -548,8 +610,8 @@ public class MainFrameCRS extends javax.swing.JFrame {
         jPanel19.setBackground(new java.awt.Color(204, 204, 204));
         jPanel19.setBorder(javax.swing.BorderFactory.createTitledBorder("Hybrid Algorithms"));
 
-        jCheckBox11.setBackground(new java.awt.Color(204, 204, 204));
-        jCheckBox11.setText("Linear (TFIDF & RSS+)");
+        jCheckBoxHybridTFIDFAndRSSPlus.setBackground(new java.awt.Color(204, 204, 204));
+        jCheckBoxHybridTFIDFAndRSSPlus.setText("Linear (TFIDF & RSS+)");
 
         jButton15.setText("Config");
 
@@ -564,7 +626,7 @@ public class MainFrameCRS extends javax.swing.JFrame {
             jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel19Layout.createSequentialGroup()
                 .addGroup(jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jCheckBox11)
+                    .addComponent(jCheckBoxHybridTFIDFAndRSSPlus)
                     .addComponent(jCheckBox12))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -576,7 +638,7 @@ public class MainFrameCRS extends javax.swing.JFrame {
             jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel19Layout.createSequentialGroup()
                 .addGroup(jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jCheckBox11)
+                    .addComponent(jCheckBoxHybridTFIDFAndRSSPlus)
                     .addComponent(jButton15))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -600,7 +662,7 @@ public class MainFrameCRS extends javax.swing.JFrame {
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jPanel19, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jPanel17, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(jButtonRecommend, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addGap(72, 619, Short.MAX_VALUE))
         );
         jPanel6Layout.setVerticalGroup(
@@ -616,7 +678,7 @@ public class MainFrameCRS extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel16, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jButtonRecommend, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(32, 32, 32)
                 .addComponent(jPanel15, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
@@ -647,7 +709,7 @@ public class MainFrameCRS extends javax.swing.JFrame {
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane2, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addComponent(jTabbedPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 1031, Short.MAX_VALUE)
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -663,7 +725,6 @@ public class MainFrameCRS extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
@@ -674,12 +735,8 @@ public class MainFrameCRS extends javax.swing.JFrame {
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(25, 25, 25))
+                .addGap(30, 30, 30))
         );
-
-        jPanel2.getAccessibleContext().setAccessibleDescription("Status");
 
         jMenu1.setText("File");
 
@@ -710,19 +767,16 @@ public class MainFrameCRS extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, 1043, Short.MAX_VALUE)
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, 1031, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 602, Short.MAX_VALUE))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                    .addGap(0, 100, Short.MAX_VALUE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 561, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 561, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         getAccessibleContext().setAccessibleName("MainFrameCRS");
@@ -734,9 +788,157 @@ public class MainFrameCRS extends javax.swing.JFrame {
         System.exit(1);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
+    private void SelectAuthorIDPaperIDFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SelectAuthorIDPaperIDFileActionPerformed
+        final JFileChooser fc = new JFileChooser();
+        fc.setFileFilter(new FileFilter() {
+            @Override
+            public boolean accept(File file) {
+                String fileName = file.getName().toLowerCase();
+                return fileName.endsWith(".txt") || !fileName.contains(".");
+            }
+
+            @Override
+            public String getDescription() {
+                return ".txt";
+            }
+        });
+
+        int returnValue = fc.showOpenDialog(this);
+        if (returnValue == JFileChooser.APPROVE_OPTION) {
+            File file = fc.getSelectedFile();
+            ConsoleTextArea.setText(ConsoleTextArea.getText() + "Loading AuthorID_PaperID file ... ");
+            loadDataController.load_AuthorID_PaperID(file.getPath());
+            ConsoleTextArea.setText(ConsoleTextArea.getText() + "Done \n");
+        }                
+    }//GEN-LAST:event_SelectAuthorIDPaperIDFileActionPerformed
+
+    private void SelectPaperIDYearFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SelectPaperIDYearFileActionPerformed
+        // TODO add your handling code here:
+        final JFileChooser fc = new JFileChooser();
+        fc.setFileFilter(new FileFilter() {
+            @Override
+            public boolean accept(File file) {
+                String fileName = file.getName().toLowerCase();
+                return fileName.endsWith(".txt") || !fileName.contains(".");
+            }
+
+            @Override
+            public String getDescription() {
+                return ".txt";
+            }
+        });
+
+        int returnValue = fc.showOpenDialog(this);
+        if (returnValue == JFileChooser.APPROVE_OPTION) {
+            File file = fc.getSelectedFile();
+            ConsoleTextArea.setText(ConsoleTextArea.getText() + "Loading PaperID_Year file ... ");
+            loadDataController.load_PaperID_Year(file.getPath());
+            ConsoleTextArea.setText(ConsoleTextArea.getText() + "Done \n");
+        }
+    }//GEN-LAST:event_SelectPaperIDYearFileActionPerformed
+
+    private void SelectInputAuthorsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SelectInputAuthorsActionPerformed
+        final JFileChooser fc = new JFileChooser();
+        fc.setFileFilter(new FileFilter() {
+            @Override
+            public boolean accept(File file) {
+                String fileName = file.getName().toLowerCase();
+                return fileName.endsWith(".txt") || !fileName.contains(".");
+            }
+
+            @Override
+            public String getDescription() {
+                return ".txt";
+            }
+        });
+
+        int returnValue = fc.showOpenDialog(this);
+        if (returnValue == JFileChooser.APPROVE_OPTION) {
+            File file = fc.getSelectedFile();
+            ConsoleTextArea.setText(ConsoleTextArea.getText() +  "Loading Input_Randon_Author file ... ");
+            loadDataController.loadInputRandomAuthor(file.getPath());
+            ConsoleTextArea.setText(ConsoleTextArea.getText() + 
+                    "Done \n");
+        }    
+    }//GEN-LAST:event_SelectInputAuthorsActionPerformed
+
+    private void SelectGroundTruthActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SelectGroundTruthActionPerformed
+        final JFileChooser fc = new JFileChooser();
+        fc.setFileFilter(new FileFilter() {
+            @Override
+            public boolean accept(File file) {
+                String fileName = file.getName().toLowerCase();
+                return fileName.endsWith(".txt") || !fileName.contains(".");
+            }
+
+            @Override
+            public String getDescription() {
+                return ".txt";
+            }
+        });
+
+        int returnValue = fc.showOpenDialog(this);
+        if (returnValue == JFileChooser.APPROVE_OPTION) {
+            File file = fc.getSelectedFile();
+            ConsoleTextArea.setText(ConsoleTextArea.getText() +  "Loading Ground-Truth file ... ");
+            loadDataController.load_Ground_Truth_File(file.getPath());
+            ConsoleTextArea.setText(ConsoleTextArea.getText() + "Done \n");
+        } 
+    }//GEN-LAST:event_SelectGroundTruthActionPerformed
+
+    private void jButtonRecommendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRecommendActionPerformed
+        RecommendationController recommendationController = new RecommendationController(
+                jCheckBoxCosine.isSelected(), jCheckBoxJaccard.isSelected(), 
+                jCheckBoxAdamicAdar.isSelected(), jCheckBoxRSS.isSelected(),
+                jCheckBoxRSSPlus.isSelected(), jCheckBoxMPRS.isSelected(),
+                jCheckBoxMPRSPlus.isSelected(), jCheckBoxTrust.isSelected(),
+                jCheckBoxTFIDF.isSelected(), jCheckBoxLDA.isSelected(),
+                jCheckBoxHybridTFIDFAndRSSPlus.isSelected(), 
+                Integer.valueOf(jTextFieldTopN.getText()),
+                2005,
+                (float) 0.9,
+                false,
+                "C:\\2.CRS-Experiment\\DBLP\\Output\\OutputResult.txt"
+        );
+         
+        final DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        Date date = new Date();
+        String startRunningText = "Started Time : " + dateFormat.format(date) + "\n" 
+                + "START RUNNING EXPERIMENT" + "\n";
+        ConsoleTextArea.setText(ConsoleTextArea.getText() + startRunningText);
+             
+        // Running recommendation methods
+        String runningText = "Running Link Based Methods ... \n";
+        ConsoleTextArea.setText(ConsoleTextArea.getText() + runningText);
+        recommendationController.runLinkBasedMethods();
+        
+        runningText = "Running Content Based Methods ... \n";
+        ConsoleTextArea.setText(ConsoleTextArea.getText() + runningText);
+        recommendationController.runContentBasedMethods();
+        
+        runningText = "Running Link Based Methods ... \n";
+        ConsoleTextArea.setText(ConsoleTextArea.getText() + runningText);
+        recommendationController.runHybridMethods();
+        
+        String finishRunningText = "Finished time : " + dateFormat.format(date) + "\n" + "DONE" + "\n";
+        ConsoleTextArea.setText(ConsoleTextArea.getText() + finishRunningText);
+    }//GEN-LAST:event_jButtonRecommendActionPerformed
+
+    private void ConsoleTextAreaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ConsoleTextAreaMouseClicked
+        if (evt.getButton() == MouseEvent.BUTTON3) {
+            JPopupMenu consoleTextAreaPopUp = new JPopupMenu();
+            JMenuItem menuItemClear = new JMenuItem("Clear");
+            menuItemClear.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent ae) {
+                    ConsoleTextArea.setText(null);
+                }
+            });
+            consoleTextAreaPopUp.add(menuItemClear);
+            consoleTextAreaPopUp.show(evt.getComponent(), evt.getX(), evt.getY());
+        }
+    }//GEN-LAST:event_ConsoleTextAreaMouseClicked
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -782,17 +984,16 @@ public class MainFrameCRS extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel AuthorFilePane;
-    private javax.swing.JTextArea ConsoleTextArea;
+    public javax.swing.JTextArea ConsoleTextArea;
     private javax.swing.JTabbedPane DataDescriptionTabPane;
     private javax.swing.JButton LoadSampleData;
     private javax.swing.JButton SelectAuthorIDPaperIDFile;
     private javax.swing.JButton SelectGroundTruth;
     private javax.swing.JButton SelectInputAuthors;
     private javax.swing.JButton SelectPaperIDYearFile;
-    private javax.swing.JLabel StatusBarLabel;
+    private javax.swing.JTextArea authorIDPaperIDTextArea;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton10;
-    private javax.swing.JButton jButton11;
     private javax.swing.JButton jButton12;
     private javax.swing.JButton jButton13;
     private javax.swing.JButton jButton14;
@@ -806,18 +1007,19 @@ public class MainFrameCRS extends javax.swing.JFrame {
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
     private javax.swing.JButton jButton9;
-    private javax.swing.JCheckBox jCheckBox1;
-    private javax.swing.JCheckBox jCheckBox10;
-    private javax.swing.JCheckBox jCheckBox11;
+    private javax.swing.JButton jButtonRecommend;
     private javax.swing.JCheckBox jCheckBox12;
-    private javax.swing.JCheckBox jCheckBox2;
-    private javax.swing.JCheckBox jCheckBox3;
-    private javax.swing.JCheckBox jCheckBox4;
-    private javax.swing.JCheckBox jCheckBox5;
-    private javax.swing.JCheckBox jCheckBox6;
-    private javax.swing.JCheckBox jCheckBox7;
-    private javax.swing.JCheckBox jCheckBox8;
-    private javax.swing.JCheckBox jCheckBox9;
+    private javax.swing.JCheckBox jCheckBoxAdamicAdar;
+    private javax.swing.JCheckBox jCheckBoxCosine;
+    private javax.swing.JCheckBox jCheckBoxHybridTFIDFAndRSSPlus;
+    private javax.swing.JCheckBox jCheckBoxJaccard;
+    private javax.swing.JCheckBox jCheckBoxLDA;
+    private javax.swing.JCheckBox jCheckBoxMPRS;
+    private javax.swing.JCheckBox jCheckBoxMPRSPlus;
+    private javax.swing.JCheckBox jCheckBoxRSS;
+    private javax.swing.JCheckBox jCheckBoxRSSPlus;
+    private javax.swing.JCheckBox jCheckBoxTFIDF;
+    private javax.swing.JCheckBox jCheckBoxTrust;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
@@ -834,7 +1036,6 @@ public class MainFrameCRS extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel16;
     private javax.swing.JPanel jPanel17;
     private javax.swing.JPanel jPanel19;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
@@ -843,9 +1044,16 @@ public class MainFrameCRS extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JTabbedPane jTabbedPane2;
+    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JTextArea jTextArea2;
     private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
+    private javax.swing.JTextField jTextFieldTopN;
+    private javax.swing.JTextPane jTextPane1;
     private javax.swing.JToolBar jToolBar1;
     // End of variables declaration//GEN-END:variables
 }
