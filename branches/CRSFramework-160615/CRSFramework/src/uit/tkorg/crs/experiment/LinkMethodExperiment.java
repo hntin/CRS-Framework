@@ -31,7 +31,7 @@ import uit.tkorg.utility.common.TextFileUtility;
  */
 public class LinkMethodExperiment {
     
-     //<editor-fold defaultstate="collapsed" desc="Member Variables">
+    //<editor-fold defaultstate="collapsed" desc="Member Variables">
     private AuthorGraph _authorGraph = AuthorGraph.getInstance();
     private boolean _isCosineMethod;
     private boolean _isJaccardMethod;
@@ -97,7 +97,7 @@ public class LinkMethodExperiment {
 
         HashMap<Integer, HashMap<Integer, Float>> topSimilarity;
         //<editor-fold defaultstate="collapsed" desc="...">
-        _authorGraph.BuildAllCoAuthorGraph(_k, _year);
+        _authorGraph.buildAllCoAuthorGraph(_k, _year);
 
         //<editor-fold defaultstate="collapsed" desc="Execute different methods">
         HashMap<Integer, HashMap<Integer, Float>> cosineResult = null;
@@ -130,11 +130,11 @@ public class LinkMethodExperiment {
         }
         if (_isRSSPlusMethod) {
             System.out.println("Running RSSPlus ... ");
-            mpbvsplusResult = measureRSSPlus.process(_authorGraph.rtbvsGraph, _authorGraph.listRandomAuthor);
+            mpbvsplusResult = measureRSSPlus.process(_authorGraph.rssPlusGraph, _authorGraph.listRandomAuthor);
         }
         if (_isMPRSPlusMethod) {
             System.out.println("Running MPRSPlus ... ");
-            rssplusResult = measureMPRSPlus.process(_authorGraph.rtbvsGraph, _authorGraph.listRandomAuthor);
+            rssplusResult = measureMPRSPlus.process(_authorGraph.rssPlusGraph, _authorGraph.listRandomAuthor);
         }
         //</editor-fold>
 

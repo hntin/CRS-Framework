@@ -52,14 +52,14 @@ public class RSSPlus {
                 listRTBVS.put(aid, totalWeight);
             }
         }
-        _rtbvsData.put(authorId1, listRTBVS);
+        _rssPlusData.put(authorId1, listRTBVS);
     }
-    private HashMap<Integer, HashMap<Integer, Float>> _rtbvsData;
+    private HashMap<Integer, HashMap<Integer, Float>> _rssPlusData;
     private HashMap<Integer, HashMap<Integer, Float>> _graph;
 
     public HashMap<Integer, HashMap<Integer, Float>> process(HashMap<Integer, HashMap<Integer, Float>> graph,
             HashMap<Integer, String> listAuthor) {
-        _rtbvsData = new HashMap<>();
+        _rssPlusData = new HashMap<>();
         _graph = graph;
 
         Runtime runtime = Runtime.getRuntime();
@@ -78,6 +78,6 @@ public class RSSPlus {
         executor.shutdown();
         while (!executor.isTerminated()) {
         }
-        return _rtbvsData;
+        return _rssPlusData;
     }
 }

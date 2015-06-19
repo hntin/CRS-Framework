@@ -81,8 +81,8 @@ public class HybridMethodExperiment {
 //        System.out.println("FINISH LOADING TRAINING DATA");
 //
 //        // Building Graphs
-//        _graph.BuildCoAuthorGraph();
-//        _graph.BuildingRSSGraph();
+//        _graph.buildCoAuthorGraph();
+//        _graph.buildRSSGraph();
 //
 //        // Loading the list of inputed authors
 //        selectAuthorsForExperiment();

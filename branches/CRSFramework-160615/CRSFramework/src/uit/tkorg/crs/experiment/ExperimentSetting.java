@@ -91,8 +91,8 @@ public class ExperimentSetting {
 //            load_AuthorID_OrgID();
 //            _graph.LoadTrainingData(_file_TraingAuthorIDPaperID, _file_TraingPaperID_Year);
 //            _graph.LoadTestingData(_file_NF_AuthorIDPaperID, _file_FF_AuthorIDPaperID);
-//            _graph.BuildCoAuthorGraph();
-//            _graph.BuildingRSSGraph();
+//            _graph.buildCoAuthorGraph();
+//            _graph.buildRSSGraph();
 //        } catch (Exception ex) {
 //            ex.printStackTrace();
 //        }
