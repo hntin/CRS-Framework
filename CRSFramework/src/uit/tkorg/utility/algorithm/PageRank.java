@@ -146,8 +146,8 @@ public class PageRank {
                 "C:\\CRS-Experiment\\Sampledata\\Input\\Link-Net\\[Training]PaperID_Year.txt");
 
         // Building Graphs
-        _graph.BuildCoAuthorGraph();
-        _graph.BuildingRSSGraph();
+        _graph.buildCoAuthorGraph();
+        _graph.buildRSSGraph();
         
         HashMap temp1 = _graph.coAuthorGraph;
         HashMap temp2 = _graph.rssGraph;

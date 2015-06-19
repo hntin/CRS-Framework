@@ -15,29 +15,30 @@ import uit.tkorg.utility.algorithm.PageRank;
  * @author daolv
  */
 public class AuthorGraph {
-
+    //<editor-fold defaultstate="collapsed" desc="Member Variables">
     private static AuthorGraph _instance;
-
+    public HashMap<Integer, HashMap<Integer, Integer>> coAuthorGraph;
+    private HashMap<Integer, HashMap<Integer, Integer>> coAuthorGraphNear;
+    private HashMap<Integer, HashMap<Integer, Integer>> coAuthorGraphFar;
+    public HashMap<Integer, HashMap<Integer, Float>> rssGraph; //weighted, directed graph
+    public HashMap<Integer, HashMap<Integer, Float>> rssPlusGraph; //weighted, directed graph
+    public HashMap<Integer, HashMap<Integer, HashMap<Integer, Integer>>> timeCoAuthorGraph;
+    public HashMap<Integer, ArrayList<Integer>> nearTestingData; //non-weighted, non-directed graph <authorID, <Lis of CoAuthorID>>
+    public HashMap<Integer, Integer> paperId_year;
+    public HashMap<Integer, ArrayList<Integer>> authorPaper;
+    public HashMap<Integer, ArrayList<Integer>> paperAuthor;
+    public HashMap<Integer, String> listRandomAuthor;
+    // </editor-fold>
+    
     public static AuthorGraph getInstance() {
         if (_instance == null) {
             _instance = new AuthorGraph();
         }
         return _instance;
     }
-
-    public HashMap<Integer, HashMap<Integer, Integer>> coAuthorGraph;
-    private HashMap<Integer, HashMap<Integer, Integer>> coAuthorGraphNear;
-    private HashMap<Integer, HashMap<Integer, Integer>> coAuthorGraphFar;
-    public HashMap<Integer, HashMap<Integer, Float>> rssGraph; //weighted, directed graph
-    public HashMap<Integer, HashMap<Integer, Float>> rtbvsGraph; //weighted, directed graph
-    public HashMap<Integer, ArrayList<Integer>> nearTestingData; //non-weighted, non-directed graph <authorID, <Lis of CoAuthorID>>
-    public HashMap<Integer, Integer> paperId_year;
-    public HashMap<Integer, ArrayList<Integer>> authorPaper;
-    public HashMap<Integer, ArrayList<Integer>> paperAuthor;
-    public HashMap<Integer, String> listRandomAuthor;
-
     private AuthorGraph() {
         coAuthorGraph = new HashMap<>();
+        timeCoAuthorGraph = new HashMap<>();
         coAuthorGraphNear = new HashMap<>();
         coAuthorGraphFar = new HashMap<>();
     }
@@ -157,22 +158,22 @@ public class AuthorGraph {
     }
 
     /**
-     * Building all graphs
-     *
+     * building all graphs
      * @param k
      * @param year
      */
-    public void BuildAllCoAuthorGraph(float k, int year) {
-        BuildCoAuthorGraph();
-        BuildNearFarCoAuthorGraph(year);
-        BuildingRSSGraph();
-        BuildingTrendGraph(k, year);
+    public void buildAllCoAuthorGraph(float k, int year) {
+        buildExpFuntBasedCoAuthorGraph(2001, 2005);
+        //buildCoAuthorGraph();
+        //buildNearFarCoAuthorGraph(year);
+        //buildRSSGraph();
+        //buildRSSPlusGraph(k, year);
     }
 
     /**
-     * Build graphs coAuthorGraph (weight is number of collations), rssGraph
+     * Build graphs coAuthorGraph (weight is number of collations).
      */
-    public void BuildCoAuthorGraph() {
+    public void buildCoAuthorGraph() {
         for (int pubId : paperAuthor.keySet()) {
             ArrayList<Integer> listAuthors = paperAuthor.get(pubId);
             if (listAuthors.size() == 1 && !coAuthorGraph.containsKey(listAuthors.get(0))) {
@@ -200,13 +201,54 @@ public class AuthorGraph {
             }
         }
     }
+    
+    public void buildExpFuntBasedCoAuthorGraph(int firstYear, int lastYear){
+        for (int paperID : paperAuthor.keySet()) {
+            int yearOfPaper = paperId_year.get(paperID);
+            int deltaTime = lastYear - yearOfPaper;
+            ArrayList<Integer> listAuthors = paperAuthor.get(paperID);
+            if (listAuthors.size() == 1 && !timeCoAuthorGraph.containsKey(listAuthors.get(0))) {
+                timeCoAuthorGraph.put(listAuthors.get(0), new HashMap<Integer, HashMap<Integer, Integer>>());
+            } else {
+                for (int author1 : listAuthors) {
+                    for (int author2 : listAuthors) {
+                        if (author1 != author2) {
+                            HashMap<Integer, HashMap<Integer, Integer>> timeCollabHM_1 = timeCoAuthorGraph.get(author1);
+                            HashMap<Integer, Integer> timeCollabHM_2;
+                            if (timeCollabHM_1 == null) { // author1 has no any coAuthors with others
+                                timeCollabHM_1 = new HashMap<>();
+                                timeCollabHM_2 = new HashMap<>();
+                                timeCollabHM_2.put(deltaTime, 1);
+                            }
+                            else { // timeCollabHM_1 != null --> author1 has some coAuthors with some others
+                                timeCollabHM_2 = timeCollabHM_1.get(author2);
+                                if (timeCollabHM_2 == null) { // author1 has no any coAuthor with author2
+                                    timeCollabHM_2 = new HashMap<>();
+                                    timeCollabHM_2.put(deltaTime, 1);
+                                } 
+                                else { 
+                                    // timeCollabHM_2 != null 
+                                    // --> author1 has some coAuthor with author2, update Year and NumberOfCoAuthor
+                                    if (timeCollabHM_2.get(deltaTime) != null)
+                                        timeCollabHM_2.put(deltaTime, timeCollabHM_2.get(deltaTime) + 1);
+                                    else 
+                                        timeCollabHM_2.put(deltaTime, 1);
+                                }
+                            }
+                            timeCollabHM_1.put(author2, timeCollabHM_2);
+                            timeCoAuthorGraph.put(author1, timeCollabHM_1);
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     /**
-     * Building Near and Far Collaboration for the training CoAuthorGraph
-     *
+     * Building Near and Far Collaboration for the training CoAuthorGraph (forRSSPlusGraph)
      * @param year
      */
-    public void BuildNearFarCoAuthorGraph(int year) {
+    public void buildNearFarCoAuthorGraph(int year) {
         for (int pubId : paperAuthor.keySet()) {
             ArrayList<Integer> listAuthors = paperAuthor.get(pubId);
             if (listAuthors.size() == 1 && !coAuthorGraph.containsKey(listAuthors.get(0))) {
@@ -257,7 +299,7 @@ public class AuthorGraph {
         }
     }
 
-    public void BuildingRSSGraph() {
+    public void buildRSSGraph() {
         rssGraph = new HashMap<>();
         for (int authorId1 : coAuthorGraph.keySet()) {
             if (coAuthorGraph.get(authorId1).size() == 0) {
@@ -289,11 +331,11 @@ public class AuthorGraph {
         }
     }
 
-    public void BuildingTrendGraph(float k, int year) {
-        rtbvsGraph = new HashMap<>();
+    public void buildRSSPlusGraph(float k, int year) {
+        rssPlusGraph = new HashMap<>();
         for (int authorId1 : coAuthorGraph.keySet()) {
             if (coAuthorGraph.get(authorId1).size() == 0) {
-                rtbvsGraph.put(authorId1, new HashMap<Integer, Float>());
+                rssPlusGraph.put(authorId1, new HashMap<Integer, Float>());
             } else {
                 int totalPaperOfAuthor1 = 0;
                 for (int authorId2 : coAuthorGraph.get(authorId1).keySet()) {
@@ -325,7 +367,7 @@ public class AuthorGraph {
                         }
 
                         float weight = t / m;
-                        HashMap<Integer, Float> rtbvsWeight = rtbvsGraph.get(authorId1);
+                        HashMap<Integer, Float> rtbvsWeight = rssPlusGraph.get(authorId1);
                         if (rtbvsWeight == null) {
                             rtbvsWeight = new HashMap<>();
                         }
@@ -335,11 +377,15 @@ public class AuthorGraph {
                             _weight = weight;
                             rtbvsWeight.put(authorId2, _weight);
                         }
-                        rtbvsGraph.put(authorId1, rtbvsWeight);
+                        rssPlusGraph.put(authorId1, rtbvsWeight);
                     }
                 }
             }
         }
+    }
+    
+    public void buildRSSDoublePlusGraph(int firstYear, int lastYear) {
+        
     }
 
     public HashSet<Integer> GetAllAuthorNearTest() {
@@ -398,8 +444,8 @@ public class AuthorGraph {
         return found;
     }
 
-//    // Testing Functions of AuthorGraph
-//    public static void main(String args[]) {
+    // Testing Functions of AuthorGraph
+    public static void main(String args[]) {
 //        System.out.println("START LOADING TRAINING DATA");
 //        AuthorGraph _graph = AuthorGraph.getInstance();
 //        
@@ -408,7 +454,7 @@ public class AuthorGraph {
 //
 //        // Building Graphs
 //        _graph.BuidCoAuthorGraph();
-//        _graph.BuildingRSSGraph();
+//        _graph.buildRSSGraph();
 //        
 //        HashMap temp1 = _graph.coAuthorGraph;
 //        HashMap temp2 = _graph.rssGraph;
@@ -417,5 +463,5 @@ public class AuthorGraph {
 //        HashMap<Integer, HashMap<Integer, Float>> inLinkHM = pr.initInLinkHMFromGraph(temp2);
 //        
 //        System.out.println("DONE");
-//    }
+    }
 }
