@@ -168,10 +168,10 @@ public class AuthorGraph {
      */
     public void buildAllCoAuthorGraph(float k, int year) {
         buildExpFuntBasedCoAuthorGraph(2001, 2005);
-        //buildCoAuthorGraph();
-        //buildNearFarCoAuthorGraph(year);
-        //buildRSSGraph();
-        //buildRSSPlusGraph(k, year);
+        buildCoAuthorGraph();
+        buildNearFarCoAuthorGraph(year);
+        buildRSSGraph();
+        buildRSSPlusGraph(k, year);
         buildRSSDoublePlusGraph();
     }
 
@@ -416,9 +416,9 @@ public class AuthorGraph {
                 // Mau so
                 HashMap<Integer, Integer> deltaTimeCollaborationHM;
                 double mauso = 0;
-                double tuso = 0;
                 for (int coAuthorID : expFunctBasedCoAuthorGraph.get(authorID).keySet()) {
                     deltaTimeCollaborationHM = expFunctBasedCoAuthorGraph.get(authorID).get(coAuthorID);
+                    double tuso = 0;
                     for (int deltaTime : deltaTimeCollaborationHM.keySet()) {
                         int numberOfCollaboration = deltaTimeCollaborationHM.get(deltaTime);
                         tuso += (double) numberOfCollaboration * (Math.exp(-deltaTime));
@@ -426,19 +426,17 @@ public class AuthorGraph {
                     mauso += tuso;
                 }
 
-                HashMap<Integer, Float> rssDoublePlusWeightHM = null;
+                HashMap<Integer, Float> rssDoublePlusWeightHM = new HashMap<>();
                 for (int coAuthorID : expFunctBasedCoAuthorGraph.get(authorID).keySet()) {
                     deltaTimeCollaborationHM = expFunctBasedCoAuthorGraph.get(authorID).get(coAuthorID);
+                    double tuso = 0;
                     for (int deltaTime : deltaTimeCollaborationHM.keySet()) {
                         int numberOfCollaboration = deltaTimeCollaborationHM.get(deltaTime);
                         tuso += (double) numberOfCollaboration * (Math.exp(-deltaTime));
                     }
 
-                    double rssDoublePlusWeight = tuso / mauso;
-                    rssDoublePlusWeightHM = rssDoublePlusGraph.get(authorID);
-                    if (rssDoublePlusWeightHM == null) {
-                        rssDoublePlusWeightHM = new HashMap<>();
-                    }
+                    double rssDoublePlusWeight = 0;
+                    if (mauso != 0) rssDoublePlusWeight = tuso / mauso;
                     rssDoublePlusWeightHM.put(coAuthorID, (float) rssDoublePlusWeight);
                 }
                 rssDoublePlusGraph.put(authorID, rssDoublePlusWeightHM);
