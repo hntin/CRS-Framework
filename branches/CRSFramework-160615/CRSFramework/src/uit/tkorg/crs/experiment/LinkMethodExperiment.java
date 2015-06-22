@@ -23,11 +23,12 @@ import java.util.HashSet;
 import java.util.Random;
 import uit.tkorg.crs.common.TopNSimilarity;
 import uit.tkorg.crs.method.cbf.ParallelLDA;
+import uit.tkorg.crs.method.link.RSSDoublePlus;
 import uit.tkorg.utility.common.TextFileUtility;
 
 /**
  *
- * @author daolv
+ * @author Tin Huynh
  */
 public class LinkMethodExperiment {
     
@@ -40,7 +41,7 @@ public class LinkMethodExperiment {
     private boolean _isRSSPlusMethod;
     private boolean _isMPRSMethod;
     private boolean _isMPRSPlusMethod;
-    private boolean _isTrustBasedMethod;
+    private boolean _isRSSDoublePlusMethod;
     private boolean _isPredictionOnlyNewLink;
     private int _topN;
     private float _k;
@@ -52,20 +53,23 @@ public class LinkMethodExperiment {
     private StringBuffer _nfJaccardBuffer = new StringBuffer();
     private StringBuffer _nfRSSBuffer = new StringBuffer();
     private StringBuffer _nfRSSPlusBuffer = new StringBuffer();
-    private StringBuffer _nfMPBVSBuffer = new StringBuffer();
-    private StringBuffer _nfMPBVSPlusBuffer = new StringBuffer();
+    private StringBuffer _nfMPRSBuffer = new StringBuffer();
+    private StringBuffer _nfMPRSPlusBuffer = new StringBuffer();
+    private StringBuffer _nfRSSDoublePlusBuffer = new StringBuffer();
+    
     private StringBuffer _ffAdamicAdarBuffer = new StringBuffer();
     private StringBuffer _ffCosineBuffer = new StringBuffer();
     private StringBuffer _ffJaccardBuffer = new StringBuffer();
     private StringBuffer _ffRSSBuffer = new StringBuffer();
     private StringBuffer _ffRSSPlusBuffer = new StringBuffer();
-    private StringBuffer _ffMPBVSBuffer = new StringBuffer();
-    private StringBuffer _ffMPBVSPlusBuffer = new StringBuffer();
+    private StringBuffer _ffMPRSBuffer = new StringBuffer();
+    private StringBuffer _ffMPRSPlusBuffer = new StringBuffer();
+    private StringBuffer _ffRSSDoublePlusBuffer = new StringBuffer();
     //</editor-fold>
 
     public LinkMethodExperiment(boolean isCosine, boolean isJaccard, boolean isAdar,
             boolean isRSS, boolean isRSSPlus, boolean isMPRS,
-            boolean isMPRSPlus, boolean isTrustBased, int valueTopN, int trendYear, float weightTrend,
+            boolean isMPRSPlus, boolean isRSSDoublePlus, int valueTopN, int trendYear, float weightTrend,
             boolean isPredictionOnlyNewLink, String resultFile) {
 
         _isPredictionOnlyNewLink = isPredictionOnlyNewLink;
@@ -76,7 +80,7 @@ public class LinkMethodExperiment {
         _isRSSPlusMethod = isRSSPlus;
         _isMPRSMethod = isMPRS;
         _isMPRSPlusMethod = isMPRSPlus;
-        _isTrustBasedMethod = isTrustBased; 
+        _isRSSDoublePlusMethod = isRSSDoublePlus; 
 
         _topN = valueTopN;
         _year = trendYear;
@@ -87,13 +91,14 @@ public class LinkMethodExperiment {
     }
 
     public void runLinkMethodExperiment() {
-        Cosine measureCosine = new Cosine();
-        Jaccard measureJaccard = new Jaccard();
-        AdamicAdar measureAdamicAdar = new AdamicAdar();
-        MPRS measureMPRS = new MPRS();
-        MPRSPlus measureMPRSPlus = new MPRSPlus();
-        RSS measureRSS = new RSS();
-        RSSPlus measureRSSPlus = new RSSPlus();
+        Cosine methodCosine = new Cosine();
+        Jaccard methodJaccard = new Jaccard();
+        AdamicAdar methodAdamicAdar = new AdamicAdar();
+        MPRS methodMPRS = new MPRS();
+        MPRSPlus methodMPRSPlus = new MPRSPlus();
+        RSS methodRSS = new RSS();
+        RSSPlus methodRSSPlus = new RSSPlus();
+        RSSDoublePlus methodRSSDoublePLus = new RSSDoublePlus();
 
         HashMap<Integer, HashMap<Integer, Float>> topSimilarity;
         //<editor-fold defaultstate="collapsed" desc="...">
@@ -104,38 +109,44 @@ public class LinkMethodExperiment {
         HashMap<Integer, HashMap<Integer, Float>> jaccardResult = null;
         HashMap<Integer, HashMap<Integer, Float>> adamicAdarResult = null;
         HashMap<Integer, HashMap<Integer, Float>> rssResult = null;
-        HashMap<Integer, HashMap<Integer, Float>> mpbvsResult = null;
-        HashMap<Integer, HashMap<Integer, Float>> rssplusResult = null;
-        HashMap<Integer, HashMap<Integer, Float>> mpbvsplusResult = null;
+        HashMap<Integer, HashMap<Integer, Float>> mprsResult = null;
+        HashMap<Integer, HashMap<Integer, Float>> rssPlusResult = null;
+        HashMap<Integer, HashMap<Integer, Float>> mprsPlusResult = null;
+        HashMap<Integer, HashMap<Integer, Float>> rssDoublePlusResult = null;
 
         if (_isCosineMethod) {
             System.out.println("Running Cosine ... ");
-            cosineResult = measureCosine.process(_authorGraph.rssGraph, _authorGraph.listRandomAuthor);
+            cosineResult = methodCosine.process(_authorGraph.rssGraph, _authorGraph.listRandomAuthor);
         }
         if (_isJaccardMethod) {
             System.out.println("Running Jaccard ... ");
-            jaccardResult = measureJaccard.process(_authorGraph.rssGraph, _authorGraph.listRandomAuthor);
+            jaccardResult = methodJaccard.process(_authorGraph.rssGraph, _authorGraph.listRandomAuthor);
         }
         if (_isAdarMethod) {
             System.out.println("Running A.Adar ... ");
-            adamicAdarResult = measureAdamicAdar.process(_authorGraph.rssGraph, _authorGraph.listRandomAuthor);
+            adamicAdarResult = methodAdamicAdar.process(_authorGraph.rssGraph, _authorGraph.listRandomAuthor);
         }
         if (_isRSSMethod) {
             System.out.println("Running RSS ... ");
-            rssResult = measureRSS.process(_authorGraph.rssGraph, _authorGraph.listRandomAuthor);
+            rssResult = methodRSS.process(_authorGraph.rssGraph, _authorGraph.listRandomAuthor);
         }
         if (_isMPRSMethod) {
             System.out.println("Running MPRS ... ");
-            mpbvsResult = measureMPRS.process(_authorGraph.rssGraph, _authorGraph.listRandomAuthor);
+            mprsResult = methodMPRS.process(_authorGraph.rssGraph, _authorGraph.listRandomAuthor);
         }
         if (_isRSSPlusMethod) {
             System.out.println("Running RSSPlus ... ");
-            mpbvsplusResult = measureRSSPlus.process(_authorGraph.rssPlusGraph, _authorGraph.listRandomAuthor);
+            mprsPlusResult = methodRSSPlus.process(_authorGraph.rssPlusGraph, _authorGraph.listRandomAuthor);
         }
         if (_isMPRSPlusMethod) {
             System.out.println("Running MPRSPlus ... ");
-            rssplusResult = measureMPRSPlus.process(_authorGraph.rssPlusGraph, _authorGraph.listRandomAuthor);
+            rssPlusResult = methodMPRSPlus.process(_authorGraph.rssPlusGraph, _authorGraph.listRandomAuthor);
         }
+        if (_isRSSDoublePlusMethod) {
+            System.out.println("Running RSSDoublePlus ... ");
+            rssDoublePlusResult = methodRSSDoublePLus.process(_authorGraph.rssDoublePlusGraph, _authorGraph.listRandomAuthor);
+        }
+        
         //</editor-fold>
 
         for (int i = 1; i <= _topN; i++) {
@@ -184,9 +195,9 @@ public class LinkMethodExperiment {
 
             //<editor-fold defaultstate="collapsed" desc="RSSPlus">
             if (_isPredictionOnlyNewLink) {
-                topSimilarity = TopNSimilarity.findTopNSimilarityForNewLinkOnly(i, rssplusResult, _authorGraph.rssGraph);
+                topSimilarity = TopNSimilarity.findTopNSimilarityForNewLinkOnly(i, rssPlusResult, _authorGraph.rssGraph);
             } else {
-                topSimilarity = TopNSimilarity.findTopNSimilarity(i, rssplusResult);
+                topSimilarity = TopNSimilarity.findTopNSimilarity(i, rssPlusResult);
             }
 
             precisionNear = EvaluationMetric.Mean_Precision_TopN(topSimilarity, _authorGraph.nearTestingData);
@@ -195,23 +206,33 @@ public class LinkMethodExperiment {
 
             //<editor-fold defaultstate="collapsed" desc="MPRS">
             if (_isPredictionOnlyNewLink) {
-                topSimilarity = TopNSimilarity.findTopNSimilarityForNewLinkOnly(i, mpbvsResult, _authorGraph.rssGraph);
+                topSimilarity = TopNSimilarity.findTopNSimilarityForNewLinkOnly(i, mprsResult, _authorGraph.rssGraph);
             } else {
-                topSimilarity = TopNSimilarity.findTopNSimilarity(i, mpbvsResult);
+                topSimilarity = TopNSimilarity.findTopNSimilarity(i, mprsResult);
             }
             precisionNear = EvaluationMetric.Mean_Precision_TopN(topSimilarity, _authorGraph.nearTestingData);
-            bufferingExperimentResult(true, "MPBVS", precisionNear);
+            bufferingExperimentResult(true, "MPRS", precisionNear);
             //</editor-fold>
 
             //<editor-fold defaultstate="collapsed" desc="MPRSPlus">
             if (_isPredictionOnlyNewLink) {
-                topSimilarity = TopNSimilarity.findTopNSimilarityForNewLinkOnly(i, mpbvsplusResult, _authorGraph.rssGraph);
+                topSimilarity = TopNSimilarity.findTopNSimilarityForNewLinkOnly(i, mprsPlusResult, _authorGraph.rssGraph);
             } else {
-                topSimilarity = TopNSimilarity.findTopNSimilarity(i, mpbvsplusResult);
+                topSimilarity = TopNSimilarity.findTopNSimilarity(i, mprsPlusResult);
             }
 
             precisionNear = EvaluationMetric.Mean_Precision_TopN(topSimilarity, _authorGraph.nearTestingData);
-            bufferingExperimentResult(true, "MPBVSPlus", precisionNear);
+            bufferingExperimentResult(true, "MPRSPlus", precisionNear);
+            //</editor-fold>
+            
+            //<editor-fold defaultstate="collapsed" desc="RSSDoublePlus">
+            if (_isPredictionOnlyNewLink) {
+                topSimilarity = TopNSimilarity.findTopNSimilarityForNewLinkOnly(i, rssDoublePlusResult, _authorGraph.rssDoublePlusGraph);
+            } else {
+                topSimilarity = TopNSimilarity.findTopNSimilarity(i, rssDoublePlusResult);
+            }
+            precisionNear = EvaluationMetric.Mean_Precision_TopN(topSimilarity, _authorGraph.nearTestingData);
+            bufferingExperimentResult(true, "RSSDoublePlus", precisionNear);
             //</editor-fold>
         }
 
@@ -264,19 +285,27 @@ public class LinkMethodExperiment {
                 }
             }
 
-            if (predictMethod.equalsIgnoreCase("MPBVS")) {
+            if (predictMethod.equalsIgnoreCase("MPRSS")) {
                 if (isNFResult == true) {
-                    _nfMPBVSBuffer.append("\t" + df.format(value));
+                    _nfMPRSBuffer.append("\t" + df.format(value));
                 } else {
-                    _ffMPBVSBuffer.append("\t" + df.format(value));
+                    _ffMPRSBuffer.append("\t" + df.format(value));
                 }
             }
 
-            if (predictMethod.equalsIgnoreCase("MPBVSPlus")) {
+            if (predictMethod.equalsIgnoreCase("MPRSPlus")) {
                 if (isNFResult == true) {
-                    _nfMPBVSPlusBuffer.append("\t" + df.format(value));
+                    _nfMPRSPlusBuffer.append("\t" + df.format(value));
                 } else {
-                    _ffMPBVSPlusBuffer.append("\t" + df.format(value));
+                    _ffMPRSPlusBuffer.append("\t" + df.format(value));
+                }
+            }
+            
+            if (predictMethod.equalsIgnoreCase("RSSDoublePlus")) {
+                if (isNFResult == true) {
+                    _nfMPRSPlusBuffer.append("\t" + df.format(value));
+                } else {
+                    _ffMPRSPlusBuffer.append("\t" + df.format(value));
                 }
             }
         } catch (Exception ex) {
@@ -313,8 +342,9 @@ public class LinkMethodExperiment {
             file.write("Jaccard" + _nfJaccardBuffer.toString() + "\n");
             file.write("RSS" + _nfRSSBuffer.toString() + "\n");
             file.write("RSSPlus" + _nfRSSPlusBuffer.toString() + "\n");
-            file.write("MPBVS" + _nfMPBVSBuffer.toString() + "\n");
-            file.write("MPBVSPlus" + _nfMPBVSPlusBuffer.toString() + "\n");
+            file.write("MPRS" + _nfMPRSBuffer.toString() + "\n");
+            file.write("MPRSPlus" + _nfMPRSPlusBuffer.toString() + "\n");
+            file.write("RSSDoublePlus" + _nfRSSDoublePlusBuffer.toString() + "\n");
             file.write("\n");
             //</editor-fold>     
 
@@ -336,8 +366,9 @@ public class LinkMethodExperiment {
             file.write("Jaccard" + _ffJaccardBuffer.toString() + "\n");
             file.write("RSS" + _ffRSSBuffer.toString() + "\n");
             file.write("RSSPlus" + _ffRSSPlusBuffer.toString() + "\n");
-            file.write("MPBVS" + _ffMPBVSBuffer.toString() + "\n");
-            file.write("MPBVSPlus" + _ffMPBVSPlusBuffer.toString() + "\n");
+            file.write("MPRS" + _ffMPRSBuffer.toString() + "\n");
+            file.write("MPRSPlus" + _ffMPRSPlusBuffer.toString() + "\n");
+            file.write("RSSDoublePlus" + _ffRSSDoublePlusBuffer.toString() + "\n");
             file.write("\n");
 
             //</editor-fold>
