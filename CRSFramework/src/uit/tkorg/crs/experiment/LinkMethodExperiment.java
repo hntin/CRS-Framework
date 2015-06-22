@@ -285,7 +285,7 @@ public class LinkMethodExperiment {
                 }
             }
 
-            if (predictMethod.equalsIgnoreCase("MPRSS")) {
+            if (predictMethod.equalsIgnoreCase("MPRS")) {
                 if (isNFResult == true) {
                     _nfMPRSBuffer.append("\t" + df.format(value));
                 } else {
@@ -303,9 +303,9 @@ public class LinkMethodExperiment {
             
             if (predictMethod.equalsIgnoreCase("RSSDoublePlus")) {
                 if (isNFResult == true) {
-                    _nfMPRSPlusBuffer.append("\t" + df.format(value));
+                    _nfRSSDoublePlusBuffer.append("\t" + df.format(value));
                 } else {
-                    _ffMPRSPlusBuffer.append("\t" + df.format(value));
+                    _ffRSSDoublePlusBuffer.append("\t" + df.format(value));
                 }
             }
         } catch (Exception ex) {
