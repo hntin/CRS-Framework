@@ -20,6 +20,7 @@ public class DatabaseTool {
     private final String dbURL = "";
     private final String dbUsername ="";
     private final String dbPassword = "";
+    private final String dataDir = "";
     private Connection con;
     
     public Connection getConnection(){
@@ -37,5 +38,13 @@ public class DatabaseTool {
         catch(SQLException e){
             System.out.println("Cannot close database connection");
         }
+    }
+    
+    //tao cac file luu tru profile cua tung tac gia; ten file la idAuthor
+    //cau truc file
+    //dong 1: idAuthor
+    //dong i: idPaper#Title#Abstract#Year
+    public void getAuthorProfile(String idAuthor){
+        
     }
 }
