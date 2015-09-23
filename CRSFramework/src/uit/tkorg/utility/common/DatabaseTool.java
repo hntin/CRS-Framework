@@ -68,9 +68,10 @@ public class DatabaseTool {
         try {
             stmt = con.prepareStatement(sql);
             for (int i = 0; i < numOfAuthors;i++){
-                stmt.setInt(1,(Integer)list.get(i));
+                int idAuthor = (Integer)list.get(i);
+                stmt.setInt(1,idAuthor);
                 rs = stmt.executeQuery();
-                TextFileUtility.writeTextFile(dataDir,i,rs);
+                TextFileUtility.writeTextFile(dataDir,idAuthor,rs);
             }
 
         } catch (SQLException ex) {
