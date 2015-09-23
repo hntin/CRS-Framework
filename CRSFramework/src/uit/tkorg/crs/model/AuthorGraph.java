@@ -12,7 +12,7 @@ import uit.tkorg.utility.algorithm.PageRank;
 
 /**
  *
- * @author Tin Huynh
+ * @author daolv
  */
 public class AuthorGraph {
 
