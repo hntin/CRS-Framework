@@ -15,8 +15,13 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.Writer;
+import java.sql.Blob;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -38,6 +43,44 @@ public class TextFileUtility {
             out.close();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+    
+    public static void writeTextFile(String path, int idAuthor, ResultSet rs){
+        FileWriter fstream = null;
+        try {
+            File f = new File(path,idAuthor + ".txt");
+            fstream = new FileWriter(f,true);
+            BufferedWriter out = new BufferedWriter(fstream);
+            StringBuilder  line;
+            out.write(idAuthor);
+            try {
+                while (rs.next()){
+                    line = new StringBuilder();
+                    line.append(rs.getInt(1));
+                    line.append(rs.getString(2));
+                    Blob blob = rs.getBlob(3);
+                    line.append(new String(blob.getBytes(1,(int)blob.length())));
+                    line.append(rs.getInt(4));
+                    out.write(line.toString());
+                    out.newLine();
+                }
+            } catch (SQLException ex) {
+                System.out.println(ex);
+            }
+            out.flush();
+        } catch (IOException ex) {
+            System.out.println(ex);
+        } finally {
+            try {
+                fstream.close();
+                rs.close();
+            } catch (IOException ex) {
+                System.out.println(ex);
+            }
+            catch (SQLException ex) {
+                System.out.println(ex);
+            }
         }
     }
     

@@ -20,23 +20,30 @@ import java.util.logging.Logger;
 public class DatabaseTool {
     
     
-    private final String dbDriver = "";
-    private final String dbURL = "";
-    private final String dbUsername ="";
-    private final String dbPassword = "";
-    private final String dataDir = "";
+    private final String dbDriver = "com.mysql.jdbc.Driver";
+    private final String dbURL = "jdbc:mysql://localhost:3306/mas";
+    private final String dbUsername = "root";
+    private final String dbPassword = "root";
+    private final String dataDir = "C:\\CRSData";
     private Connection con;
     private PreparedStatement stmt;
     
-    public Connection getConnection(){
+    public static void main(String[] args){
+        DatabaseTool dbTool = new DatabaseTool();
+        dbTool.connect();
+        dbTool.getAuthorsProfiles();
+        dbTool.disconnect();
+    }
+    
+    public Connection connect(){
         try {
-            con = DriverManager.getConnection(dbURL, dbURL, dbPassword);
+            con = DriverManager.getConnection(dbURL, dbUsername, dbPassword);
         } catch (SQLException ex) {
             System.out.println("Cannot get database connection");
         }
         return con;
     }
-    public void close(){
+    public void disconnect(){
         try{
             con.close();
         }
@@ -50,25 +57,26 @@ public class DatabaseTool {
     //dong 1: idAuthor
     //dong i: idPaper#Title#Abstract#Year
     public void getAuthorsProfiles(){
-        String sql = "SELECT ap.idPaper FROM Author_Paper ap WHERE ap.idAuthor = ?" + 
-                        "INNER JOIN paper p ON ap.idPaper = p.idPaper";
+        String sql = "SELECT p.idPaper, p.title, p.abstract, p.year FROM Author_Paper ap " + 
+                        "INNER JOIN paper p ON ap.idPaper = p.idPaper WHERE ap.idAuthor = ?";
         PreparedStatement stmt;
         ResultSet rs;
-        int numOfAuthors = 1222;//lay tu database
+        int numOfAuthors = 10;//lay so luong tu database sau
         try {
             stmt = con.prepareStatement(sql);
-            for (int i = 0; i <= numOfAuthors;i++){
+            for (int i = 0; i < numOfAuthors;i++){
                 stmt.setInt(1,i);
                 rs = stmt.executeQuery();
+                TextFileUtility.writeTextFile(dataDir,i,rs);
             }
-            rs = stmt.executeQuery();
+
         } catch (SQLException ex) {
-            Logger.getLogger(DatabaseTool.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex);
         }
     }
     
     //
     public void getAuthorByTime(int fromYear, int toYear){
-        String sql = "SELECT ap.idPaper from Author_Paper ap, Paper p where ap.idAuthor = ?";
+        
     }
 }
