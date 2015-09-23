@@ -63,7 +63,8 @@ public class TextFileUtility {
                     line.append(rs.getString(2));
                     line.append(delim);
                     Blob blob = rs.getBlob(3);
-                    line.append(new String(blob.getBytes(1,(int)blob.length())));
+                    if (blob != null)
+                        line.append(new String(blob.getBytes(1,(int)blob.length())));
                     line.append(delim);
                     line.append(rs.getInt(4));
                     out.write(line.toString());

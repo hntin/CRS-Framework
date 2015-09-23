@@ -61,7 +61,7 @@ public class DatabaseTool {
                         "INNER JOIN paper p ON ap.idPaper = p.idPaper WHERE ap.idAuthor = ?";
         PreparedStatement stmt;
         ResultSet rs;
-        int numOfAuthors = 10;//lay so luong tu database sau
+        int numOfAuthors = 100;//lay so luong tu database sau
         try {
             stmt = con.prepareStatement(sql);
             for (int i = 0; i < numOfAuthors;i++){
