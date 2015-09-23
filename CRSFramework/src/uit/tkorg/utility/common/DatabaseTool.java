@@ -33,7 +33,8 @@ public class DatabaseTool {
     public static void main(String[] args){
         DatabaseTool dbTool = new DatabaseTool();
         dbTool.connect();
-        dbTool.getAuthorByTime(2001,2003);
+        ArrayList ls = dbTool.getAuthorByTime(2001,2003);
+        dbTool.getAuthorsProfiles(ls);
         dbTool.disconnect();
     }
     
@@ -78,10 +79,10 @@ public class DatabaseTool {
     }
     
     //
-    public List getAuthorByTime(int fromYear, int toYear){
-        String sql = "SELECT author_paper.idAuthor" +
-                     "FROM paper,author_paper" +
-                     "WHERE paper.idPaper = author_paper.idPaper and" +
+    public ArrayList getAuthorByTime(int fromYear, int toYear){
+        String sql = "SELECT author_paper.idAuthor " +
+                     "FROM paper,author_paper " +
+                     "WHERE paper.idPaper = author_paper.idPaper and " +
                      "paper.year >= ? and paper.year <= ?";
         
         ArrayList<Integer> listOfAuthors = new ArrayList<Integer>();
