@@ -52,15 +52,19 @@ public class TextFileUtility {
             File f = new File(path,idAuthor + ".txt");
             fstream = new FileWriter(f,true);
             BufferedWriter out = new BufferedWriter(fstream);
+            String delim = "#";
             StringBuilder  line;
             out.write(idAuthor);
             try {
                 while (rs.next()){
                     line = new StringBuilder();
                     line.append(rs.getInt(1));
+                    line.append(delim);
                     line.append(rs.getString(2));
+                    line.append(delim);
                     Blob blob = rs.getBlob(3);
                     line.append(new String(blob.getBytes(1,(int)blob.length())));
+                    line.append(delim);
                     line.append(rs.getInt(4));
                     out.write(line.toString());
                     out.newLine();
