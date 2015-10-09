@@ -5,6 +5,7 @@
  */
 package uit.tkorg.utility.common;
 
+import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -26,14 +27,14 @@ public class DatabaseTool {
     private final String dbURL = "jdbc:mysql://localhost:3306/mas";
     private final String dbUsername = "root";
     private final String dbPassword = "root";
-    private final String dataDir = "C:\\CRSData";
+    private final String dataDir = "D:\\CRSProfile2004_2006";
     private Connection con;
     private PreparedStatement stmt;
     
     public static void main(String[] args){
         DatabaseTool dbTool = new DatabaseTool();
         dbTool.connect();
-        ArrayList ls = dbTool.getAuthorByTime(2001,2003);
+        ArrayList ls = dbTool.getAuthorByTime(2004,2006);
         dbTool.getAuthorsProfiles(ls);
         dbTool.disconnect();
     }
@@ -65,13 +66,21 @@ public class DatabaseTool {
         PreparedStatement stmt;
         ResultSet rs;
         int numOfAuthors = list.size();
+        System.out.println(numOfAuthors);
         try {
             stmt = con.prepareStatement(sql);
+            File dir = new File(dataDir + "\\0");
+            dir.mkdir();
             for (int i = 0; i < numOfAuthors;i++){
+                if ((i % 10000) == 0){
+                    dir = new File(dataDir + "\\" + i);
+                    dir.mkdir();
+                }
                 int idAuthor = (Integer)list.get(i);
+                System.out.println(idAuthor + "\t" + i + " < " + numOfAuthors);
                 stmt.setInt(1,idAuthor);
                 rs = stmt.executeQuery();
-                TextFileUtility.writeTextFile(dataDir,idAuthor,rs);
+                TextFileUtility.writeTextFile(dir,idAuthor,rs);
             }
 
         } catch (SQLException ex) {
@@ -81,10 +90,10 @@ public class DatabaseTool {
     
     //
     public ArrayList getAuthorByTime(int fromYear, int toYear){
-        String sql = "SELECT author_paper.idAuthor " +
+        String sql = "SELECT DISTINCT author_paper.idAuthor " +
                      "FROM paper,author_paper " +
                      "WHERE paper.idPaper = author_paper.idPaper and " +
-                     "paper.year >= ? and paper.year <= ?";
+                     "paper.year >= ? and paper.year <= ? ORDER BY author_paper.idAuthor ASC";
         
         ArrayList<Integer> listOfAuthors = new ArrayList<Integer>();
         PreparedStatement stmt;

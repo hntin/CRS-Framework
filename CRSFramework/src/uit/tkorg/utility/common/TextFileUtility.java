@@ -46,19 +46,20 @@ public class TextFileUtility {
         }
     }
     
-    public static void writeTextFile(String path, int idAuthor, ResultSet rs){
+    public static void writeTextFile(File dir, int idAuthor, ResultSet rs){
         FileWriter fstream = null;
         try {
-            File f = new File(path,idAuthor + ".txt");
+            File f = new File(dir,idAuthor + ".txt");
             fstream = new FileWriter(f,true);
             BufferedWriter out = new BufferedWriter(fstream);
             String delim = "#";
             StringBuilder  line;
-            out.write(idAuthor);
+            out.write(idAuthor+"");
+            out.newLine();
             try {
                 while (rs.next()){
                     line = new StringBuilder();
-                    line.append(rs.getInt(1));
+                    line.append(rs.getInt(1)+"");
                     line.append(delim);
                     line.append(rs.getString(2));
                     line.append(delim);
@@ -66,7 +67,7 @@ public class TextFileUtility {
                     if (blob != null)
                         line.append(new String(blob.getBytes(1,(int)blob.length())));
                     line.append(delim);
-                    line.append(rs.getInt(4));
+                    line.append(rs.getInt(4)+"");
                     out.write(line.toString());
                     out.newLine();
                 }
