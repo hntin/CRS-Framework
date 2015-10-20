@@ -502,22 +502,24 @@ public class AuthorGraph {
 
     // Testing Functions of AuthorGraph
     public static void main(String args[]) {
-//        System.out.println("START LOADING TRAINING DATA");
-//        AuthorGraph _graph = AuthorGraph.getInstance();
-//        
-//        _graph.LoadTrainingData("C:\\CRS-Experiment\\Sampledata\\[Training]AuthorId_PaperID.txt", 
-//                "C:\\CRS-Experiment\\Sampledata\\[Training]PaperID_Year.txt");
-//
-//        // Building Graphs
-//        _graph.BuidCoAuthorGraph();
-//        _graph.buildRSSGraph();
-//        
-//        HashMap temp1 = _graph.coAuthorGraph;
-//        HashMap temp2 = _graph.rssGraph;
-//        
-//        PageRank pr = new PageRank();
-//        HashMap<Integer, HashMap<Integer, Float>> inLinkHM = pr.initInLinkHMFromGraph(temp2);
-//        
-//        System.out.println("DONE");
+        //<editor-fold defaultstate="collapsed" desc="comment">
+        System.out.println("START LOADING TRAINING DATA");
+        AuthorGraph _graph = AuthorGraph.getInstance();
+        
+        //_graph.LoadTrainingData("C:\\CRS-Experiment\\Sampledata\\[Training]AuthorId_PaperID.txt",
+        //        "C:\\CRS-Experiment\\Sampledata\\[Training]PaperID_Year.txt");
+        
+        // Building Graphs
+        _graph.buildCoAuthorGraph();
+        _graph.buildRSSGraph();
+        
+        HashMap temp1 = _graph.coAuthorGraph;
+        HashMap temp2 = _graph.rssGraph;
+        
+        //PageRank pr = new PageRank();
+        //HashMap<Integer, HashMap<Integer, Float>> inLinkHM = pr.initInLinkHMFromGraph(temp2);
+        
+        System.out.println("DONE");
+        //</editor-fold>
     }
 }

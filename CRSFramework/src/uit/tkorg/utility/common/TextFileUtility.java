@@ -45,29 +45,36 @@ public class TextFileUtility {
             e.printStackTrace();
         }
     }
-    
-    public static void writeTextFile(File dir, int idAuthor, ResultSet rs){
+
+    /**
+     *
+     * @param dir
+     * @param idAuthor: Ten file.
+     * @param rs
+     */
+    public static void writeTextFile(File dir, int idAuthor, ResultSet rs) {
         FileWriter fstream = null;
         try {
-            File f = new File(dir,idAuthor + ".txt");
-            fstream = new FileWriter(f,true);
+            File f = new File(dir, idAuthor + ".txt");
+            fstream = new FileWriter(f, true);
             BufferedWriter out = new BufferedWriter(fstream);
             String delim = "#";
-            StringBuilder  line;
-            out.write(idAuthor+"");
+            StringBuilder line;
+            out.write(idAuthor + "");
             out.newLine();
             try {
-                while (rs.next()){
+                while (rs.next()) {
                     line = new StringBuilder();
-                    line.append(rs.getInt(1)+"");
+                    line.append(rs.getInt(1) + "");
                     line.append(delim);
                     line.append(rs.getString(2));
                     line.append(delim);
                     Blob blob = rs.getBlob(3);
-                    if (blob != null)
-                        line.append(new String(blob.getBytes(1,(int)blob.length())));
+                    if (blob != null) {
+                        line.append(new String(blob.getBytes(1, (int) blob.length())));
+                    }
                     line.append(delim);
-                    line.append(rs.getInt(4)+"");
+                    line.append(rs.getInt(4) + "");
                     out.write(line.toString());
                     out.newLine();
                 }
@@ -83,14 +90,63 @@ public class TextFileUtility {
                 rs.close();
             } catch (IOException ex) {
                 System.out.println(ex);
-            }
-            catch (SQLException ex) {
+            } catch (SQLException ex) {
                 System.out.println(ex);
             }
         }
     }
-    
-    public static void writeTextFile(String textFile, HashMap<Integer,Float> hashMap) {
+
+    /**
+     *
+     * @param dir
+     * @param idAuthor: Ten file.
+     * @param rs
+     */
+    public static void writeTextFile(File dir, String fileName, ResultSet rs) {
+        FileWriter fstream = null;
+        try {
+            File f = new File(dir, fileName + ".txt");
+            fstream = new FileWriter(f, true);
+            BufferedWriter out = new BufferedWriter(fstream);
+            String delim = "#";
+            StringBuilder line;
+            out.write(fileName + "");
+            out.newLine();
+            try {
+                while (rs.next()) {
+                    line = new StringBuilder();
+                    line.append(rs.getInt(1) + "");
+                    line.append(delim);
+                    line.append(rs.getString(2));
+                    line.append(delim);
+                    Blob blob = rs.getBlob(3);
+                    if (blob != null) {
+                        line.append(new String(blob.getBytes(1, (int) blob.length())));
+                    }
+                    line.append(delim);
+                    line.append(rs.getInt(4) + "");
+                    out.write(line.toString());
+                    out.newLine();
+                }
+            } catch (SQLException ex) {
+                System.out.println(ex);
+            }
+            out.flush();
+        } catch (IOException ex) {
+            System.out.println(ex);
+        } finally {
+            try {
+                fstream.close();
+                rs.close();
+            } catch (IOException ex) {
+                System.out.println(ex);
+            } catch (SQLException ex) {
+                System.out.println(ex);
+            }
+        }
+    }
+
+    public static void writeTextFile(String textFile, HashMap<Integer, Float> hashMap) {
         try {
             FileWriter fstream = new FileWriter(textFile, false);
             BufferedWriter out = new BufferedWriter(fstream);
@@ -198,7 +254,7 @@ public class TextFileUtility {
             }
 
             path = (new File(filePath)).getParent();
-            fileNamePiece = path + "\\file_" + (count / 5000 + 1)  + ".txt";
+            fileNamePiece = path + "\\file_" + (count / 5000 + 1) + ".txt";
             TextFileUtility.writeTextFile(fileNamePiece, strBufferSpliter.toString());
 
             bufferReader.close();

@@ -76,4 +76,13 @@ public class CRSMainController {
             ex.printStackTrace();
         }
     }
+    
+    public static void main(String args[]) {
+        // Import Data into AuthorGraph
+        ImportDataController importDataController = new ImportDataController();
+        importDataController.load_AuthorID_PaperID("/1.CRS-ExperimetalData/TrainingData/AuthorID_PaperID_2001_2003.txt");
+        importDataController.load_PaperID_Year("/1.CRS-ExperimetalData/TrainingData/PaperID_Year_2001_2003.txt");
+        
+        
+    }
 }
