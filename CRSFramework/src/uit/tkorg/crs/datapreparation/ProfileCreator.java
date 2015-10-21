@@ -20,10 +20,10 @@ import uit.tkorg.utility.common.BinaryFileUtility;
 import uit.tkorg.utility.common.DatabaseTool;
 import uit.tkorg.utility.common.NumericUtility;
 
-public class MASDataset1 {
+public class ProfileCreator {
 
     // Prevent instantiation.
-    private MASDataset1() {
+    private ProfileCreator() {
 
     }
     
