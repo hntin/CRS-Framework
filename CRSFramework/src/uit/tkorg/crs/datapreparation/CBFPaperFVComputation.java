@@ -16,8 +16,8 @@ import java.util.Set;
 import org.apache.commons.io.FileUtils;
 import uit.tkorg.crs.model.Paper;
 import uit.tkorg.utility.general.WeightingUtility;
-import uit.tkorg.utility.textvectorization.TextPreprocessUtility;
-import uit.tkorg.utility.textvectorization.TextVectorizationByMahoutTerminalUtility;
+import uit.tkorg.crs.datapreparation.TextPreprocessUtility;
+import uit.tkorg.crs.datapreparation.TextVectorizationByMahoutTerminalUtility;
 
 /**
  *

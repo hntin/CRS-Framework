@@ -2,8 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package uit.tkorg.utility.textvectorization;
+package uit.tkorg.crs.datapreparation;
 
+import uit.tkorg.utility.textvectorization.*;
 import ir.vsr.HashMapVector;
 import java.util.HashMap;
 import org.apache.mahout.text.SequenceFilesFromDirectory;
