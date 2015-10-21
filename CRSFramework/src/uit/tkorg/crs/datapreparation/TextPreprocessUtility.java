@@ -4,7 +4,7 @@
  */
 package uit.tkorg.crs.datapreparation;
 
-import uit.tkorg.utility.textvectorization.*;
+import uit.tkorg.crs.datapreparation.*;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;

@@ -4,13 +4,12 @@
  */
 package uit.tkorg.crs.datapreparation;
 
-import uit.tkorg.utility.textvectorization.*;
+import uit.tkorg.crs.datapreparation.*;
 import ir.vsr.HashMapVector;
 import java.util.HashMap;
 import org.apache.mahout.text.SequenceFilesFromDirectory;
 import org.apache.mahout.vectorizer.SparseVectorsFromSequenceFiles;
 import uit.tkorg.crs.constant.PRConstant;
-import uit.tkorg.crs.datapreparation.MahoutFile;
 
 /**
  *
