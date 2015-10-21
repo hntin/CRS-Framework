@@ -81,7 +81,7 @@ public class MASDataset1 {
         Author author = new Author();
         author.setAuthorId("10000");
         author.setPaperList(paperList);
-        HashMapVector fv = CBFAuthorFVComputation.computeAuthorFV(author,papers,0,0.5);
+        HashMapVector fv = CBFAuthorFVComputation.computeAuthorFV(author,papers,1,0.5);
         author.setFeatureVector(fv);
 
         System.out.println("Ket qua: " + fv.toString());
