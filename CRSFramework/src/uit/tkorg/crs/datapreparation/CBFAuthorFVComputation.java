@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import uit.tkorg.crs.constant.Constant;
 import uit.tkorg.crs.model.Author;
 import uit.tkorg.crs.model.Paper;
 import uit.tkorg.utility.common.WeightingUtility;
@@ -113,20 +114,18 @@ public class CBFAuthorFVComputation {
 
     public static HashMapVector computeAuthorFV(Author author, HashMap<String,Paper> papers,int timeAwareScheme, double gamma) throws Exception{
         HashMapVector featureVector = new HashMapVector();
-        String tfidfDir = "D:\\3.PRS-Experiment\\Dataset1 - MAS\\PRS Experimental data\\T0-T1\\TF-IDF\\Vector\\";
-        CBFPaperFVComputation.readTFIDFFromMahoutFile(papers,tfidfDir);
+        CBFPaperFVComputation.readTFIDFFromMahoutFile(papers,Constant.TFIDFDIR);
         List<String> paperIds = author.getPaperList();
         HashMapVector fv = null;
         if (timeAwareScheme == 0) {
             for (String paperId : paperIds) {
-                featureVector.add(papers.get(paperId).getTfidfVector());//Thuc sua lai
-//                featureVector.add(papers.get(paperId).getFeatureVector());
+                featureVector.add(papers.get(paperId).getTfidfVector());
             }
         } else if (timeAwareScheme == 1) {
             int latestPublicationYear = getLatestPublicationYear(papers, paperIds);
             for (String paperId : paperIds) {
                 double ff = WeightingUtility.computeForgettingFactor(latestPublicationYear, papers.get(paperId).getYear(), gamma);
-                featureVector.addScaled(papers.get(paperId).getFeatureVector(), ff);
+                featureVector.addScaled(papers.get(paperId).getTfidfVector(), ff);
             }
         }
         return featureVector;

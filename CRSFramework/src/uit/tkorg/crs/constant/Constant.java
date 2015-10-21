@@ -11,6 +11,7 @@ public class Constant {
 //    public static final String FOLDER_MAS_DATASET = "D:\\3.PRS-Experiment\\Dataset1 - MAS\\PRS Experimental data\\";
     public static final String FOLDER_MAS_DATASET = "";
     public static final String SAVEDATAFOLDER = "D:\\ResE\\Paper recommendation\\Save Object Dataset 1";
+    public static final String TFIDFDIR = "D:\\3.PRS-Experiment\\Dataset1 - MAS\\PRS Experimental data\\T0-T1\\TF-IDF\\Vector\\";
     
     public static final String DB = "MYSQL";
     //public static final String DB = "SQLSERVER";

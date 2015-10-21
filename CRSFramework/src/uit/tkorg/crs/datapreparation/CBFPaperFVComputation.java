@@ -106,8 +106,8 @@ public class CBFPaperFVComputation {
             HashMapVector v = vectorizedDocuments.get(paperId);
             if (v != null)
                 papers.get(paperId).setTfidfVector(v);
-            else
-                System.out.println("Missing tfidf vector of " + paperId);
+//            else
+//                System.out.println("Missing tfidf vector of " + paperId);
         }
     }
 
