@@ -16,7 +16,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.regex.Pattern;
 import org.apache.commons.io.FileUtils;
-import uit.tkorg.crs.constant.PRConstant;
+import uit.tkorg.crs.constant.Constant;
 import uit.tkorg.utility.general.TextFileUtility;
 import weka.core.Stopwords;
 import weka.core.stemmers.IteratedLovinsStemmer;
@@ -162,9 +162,9 @@ public class TextPreprocessUtility {
 //                + "Test Compute TFIDF\\text", 
 //                PRConstant.FOLDER_MAS_DATASET 
 //                + "Test Compute TFIDF\\Removed stopword and stemming text", true, true);
-        new TextPreprocessUtility().parallelProcess(PRConstant.FOLDER_MAS_DATASET 
+        new TextPreprocessUtility().parallelProcess(Constant.FOLDER_MAS_DATASET 
                 + "T0-T1\\TF-IDF\\Text", 
-                PRConstant.FOLDER_MAS_DATASET 
+                Constant.FOLDER_MAS_DATASET 
                 + "Test Compute TFIDF\\Removed stopword and stemming text", true, true);
     }
 }

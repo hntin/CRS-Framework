@@ -11,7 +11,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
-import uit.tkorg.crs.constant.PRConstant;
+import uit.tkorg.crs.constant.Constant;
 import uit.tkorg.crs.model.Author;
 import uit.tkorg.crs.model.Paper;
 import uit.tkorg.utility.general.NumericUtility;
@@ -38,7 +38,7 @@ public class NUSDataset1 {
      */
     public static List readAllKeywords() throws Exception {
         List allKeywords = new ArrayList();
-        List<String> ffile = TextFileUtility.getPathFile(new File(PRConstant.FOLDER_NUS_DATASET1));
+        List<String> ffile = TextFileUtility.getPathFile(new File(Constant.FOLDER_NUS_DATASET1));
         for (int i = 0; i < ffile.size(); i++) {
             FileReader file = new FileReader(ffile.get(i));
             BufferedReader textReader = new BufferedReader(file);
@@ -149,7 +149,7 @@ public class NUSDataset1 {
      */
     private static List<String> addCitation(String paperId) throws Exception {
         List<String> citation = new ArrayList<>();
-        try (BufferedReader br = new BufferedReader(new FileReader(PRConstant.FOLDER_NUS_DATASET1 + "\\InterLink\\acl.20080325.net"))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(Constant.FOLDER_NUS_DATASET1 + "\\InterLink\\acl.20080325.net"))) {
             String line = null;
             while ((line = br.readLine()) != null) {
                 String[] str = line.split(" ==> ");
@@ -173,7 +173,7 @@ public class NUSDataset1 {
      */
     private static List<String> addReference(String paperId) throws Exception {
         List<String> reference = new ArrayList<>();
-        try (BufferedReader br = new BufferedReader(new FileReader(PRConstant.FOLDER_NUS_DATASET1 + "\\InterLink\\acl.20080325.net"))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(Constant.FOLDER_NUS_DATASET1 + "\\InterLink\\acl.20080325.net"))) {
             String line = null;
             while ((line = br.readLine()) != null) {
                 String[] str = line.split(" ==> ");

@@ -2,7 +2,7 @@ package uit.tkorg.crs.constant;
 
 import java.util.logging.Level;
 
-public class PRConstant {
+public class Constant {
 
     public static final String FOLDER_NUS_DATASET1 = "C:\\3.PRS-Experiment\\NUS Data\\Dataset 1\\20100825-SchPaperRecData";
     public static final String FOLDER_NUS_DATASET2 = null;

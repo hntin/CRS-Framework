@@ -9,7 +9,7 @@ import ir.vsr.HashMapVector;
 import java.util.HashMap;
 import org.apache.mahout.text.SequenceFilesFromDirectory;
 import org.apache.mahout.vectorizer.SparseVectorsFromSequenceFiles;
-import uit.tkorg.crs.constant.PRConstant;
+import uit.tkorg.crs.constant.Constant;
 
 /**
  *
@@ -52,8 +52,8 @@ public class TextVectorizationByMahoutTerminalUtility {
 
     public static void main(String[] args) throws Exception {
         // Prepare input documents in text folder, each document in a .txt file, file name is document id.
-        textVectorizeFiles(PRConstant.FOLDER_MAS_DATASET + "Test Compute TFIDF\\Removed stopword and stemming text", PRConstant.FOLDER_MAS_DATASET + "Test Compute TFIDF\\sequence", PRConstant.FOLDER_MAS_DATASET + "Test Compute TFIDF\\vector");
-        HashMap<Integer, String> dictionary = MahoutFile.readMahoutDictionaryFiles(PRConstant.FOLDER_MAS_DATASET + "Test Compute TFIDF\\vector");
-        HashMap<String, HashMapVector> vectorizedDocuments = MahoutFile.readMahoutVectorFiles(PRConstant.FOLDER_MAS_DATASET + "Test Compute TFIDF\\vector");
+        textVectorizeFiles(Constant.FOLDER_MAS_DATASET + "Test Compute TFIDF\\Removed stopword and stemming text", Constant.FOLDER_MAS_DATASET + "Test Compute TFIDF\\sequence", Constant.FOLDER_MAS_DATASET + "Test Compute TFIDF\\vector");
+        HashMap<Integer, String> dictionary = MahoutFile.readMahoutDictionaryFiles(Constant.FOLDER_MAS_DATASET + "Test Compute TFIDF\\vector");
+        HashMap<String, HashMapVector> vectorizedDocuments = MahoutFile.readMahoutVectorFiles(Constant.FOLDER_MAS_DATASET + "Test Compute TFIDF\\vector");
     }
 }

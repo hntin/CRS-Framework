@@ -12,7 +12,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.util.*;
-import uit.tkorg.crs.constant.PRConstant;
+import uit.tkorg.crs.constant.Constant;
 import uit.tkorg.crs.datapreparation.CBFAuthorFVComputation;
 import uit.tkorg.crs.model.Author;
 import uit.tkorg.crs.model.Paper;
