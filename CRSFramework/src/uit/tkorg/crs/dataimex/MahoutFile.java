@@ -125,7 +125,6 @@ public class MahoutFile {
             String documentId = key.toString();
             documentId = documentId.substring(documentId.lastIndexOf("/") + 1, documentId.length() - 4);
             if (papers.containsKey(documentId)){
-                //System.out.println("ben trong roi " + documentId);
                 HashMapVector vectorContent = new HashMapVector();
                 Iterator<Vector.Element> iter = vector.nonZeroes().iterator();
                 while (iter.hasNext()) {
