@@ -167,5 +167,19 @@ public class DatabaseTool {
             System.out.println(ex);
         }
     }
-    
+    public ResultSet getPapersByAuthor(int authorId){
+        String sql = "SELECT p.idPaper, p.title, p.year " +
+                     "FROM paper p, author_paper ap " +
+                     "WHERE p.idPaper= ap.idPaper and ap.idAuthor = ?";
+//        System.out.println(sql);
+        ResultSet rs = null;
+        try {
+            stmt = con.prepareStatement(sql);
+            stmt.setInt(1, authorId);
+            rs = stmt.executeQuery();
+        } catch (SQLException ex) {
+            Logger.getLogger(uit.tkorg.utility.general.DatabaseTool.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return rs;
+    }
 }
