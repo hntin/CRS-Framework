@@ -7,10 +7,16 @@ package uit.tkorg.crs.datapreparation;
 import ir.vsr.HashMapVector;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.*;
 import uit.tkorg.crs.constant.Constant;
 import uit.tkorg.crs.datapreparation.CBFAuthorFVComputation;
@@ -69,6 +75,28 @@ public class ProfileCreator {
         return papers;
     }
     
+    public static void createTestDatabase(){
+        String filePath = "input/3.txt";
+        String sql = "INSERT INTO paper (title, abstract, year) values (?, ?, ?)";
+        try{ 
+            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/test","root","thuc1980");
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setString(1,"Paper 3");
+            InputStream inputStream = new FileInputStream(new File(filePath));
+            statement.setBlob(2, inputStream);
+            statement.setInt(3,2015);
+            int row = statement.executeUpdate();
+            if (row > 0) {
+                System.out.println("A paper was inserted");
+            }
+            conn.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+    
     /**
      * Test.
      * 
@@ -76,14 +104,25 @@ public class ProfileCreator {
      * @throws Exception 
      */
     public static void main(String[] args) throws Exception {
-        HashMap<String,Paper> papers = readPaperList(10000);
+//        createTestDatabase();
+        HashMap<String,Paper> papers = readPaperList(1);
         List<String> paperList = new ArrayList<String>(papers.keySet());
         Author author = new Author();
-        author.setAuthorId("10000");
+        author.setAuthorId("1");
         author.setPaperList(paperList);
         HashMapVector fv = CBFAuthorFVComputation.computeAuthorFV(author,papers,1,0.5);
         author.setFeatureVector(fv);
 
-        System.out.println("Ket qua: " + fv.toString());
+        System.out.println("Tac gia 1: " + fv.toString());
+        
+        papers = readPaperList(1);
+        paperList = new ArrayList<String>(papers.keySet());
+        Author author2 = new Author();
+        author2.setAuthorId("1");
+        author2.setPaperList(paperList);
+        fv = CBFAuthorFVComputation.computeAuthorFV(author2,papers,1,0.5);
+        author2.setFeatureVector(fv);
+
+        System.out.println("Tac gia 2: " + fv.toString());
     }
 }
