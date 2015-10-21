@@ -11,7 +11,7 @@ import java.util.HashSet;
 import java.util.List;
 import uit.tkorg.crs.model.Author;
 import uit.tkorg.crs.model.Paper;
-import uit.tkorg.utility.general.WeightingUtility;
+import uit.tkorg.utility.common.WeightingUtility;
 
 /**
  * This class handles all logics for author object. 

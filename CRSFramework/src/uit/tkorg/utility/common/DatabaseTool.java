@@ -25,7 +25,7 @@ public class DatabaseTool {
     private final String dbDriver = "com.mysql.jdbc.Driver";
     private final String dbURL = "jdbc:mysql://localhost:3306/mas";
     private final String dbUsername = "root";
-    private final String dbPassword = "";
+    private final String dbPassword = "root";
     private final String dataDir = "/1.CRS-ExperimetalData/TrainingData/";
     private Connection con;
     private PreparedStatement stmt;
@@ -178,7 +178,7 @@ public class DatabaseTool {
             stmt.setInt(1, authorId);
             rs = stmt.executeQuery();
         } catch (SQLException ex) {
-            Logger.getLogger(uit.tkorg.utility.general.DatabaseTool.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(uit.tkorg.utility.common.DatabaseTool.class.getName()).log(Level.SEVERE, null, ex);
         }
         return rs;
     }

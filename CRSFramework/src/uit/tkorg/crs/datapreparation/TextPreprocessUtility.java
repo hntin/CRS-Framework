@@ -17,7 +17,7 @@ import java.util.concurrent.Executors;
 import java.util.regex.Pattern;
 import org.apache.commons.io.FileUtils;
 import uit.tkorg.crs.constant.Constant;
-import uit.tkorg.utility.general.TextFileUtility;
+import uit.tkorg.utility.common.TextFileUtility;
 import weka.core.Stopwords;
 import weka.core.stemmers.IteratedLovinsStemmer;
 import weka.core.tokenizers.WordTokenizer;

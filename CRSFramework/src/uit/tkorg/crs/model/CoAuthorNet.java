@@ -9,7 +9,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.HashMap;
-import uit.tkorg.utility.general.NumericUtility;
+import uit.tkorg.utility.common.NumericUtility;
 
 /**
  *

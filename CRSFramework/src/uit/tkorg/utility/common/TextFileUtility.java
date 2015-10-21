@@ -18,7 +18,9 @@ import java.io.Writer;
 import java.sql.Blob;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -28,6 +30,27 @@ import java.util.logging.Logger;
  * @author tin
  */
 public class TextFileUtility {
+    
+    /**
+     *
+     * @param dir: directory containing txt and dat files.
+     * @return list of full path of txt and dat files in the directory including subdirectory.
+     */
+    public static List<String> getPathFile(File dir) throws Exception {
+        File[] files = dir.listFiles();
+        List<String> listFiles = new ArrayList<>();
+        for (File file : files) {
+            if (file.isFile()) {
+                String name = file.getName();
+                if (name.endsWith(".txt") || name.endsWith(".dat")) {
+                    listFiles.add(file.getAbsolutePath());
+                }
+            } else {
+                listFiles.addAll(getPathFile(file));
+            }
+        }
+        return listFiles;
+    }
 
     /**
      * writeTextFile
