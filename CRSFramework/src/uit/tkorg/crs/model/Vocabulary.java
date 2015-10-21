@@ -11,7 +11,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import uit.tkorg.crs.dataimex.NUSDataset1;
+import uit.tkorg.crs.datapreparation.NUSDataset1;
 
 /**
  *
