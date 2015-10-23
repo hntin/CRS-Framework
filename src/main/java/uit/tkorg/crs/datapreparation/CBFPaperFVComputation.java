@@ -4,6 +4,7 @@
  */
 package uit.tkorg.crs.datapreparation;
 
+import uit.tkorg.utility.common.MahoutFile;
 import ir.vsr.HashMapVector;
 import java.io.File;
 import java.util.ArrayList;
@@ -16,8 +17,7 @@ import java.util.Set;
 import org.apache.commons.io.FileUtils;
 import uit.tkorg.crs.model.Paper;
 import uit.tkorg.utility.common.WeightingUtility;
-import uit.tkorg.crs.datapreparation.TextPreprocessUtility;
-import uit.tkorg.crs.datapreparation.TextVectorizationByMahoutTerminalUtility;
+import uit.tkorg.utility.common.TextVectorizationByMahoutTerminalUtility;
 
 /**
  *
@@ -54,35 +54,6 @@ public class CBFPaperFVComputation {
         System.out.println("End setting tf-idf to papers.");
     }
     
-    public static void computeTFIDFFromPaperAbstract(HashMap<String, Paper> papers, 
-            String dirPapers, String dirPreProcessedPaper, String sequenceDir, String vectorDir) throws Exception {
-        // Step 1:
-        // - Writing abstract of all papers to text files. One file for each paper in 'dirPapers' directory.
-        // - Clear abstract of all papers.
-        System.out.println("Begin writing abstract to file...");
-        long startTime = System.nanoTime();
-        PRGeneralFile.writePaperAbstractToTextFile(papers, dirPapers);
-        long estimatedTime = System.nanoTime() - startTime;
-        System.out.println("Writing abstract to file elapsed time: " + estimatedTime / 1000000000 + " seconds");
-        System.out.println("End writing abstract to file.");
-
-        // Step 2: Preprocessing content of all papers. Remove stop words and stemming
-        System.out.println("Begin removing stopword and stemming...");
-        startTime = System.nanoTime();
-        TextPreprocessUtility.parallelProcess(dirPapers, dirPreProcessedPaper, true, true);
-        estimatedTime = System.nanoTime() - startTime;
-        System.out.println("Removing stopword and stemming elapsed time: " + estimatedTime / 1000000000 + " seconds");
-        System.out.println("End removing stopword and stemming.");
-
-        // Step 3: tf-idf. Output of this process is vectors of papers stored in a Mahout's binary file
-        System.out.println("Begin vectorizing...");
-        startTime = System.nanoTime();
-        TextVectorizationByMahoutTerminalUtility.textVectorizeFiles(dirPreProcessedPaper, sequenceDir, vectorDir);
-        estimatedTime = System.nanoTime() - startTime;
-        System.out.println("Vectorizing elapsed time: " + estimatedTime / 1000000000 + " seconds");
-        System.out.println("End vectorizing.");
-    }
-
     public static void clearPaperAbstract(HashMap<String, Paper> papers) throws Exception {
         for (String paperId : papers.keySet()) {
             papers.get(paperId).setPaperAbstract(null);
@@ -122,8 +93,7 @@ public class CBFPaperFVComputation {
         
         return returnPapers;
     }
-
-    
+  
     /**
      * This method computes and set value for all papers' full feature vector
      * (after combining citation and reference papers).

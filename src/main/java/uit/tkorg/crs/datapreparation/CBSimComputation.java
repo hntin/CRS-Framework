@@ -28,10 +28,10 @@ import uit.tkorg.utility.common.BinaryFileUtility;
 import uit.tkorg.utility.common.DatabaseTool;
 import uit.tkorg.utility.common.NumericUtility;
 
-public class ProfileCreator {
+public class CBSimComputation {
 
     // Prevent instantiation.
-    private ProfileCreator() {
+    private CBSimComputation() {
 
     }
 
@@ -105,7 +105,7 @@ public class ProfileCreator {
         try {
             papers = readPaperList(authorId);
         } catch (Exception ex) {
-            Logger.getLogger(ProfileCreator.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(CBSimComputation.class.getName()).log(Level.SEVERE, null, ex);
         }
         List<String> paperList = new ArrayList<String>(papers.keySet());
         Author author = new Author();
@@ -114,7 +114,7 @@ public class ProfileCreator {
         try {
             fv = CBFAuthorFVComputation.computeAuthorFV(author, papers, 1, 0.5);
         } catch (Exception ex) {
-            Logger.getLogger(ProfileCreator.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(CBSimComputation.class.getName()).log(Level.SEVERE, null, ex);
         }
         author.setFeatureVector(fv);
     }

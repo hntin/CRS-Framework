@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package uit.tkorg.crs.datapreparation;
+package uit.tkorg.utility.common;
 
 import uit.tkorg.crs.datapreparation.*;
 import ir.vsr.HashMapVector;

@@ -24,7 +24,7 @@ import uit.tkorg.crs.model.CoAuthorGraph;
  *
  * @author TinHuynh
  */
-public class MLDataExtractor {
+public class MLDataExtraction {
 
     /**
      * Loc ra cac junior researchers ton tai trong G1, nhung chua ton tai trong
