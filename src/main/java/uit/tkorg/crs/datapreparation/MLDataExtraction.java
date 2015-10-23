@@ -14,6 +14,8 @@ import java.io.PrintWriter;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import uit.tkorg.crs.model.CoAuthorGraph;
@@ -81,7 +83,6 @@ public class MLDataExtraction {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         return listOfAuthorHM;
     }
 
@@ -198,6 +199,83 @@ public class MLDataExtraction {
     }
 
     /**
+     * getAllNegativeSampleFromCoAuthorGraph In 3 Hubs
+     *
+     * @param listOfAuthors
+     * @param G1
+     * @param G2
+     * @param outFileName
+     * @return
+     */
+    private static int getAllNegativeSampleFromCoAuthorGraphIn3Hub(HashMap<Integer, Integer> listOfAuthors,
+            CoAuthorGraph G1, CoAuthorGraph G2, String outFileName) {
+        HashMap<Integer, ArrayList<Integer>> pairsOfNegativeSample = new HashMap<>();
+        try {
+            for (int authorID : listOfAuthors.keySet()) {
+                ArrayList<Integer> negativeSetForAnAuthorID = pairsOfNegativeSample.get(authorID);
+                if (G2._coAuthorGraph.containsKey(authorID) && G1._coAuthorGraph.containsKey(authorID)) {
+                    Set<Integer> coAuthorSetInHub1 = G1._coAuthorGraph.get(authorID).keySet();
+                    for (int authorIDInHub1 : coAuthorSetInHub1) {
+                        Set<Integer> coAuthorSetInHub2 = G1._coAuthorGraph.get(authorIDInHub1).keySet();
+                        for (int authorIDInHub2 : coAuthorSetInHub2) {
+                            if (authorIDInHub2 != authorID) {
+                                if (G2._coAuthorGraph.containsKey(authorIDInHub2) && G1._coAuthorGraph.containsKey(authorIDInHub2)
+                                        && !CoAuthorGraph.isLinkExistInCoAuthorGraph(G2._coAuthorGraph, authorID, authorIDInHub2)
+                                        && !CoAuthorGraph.isLinkExistInCoAuthorGraph(G1._coAuthorGraph, authorID, authorIDInHub2)) { 
+                                    if (negativeSetForAnAuthorID == null)
+                                        negativeSetForAnAuthorID = new ArrayList<Integer>();
+                                    
+                                    if (!negativeSetForAnAuthorID.contains(authorIDInHub2)) {
+                                        negativeSetForAnAuthorID.add(authorIDInHub2);
+                                    }
+                                }
+                            }
+
+                            Set<Integer> coAuthorSetInHub3 = G1._coAuthorGraph.get(authorIDInHub2).keySet();
+                            for (int authorIDInHub3 : coAuthorSetInHub3) {
+                                if (authorIDInHub3 != authorID && authorIDInHub3 != authorIDInHub1) {
+                                    if (G2._coAuthorGraph.containsKey(authorIDInHub3) && G1._coAuthorGraph.containsKey(authorIDInHub3)
+                                            && !CoAuthorGraph.isLinkExistInCoAuthorGraph(G2._coAuthorGraph, authorID, authorIDInHub3)
+                                            && !CoAuthorGraph.isLinkExistInCoAuthorGraph(G1._coAuthorGraph, authorID, authorIDInHub3)) {
+                                        if (negativeSetForAnAuthorID == null)
+                                        negativeSetForAnAuthorID = new ArrayList<Integer>();
+                                        
+                                        if (!negativeSetForAnAuthorID.contains(authorIDInHub3)) {
+                                            negativeSetForAnAuthorID.add(authorIDInHub3);
+                                        }
+                                    }
+                                }
+                            }
+
+                        }
+                    }
+                }
+
+                if (negativeSetForAnAuthorID != null && !negativeSetForAnAuthorID.isEmpty()) {
+                    pairsOfNegativeSample.put(authorID, negativeSetForAnAuthorID);
+                }
+            }
+
+            // Write the HashMap to file
+            PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(outFileName)));
+            out.println("AuthorID, ID-NoneCoAuthor");
+            out.flush();
+            for (int authorID : pairsOfNegativeSample.keySet()) {
+                for (int anotherAuthorID : pairsOfNegativeSample.get(authorID)) {
+                    out.println("(" + authorID + "," + anotherAuthorID + ")");
+                    out.flush();
+                }
+            }
+
+            out.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return pairsOfNegativeSample.size();
+    }
+
+    /**
      *
      * @param listOfAuthors
      * @param numOfNegativeSample
@@ -223,7 +301,7 @@ public class MLDataExtraction {
                         if (!CoAuthorGraph.isLinkExistInCoAuthorGraph(G2._coAuthorGraph, authorID, anotherAuthorID)
                                 && !CoAuthorGraph.isLinkExistInCoAuthorGraph(G1._coAuthorGraph, authorID, anotherAuthorID)) {
                             out.println("(" + authorID + "," + anotherAuthorID + ")");
-                            out.flush();                           
+                            out.flush();
                             numOfSelectedNegativeSample++;
                         }
                     }
@@ -245,7 +323,7 @@ public class MLDataExtraction {
         // G0 < T1 (before 2003)
 //        CoAuthorGraph G0 = new CoAuthorGraph("/1.CRS-ExperimetalData/SampleData/AuthorID_PaperID_Before_2003.txt",
 //                "/1.CRS-ExperimetalData/SampleData/PaperID_Year_Before_2003.txt");
-//        
+//
 //        boolean isExist = G0.isLinkExistInCoAuthorGraph(G0._coAuthorGraph, 4, 6);
 //        System.out.println("Link (4, 6) in G1 is " + isExist);
 //        isExist = G0.isLinkExistInCoAuthorGraph(G0._coAuthorGraph, 5, 6);
@@ -254,11 +332,11 @@ public class MLDataExtraction {
 //        System.out.println("Link (4, 5) in G1 is " + isExist);
 //        System.out.println("Weight of (1, 2) in G0 is " + G0._coAuthorGraph.get(1).get(2));
 //        System.out.println("Building G0 ... DONE.");
-//        
+//
 //        // G1 in T1
 //        CoAuthorGraph G1 = new CoAuthorGraph("/1.CRS-ExperimetalData/SampleData/AuthorID_PaperID_2003_2005.txt",
 //                "/1.CRS-ExperimetalData/SampleData/PaperID_Year_2003_2005.txt", 2003, 2005);
-//        
+//
 //        isExist = G1.isLinkExistInCoAuthorGraph(G1._coAuthorGraph, 4, 6);
 //        System.out.println("Link (4, 6) in G1 is " + isExist);
 //        isExist = G1.isLinkExistInCoAuthorGraph(G1._coAuthorGraph, 5, 6);
@@ -267,11 +345,11 @@ public class MLDataExtraction {
 //        System.out.println("Link (4, 5) in G1 is " + isExist);
 //        System.out.println("Weight of (1, 2) in G1 is " + G1._coAuthorGraph.get(1).get(2));
 //        System.out.println("Building G1 ... DONE.");
-//        
+//
 //        // Loc ra cac junior researchers ton tai trong G1, nhung chua ton tai trong G0.
 //        // Tuc moi bat dau nghien cuu va lan dau xuat hien trong cong dong. So bai bao trong trong G1 < 3
 //        getListofJuniorFromCoAuthorGraph(G0, G1, "/1.CRS-ExperimetalData/SampleData/JuniorIDList.txt");
-//        
+//
 //        // G2 in T2
 //        CoAuthorGraph G2 = new CoAuthorGraph("/1.CRS-ExperimetalData/SampleData/AuthorID_PaperID_2006_2008.txt",
 //                "/1.CRS-ExperimetalData/SampleData/PaperID_Year_2006_2008.txt", 2006, 2008);
@@ -283,17 +361,17 @@ public class MLDataExtraction {
 //        System.out.println("Link (4, 5) in G2 is " + isExist);
 //        System.out.println("Weight of (1, 2) in G2 is " + G2._coAuthorGraph.get(1).get(2));
 //        System.out.println("Building G2 ..... DONE.");
-//        
+//
 //        // Loc ra cac link(+) xuat hien trong G2 cua cac junior (xuat hien trong G1)
 //        HashMap<Integer, Integer> juniorAuthorIDHM = loadAuthorIDFromTextFile("/1.CRS-ExperimetalData/SampleData/JuniorIDList.txt");
 //        int numOfPositiveSample = getPositiveSampleFromCoAuthorGraph(juniorAuthorIDHM, G1, G2, "/1.CRS-ExperimetalData/SampleData/PositiveSamples.txt");
 //        System.out.println("So mau (+):" + numOfPositiveSample);
-//        
+//
 //        // Chon ngau nhien cac cap author khong link trong G2 va G1 cho cac junior (xuat hien trong G1)
 //        // So luong mau (-) muon chon = Tat ca mau am trong G2 cua nhung junior co mau (+)
 //        // Chi chon mau am (-) trong G2 cho nhung junior ma co xuat hien mau (+) trong G2. Khong can xet nhung junior ma khong co mau (+)???
 //        HashMap<Integer, Integer> authorsInPositveSample = loadAuthorIDFromPositiveSample("/1.CRS-ExperimetalData/SampleData/PositiveSamples.txt");
-//        double numOfSelectedNagativeSample = getAllNegativeSampleFromCoAuthorGraph(authorsInPositveSample, G1, G2, "/1.CRS-ExperimetalData/SampleData/NegativeSamples.txt");
+//        double numOfSelectedNagativeSample = getAllNegativeSampleFromCoAuthorGraphIn3Hub(authorsInPositveSample, G1, G2, "/1.CRS-ExperimetalData/SampleData/NegativeSamples.txt");
 //        System.out.println("So mau (-):" + numOfSelectedNagativeSample);
         //</editor-fold>
         
@@ -322,7 +400,7 @@ public class MLDataExtraction {
         System.out.println("So Junior Researchers lien quan mau (+):" + authorsInPositveSample.size());
         System.out.println("Tong so Researchers trong G2:" + G2._coAuthorGraph.size());
 
-        int numOfSelectedNagativeSample = getAllNegativeSampleFromCoAuthorGraph(authorsInPositveSample, G1, G2, outFile_NegativeSample);
+        int numOfSelectedNagativeSample = getAllNegativeSampleFromCoAuthorGraphIn3Hub(authorsInPositveSample, G1, G2, outFile_NegativeSample);
         System.out.println("So mau (-):" + numOfSelectedNagativeSample);
         //</editor-fold>
 
