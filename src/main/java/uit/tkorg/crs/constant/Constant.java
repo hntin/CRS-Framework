@@ -12,7 +12,8 @@ public class Constant {
     public static final String FOLDER_MAS_DATASET = "output/";
     public static final String SAVEDATAFOLDER = "D:\\ResE\\Paper recommendation\\Save Object Dataset 1";
 //    public static final String TFIDFDIR = "D:\\3.PRS-Experiment\\Dataset1 - MAS\\PRS Experimental data\\T0-T1\\TF-IDF\\Vector\\";
-    public static final String TFIDFDIR = "output/";
+    public static final String TFIDFDIR = "/Users/thucnt/temp/output/";
+    public static final String PROFILE_DIR = "/Users/thucnt/temp/ouput/profiles/";
     
     public static final String DB = "MYSQL";
     //public static final String DB = "SQLSERVER";

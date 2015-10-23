@@ -42,7 +42,7 @@ import org.apache.mahout.vectorizer.common.PartialVectorMerger;
 import org.apache.mahout.vectorizer.tfidf.TFIDFConverter;
 import uit.tkorg.utility.common.DatabaseTool;
 
-public class TFIDFTester {
+public class PaperVectorization {
 
     String outputFolder;
     String inputFolder;
@@ -54,46 +54,39 @@ public class TFIDFTester {
     Path tfidfPath;
     Path termFrequencyVectorsPath;
 
-    public static void main(String args[]) throws Exception {
-
-        TFIDFTester tester = new TFIDFTester();
-
-//        tester.corpusToSequence();
-        tester.createTestDocuments();
-        tester.calculateTfIdf();
-
-        //tester.printSequenceFile(tester.documentsSequencePath);
+    public void vectorzie(int year) throws Exception {
+//        tester.createTestDocuments();
+        abstractToSequence(year);
+        calculateTfIdf();
 
         System.out.println("\n Step 1: Word count ");
-        tester.printSequenceFile(new Path(tester.outputFolder
+        printSequenceFile(new Path(outputFolder
                 + "wordcount/part-r-00000"));
 
         System.out.println("\n Step 2: Word dictionary ");
-        tester.printSequenceFile(new Path(tester.outputFolder,
+        printSequenceFile(new Path(outputFolder,
                 "dictionary.file-0"));
 
         System.out.println("\n Step 3: Term Frequency Vectors ");
-        tester.printSequenceFile(new Path(tester.outputFolder
+        printSequenceFile(new Path(outputFolder
                 + "tf-vectors/part-r-00000"));
 
         System.out.println("\n Step 4: Document Frequency ");
-        tester.printSequenceFile(new Path(tester.outputFolder
+        printSequenceFile(new Path(outputFolder
                 + "tfidf/df-count/part-r-00000"));
 
         System.out.println("\n Step 5: TFIDF ");
-        tester.printSequenceFile(new Path(tester.outputFolder
+        printSequenceFile(new Path(outputFolder
                 + "tfidf/tfidf-vectors/part-r-00000"));
-        tester.buildProfile(new Path(tester.outputFolder
-                + "tfidf/tfidf-vectors/part-r-00000"),1000);
     }
 
-    public TFIDFTester() throws IOException {
+    public PaperVectorization() throws IOException {
 
         configuration = new Configuration();
         fileSystem = FileSystem.get(configuration);
 
         inputFolder = "/Users/thucnt/temp/test/";
-        outputFolder = "/Users/thucnt/temp/output/2001/";
+        outputFolder = "/Users/thucnt/temp/output/";
         
         documentsSequencePath = new Path(outputFolder, "sequence");
         tokenizedDocumentsPath = new Path(outputFolder,
@@ -103,13 +96,13 @@ public class TFIDFTester {
                 + DictionaryVectorizer.DOCUMENT_VECTOR_OUTPUT_FOLDER);
     }
 
-    public void corpusToSequence() throws Exception {
+    public void abstractToSequence(int year) throws Exception {
         final SequenceFile.Writer writer = new SequenceFile.Writer(fileSystem,
                 configuration, documentsSequencePath, Text.class, Text.class);
         
         DatabaseTool db = new DatabaseTool();
         db.connect();
-        ResultSet rs = db.getPapersByYear(2001);
+        ResultSet rs = db.getPapersByYear(year);
         
         while (rs.next()){
             int id = rs.getInt(1);
@@ -200,7 +193,7 @@ public class TFIDFTester {
 //            tfidfPath = new Path("/Users/thucnt/NetBeansProjects/mahout/output/tfidf/");
 //            MahoutFile.readMahoutVectorFiles(tfidfPath);
 //        } catch (Exception ex) {
-//            Logger.getLogger(TFIDFTester.class.getName()).log(Level.SEVERE, null, ex);
+//            Logger.getLogger(PaperVectorization.class.getName()).log(Level.SEVERE, null, ex);
 //        }
         SequenceFileIterable<Writable, Writable> iterable = new SequenceFileIterable<Writable, Writable>(
                 path, configuration);

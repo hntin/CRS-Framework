@@ -29,30 +29,7 @@ import uit.tkorg.crs.model.Paper;
 public class MahoutFile {
 
     private MahoutFile() {}
-    
-    public static void readMahoutCFRating(String MahoutCFRatingMatrixPredictionFile, HashMap<String, Author> authorTestSet) throws Exception {
-        try (BufferedReader br = new BufferedReader(new FileReader(MahoutCFRatingMatrixPredictionFile))) {
-            String line;
-            
-            while ((line = br.readLine()) != null) {
-                if ((line == null) || (line.equals(""))) {
-                    break;
-                }
-                
-                String[] str = line.split(",");
-                String authorId = str[0];
-                String paperId = str[1];
-                String rating = str[2];
-                
-                if (authorTestSet.containsKey(authorId)) {
-                    authorTestSet.get(authorId).getRecommendationList().add(paperId);
-                }
-            }
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-            throw e;
-        }
-    }
+
     /**
      * Read vector created by mahout.
      * @param vectorDir: directory outputted by mahout.
@@ -123,7 +100,7 @@ public class MahoutFile {
         while (reader.next(key, value)) {
             Vector vector = value.get();
             String documentId = key.toString();
-            documentId = documentId.substring(documentId.lastIndexOf("/") + 1, documentId.length() - 4);
+//            documentId = documentId.substring(documentId.lastIndexOf("/") + 1, documentId.length() - 4);
             if (papers.containsKey(documentId)){
                 HashMapVector vectorContent = new HashMapVector();
                 Iterator<Vector.Element> iter = vector.nonZeroes().iterator();
