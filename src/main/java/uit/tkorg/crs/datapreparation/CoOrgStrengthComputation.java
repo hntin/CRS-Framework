@@ -9,6 +9,6 @@ package uit.tkorg.crs.datapreparation;
  *
  * @author thucnt
  */
-public class CoOrganizeStrengComputation {
+public class CoOrgStrengthComputation {
     
 }
