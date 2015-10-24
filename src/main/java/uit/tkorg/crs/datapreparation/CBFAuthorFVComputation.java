@@ -143,13 +143,13 @@ public class CBFAuthorFVComputation {
         
         if (timeAwareScheme == 0) {
             for (String paperId : paperIds) {
-                featureVector.add(papers.get(paperId).getFeatureVector());
+                featureVector.add(papers.get(paperId).getTfidfVector());
             }
         } else if (timeAwareScheme == 1) {
             int latestPublicationYear = getLatestPublicationYear(papers, paperIds);
             for (String paperId : paperIds) {
                 double ff = WeightingUtility.computeForgettingFactor(latestPublicationYear, papers.get(paperId).getYear(), gamma);
-                featureVector.addScaled(papers.get(paperId).getFeatureVector(), ff);
+                featureVector.addScaled(papers.get(paperId).getTfidfVector(), ff);
             }
         }
         

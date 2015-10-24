@@ -23,7 +23,7 @@ import java.util.logging.Logger;
 public class DatabaseTool {
 
     private final String dbDriver = "com.mysql.jdbc.Driver";
-    private final String dbURL = "jdbc:mysql://localhost:3306/test";
+    private final String dbURL = "jdbc:mysql://localhost:3306/mas";
     private final String dbUsername = "root";
     private final String dbPassword = "thuc1980";
     private final String dataDir = "/1.CRS-ExperimetalData/TrainingData/";
@@ -172,7 +172,7 @@ public class DatabaseTool {
     public ResultSet getPapersByYear(int year){
         String sql = "SELECT paper.idPaper, paper.abstract " +
                      "FROM paper " +
-                     "WHERE paper.year = ? " +
+                     "WHERE paper.year <= ? " +
                      "ORDER BY paper.idPaper ASC";
         try {
             stmt = con.prepareStatement(sql);
@@ -184,15 +184,16 @@ public class DatabaseTool {
         return rs;
     }
     
-    public ResultSet getPapersByAuthor(int authorId){
+    public ResultSet getPapersByAuthor(int authorId, int year){
         String sql = "SELECT p.idPaper, p.title, p.year " +
                      "FROM paper p, author_paper ap " +
-                     "WHERE p.idPaper= ap.idPaper and ap.idAuthor = ?";
+                     "WHERE p.idPaper= ap.idPaper and ap.idAuthor = ? and p.year <= ?";
 //        System.out.println(sql);
         ResultSet rs = null;
         try {
             stmt = con.prepareStatement(sql);
             stmt.setInt(1, authorId);
+            stmt.setInt(2, year);
             rs = stmt.executeQuery();
         } catch (SQLException ex) {
             Logger.getLogger(uit.tkorg.utility.common.DatabaseTool.class.getName()).log(Level.SEVERE, null, ex);

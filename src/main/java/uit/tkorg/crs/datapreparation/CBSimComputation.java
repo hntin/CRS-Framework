@@ -34,12 +34,12 @@ public class CBSimComputation {
     private CBSimComputation() {
 
     }
-
-    public static HashMap<String, Paper> readPaperList(int authorID) throws Exception {
+    
+    public static HashMap<String, Paper> readPaperList(int authorID, int year) throws Exception {
         HashMap<String, Paper> papers = new HashMap();
         DatabaseTool db = new DatabaseTool();
         db.connect();
-        ResultSet rs = db.getPapersByAuthor(authorID);
+        ResultSet rs = db.getPapersByAuthor(authorID,year);
         while (rs.next()) {
             Paper paper = new Paper();
             String paperId = rs.getInt(1) + "";
@@ -49,30 +49,6 @@ public class CBSimComputation {
             papers.put(paperId, paper);
         }
         db.disconnect();
-
-//        Paper paper = new Paper();
-//        String paperId = "1967";
-//        paper.setPaperId(paperId);
-//        paper.setPaperTitle("Paper ");
-//        //paper.setPaperAbstract(paperAbstract);
-//        paper.setYear(2000);
-//        papers.put(paperId, paper);
-//        
-//        paper = new Paper();
-//        paperId = "202";
-//        paper.setPaperId(paperId);
-//        paper.setPaperTitle("Paper 202");
-//        //paper.setPaperAbstract(paperAbstract);
-//        paper.setYear(2000);
-//        papers.put(paperId, paper);
-//        
-//        paper = new Paper();
-//        paperId = "2033";
-//        paper.setPaperId(paperId);
-//        paper.setPaperTitle("Paper 2033");
-//        //paper.setPaperAbstract(paperAbstract);
-//        paper.setYear(2000);
-//        papers.put(paperId, paper);
         return papers;
     }
 
@@ -99,11 +75,11 @@ public class CBSimComputation {
         }
     }
 
-    public static void buildAuthorProfile(int authorId) {
+    public static void buildAuthorProfile(int authorId,int year) {
         HashMap<String, Paper> papers = null;
         HashMapVector fv = null;
         try {
-            papers = readPaperList(authorId);
+            papers = readPaperList(authorId,year);
         } catch (Exception ex) {
             Logger.getLogger(CBSimComputation.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -127,10 +103,10 @@ public class CBSimComputation {
      */
     public static void main(String[] args) throws Exception {
 //        createTestDatabase();
-//        PaperVectorization pv = new PaperVectorization();
-//        pv.vectorzie(2015);
+//        CBFPaperFVComputation.vectorzie("input/", "output/TFIDF/");
+        CBFPaperFVComputation.vectorzie(2005, "output/TFIDF/");
 
-        HashMap<String, Paper> papers = readPaperList(1);
+        HashMap<String, Paper> papers = readPaperList(1,2005);
         List<String> paperList = new ArrayList<String>(papers.keySet());
 
         Author author1 = new Author();
@@ -139,7 +115,7 @@ public class CBSimComputation {
         HashMapVector fv = CBFAuthorFVComputation.computeAuthorFV(author1, papers, 1, 0.5);
         author1.setFeatureVector(fv);
 
-        papers = readPaperList(2);
+        papers = readPaperList(2,2005);
         paperList = new ArrayList<String>(papers.keySet());
         Author author2 = new Author();
         author2.setAuthorId("2");
@@ -147,7 +123,7 @@ public class CBSimComputation {
         fv = CBFAuthorFVComputation.computeAuthorFV(author2, papers, 1, 0.5);
         author2.setFeatureVector(fv);
 
-        papers = readPaperList(3);
+        papers = readPaperList(3,2005);
         paperList = new ArrayList<String>(papers.keySet());
         Author author3 = new Author();
         author3.setAuthorId("3");
