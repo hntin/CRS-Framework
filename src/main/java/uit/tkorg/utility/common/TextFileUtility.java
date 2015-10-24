@@ -237,13 +237,16 @@ public class TextFileUtility {
             FileInputStream fis = new FileInputStream(filePath);
             Reader reader = new InputStreamReader(fis, "UTF8");
             BufferedReader bufferReader = new BufferedReader(reader);
-            bufferReader.readLine(); // skip the first line
             String line = null;
+           
             while ((line = bufferReader.readLine()) != null) {
+                
                 strBuffer.append(line + " ");
             }
             bufferReader.close();
+            fis.close();
         } catch (Exception e) {
+            System.out.println(e);
         }
 
         return strBuffer.toString();
