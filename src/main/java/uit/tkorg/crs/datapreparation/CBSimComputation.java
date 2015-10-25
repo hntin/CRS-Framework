@@ -201,12 +201,13 @@ public class CBSimComputation {
     /**
      * ghi vao sampleFile do giong nhau giua 2 tac gia dua tren do do cosine
      * @param sampleFile chua mau am/duong
-     * @param year nam hien tai dung de tinh profile
      */
-    public static void computeCosine(String sampleFile, int year, String outputFile){
+    public static void computeCosine(String sampleFile, String outputFile){
         try {
             HashMap<String,List<Paper>> authorPaper = readPaperIdByAuthor("/Users/thucnt/temp/input/AuthorID_PaperID_2001_2003.txt");
-            HashMap<Integer,List<String>> yearPaperId = readPaperIdByYear("/Users/thucnt/temp/input/PaperID_Year_2001_2003.txt");
+            HashMap<String,Integer> paperIdYear = readPaperIdByYear("/Users/thucnt/temp/input/PaperID_Year_2001_2003.txt");
+            
+            //lap danh sach tat ca cac bai bao tu nam thu year tro ve truoc
             HashMap<String,Paper> papers = new HashMap<String,Paper>();
             Collection c = authorPaper.values();
             Iterator itr = c.iterator();
@@ -214,16 +215,16 @@ public class CBSimComputation {
                 List<Paper> l = (List<Paper>)itr.next();
                 for (int i = 0; i < l.size(); i++){
                     Paper p = l.get(i);
+                    int y = paperIdYear.get(p.getPaperId()).intValue();
+                    p.setYear(y);
                     papers.put(p.getPaperId(), p);
                 }
             }
-//            List<String> paperList = new ArrayList<String>(papers.keySet());
-
+            
             //Tinh FV cho tat ca cac tac gia
             LinkedHashSet<Integer> authorList = readAuthorList(sampleFile);//doc danh sach tac gia tu mau am/duong
             Iterator<Integer> ir = authorList.iterator();
             HashMap<String, Author> authors = new HashMap<String, Author>();
-            //doc thong tin cac tac gia nam trong authorList tu sequence file
             while (ir.hasNext()){
                 Integer idAuthor = ir.next();
                 Author author = new Author();
@@ -255,8 +256,8 @@ public class CBSimComputation {
         }
     }
     
-    private static HashMap<Integer,List<String>> readPaperIdByYear(String dataFile){
-        HashMap<Integer,List<String>> yearPaperId = new HashMap();
+    private static HashMap<String,Integer> readPaperIdByYear(String dataFile){
+        HashMap<String,Integer> paperIdYear = new HashMap();
         final String REGEX = "\\D";
         try {
             System.out.println("Bat dau doc danh sach bai bao tu file text");
@@ -265,23 +266,14 @@ public class CBSimComputation {
             while (input.hasNext()){
                 String line = input.nextLine().trim();
                 String[] tokens = line.split(REGEX);
-                Integer key = new Integer(tokens[1]);
-                String value = tokens[0];
-                if (yearPaperId.containsKey(key)){
-                    List<String> paperList = yearPaperId.get(key);
-                    paperList.add(value);
-                    yearPaperId.replace(key, paperList);
-                }
-                else{
-                    List<String> paperList = new ArrayList<String>();
-                    paperList.add(value);
-                    yearPaperId.put(key, paperList);
-                }
+                String key = tokens[0];
+                Integer value = new Integer(tokens[1]);
+                paperIdYear.put(key, value);
             }
         } catch (FileNotFoundException ex) {
             Logger.getLogger(CBSimComputation.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return yearPaperId;
+        return paperIdYear;
     }
     
     /**
@@ -295,6 +287,6 @@ public class CBSimComputation {
 //        CBFPaperFVComputation.vectorzie("/Users/thucnt/temp/input/papers", "/Users/thucnt/temp/output/TFIDF/");
 //        CBFPaperFVComputation.vectorzie(2005, "output/TFIDF/");
 //        readPaperIdByAuthor("/Users/thucnt/temp/input/AuthorID_PaperID_2001_2003.txt");
-        computeCosine("/Users/thucnt/temp/input/positive.txt",2015,"/Users/thucnt/temp/output/positive.txt");
+        computeCosine("/Users/thucnt/temp/input/positive.txt","/Users/thucnt/temp/output/positive.txt");
     }
 }
