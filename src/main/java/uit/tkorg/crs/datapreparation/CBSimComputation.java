@@ -63,14 +63,40 @@ public class CBSimComputation {
         return papers;
     }
     
-    public static HashMap<String, Paper> readPaperList(int authorID, int year, String papersFolder) throws Exception {
-        HashMap<String, Paper> papers = new HashMap();
+    /**
+     *
+     * @param paperListFile
+     * @return
+     * @throws Exception
+     */
+    public static HashMap<String, List<Paper>> readPaperIdByAuthor(String paperListFile) throws Exception {
+        HashMap<String, List<Paper>> papers = new HashMap();
+        final String REGEX = "\\D";
         
-        List<String> paperList = TextFileUtility.getPathFile(new File(papersFolder));
-        
-        for (int i = 0; i < paperList.size(); i++) {
-            //
+        System.out.println("Bat dau doc danh sach bai bao tu file text");
+        Scanner input = new Scanner(new FileReader(paperListFile));
+        input.nextLine();//bo dong dau tien
+        while (input.hasNext()){
+            String line = input.nextLine().trim();
+            String[] tokens = line.split(REGEX);
+            String key = tokens[0];
+            String value = tokens[1];
+            if (papers.containsKey(key)){
+                List<Paper> paperList = papers.get(key);
+                Paper p = new Paper();
+                p.setPaperId(value);
+                paperList.add(p);
+                papers.replace(key, paperList);
+            }
+            else{
+                List<Paper> paperList = new ArrayList<Paper>();
+                Paper p = new Paper();
+                p.setPaperId(value);
+                paperList.add(p);
+                papers.put(key, paperList);
+            }
         }
+        System.out.println("So tac gia da co bai bao: " + papers.size());
         return papers;
     }
 
@@ -179,10 +205,22 @@ public class CBSimComputation {
      */
     public static void computeCosine(String sampleFile, int year, String outputFile){
         try {
-            HashMap<String, Paper> papers = readPaperList(1,year);//lay ds bai bao tu year ve truoc
-            List<String> paperList = new ArrayList<String>(papers.keySet());
-            
-            LinkedHashSet<Integer> authorList = readAuthorList(sampleFile);
+            HashMap<String,List<Paper>> authorPaper = readPaperIdByAuthor("/Users/thucnt/temp/input/AuthorID_PaperID_2001_2003.txt");
+            HashMap<Integer,List<String>> yearPaperId = readPaperIdByYear("/Users/thucnt/temp/input/PaperID_Year_2001_2003.txt");
+            HashMap<String,Paper> papers = new HashMap<String,Paper>();
+            Collection c = authorPaper.values();
+            Iterator itr = c.iterator();
+            while (itr.hasNext()){
+                List<Paper> l = (List<Paper>)itr.next();
+                for (int i = 0; i < l.size(); i++){
+                    Paper p = l.get(i);
+                    papers.put(p.getPaperId(), p);
+                }
+            }
+//            List<String> paperList = new ArrayList<String>(papers.keySet());
+
+            //Tinh FV cho tat ca cac tac gia
+            LinkedHashSet<Integer> authorList = readAuthorList(sampleFile);//doc danh sach tac gia tu mau am/duong
             Iterator<Integer> ir = authorList.iterator();
             HashMap<String, Author> authors = new HashMap<String, Author>();
             //doc thong tin cac tac gia nam trong authorList tu sequence file
@@ -190,11 +228,15 @@ public class CBSimComputation {
                 Integer idAuthor = ir.next();
                 Author author = new Author();
                 author.setAuthorId(idAuthor.toString());
+                List<Paper> paperList = authorPaper.get(author.getAuthorId());
                 author.setPaperList(paperList);
-                HashMapVector fv = CBFAuthorFVComputation.computeAuthorFV(author, papers, 1, 0.5);
-                author.setFeatureVector(fv);
+//                HashMapVector fv = CBFAuthorFVComputation.computeAuthorFV(author, papers, 1, 0.5);
+//                author.setFeatureVector(fv);
                 authors.put(author.getAuthorId(), author);
             }
+            
+            CBFAuthorFVComputation.computeFVForAllAuthors(authors, papers, 1, 0.5);
+            
             //tinh do do cosine cho tung cap tac gia trong mau duong/am va ghi ra file
             ArrayList<Pair<Integer,Integer>> listOfPairs = readSample(sampleFile);
             StringBuilder content = new StringBuilder();
@@ -213,6 +255,35 @@ public class CBSimComputation {
         }
     }
     
+    private static HashMap<Integer,List<String>> readPaperIdByYear(String dataFile){
+        HashMap<Integer,List<String>> yearPaperId = new HashMap();
+        final String REGEX = "\\D";
+        try {
+            System.out.println("Bat dau doc danh sach bai bao tu file text");
+            Scanner input = new Scanner(new FileReader(dataFile));
+            input.nextLine();//bo dong dau tien
+            while (input.hasNext()){
+                String line = input.nextLine().trim();
+                String[] tokens = line.split(REGEX);
+                Integer key = new Integer(tokens[1]);
+                String value = tokens[0];
+                if (yearPaperId.containsKey(key)){
+                    List<String> paperList = yearPaperId.get(key);
+                    paperList.add(value);
+                    yearPaperId.replace(key, paperList);
+                }
+                else{
+                    List<String> paperList = new ArrayList<String>();
+                    paperList.add(value);
+                    yearPaperId.put(key, paperList);
+                }
+            }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(CBSimComputation.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return yearPaperId;
+    }
+    
     /**
      * Test.
      *
@@ -223,7 +294,7 @@ public class CBSimComputation {
 //        createTestDatabase();
 //        CBFPaperFVComputation.vectorzie("/Users/thucnt/temp/input/papers", "/Users/thucnt/temp/output/TFIDF/");
 //        CBFPaperFVComputation.vectorzie(2005, "output/TFIDF/");
-        
+//        readPaperIdByAuthor("/Users/thucnt/temp/input/AuthorID_PaperID_2001_2003.txt");
         computeCosine("/Users/thucnt/temp/input/positive.txt",2015,"/Users/thucnt/temp/output/positive.txt");
     }
 }
