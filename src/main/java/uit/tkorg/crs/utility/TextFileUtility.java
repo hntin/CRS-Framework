@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package uit.tkorg.utility.common;
+package uit.tkorg.crs.utility;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -64,6 +64,7 @@ public class TextFileUtility {
             Writer out = new OutputStreamWriter(fos, "UTF8");
             out.write(textContent);
             out.close();
+            fos.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -237,10 +238,10 @@ public class TextFileUtility {
             FileInputStream fis = new FileInputStream(filePath);
             Reader reader = new InputStreamReader(fis, "UTF8");
             BufferedReader bufferReader = new BufferedReader(reader);
+            bufferReader.readLine(); // skip the first line
             String line = null;
            
             while ((line = bufferReader.readLine()) != null) {
-                
                 strBuffer.append(line + " ");
             }
             bufferReader.close();

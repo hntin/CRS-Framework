@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Random;
 import uit.tkorg.crs.model.AuthorGraph;
-import uit.tkorg.utility.common.TextFileUtility;
+import uit.tkorg.crs.utility.TextFileUtility;
 
 /**
  *

@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import uit.tkorg.crs.model.AuthorGraph;
-import uit.tkorg.utility.common.TextFileUtility;
+import uit.tkorg.crs.utility.TextFileUtility;
 
 /**
  *

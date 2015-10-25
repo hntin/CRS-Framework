@@ -2,9 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package uit.tkorg.utility.common;
+package uit.tkorg.crs.utility;
 
-import uit.tkorg.utility.common.NumericUtility;
+import uit.tkorg.crs.utility.NumericUtility;
 import ir.vsr.HashMapVector;
 
 /**

@@ -19,7 +19,7 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import uit.tkorg.crs.model.CoAuthorGraph;
-import uit.tkorg.utility.common.TextFileUtility;
+import uit.tkorg.crs.utility.TextFileUtility;
 import uit.tkorg.crs.model.CoAuthorGraph;
 
 /**

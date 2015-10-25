@@ -1,4 +1,4 @@
-package uit.tkorg.utility.evaluation;
+package uit.tkorg.crs.utility;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -10,8 +10,8 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Set;
 import uit.tkorg.crs.isolatedauthor.IsolatedAuthorDataset;
-import uit.tkorg.utility.common.HashMapUtility;
-import uit.tkorg.utility.common.TextFileUtility;
+import uit.tkorg.crs.utility.HashMapUtility;
+import uit.tkorg.crs.utility.TextFileUtility;
 
 /**
  *

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package uit.tkorg.utility.common;
+package uit.tkorg.crs.utility;
 
 import java.io.File;
 import java.sql.Connection;
@@ -23,10 +23,10 @@ import java.util.logging.Logger;
 public class DatabaseTool {
 
     private final String dbDriver = "com.mysql.jdbc.Driver";
-    private final String dbURL = "jdbc:mysql://localhost:3306/mas";
-    private final String dbUsername = "root";
-    private final String dbPassword = "thuc1980";
-    private final String dataDir = "/1.CRS-ExperimetalData/TrainingData/";
+    private String dbURL = "jdbc:mysql://localhost:3306/mas";
+    private String dbUsername = "root";
+    private String dbPassword = "thuc1980";
+    private String dataDir = "/1.CRS-ExperimetalData/TrainingData/";
     private Connection con;
     private PreparedStatement stmt;
     ResultSet rs;
@@ -41,7 +41,15 @@ public class DatabaseTool {
         dbTool.disconnect();
         System.out.println("DONE!");
     }
-
+    
+    public DatabaseTool(){
+    }
+    public DatabaseTool(String url, String username, String password){
+        dbURL = url;
+        dbUsername = username;
+        dbPassword = password;
+    }
+    
     public Connection connect() {
         try {
             con = DriverManager.getConnection(dbURL, dbUsername, dbPassword);
@@ -196,7 +204,7 @@ public class DatabaseTool {
             stmt.setInt(2, year);
             rs = stmt.executeQuery();
         } catch (SQLException ex) {
-            Logger.getLogger(uit.tkorg.utility.common.DatabaseTool.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(uit.tkorg.crs.utility.DatabaseTool.class.getName()).log(Level.SEVERE, null, ex);
         }
         return rs;
     }

@@ -12,7 +12,7 @@ import java.util.List;
 import uit.tkorg.crs.constant.Constant;
 import uit.tkorg.crs.model.Author;
 import uit.tkorg.crs.model.Paper;
-import uit.tkorg.utility.common.WeightingUtility;
+import uit.tkorg.crs.utility.WeightingUtility;
 
 /**
  * This class handles all logics for author object. 

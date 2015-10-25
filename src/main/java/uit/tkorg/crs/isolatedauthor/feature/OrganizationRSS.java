@@ -10,7 +10,7 @@ import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import uit.tkorg.crs.model.OrganizationGraph;
-import uit.tkorg.utility.common.TextFileUtility;
+import uit.tkorg.crs.utility.TextFileUtility;
 
 /**
  *

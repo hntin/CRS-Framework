@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package uit.tkorg.utility.common;
+package uit.tkorg.crs.utility;
 
 import java.util.Collections;
 import java.util.Comparator;

@@ -21,14 +21,14 @@ import java.util.HashSet;
 import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import uit.tkorg.utility.evaluation.EvaluationMetric;
+import uit.tkorg.crs.utility.EvaluationMetric;
 import uit.tkorg.crs.common.TopNSimilarity;
 import uit.tkorg.crs.model.AuthorGraph;
 import uit.tkorg.crs.method.cbf.TFIDF;
 import uit.tkorg.crs.method.hybrid.AdaptiveHybrid;
 import uit.tkorg.crs.method.hybrid.LinearHybrid;
 import uit.tkorg.crs.method.link.RSS;
-import uit.tkorg.utility.common.TextFileUtility;
+import uit.tkorg.crs.utility.TextFileUtility;
 
 /**
  *

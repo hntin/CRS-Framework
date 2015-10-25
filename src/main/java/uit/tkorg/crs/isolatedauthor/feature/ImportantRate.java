@@ -5,9 +5,9 @@
 package uit.tkorg.crs.isolatedauthor.feature;
 
 import java.util.HashMap;
-import uit.tkorg.utility.algorithm.PageRank;
+import uit.tkorg.crs.utility.PageRank;
 import uit.tkorg.crs.model.CitationGraph;
-import uit.tkorg.utility.common.TextFileUtility;
+import uit.tkorg.crs.utility.TextFileUtility;
 
 /**
  *

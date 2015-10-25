@@ -2,20 +2,28 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package uit.tkorg.utility.common;
+package uit.tkorg.crs.utility;
 
 import ir.vsr.HashMapVector;
+import ir.utilities.Weight;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.URI;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.io.IOUtils;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.SequenceFile;
+import org.apache.hadoop.io.SequenceFile.Writer;
 import org.apache.hadoop.io.Text;
 import org.apache.mahout.math.Vector;
 import org.apache.mahout.math.VectorWritable;
@@ -114,4 +122,47 @@ public class MahoutFile {
         reader.close();
         return vectorizedDocuments;
     }
+    public static void writeAuthorsFV(String vectorDir,HashMap authors){
+        try {
+            Configuration conf = new Configuration();
+            Path outputPath = new Path(vectorDir);
+            FileSystem fs = FileSystem.get(conf);
+            Text key = new Text();
+            HashMapVector value = new HashMapVector();
+            SequenceFile.Writer writer = null;
+            try {
+                writer = openWriter(vectorDir);
+                Set<String> authorList = authors.keySet();
+                Iterator<String> ir = authors.keySet().iterator();
+                while (ir.hasNext()){
+                    String authorId = ir.next();
+                    Author author = (Author)authors.get(authorId);
+                    
+                    key = new Text(authorId);
+                    value = author.getFeatureVector();
+                    Map<String,Weight> map = value.hashMap;
+                    writer.append(key, value);
+                }
+                System.out.println("Writing author FV finished");
+            } finally { 
+                IOUtils.closeStream( writer);
+            }
+        }   catch (IOException ex) {
+            Logger.getLogger(MahoutFile.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
+        } 
+    }
+    
+    public static Writer openWriter(String p) {
+        Writer w = null;
+        try {
+            Configuration conf = new Configuration();
+            Path dstPath = new Path(p + "/fv.dat");
+            FileSystem hdfs = dstPath.getFileSystem(conf);
+            w = new SequenceFile.Writer(hdfs,conf,dstPath,Text.class,VectorWritable.class);
+        } catch (IOException ex) {
+            Logger.getLogger(MahoutFile.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return w;
+    } 
 }

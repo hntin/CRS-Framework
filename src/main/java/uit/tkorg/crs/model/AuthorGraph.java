@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.StringTokenizer;
-import uit.tkorg.utility.algorithm.PageRank;
+import uit.tkorg.crs.utility.PageRank;
 
 /**
  *

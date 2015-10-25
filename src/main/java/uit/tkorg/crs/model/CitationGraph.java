@@ -6,8 +6,8 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.HashMap;
-import uit.tkorg.utility.algorithm.PageRank;
-import uit.tkorg.utility.common.TextFileUtility;
+import uit.tkorg.crs.utility.PageRank;
+import uit.tkorg.crs.utility.TextFileUtility;
 
 /**
  *

@@ -1,4 +1,4 @@
-package uit.tkorg.utility.algorithm;
+package uit.tkorg.crs.utility;
 
 import java.util.HashMap;
 import uit.tkorg.crs.model.AuthorGraph;

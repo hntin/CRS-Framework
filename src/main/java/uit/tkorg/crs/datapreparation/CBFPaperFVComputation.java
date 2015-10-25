@@ -4,7 +4,7 @@
  */
 package uit.tkorg.crs.datapreparation;
 
-import uit.tkorg.utility.common.MahoutFile;
+import uit.tkorg.crs.utility.MahoutFile;
 import ir.vsr.HashMapVector;
 import java.io.File;
 import java.io.IOException;
@@ -34,10 +34,10 @@ import org.apache.mahout.vectorizer.DocumentProcessor;
 import org.apache.mahout.vectorizer.common.PartialVectorMerger;
 import org.apache.mahout.vectorizer.tfidf.TFIDFConverter;
 import uit.tkorg.crs.model.Paper;
-import uit.tkorg.utility.common.DatabaseTool;
-import uit.tkorg.utility.common.TextFileUtility;
-import uit.tkorg.utility.common.WeightingUtility;
-import uit.tkorg.utility.common.TextVectorizationByMahoutTerminalUtility;
+import uit.tkorg.crs.utility.DatabaseTool;
+import uit.tkorg.crs.utility.TextFileUtility;
+import uit.tkorg.crs.utility.WeightingUtility;
+import uit.tkorg.crs.utility.TextVectorizationByMahoutTerminalUtility;
 
 /**
  *

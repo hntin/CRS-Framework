@@ -8,7 +8,7 @@ import java.io.File;
 import java.util.HashMap;
 import jgibblda.Estimator;
 import jgibblda.LDACmdOption;
-import uit.tkorg.utility.common.TextFileUtility;
+import uit.tkorg.crs.utility.TextFileUtility;
 
 /**
  *

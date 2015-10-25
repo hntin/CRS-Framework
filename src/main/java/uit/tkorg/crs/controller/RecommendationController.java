@@ -16,7 +16,7 @@ import uit.tkorg.crs.method.link.MPRSPlus;
 import uit.tkorg.crs.method.link.RSS;
 import uit.tkorg.crs.method.link.RSSPlus;
 import uit.tkorg.crs.model.AuthorGraph;
-import uit.tkorg.utility.evaluation.EvaluationMetric;
+import uit.tkorg.crs.utility.EvaluationMetric;
 
 /**
  *

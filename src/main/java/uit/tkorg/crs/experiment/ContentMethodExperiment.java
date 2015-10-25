@@ -13,12 +13,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Random;
-import uit.tkorg.utility.evaluation.EvaluationMetric;
+import uit.tkorg.crs.utility.EvaluationMetric;
 import uit.tkorg.crs.common.TopNSimilarity;
 import uit.tkorg.crs.model.AuthorGraph;
 import uit.tkorg.crs.method.cbf.ParallelLDA;
 import uit.tkorg.crs.method.cbf.TFIDF;
-import uit.tkorg.utility.common.TextFileUtility;
+import uit.tkorg.crs.utility.TextFileUtility;
 
 /**
  *
