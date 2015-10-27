@@ -196,9 +196,9 @@ public class CBFPaperFVComputation {
             Blob blob = rs.getBlob(3);//paper abstract
             if (blob != null){
                 content += new String(blob.getBytes(1,(int)blob.length()));
-                Text paperAbstract = new Text(content);
-                writer.append(idPaper, paperAbstract);
             }
+            Text paperAbstract = new Text(content);
+            writer.append(idPaper, paperAbstract);
         }  
         db.disconnect();
         writer.close();

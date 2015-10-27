@@ -240,7 +240,7 @@ public class CBSimComputation {
 //                author.setFeatureVector(fv);
                 authors.put(author.getAuthorId(), author);
             }
-            CBFPaperFVComputation.readTFIDFFromMahoutFile(papers,Constant.TFIDFDIR);
+            CBFPaperFVComputation.readTFIDFFromMahoutFile(papers,"D:\\1.CRS-Experiment\\TFIDF\\2003\\");
             CBFAuthorFVComputation.computeFVForAllAuthors(authors, papers, 1, 0.5);
             
             //tinh do do cosine cho tung cap tac gia trong mau duong/am va ghi ra file
@@ -292,7 +292,7 @@ public class CBSimComputation {
     public static void main(String[] args) throws Exception {
 //        createTestDatabase();
 //        CBFPaperFVComputation.vectorzie("/Users/thucnt/temp/input/papers", "/Users/thucnt/temp/output/TFIDF/");
-//        CBFPaperFVComputation.vectorzie(2005, "output/TFIDF/");
+//        CBFPaperFVComputation.vectorzie(2003, "D:\\1.CRS-Experiment\\TFIDF\\2003\\");
 //        read 'PaperIdByAuthor("/Users/thucnt/temp/input/AuthorID_PaperID_2001_2003.txt");
         computeCosine("D:\\1.CRS-Experiment\\MLData\\TrainingData\\NegativeSamples.txt","D:\\1.CRS-Experiment\\MLData\\TrainingData\\NegativeSamples_Cosine.txt");
     }
