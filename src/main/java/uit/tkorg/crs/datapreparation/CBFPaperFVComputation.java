@@ -192,10 +192,10 @@ public class CBFPaperFVComputation {
         while (rs.next()){
             int id = rs.getInt(1);
             Text idPaper = new Text(id + "");
-            String content = "";
-            Blob blob = rs.getBlob(2);
+            String content = rs.getString(2) + "\n";//paper title
+            Blob blob = rs.getBlob(3);//paper abstract
             if (blob != null){
-                content = new String(blob.getBytes(1,(int)blob.length()));
+                content += new String(blob.getBytes(1,(int)blob.length()));
                 Text paperAbstract = new Text(content);
                 writer.append(idPaper, paperAbstract);
             }

@@ -178,7 +178,7 @@ public class DatabaseTool {
     }
     
     public ResultSet getPapersByYear(int year){
-        String sql = "SELECT paper.idPaper, paper.abstract " +
+        String sql = "SELECT paper.idPaper, paper.title, paper.abstract " +
                      "FROM paper " +
                      "WHERE paper.year <= ? " +
                      "ORDER BY paper.idPaper ASC";
