@@ -114,7 +114,7 @@ public class CBFAuthorFVComputation {
 
     public static HashMapVector computeAuthorFV(Author author, HashMap<String,Paper> papers,int timeAwareScheme, double gamma) throws Exception{
         HashMapVector featureVector = new HashMapVector();
-        CBFPaperFVComputation.readTFIDFFromMahoutFile(papers,Constant.TFIDFDIR);
+//        CBFPaperFVComputation.readTFIDFFromMahoutFile(papers,Constant.TFIDFDIR);
         List<String> paperIds = author.getPaperList();
         HashMapVector fv = null;
         if (timeAwareScheme == 0) {
@@ -135,6 +135,7 @@ public class CBFAuthorFVComputation {
      */
     public static HashMapVector computeAuthorFV(HashMap<String, Author> authors, String authorId, HashMap<String, Paper> papers, 
             int timeAwareScheme, double gamma) throws Exception {
+//        CBFPaperFVComputation.readTFIDFFromMahoutFile(papers,Constant.TFIDFDIR);
         HashMapVector featureVector = new HashMapVector();
         
         Author author = authors.get(authorId);
@@ -149,7 +150,8 @@ public class CBFAuthorFVComputation {
             int latestPublicationYear = getLatestPublicationYear(papers, paperIds);
             for (String paperId : paperIds) {
                 double ff = WeightingUtility.computeForgettingFactor(latestPublicationYear, papers.get(paperId).getYear(), gamma);
-                featureVector.addScaled(papers.get(paperId).getTfidfVector(), ff);
+                HashMapVector tfIdfVector = papers.get(paperId).getTfidfVector();
+                featureVector.addScaled(tfIdfVector, ff);
             }
         }
         

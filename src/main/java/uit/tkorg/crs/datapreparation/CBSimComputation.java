@@ -204,8 +204,8 @@ public class CBSimComputation {
      */
     public static void computeCosine(String sampleFile, String outputFile){
         try {
-            HashMap<String,List<Paper>> authorPaper = readPaperIdByAuthor("/Users/thucnt/temp/input/AuthorID_PaperID_2001_2003.txt");
-            HashMap<String,Integer> paperIdYear = readPaperIdByYear("/Users/thucnt/temp/input/PaperID_Year_2001_2003.txt");
+            HashMap<String,List<Paper>> authorPaper = readPaperIdByAuthor("D:\\1.CRS-Experiment\\MLData\\TrainingData\\AuthorID_PaperID_2001_2003.txt");
+            HashMap<String,Integer> paperIdYear = readPaperIdByYear("D:\\1.CRS-Experiment\\MLData\\TrainingData\\PaperID_Year_2001_2003.txt");
             
             //lap danh sach tat ca cac bai bao tu nam thu year tro ve truoc
             HashMap<String,Paper> papers = new HashMap<String,Paper>();
@@ -230,12 +230,17 @@ public class CBSimComputation {
                 Author author = new Author();
                 author.setAuthorId(idAuthor.toString());
                 List<Paper> paperList = authorPaper.get(author.getAuthorId());
-                author.setPaperList(paperList);
+                List<String> paperIdList = new ArrayList<String>();
+                for (int i = 0; i < paperList.size(); i++){
+                    Paper p = paperList.get(i);
+                    paperIdList.add(p.getPaperId());
+                }
+                author.setPaperList(paperIdList);
 //                HashMapVector fv = CBFAuthorFVComputation.computeAuthorFV(author, papers, 1, 0.5);
 //                author.setFeatureVector(fv);
                 authors.put(author.getAuthorId(), author);
             }
-            
+            CBFPaperFVComputation.readTFIDFFromMahoutFile(papers,Constant.TFIDFDIR);
             CBFAuthorFVComputation.computeFVForAllAuthors(authors, papers, 1, 0.5);
             
             //tinh do do cosine cho tung cap tac gia trong mau duong/am va ghi ra file
@@ -246,7 +251,9 @@ public class CBSimComputation {
                 Pair<Integer,Integer> pair = listOfPairs.get(i);
                 Author author1 = authors.get(pair.getFirst().toString());
                 Author author2 = authors.get(pair.getSecond().toString());
-                double cosine = author1.getFeatureVector().cosineTo(author2.getFeatureVector());
+                HashMapVector fv1 = author1.getFeatureVector();
+                HashMapVector fv2 = author2.getFeatureVector();
+                double cosine = fv1.cosineTo(fv2);
                 String line = "("+ pair.getFirst() + "," + pair.getSecond() + ")" + "\t" + cosine;
                 content.append(line + "\n");
             }
@@ -286,7 +293,7 @@ public class CBSimComputation {
 //        createTestDatabase();
 //        CBFPaperFVComputation.vectorzie("/Users/thucnt/temp/input/papers", "/Users/thucnt/temp/output/TFIDF/");
 //        CBFPaperFVComputation.vectorzie(2005, "output/TFIDF/");
-//        readPaperIdByAuthor("/Users/thucnt/temp/input/AuthorID_PaperID_2001_2003.txt");
-        computeCosine("/Users/thucnt/temp/input/positive.txt","/Users/thucnt/temp/output/positive.txt");
+//        read 'PaperIdByAuthor("/Users/thucnt/temp/input/AuthorID_PaperID_2001_2003.txt");
+        computeCosine("D:\\1.CRS-Experiment\\MLData\\TrainingData\\NegativeSamples.txt","D:\\1.CRS-Experiment\\MLData\\TrainingData\\NegativeSamples_Cosine.txt");
     }
 }
