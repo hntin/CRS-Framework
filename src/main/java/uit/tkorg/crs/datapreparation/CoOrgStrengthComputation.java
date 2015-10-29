@@ -6,7 +6,7 @@
 package uit.tkorg.crs.datapreparation;
 
 /**
- *
+ * Tinh CoOrgStrength (Org_RSS+) cho tung cap tac gia trong mau am (-) va mau duong (+)
  * @author thucnt
  */
 public class CoOrgStrengthComputation {
