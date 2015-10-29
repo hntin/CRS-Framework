@@ -18,6 +18,6 @@ public class CoOrgStrengthComputation {
         // Step 4: Lay OrgID cua 2 tac gia tuong ung.
         // Step 5: Tra ve gia tri RSS+ cho tung cap OrgID lien quan cac cap authorID trong mau (+) va (-)
         // Step 6: Ghi ket qua gia tri Org_RSS xuong file 
-        
+
     }
 }
