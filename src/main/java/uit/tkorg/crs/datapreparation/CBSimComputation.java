@@ -275,7 +275,7 @@ public class CBSimComputation extends FeatureComputation{
     
     public void computeFeatureValues(String outputFile){
         //doc danh sach tac gia tu mau am/duong
-        this.
+        
     }
     
     private static void readAuthorPaperList(Set<Integer> authorList, int year, 
