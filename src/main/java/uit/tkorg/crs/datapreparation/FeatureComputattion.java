@@ -13,7 +13,7 @@ import uit.tkorg.crs.model.Sample;
  */
 public abstract class FeatureComputattion {
     
-    private String positiveSample;
+    private Sample positiveSample;
     
     private Sample negativeSample;
     
@@ -43,7 +43,7 @@ public abstract class FeatureComputattion {
      *
      * @return the value of positiveSample
      */
-    public String getPositiveSample() {
+    public Sample getPositiveSample() {
         return positiveSample;
     }
 
@@ -52,9 +52,9 @@ public abstract class FeatureComputattion {
      *
      * @param positiveSample new value of positiveSample
      */
-    public void setPositiveSample(String positiveSample) {
+    public void setPositiveSample(Sample positiveSample) {
         this.positiveSample = positiveSample;
     }
     
-    public abstract void computeFeatureValues();
+    public abstract void computeFeatureValues(String outputFile);
 }
