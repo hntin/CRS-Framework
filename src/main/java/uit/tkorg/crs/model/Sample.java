@@ -77,4 +77,22 @@ public class Sample {
         s.setPairOfAuthor(listOfPairs);
         return s;
     }
+    
+    /**
+     * read author list from posivtive/negative sample
+     * @return list of author existing in the positive/negative sample
+     */
+    public LinkedHashSet<Integer> readAuthorList(){
+        
+        LinkedHashSet<Integer> authorList = new LinkedHashSet<Integer>();
+        
+        for (int i = 0; i < this.pairOfAuthors.size(); i++){
+            Pair p = pairOfAuthors.get(i);
+            Integer idAuthor1 = (Integer)p.getFirst();
+            Integer idAuthor2 = (Integer)p.getSecond();
+            authorList.add(idAuthor1);
+            authorList.add(idAuthor2);
+        }
+        return authorList;
+    }
 }

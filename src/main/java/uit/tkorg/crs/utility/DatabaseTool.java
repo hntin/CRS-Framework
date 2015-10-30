@@ -30,17 +30,6 @@ public class DatabaseTool {
     private Connection con;
     private PreparedStatement stmt;
     ResultSet rs;
-
-    public static void main(String[] args) {
-        DatabaseTool dbTool = new DatabaseTool();
-        dbTool.connect();
-        //ArrayList ls = dbTool.getAuthorByTime(2004, 2006);
-        //dbTool.getAuthorsProfiles(ls);
-        //dbTool.getAuthorIDPaperIDbyTime(0, 2000, "AuthorID_PaperID_Before_2001.txt");
-        //dbTool.getPaperIDYearbyTime(0, 2000, "PaperID_Year_Before_2001.txt");
-        dbTool.disconnect();
-        System.out.println("DONE!");
-    }
     
     public DatabaseTool(){
     }

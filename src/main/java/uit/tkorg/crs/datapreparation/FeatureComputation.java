@@ -51,6 +51,7 @@ public abstract class FeatureComputation {
     public void setPositiveSample(Sample positiveSample) {
         this.positiveSample = positiveSample;
     }
-
+    
+    //ten file co thong nhat la se luon co chu Positive/Negative de nhan dien mau am/duong?
     public abstract void computeFeatureValues(String outputFile);
 }
