@@ -5,11 +5,54 @@
  */
 package uit.tkorg.crs.datapreparation;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.util.ArrayList;
+import java.util.regex.Pattern;
+import org.apache.mahout.common.Pair;
+
 /**
  * Tinh CoAuthorStrength (RSS+) cho tung cap tac gia trong mau am (-) va mau duong (+)
  * @author thucnt
  */
 public class CoAuthorStrengthComputation {
+    
+    /**
+     * read positive/negative samples from file
+     * @param dataFile
+     */
+    public static ArrayList<Pair<Integer,Integer>> readSample(String dataFile){
+        final String REGEX = "\\D";
+        Pattern p = Pattern.compile(REGEX);
+        ArrayList<Pair<Integer,Integer>> listOfPairs = new ArrayList<Pair<Integer,Integer>>();
+        
+        try {
+            FileInputStream fis = new FileInputStream(dataFile);
+            Reader reader = new InputStreamReader(fis, "UTF8");
+            BufferedReader bufferReader = new BufferedReader(reader);
+            bufferReader.readLine(); // skip the first line
+            String line = null;
+            
+            while ((line = bufferReader.readLine()) != null) {
+                String[] elements = p.split(line.trim());
+
+                if (elements.length > 3 || elements.length < 2) {
+                    continue;
+                }
+                int author1 = Integer.parseInt(elements[1]);
+                int author2 = Integer.parseInt(elements[2]);
+                Pair pair = new Pair(new Integer(author1),new Integer(author2));
+                listOfPairs.add(pair);
+            }
+            bufferReader.close();
+            fis.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return listOfPairs;
+    }
     
     public static void main(String args[]) {
         // Step 1: Xay dung mang dong tac gia CoAuthor_Net

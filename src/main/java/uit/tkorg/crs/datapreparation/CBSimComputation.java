@@ -164,8 +164,8 @@ public class CBSimComputation {
     }
     
     /**
-     *read positive sample
-     * @param dataFile, type: 1 for positive sample
+     * read positive/negative samples from file
+     * @param dataFile
      */
     public static ArrayList<Pair<Integer,Integer>> readSample(String dataFile){
         final String REGEX = "\\D";
