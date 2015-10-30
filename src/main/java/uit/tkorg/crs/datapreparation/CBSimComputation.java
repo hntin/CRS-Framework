@@ -96,6 +96,29 @@ public class CBSimComputation {
                 papers.put(key, paperList);
             }
         }
+        //before 2001
+//        input = new Scanner(new FileReader("D:\\1.CRS-Experiment\\MLData\\TrainingData\\AuthorID_PaperID_Before_2001.txt"));
+//        input.nextLine();//bo dong dau tien
+//        while (input.hasNext()){
+//            String line = input.nextLine().trim();
+//            String[] tokens = line.split(REGEX);
+//            String key = tokens[0];
+//            String value = tokens[1];
+//            if (papers.containsKey(key)){
+//                List<Paper> paperList = papers.get(key);
+//                Paper p = new Paper();
+//                p.setPaperId(value);
+//                paperList.add(p);
+//                papers.replace(key, paperList);
+//            }
+//            else{
+//                List<Paper> paperList = new ArrayList<Paper>();
+//                Paper p = new Paper();
+//                p.setPaperId(value);
+//                paperList.add(p);
+//                papers.put(key, paperList);
+//            }
+//        }
         System.out.println("So tac gia da co bai bao: " + papers.size());
         return papers;
     }
@@ -164,8 +187,8 @@ public class CBSimComputation {
     }
     
     /**
-     * read positive/negative samples from file
-     * @param dataFile
+     *read positive sample
+     * @param dataFile, type: 1 for positive sample
      */
     public static ArrayList<Pair<Integer,Integer>> readSample(String dataFile){
         final String REGEX = "\\D";
@@ -202,47 +225,34 @@ public class CBSimComputation {
      * ghi vao sampleFile do giong nhau giua 2 tac gia dua tren do do cosine
      * @param sampleFile chua mau am/duong
      */
-    public static void computeCosine(String sampleFile, String outputFile){
+    public static void computeCosine(int year, String sampleFile, String outputFile){
+        //doc danh sach tac gia tu mau am/duong
+        LinkedHashSet<Integer> authorList = readAuthorList(sampleFile);
+        //Lay danh sach bai bao cua cac tac gia trong mau am/duong
+        HashMap<Integer,List<String>> authorPaperList = new HashMap<Integer,List<String>>();
+        HashMap<String,Paper> papers = new HashMap<String,Paper>();
+        readAuthorPaperList(authorList,2003,authorPaperList,papers);//tra ket qua thong qua 2 tham so cuoi
         try {
-            HashMap<String,List<Paper>> authorPaper = readPaperIdByAuthor("D:\\1.CRS-Experiment\\MLData\\TrainingData\\AuthorID_PaperID_2001_2003.txt");
-            HashMap<String,Integer> paperIdYear = readPaperIdByYear("D:\\1.CRS-Experiment\\MLData\\TrainingData\\PaperID_Year_2001_2003.txt");
-            
-            //lap danh sach tat ca cac bai bao tu nam thu year tro ve truoc
-            HashMap<String,Paper> papers = new HashMap<String,Paper>();
-            Collection c = authorPaper.values();
-            Iterator itr = c.iterator();
-            while (itr.hasNext()){
-                List<Paper> l = (List<Paper>)itr.next();
-                for (int i = 0; i < l.size(); i++){
-                    Paper p = l.get(i);
-                    int y = paperIdYear.get(p.getPaperId()).intValue();
-                    p.setYear(y);
-                    papers.put(p.getPaperId(), p);
-                }
-            }
+//            HashMap<String,Integer> paperIdYear = readPaperIdByYear(2003);
+//            Collection c = authorPaperList.values();
+//            Iterator itr = c.iterator();
             
             //Tinh FV cho tat ca cac tac gia
-            LinkedHashSet<Integer> authorList = readAuthorList(sampleFile);//doc danh sach tac gia tu mau am/duong
-            Iterator<Integer> ir = authorList.iterator();
             HashMap<String, Author> authors = new HashMap<String, Author>();
+            Iterator<Integer> ir = authorList.iterator();
             while (ir.hasNext()){
                 Integer idAuthor = ir.next();
                 Author author = new Author();
                 author.setAuthorId(idAuthor.toString());
-                List<Paper> paperList = authorPaper.get(author.getAuthorId());
-                List<String> paperIdList = new ArrayList<String>();
-                for (int i = 0; i < paperList.size(); i++){
-                    Paper p = paperList.get(i);
-                    paperIdList.add(p.getPaperId());
-                }
-                author.setPaperList(paperIdList);
+                List<String> paperList = authorPaperList.get(idAuthor);
+                author.setPaperList(paperList);
 //                HashMapVector fv = CBFAuthorFVComputation.computeAuthorFV(author, papers, 1, 0.5);
 //                author.setFeatureVector(fv);
                 authors.put(author.getAuthorId(), author);
             }
             CBFPaperFVComputation.readTFIDFFromMahoutFile(papers,"D:\\1.CRS-Experiment\\TFIDF\\2003\\");
             CBFAuthorFVComputation.computeFVForAllAuthors(authors, papers, 1, 0.5);
-            
+            test(authors, papers);
             //tinh do do cosine cho tung cap tac gia trong mau duong/am va ghi ra file
             ArrayList<Pair<Integer,Integer>> listOfPairs = readSample(sampleFile);
             StringBuilder content = new StringBuilder();
@@ -261,6 +271,35 @@ public class CBSimComputation {
         } catch (Exception ex) {
             Logger.getLogger(CBSimComputation.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    private static void readAuthorPaperList(Set<Integer> authorList, int year, 
+            HashMap<Integer,List<String>> authorPaperList, //output parameter
+            HashMap<String,Paper> papers){//output parameter
+        DatabaseTool db = new DatabaseTool();
+        db.connect();
+        Iterator<Integer> ir = authorList.iterator();
+        while (ir.hasNext()){//lay danh sach bai bao cua 1 tac gia
+            int authorId = ir.next().intValue();
+            System.out.println("Lay danh sach bai bao cua tac gia " + authorId);
+            List<String> list = new ArrayList<String>();
+            try {
+                ResultSet rs = db.getPapersByAuthor(authorId, year);
+                while (rs.next()){
+                    Paper p = new Paper();
+                    String paperId = rs.getString("idPaper");
+                    p.setPaperId(paperId);
+                    p.setPaperTitle(rs.getString("title"));
+                    p.setYear(rs.getInt("year"));
+                    list.add(paperId);
+                    papers.put(paperId, p);//chuan bi cho viec tinh authorFV
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(CBSimComputation.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            authorPaperList.put(new Integer(authorId), list);
+        }
+        db.disconnect();
     }
     
     private static HashMap<String,Integer> readPaperIdByYear(String dataFile){
@@ -283,6 +322,40 @@ public class CBSimComputation {
         return paperIdYear;
     }
     
+    private static HashMap<String,Integer> readPaperIdByYear(int year){
+        HashMap<String,Integer> paperIdYear = new HashMap<String,Integer>();
+        try {
+            DatabaseTool db = new DatabaseTool();
+            db.connect();
+            ResultSet rs = db.getPapersByYear(year);
+            while (rs.next()){
+                paperIdYear.put(rs.getString("idPaper"), new Integer(rs.getInt("year")));
+            }
+            db.disconnect();
+            return paperIdYear;
+        } catch (SQLException ex) {
+            Logger.getLogger(CBSimComputation.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return paperIdYear;
+    }
+    
+    public static void test(HashMap<String, Author> authors, HashMap<String,Paper> papers){
+        Author a1 = authors.get("875881");
+        Author a2 = authors.get("894707");
+        List<String> list1 = a1.getPaperList();
+        List<String> list2 = a2.getPaperList();
+        System.out.println("Auhtor 1");
+        for (int i = 0; i < list1.size(); i++){
+            Paper p = papers.get(list1.get(i));
+            System.out.println("vector of " + list1.get(i) + p.getTfidfVector());
+        }
+        System.out.println("Auhtor 2");
+        for (int i = 0; i < list2.size(); i++){
+            Paper p = papers.get(list2.get(i));
+            System.out.println("vector of " + list2.get(i) + p.getTfidfVector());
+        }
+    }
+    
     /**
      * Test.
      *
@@ -294,6 +367,6 @@ public class CBSimComputation {
 //        CBFPaperFVComputation.vectorzie("/Users/thucnt/temp/input/papers", "/Users/thucnt/temp/output/TFIDF/");
 //        CBFPaperFVComputation.vectorzie(2003, "D:\\1.CRS-Experiment\\TFIDF\\2003\\");
 //        read 'PaperIdByAuthor("/Users/thucnt/temp/input/AuthorID_PaperID_2001_2003.txt");
-        computeCosine("D:\\1.CRS-Experiment\\MLData\\TrainingData\\NegativeSamples.txt","D:\\1.CRS-Experiment\\MLData\\TrainingData\\NegativeSamples_Cosine.txt");
+        computeCosine(2013,"D:\\1.CRS-Experiment\\MLData\\TrainingData\\NegativeSamples.txt","D:\\1.CRS-Experiment\\MLData\\TrainingData\\NegativeSamples_Cosine.txt");
     }
 }
