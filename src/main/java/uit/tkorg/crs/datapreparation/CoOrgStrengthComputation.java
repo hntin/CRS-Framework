@@ -6,11 +6,18 @@
 package uit.tkorg.crs.datapreparation;
 
 /**
- * Tinh CoOrgStrength (Org_RSS+) cho tung cap tac gia trong mau am (-) va mau duong (+)
+ * Tinh CoOrgStrength (Org_RSS+) cho tung cap tac gia trong mau am (-) va mau
+ * duong (+)
+ *
  * @author thucnt
  */
-public class CoOrgStrengthComputation {
-    
+public class CoOrgStrengthComputation extends FeatureComputattion {
+
+    @Override
+    public void computeFeatureValues(String outputFile) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
     public static void main(String args[]) {
         // Step 1: Xay dung mang CoOrg_Net.
         // Step 2: Tinh toan trong so RSS cho tung cap OrgID trong mang.
