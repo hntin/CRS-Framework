@@ -5,8 +5,13 @@
  */
 package uit.tkorg.crs.model;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
+import java.util.regex.Pattern;
 import uit.tkorg.crs.common.Pair;
 
 /**
@@ -16,6 +21,9 @@ import uit.tkorg.crs.common.Pair;
 public class Sample {
     
     private ArrayList<Pair> pairOfAuthors;
+
+    private Sample() {
+    }
 
     /**
      * Get the value of pairOfAuthor
@@ -35,4 +43,38 @@ public class Sample {
         this.pairOfAuthors = pairOfAuthor;
     }
 
+    public static Sample readSampleFile(String sampleFile){
+        final String REGEX = "\\D";
+        Pattern p = Pattern.compile(REGEX);
+        ArrayList<Pair> listOfPairs;
+        listOfPairs = new ArrayList<Pair>();
+        
+        try {
+            FileInputStream fis = new FileInputStream(sampleFile);
+            Reader reader = new InputStreamReader(fis, "UTF8");
+            BufferedReader bufferReader = new BufferedReader(reader);
+            bufferReader.readLine(); // skip the first line
+            String line = null;
+            
+            while ((line = bufferReader.readLine()) != null) {
+                String[] elements = p.split(line.trim());
+
+                if (elements.length > 3 || elements.length < 2) {
+                    continue;
+                }
+                int author1 = Integer.parseInt(elements[1]);
+                int author2 = Integer.parseInt(elements[2]);
+                Pair pair = new Pair(new Integer(author1),new Integer(author2));
+                listOfPairs.add(pair);
+            }
+            bufferReader.close();
+            fis.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        Sample s = new Sample();
+        s.setPairOfAuthor(listOfPairs);
+        return s;
+    }
 }

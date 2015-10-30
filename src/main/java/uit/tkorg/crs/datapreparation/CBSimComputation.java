@@ -35,7 +35,7 @@ import uit.tkorg.crs.utility.MahoutFile;
 import uit.tkorg.crs.utility.NumericUtility;
 import uit.tkorg.crs.utility.TextFileUtility;
 
-public class CBSimComputation {
+public class CBSimComputation extends FeatureComputation{
     
     private CBSimComputation() {}
     
@@ -271,6 +271,11 @@ public class CBSimComputation {
         } catch (Exception ex) {
             Logger.getLogger(CBSimComputation.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    public void computeFeatureValues(String outputFile){
+        //doc danh sach tac gia tu mau am/duong
+        this.
     }
     
     private static void readAuthorPaperList(Set<Integer> authorList, int year, 
