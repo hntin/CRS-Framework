@@ -12,12 +12,9 @@ import uit.tkorg.crs.model.Sample;
  * @author thucnt
  */
 public abstract class FeatureComputattion {
-    
+
     protected Sample positiveSample;
-    
     protected Sample negativeSample;
-    
-    
 
     /**
      * Get the value of negativeSample
@@ -37,7 +34,6 @@ public abstract class FeatureComputattion {
         this.negativeSample = negativeSample;
     }
 
-
     /**
      * Get the value of positiveSample
      *
@@ -55,6 +51,6 @@ public abstract class FeatureComputattion {
     public void setPositiveSample(Sample positiveSample) {
         this.positiveSample = positiveSample;
     }
-    
+
     public abstract void computeFeatureValues(String outputFile);
 }

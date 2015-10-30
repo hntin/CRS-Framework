@@ -12,7 +12,6 @@ package uit.tkorg.crs.common;
 public class Pair {
     
     private Integer first;
-    
     private Integer second;
 
     public Pair() {
