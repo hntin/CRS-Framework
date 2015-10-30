@@ -13,9 +13,9 @@ import uit.tkorg.crs.model.Sample;
  */
 public abstract class FeatureComputattion {
     
-    private Sample positiveSample;
+    protected Sample positiveSample;
     
-    private Sample negativeSample;
+    protected Sample negativeSample;
     
     
 
