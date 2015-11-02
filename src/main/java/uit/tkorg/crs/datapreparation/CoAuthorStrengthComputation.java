@@ -6,8 +6,11 @@
 package uit.tkorg.crs.datapreparation;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileInputStream;
+import java.io.FileWriter;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -42,11 +45,11 @@ public class CoAuthorStrengthComputation extends FeatureComputation {
 
     @Override
     public void computeFeatureValues(String outputFile) {
-        
+
     }
-    
+
     @Override
-    public void computeFeatureValues(String postiveOutputFile, String negativeOutputFile) {
+    public void computeFeatureValues(String postiveOutputFile, String negativeOutputFile) throws Exception {
         // Step 1: Getting all distinct juniorAuthorID (firstAuthorID in a pair)
         HashMap<Integer, String> firstAuthorIDOfPositiveSample = this._positiveSample.readAllFirstAuthorID();
         HashMap<Integer, String> firstAuthorIDOfNegativeSample = this._negativeSample.readAllFirstAuthorID();
@@ -65,10 +68,10 @@ public class CoAuthorStrengthComputation extends FeatureComputation {
             int firstAuthorID = p.getFirst();
             int secondAuthorID = p.getSecond();
 
-            float rssSoublePlusValue = -1;
+            float rssDoublePlusValue = -1;
             if (rssDoublePlus_FirstAuthorID_PostiveSample_ToAllOthers.containsKey(firstAuthorID)
                     && rssDoublePlus_FirstAuthorID_PostiveSample_ToAllOthers.get(firstAuthorID).containsKey(secondAuthorID)) {
-                rssSoublePlusValue = rssDoublePlus_FirstAuthorID_PostiveSample_ToAllOthers.get(firstAuthorID).get(secondAuthorID);
+                rssDoublePlusValue = rssDoublePlus_FirstAuthorID_PostiveSample_ToAllOthers.get(firstAuthorID).get(secondAuthorID);
             }
 
             HashMap<Integer, Float> hm = rssDoublePlus_PostiveSamples_HM.get(firstAuthorID);
@@ -76,29 +79,74 @@ public class CoAuthorStrengthComputation extends FeatureComputation {
                 hm = new HashMap<>();
             }
 
-            hm.put(secondAuthorID, rssSoublePlusValue);
+            hm.put(secondAuthorID, rssDoublePlusValue);
             rssDoublePlus_PostiveSamples_HM.put(firstAuthorID, hm);
         }
-        
+
         // Step 4: Extracting RSSSoublePlus Values for all pairs of NegativeSamples
         HashMap<Integer, HashMap<Integer, Float>> rssDoublePlus_NegativeSamples_HM = new HashMap<>();
-        
+        for (int i = 0; i < this._negativeSample.getPairOfAuthor().size(); i++) {
+            Pair p = this._negativeSample.getPairOfAuthor().get(i);
+            int firstAuthorID = p.getFirst();
+            int secondAuthorID = p.getSecond();
 
-        // Step 5: Storing values which describe CoAuthorStrength (RSSSoublePlus) for all of PositveSamples and NegativeSamples 
-        // to the output file 
-        TextFileUtility.writeTextFileFromHM(postiveOutputFile, rssDoublePlus_PostiveSamples_HM);
-        TextFileUtility.writeTextFileFromHM(negativeOutputFile, rssDoublePlus_NegativeSamples_HM);
+            float rssDoublePlusValue = -1;
+            if (rssDoublePlus_FirstAuthorID_NegativeSample_ToAllOthers.containsKey(firstAuthorID)
+                    && rssDoublePlus_FirstAuthorID_NegativeSample_ToAllOthers.get(firstAuthorID).containsKey(secondAuthorID)) {
+                rssDoublePlusValue = rssDoublePlus_FirstAuthorID_NegativeSample_ToAllOthers.get(firstAuthorID).get(secondAuthorID);
+            }
+
+            HashMap<Integer, Float> hm = rssDoublePlus_NegativeSamples_HM.get(firstAuthorID);
+            if (hm == null || hm.isEmpty()) {
+                hm = new HashMap<>();
+            }
+
+            hm.put(secondAuthorID, rssDoublePlusValue);
+            rssDoublePlus_NegativeSamples_HM.put(firstAuthorID, hm);
+        }
+
+        // Step 5: Storing values which describe CoAuthorStrength (RSSSoublePlus) for all of PositveSamples to the output file 
+        PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(postiveOutputFile)));
+        out.println("AuthorID, CoAuthorID, rssDoublePlusValue");
+        out.flush();
+        for (int authorID : rssDoublePlus_PostiveSamples_HM.keySet()) {
+            for (int anotherAuthorID : rssDoublePlus_PostiveSamples_HM.get(authorID).keySet()) {
+                float rssDoublePlusValue = rssDoublePlus_PostiveSamples_HM.get(authorID).get(anotherAuthorID);
+                out.println("(" + authorID + "," + anotherAuthorID + "," + rssDoublePlusValue + ")");
+                out.flush();
+            }
+        }
+        out.close();
+        
+        // Step 6: Storing values which describe CoAuthorStrength (RSSSoublePlus) for all of NegativeSamples to the output file 
+        out = new PrintWriter(new BufferedWriter(new FileWriter(negativeOutputFile)));
+        out.println("AuthorID, None-CoAuthorID, rssDoublePlusValue");
+        out.flush();
+        for (int authorID : rssDoublePlus_NegativeSamples_HM.keySet()) {
+            for (int anotherAuthorID : rssDoublePlus_NegativeSamples_HM.get(authorID).keySet()) {
+                float rssDoublePlusValue = rssDoublePlus_NegativeSamples_HM.get(authorID).get(anotherAuthorID);
+                out.println("(" + authorID + "," + anotherAuthorID + "," + rssDoublePlusValue + ")");
+                out.flush();
+            }
+        }
+        out.close();
+        
     }
 
     public static void main(String args[]) {
-        CoAuthorStrengthComputation obj = new CoAuthorStrengthComputation(
-                "/1.CRS-ExperimetalData/SampleData/PositiveSamples.txt",
-                "/1.CRS-ExperimetalData/SampleData/NegativeSamples.txt",
-                "/1.CRS-ExperimetalData/SampleData/AuthorID_PaperID_2001_2003.txt", 
-                "/1.CRS-ExperimetalData/SampleData/PaperID_Year_2001_2003.txt", 2001, 2003);
-        obj.computeFeatureValues(
-                "/1.CRS-ExperimetalData/SampleData/PositiveSampleWithCoAuthorRSS.txt", 
-                "/1.CRS-ExperimetalData/SampleData/NegativeSampleWithCoAuthorRSS.txt");
+        try {
+            CoAuthorStrengthComputation obj = new CoAuthorStrengthComputation(
+                    "/1.CRS-ExperimetalData/SampleData/PositiveSamples.txt",
+                    "/1.CRS-ExperimetalData/SampleData/NegativeSamples.txt",
+                    "/1.CRS-ExperimetalData/SampleData/AuthorID_PaperID_2003_2005.txt",
+                    "/1.CRS-ExperimetalData/SampleData/PaperID_Year_2003_2005.txt", 2003, 2005);
+            obj.computeFeatureValues(
+                    "/1.CRS-ExperimetalData/SampleData/PositiveSampleWithCoAuthorRSS.txt",
+                    "/1.CRS-ExperimetalData/SampleData/NegativeSampleWithCoAuthorRSS.txt");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
     }
 
 }

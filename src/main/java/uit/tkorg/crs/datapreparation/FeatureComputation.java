@@ -56,7 +56,7 @@ public abstract class FeatureComputation {
     public abstract void computeFeatureValues(String outputFile);
     
     // Calculating value of the specifed feature for both positive samples and negative samples
-    public abstract void computeFeatureValues(String positiveOutputFile, String negativeOutputFile);
+    public abstract void computeFeatureValues(String positiveOutputFile, String negativeOutputFile) throws Exception;
     
     
 }
