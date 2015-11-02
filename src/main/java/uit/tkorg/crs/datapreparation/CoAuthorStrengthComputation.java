@@ -130,7 +130,6 @@ public class CoAuthorStrengthComputation extends FeatureComputation {
             }
         }
         out.close();
-        
     }
 
     public static void main(String args[]) {
@@ -146,7 +145,5 @@ public class CoAuthorStrengthComputation extends FeatureComputation {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-
     }
-
 }
