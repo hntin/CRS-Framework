@@ -6,6 +6,8 @@ package uit.tkorg.crs.method.link;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -16,6 +18,14 @@ import java.util.concurrent.Executors;
  */
 public class Cosine {
 
+    private HashMap<Integer, HashMap<Integer, Float>> _cosineData;
+    private HashMap<Integer, HashMap<Integer, Float>> _graph;
+
+    /**
+     * runCosine
+     *
+     * @param authorId1
+     */
     private void runCosine(int authorId1) {
         for (int authorId2 : _graph.keySet()) {
             if (authorId1 != authorId2) {
@@ -43,9 +53,14 @@ public class Cosine {
             }
         }
     }
-    private HashMap<Integer, HashMap<Integer, Float>> _cosineData;
-    private HashMap<Integer, HashMap<Integer, Float>> _graph;
 
+    /**
+     * process
+     *
+     * @param graph
+     * @param listAuthor
+     * @return
+     */
     public HashMap<Integer, HashMap<Integer, Float>> process(HashMap<Integer, HashMap<Integer, Float>> graph,
             HashMap<Integer, String> listAuthor) {
         _cosineData = new HashMap<>();
@@ -55,6 +70,7 @@ public class Cosine {
         int numOfProcessors = runtime.availableProcessors();
 
         ExecutorService executor = Executors.newFixedThreadPool(numOfProcessors - 1);
+        
         for (final int authorId : listAuthor.keySet()) {
             executor.submit(new Runnable() {
                 @Override

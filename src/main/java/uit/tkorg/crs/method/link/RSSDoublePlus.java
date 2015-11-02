@@ -53,6 +53,12 @@ public class RSSDoublePlus {
         _rssDoublePlusData.put(authorId1, listRTBVS);
     }
 
+    /**
+     * 
+     * @param graph
+     * @param listAuthor
+     * @return 
+     */
     public HashMap<Integer, HashMap<Integer, Float>> process(HashMap<Integer, HashMap<Integer, Float>> graph,
             HashMap<Integer, String> listAuthor) {
         _rssDoublePlusData = new HashMap<>();

@@ -44,10 +44,10 @@ public class MLDataExtraction {
         listOfJunior.append("AuthorID \t NumOfPub \n");
         for (int authorID : G1._coAuthorGraph.keySet()) {
             // authorID khong ton tai trong G0
-            if (!G0._authorPaper.containsKey(authorID)) {
+            if (!G0.getAuthorPaper().containsKey(authorID)) {
                 // So bai bao trong G1 < 3
-                if (G1._authorPaper.get(authorID).size() < 3) {
-                    listOfJunior.append(authorID + "\t" + G1._authorPaper.get(authorID).size() + "\n");
+                if (G1.getAuthorPaper().get(authorID).size() < 3) {
+                    listOfJunior.append(authorID + "\t" + G1.getAuthorPaper().get(authorID).size() + "\n");
                 }
             }
         }

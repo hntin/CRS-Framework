@@ -22,9 +22,15 @@ public class CoOrgStrengthComputation extends FeatureComputation {
         // Step 5: Tra ve gia tri RSS+ cho tung cap OrgID lien quan cac cap authorID trong mau (+) va (-)
         // Step 6: Ghi ket qua gia tri Org_RSS xuong file 
     }
+    
+    @Override
+    public void computeFeatureValues(String positiveOutputFile, String negativeOutputFile) {
+        
+    }
 
     public static void main(String args[]) {
         
-
     }
+
+    
 }

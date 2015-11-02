@@ -6,6 +6,8 @@ package uit.tkorg.crs.method.link;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -15,7 +17,9 @@ import java.util.concurrent.Executors;
  * @author daolv
  */
 public class Jaccard {
-
+    private HashMap<Integer, HashMap<Integer, Float>> _jaccardData;
+    private HashMap<Integer, HashMap<Integer, Float>> _graph;
+    
     private void runJaccard(int authorId1) {
         for (int authorId2 : _graph.keySet()) {
             if (authorId1 != authorId2) {
@@ -47,9 +51,13 @@ public class Jaccard {
             }
         }
     }
-    private HashMap<Integer, HashMap<Integer, Float>> _jaccardData;
-    private HashMap<Integer, HashMap<Integer, Float>> _graph;
-
+    
+    /**
+     * 
+     * @param graph
+     * @param listAuthor
+     * @return 
+     */
     public HashMap<Integer, HashMap<Integer, Float>> process(HashMap<Integer, HashMap<Integer, Float>> graph,
             HashMap<Integer, String> listAuthor) {
         _jaccardData = new HashMap<>();

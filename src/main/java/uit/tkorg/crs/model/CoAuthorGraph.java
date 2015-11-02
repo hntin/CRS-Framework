@@ -20,15 +20,44 @@ public class CoAuthorGraph {
 
     //<editor-fold defaultstate="collapsed" desc="Member Variables">
     private static CoAuthorGraph _instance;
-    public HashMap<Integer, HashMap<Integer, Integer>> _coAuthorGraph; // weighted, non-directed graph
-    public HashMap<Integer, HashMap<Integer, Float>> _rssGraph; // Weighted, directed graph
-    public HashMap<Integer, HashMap<Integer, Float>> _rssPlusGraph; // Weighted, directed graph
-    public HashMap<Integer, HashMap<Integer, Float>> _rssDoublePlusGraph; //weighted, directed graph
-    public HashMap<Integer, HashMap<Integer, HashMap<Integer, Integer>>> _expFunctBasedCoAuthorGraph;
-    public HashMap<Integer, Integer> _paperId_Year;
-    public HashMap<Integer, ArrayList<Integer>> _authorPaper;
-    public HashMap<Integer, ArrayList<Integer>> _paperAuthor;
+    // weighted, non-directed graph, <AuthorID, <CoAuthorID, NumOfCollaboration>> 
+    public HashMap<Integer, HashMap<Integer, Integer>> _coAuthorGraph; 
+    // Weighted, directed graph, <AuthorID, <PotentialCoAuthorID, NormalizedWeight>>
+    public HashMap<Integer, HashMap<Integer, Float>> _rssGraph;  
+    // Weighted, directed graph, <AuthorID, <PotentialCoAuthorID, NormalizedWeight>>, delta(t)
+    public HashMap<Integer, HashMap<Integer, Float>> _rssPlusGraph; 
+    //weighted, directed graph, <AuthorID, <PotentialCoAuthorID, NormalizedWeight>>, exp(delta(t))
+    public HashMap<Integer, HashMap<Integer, Float>> _rssDoublePlusGraph; 
+    // <AuthorID, <CoAuthorID, <Delta(t), NumOfCollaboration>>>
+    private HashMap<Integer, HashMap<Integer, HashMap<Integer, Integer>>> _expFunctBasedCoAuthorGraph; 
+    private HashMap<Integer, Integer> _paperId_Year;
+    private HashMap<Integer, ArrayList<Integer>> _authorPaper;
+    private HashMap<Integer, ArrayList<Integer>> _paperAuthor;
     // </editor-fold>
+
+    public HashMap<Integer, Integer> getPaperId_Year() {
+        return _paperId_Year;
+    }
+
+    public void setPaperId_Year(HashMap<Integer, Integer> _paperId_Year) {
+        this._paperId_Year = _paperId_Year;
+    }
+
+    public HashMap<Integer, ArrayList<Integer>> getAuthorPaper() {
+        return _authorPaper;
+    }
+
+    public void setAuthorPaper(HashMap<Integer, ArrayList<Integer>> _authorPaper) {
+        this._authorPaper = _authorPaper;
+    }
+
+    public HashMap<Integer, ArrayList<Integer>> getPaperAuthor() {
+        return _paperAuthor;
+    }
+
+    public void setPaperAuthor(HashMap<Integer, ArrayList<Integer>> _paperAuthor) {
+        this._paperAuthor = _paperAuthor;
+    }
 
     public static CoAuthorGraph getInstance() {
         if (_instance == null) {
@@ -41,25 +70,25 @@ public class CoAuthorGraph {
         _coAuthorGraph = new HashMap<>();
         _expFunctBasedCoAuthorGraph = new HashMap<>();
     }
-    
+
     public CoAuthorGraph(String file_AuthorID_PaperID, String file_PaperID_Year) {
         _coAuthorGraph = new HashMap<>();
-        _expFunctBasedCoAuthorGraph = new HashMap<>();
         this.load_AuthorID_PaperID_File(file_AuthorID_PaperID);
         this.load_PaperID_Year_File(file_PaperID_Year);
         this.buildCoAuthorGraph();
+        this.buildRSSGraph();
     }
-    
+
     public CoAuthorGraph(String file_AuthorID_PaperID, String file_PaperID_Year, int firstYear, int lastYear) {
         _coAuthorGraph = new HashMap<>();
-        _expFunctBasedCoAuthorGraph = new HashMap<>();
         this.load_AuthorID_PaperID_File(file_AuthorID_PaperID);
         this.load_PaperID_Year_File(file_PaperID_Year);
-        this.buildCoAuthorGraph();
+        this.buildCoAuthorGraph();        
+        _expFunctBasedCoAuthorGraph = new HashMap<>();
         this.buildExpFuntBasedCoAuthorGraph(firstYear, lastYear);
         this.buildRSSDoublePlusGraph();
     }
-    
+
     public void load_AuthorID_PaperID_File(String file_AuthorID_PaperID) {
         try {
             _authorPaper = new HashMap<>();
@@ -95,7 +124,7 @@ public class CoAuthorGraph {
             e.printStackTrace();
         }
     }
-    
+
     public void load_PaperID_Year_File(String file_PaperID_Year) {
         try {
             _paperId_Year = new HashMap<>();
@@ -122,7 +151,7 @@ public class CoAuthorGraph {
             e.printStackTrace();
         }
     }
-    
+
     /**
      * coAuthorGraph (Weight of links are number of collaborations of two
      * neighbor author).
@@ -130,7 +159,7 @@ public class CoAuthorGraph {
     public void buildCoAuthorGraph() {
         for (int pubId : _paperAuthor.keySet()) {
             ArrayList<Integer> listAuthors = _paperAuthor.get(pubId);
-            if (listAuthors.size() == 1 && ! _coAuthorGraph.containsKey(listAuthors.get(0))) {
+            if (listAuthors.size() == 1 && !_coAuthorGraph.containsKey(listAuthors.get(0))) {
                 _coAuthorGraph.put(listAuthors.get(0), new HashMap<Integer, Integer>());
             } else {
                 for (int author1 : listAuthors) {
@@ -155,7 +184,7 @@ public class CoAuthorGraph {
             }
         }
     }
-    
+
     /**
      * rssGraph (Weight of links are normalized number of collaborations of two
      * neighbor author).
@@ -193,6 +222,11 @@ public class CoAuthorGraph {
         }
     }
     
+    /**
+     *
+     * @param firstYear
+     * @param lastYear
+     */
     public void buildExpFuntBasedCoAuthorGraph(int firstYear, int lastYear) {
         for (int paperID : _paperAuthor.keySet()) {
             int yearOfPaper = _paperId_Year.get(paperID);
@@ -233,7 +267,7 @@ public class CoAuthorGraph {
             }
         }
     }
-    
+
     /**
      * rssDoublePlusGraph (Weight of links are number of collaborations of two
      * neighbor authors considering trend factor based on exponential function).
@@ -267,14 +301,16 @@ public class CoAuthorGraph {
                     }
 
                     double rssDoublePlusWeight = 0;
-                    if (mauso != 0) rssDoublePlusWeight = tuso / mauso;
+                    if (mauso != 0) {
+                        rssDoublePlusWeight = tuso / mauso;
+                    }
                     rssDoublePlusWeightHM.put(coAuthorID, (float) rssDoublePlusWeight);
                 }
                 _rssDoublePlusGraph.put(authorID, rssDoublePlusWeightHM);
             }
         }
     }
-    
+
     public static boolean isLinkExistInCoAuthorGraph(HashMap<Integer, HashMap<Integer, Integer>> coAuthorGraph, int authorID1, int authorID2) {
         boolean found = false;
         if (coAuthorGraph.containsKey(authorID1)) {
@@ -290,8 +326,17 @@ public class CoAuthorGraph {
 
         return found;
     }
-    
+
+    // For tesing mathods in CoAuthorGraph
     public static void main(String args[]) {
-       
+        // Testing Data
+        CoAuthorGraph G0 = new CoAuthorGraph("/1.CRS-ExperimetalData/SampleData/AuthorID_PaperID_Before_2003.txt",
+                "/1.CRS-ExperimetalData/SampleData/PaperID_Year_Before_2003.txt");
+        
+        CoAuthorGraph G1 = new CoAuthorGraph("/1.CRS-ExperimetalData/SampleData/AuthorID_PaperID_2003_2005.txt",
+                "/1.CRS-ExperimetalData/SampleData/PaperID_Year_2003_2005.txt", 2003, 2005);
+        
+        System.out.println("DONE");
+
     }
 }

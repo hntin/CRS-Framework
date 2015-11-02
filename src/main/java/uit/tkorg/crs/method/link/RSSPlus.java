@@ -6,6 +6,8 @@ package uit.tkorg.crs.method.link;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -15,6 +17,9 @@ import java.util.concurrent.Executors;
  * @author daolv
  */
 public class RSSPlus {
+
+    private HashMap<Integer, HashMap<Integer, Float>> _rssPlusData;
+    private HashMap<Integer, HashMap<Integer, Float>> _graph;
 
     private void runRSSPlus(int authorId1) {
         Set<Integer> listAuthorFirstHop = _graph.get(authorId1).keySet();
@@ -54,9 +59,13 @@ public class RSSPlus {
         }
         _rssPlusData.put(authorId1, listRTBVS);
     }
-    private HashMap<Integer, HashMap<Integer, Float>> _rssPlusData;
-    private HashMap<Integer, HashMap<Integer, Float>> _graph;
 
+    /**
+     *
+     * @param graph
+     * @param listAuthor
+     * @return
+     */
     public HashMap<Integer, HashMap<Integer, Float>> process(HashMap<Integer, HashMap<Integer, Float>> graph,
             HashMap<Integer, String> listAuthor) {
         _rssPlusData = new HashMap<>();
@@ -64,7 +73,6 @@ public class RSSPlus {
 
         Runtime runtime = Runtime.getRuntime();
         int numOfProcessors = runtime.availableProcessors();
-
         ExecutorService executor = Executors.newFixedThreadPool(numOfProcessors - 1);
         for (final int authorId : listAuthor.keySet()) {
             executor.submit(new Runnable() {

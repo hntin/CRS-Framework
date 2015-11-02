@@ -13,45 +13,50 @@ import uit.tkorg.crs.model.Sample;
  */
 public abstract class FeatureComputation {
 
-    protected Sample positiveSample;
-    protected Sample negativeSample;
+    protected Sample _positiveSample;
+    protected Sample _negativeSample;
 
     /**
-     * Get the value of negativeSample
+     * Get the value of _negativeSample
      *
-     * @return the value of negativeSample
+     * @return the value of _negativeSample
      */
     public Sample getNegativeSample() {
-        return negativeSample;
+        return _negativeSample;
     }
 
     /**
-     * Set the value of negativeSample
+     * Set the value of _negativeSample
      *
-     * @param negativeSample new value of negativeSample
+     * @param negativeSample new value of _negativeSample
      */
     public void setNegativeSample(Sample negativeSample) {
-        this.negativeSample = negativeSample;
+        this._negativeSample = negativeSample;
     }
 
     /**
-     * Get the value of positiveSample
+     * Get the value of _positiveSample
      *
-     * @return the value of positiveSample
+     * @return the value of _positiveSample
      */
     public Sample getPositiveSample() {
-        return positiveSample;
+        return _positiveSample;
     }
 
     /**
-     * Set the value of positiveSample
+     * Set the value of _positiveSample
      *
-     * @param positiveSample new value of positiveSample
+     * @param positiveSample new value of _positiveSample
      */
     public void setPositiveSample(Sample positiveSample) {
-        this.positiveSample = positiveSample;
+        this._positiveSample = positiveSample;
     }
     
     //ten file co thong nhat la se luon co chu Positive/Negative de nhan dien mau am/duong?
     public abstract void computeFeatureValues(String outputFile);
+    
+    // Calculating value of the specifed feature for both positive samples and negative samples
+    public abstract void computeFeatureValues(String positiveOutputFile, String negativeOutputFile);
+    
+    
 }

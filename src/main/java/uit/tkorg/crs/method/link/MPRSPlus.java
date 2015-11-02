@@ -2,6 +2,8 @@ package uit.tkorg.crs.method.link;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -11,6 +13,9 @@ import java.util.concurrent.Executors;
  * @author daolv
  */
 public class MPRSPlus {
+
+    private HashMap<Integer, HashMap<Integer, Float>> _mprsPlusData;
+    private HashMap<Integer, HashMap<Integer, Float>> _graph;
 
     private void runMPRSPlus(int authorId1) {
         Set<Integer> listAuthorFirstHop = _graph.get(authorId1).keySet();
@@ -48,9 +53,13 @@ public class MPRSPlus {
         }
         _mprsPlusData.put(authorId1, listMPBVSPlus);
     }
-    private HashMap<Integer, HashMap<Integer, Float>> _mprsPlusData;
-    private HashMap<Integer, HashMap<Integer, Float>> _graph;
 
+    /**
+     *
+     * @param graph
+     * @param listAuthor
+     * @return
+     */
     public HashMap<Integer, HashMap<Integer, Float>> process(HashMap<Integer, HashMap<Integer, Float>> graph,
             HashMap<Integer, String> listAuthor) {
         _mprsPlusData = new HashMap<>();
@@ -58,8 +67,8 @@ public class MPRSPlus {
 
         Runtime runtime = Runtime.getRuntime();
         int numOfProcessors = runtime.availableProcessors();
+        ExecutorService executor = Executors.newFixedThreadPool(numOfProcessors - 1);
 
-        ExecutorService executor = Executors.newFixedThreadPool(numOfProcessors / 2);
         for (final int authorId : listAuthor.keySet()) {
             executor.submit(new Runnable() {
                 @Override

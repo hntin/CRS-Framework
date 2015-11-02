@@ -186,6 +186,11 @@ public class TextFileUtility {
         }
     }
 
+    /**
+     * writeTextFileFromHM
+     * @param textFilePath
+     * @param hashMap 
+     */
     public static void writeTextFileFromHM(String textFilePath, HashMap<Integer, HashMap<Integer, Float>> hashMap) {
         try {
             FileWriter fstream = new FileWriter(textFilePath, false);
