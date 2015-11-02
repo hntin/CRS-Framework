@@ -68,7 +68,7 @@ public class CoAuthorStrengthComputation extends FeatureComputation {
             int firstAuthorID = p.getFirst();
             int secondAuthorID = p.getSecond();
 
-            float rssDoublePlusValue = -1;
+            float rssDoublePlusValue = 0;
             if (rssDoublePlus_FirstAuthorID_PostiveSample_ToAllOthers.containsKey(firstAuthorID)
                     && rssDoublePlus_FirstAuthorID_PostiveSample_ToAllOthers.get(firstAuthorID).containsKey(secondAuthorID)) {
                 rssDoublePlusValue = rssDoublePlus_FirstAuthorID_PostiveSample_ToAllOthers.get(firstAuthorID).get(secondAuthorID);
@@ -90,7 +90,7 @@ public class CoAuthorStrengthComputation extends FeatureComputation {
             int firstAuthorID = p.getFirst();
             int secondAuthorID = p.getSecond();
 
-            float rssDoublePlusValue = -1;
+            float rssDoublePlusValue = 0;
             if (rssDoublePlus_FirstAuthorID_NegativeSample_ToAllOthers.containsKey(firstAuthorID)
                     && rssDoublePlus_FirstAuthorID_NegativeSample_ToAllOthers.get(firstAuthorID).containsKey(secondAuthorID)) {
                 rssDoublePlusValue = rssDoublePlus_FirstAuthorID_NegativeSample_ToAllOthers.get(firstAuthorID).get(secondAuthorID);
