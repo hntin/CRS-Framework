@@ -186,11 +186,15 @@ public class CBSimComputation extends FeatureComputation {
 //            Logger.getLogger(CBSimComputation.class.getName()).log(Level.SEVERE, null, ex);
 //        }
 //    }
-    public void computeFeatureValues(String outputFile) {
+    @Override
+    public void computeFeatureValues(String outputFile, int typeOfSample) {
 
         //doc danh sach tac gia tu mau am/duong
-        LinkedHashSet<Integer> authorList = this._negativeSample.readAllAuthorIDList();
-//        LinkedHashSet<Integer> authorListPositive = this.positiveSample.readAuthorList();
+        LinkedHashSet<Integer> authorList = null;
+        if (typeOfSample == 1)
+            authorList = this._negativeSample.readAllAuthorIDList();
+        else
+            authorList = this._positiveSample.readAllAuthorIDList();
 
         //Lay danh sach bai bao cua cac tac gia trong mau am/duong
         HashMap<Integer, List<String>> authorPaperList = new HashMap<Integer, List<String>>();
@@ -231,16 +235,6 @@ public class CBSimComputation extends FeatureComputation {
         } catch (Exception ex) {
             Logger.getLogger(CBSimComputation.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
-
-    /**
-     * Calculating value of the specifed feature for both positive samples and negative samples
-     * @param postiveOutputFile
-     * @param negativeOutputFile 
-     */
-    @Override
-    public void computeFeatureValues(String postiveOutputFile, String negativeOutputFile) {
-
     }
 
     private void readAuthorPaperList(Set<Integer> authorList, int year,
@@ -304,6 +298,6 @@ public class CBSimComputation extends FeatureComputation {
                 "D:\\1.CRS-Experiment\\MLData\\TrainingData\\PositiveSamples.txt",
                 "D:\\1.CRS-Experiment\\MLData\\TrainingData\\NegativeSamples.txt",
                 "D:\\1.CRS-Experiment\\TFIDF\\2003\\", 2003);
-        cbSim.computeFeatureValues("D:\\1.CRS-Experiment\\MLData\\TrainingData\\NegativeSamples_Cosine.txt");
+        cbSim.computeFeatureValues("D:\\1.CRS-Experiment\\MLData\\TrainingData\\NegativeSamplesCosine.txt",1);
     }
 }
