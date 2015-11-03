@@ -14,7 +14,7 @@ package uit.tkorg.crs.datapreparation;
 public class CoOrgStrengthComputation extends FeatureComputation {
 
     @Override
-    public void computeFeatureValues(String outputFile) {
+    public void computeFeatureValues(String outputFile, int typeOfSample) {
         // Step 1: Xay dung mang CoOrg_Net.
         // Step 2: Tinh toan trong so RSS cho tung cap OrgID trong mang.
         // Step 3: Doc file mau am (-), mau duong (+) de load tung cap <authorID, authorID>.
@@ -22,15 +22,9 @@ public class CoOrgStrengthComputation extends FeatureComputation {
         // Step 5: Tra ve gia tri RSS+ cho tung cap OrgID lien quan cac cap authorID trong mau (+) va (-)
         // Step 6: Ghi ket qua gia tri Org_RSS xuong file 
     }
-    
-    @Override
-    public void computeFeatureValues(String positiveOutputFile, String negativeOutputFile) {
-        
-    }
 
     public static void main(String args[]) {
         
     }
-
     
 }

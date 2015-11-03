@@ -5,6 +5,7 @@
  */
 package uit.tkorg.crs.datapreparation;
 
+import java.io.IOException;
 import uit.tkorg.crs.model.Sample;
 
 /**
@@ -53,6 +54,6 @@ public abstract class FeatureComputation {
     }
     
     // Calculating value of the specifed feature for both positive samples or negative samples
-    public abstract void computeFeatureValues(String outputFile, int typeOfSample);
+    public abstract void computeFeatureValues(String outputFile, int typeOfSample) throws IOException;
 
 }
