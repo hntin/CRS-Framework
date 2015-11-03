@@ -52,11 +52,7 @@ public abstract class FeatureComputation {
         this._positiveSample = positiveSample;
     }
     
-    //ten file co thong nhat la se luon co chu Positive/Negative de nhan dien mau am/duong?
-    public abstract void computeFeatureValues(String outputFile);
-    
-    // Calculating value of the specifed feature for both positive samples and negative samples
-    public abstract void computeFeatureValues(String positiveOutputFile, String negativeOutputFile) throws Exception;
-    
-    
+    // Calculating value of the specifed feature for both positive samples or negative samples
+    public abstract void computeFeatureValues(String outputFile, int typeOfSample);
+
 }
