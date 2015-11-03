@@ -5,6 +5,8 @@
  */
 package uit.tkorg.crs.common;
 
+import java.util.Objects;
+
 /**
  *
  * @author thucnt
@@ -59,6 +61,27 @@ public class Pair {
      */
     public void setFirst(Integer first) {
         this.first = first;
+    }
+    
+    public boolean equals(Object obj){
+        boolean result = false;
+        if (this == obj)
+            result = true;
+        else if ((obj == null) || (obj.getClass() != this.getClass()))
+            result = false;
+        else{
+            Pair p = (Pair)obj;
+            if ((p.first.equals(this.first)) && (p.second.equals(this.second)))
+                result = true;
+            else
+                result = false;
+        }
+        
+        return result;
+    }
+    
+    public int hashCode(){
+        return Objects.hash(this.first,this.second);
     }
 
 }

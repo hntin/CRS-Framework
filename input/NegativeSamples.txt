@@ -1,0 +1,3 @@
+AuthorID, CoAuthorID, rssDoublePlusValue
+(5,2)
+(5,3)

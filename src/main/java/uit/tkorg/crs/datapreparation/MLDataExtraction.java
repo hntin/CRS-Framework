@@ -7,7 +7,10 @@ package uit.tkorg.crs.datapreparation;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
@@ -15,9 +18,13 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Scanner;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import uit.tkorg.crs.common.Pair;
 import uit.tkorg.crs.model.CoAuthorGraph;
 import uit.tkorg.crs.utility.TextFileUtility;
 import uit.tkorg.crs.model.CoAuthorGraph;
@@ -407,21 +414,80 @@ public class MLDataExtraction {
     }
 
     private static void getTestingData() {
-
+        
     }
-
+    private static HashMap<Pair,HashMap<String,Double>> readFeatureFile(String featureFile, HashMap<Pair,HashMap<String,Double>> features){
+        try {
+            int start = featureFile.indexOf('_') + 1;
+            if (start == 0)// skip file only contains pair of author
+                return features;
+            
+            int end = featureFile.lastIndexOf('.');
+            String featureName = featureFile.substring(start, end);
+            Scanner input = new Scanner(new FileReader(featureFile));
+            input.nextLine();//skip file header
+            Pattern r1 = Pattern.compile("\\s");
+            Pattern r2 = Pattern.compile("\\D");
+            while (input.hasNext()) {
+                String line = input.nextLine().trim();
+                String[] tokens = r1.split(line);
+                if (tokens.length != 2)//file only contain pair of author
+                    continue;
+                Double featureValue = new Double(tokens[1]);
+                tokens = r2.split(tokens[0]);
+                Pair authorPair = new Pair();
+                authorPair.setFirst(new Integer(tokens[1]));
+                authorPair.setSecond(new Integer(tokens[2]));
+                
+                if (features.containsKey(authorPair)){
+                    HashMap<String, Double> values = features.get(authorPair);
+                    values.put(featureName, featureValue);
+                    features.replace(authorPair, values);
+                }
+                else{
+                    HashMap<String, Double> values = new HashMap<String, Double>();
+                    values.put(featureName, featureValue);
+                    features.put(authorPair, values);
+                    Logger.getLogger(MLDataExtraction.class.getName()).log(Level.INFO, "Create new author pair");
+                }
+            }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(MLDataExtraction.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return features;
+    }
+    private static HashMap<Pair,HashMap<String,Double>> aggregateFeatures(String featuresFolder, int typeOfSample){
+        HashMap<Pair, HashMap<String, Double>> result = new HashMap<>();
+        String fileNamePattern;
+        if (typeOfSample == 1)
+            fileNamePattern = "PositiveSample";
+        else
+            fileNamePattern = "NegativeSample";
+        
+        try {
+            List<String> featureFiles = TextFileUtility.getPathFile(new File (featuresFolder));
+            for (String fileName : featureFiles) {
+                if (fileName.contains(fileNamePattern))
+                    readFeatureFile(fileName,result);
+            }
+        }catch (Exception ex) {
+            Logger.getLogger(MLDataExtraction.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return result;
+    }
     public static void main(String args[]) {
-        getTrainingData("/1.CRS-ExperimetalData/TrainingData/AuthorID_PaperID_Before_2001.txt",
-                "/1.CRS-ExperimetalData/TrainingData/PaperID_Year_Before_2001.txt",
-                "/1.CRS-ExperimetalData/TrainingData/AuthorID_PaperID_2001_2003.txt",
-                "/1.CRS-ExperimetalData/TrainingData/PaperID_Year_2001_2003.txt",
-                "/1.CRS-ExperimetalData/TrainingData/AuthorID_PaperID_2004_2006.txt",
-                "/1.CRS-ExperimetalData/TrainingData/PaperID_Year_2004_2006.txt",
-                "/1.CRS-ExperimetalData/TrainingData/JuniorIDList.txt",
-                "/1.CRS-ExperimetalData/TrainingData/PositiveSamples.txt",
-                "/1.CRS-ExperimetalData/TrainingData/NegativeSamples.txt");
-
-        getTestingData();
+//        getTrainingData("/1.CRS-ExperimetalData/TrainingData/AuthorID_PaperID_Before_2001.txt",
+//                "/1.CRS-ExperimetalData/TrainingData/PaperID_Year_Before_2001.txt",
+//                "/1.CRS-ExperimetalData/TrainingData/AuthorID_PaperID_2001_2003.txt",
+//                "/1.CRS-ExperimetalData/TrainingData/PaperID_Year_2001_2003.txt",
+//                "/1.CRS-ExperimetalData/TrainingData/AuthorID_PaperID_2004_2006.txt",
+//                "/1.CRS-ExperimetalData/TrainingData/PaperID_Year_2004_2006.txt",
+//                "/1.CRS-ExperimetalData/TrainingData/JuniorIDList.txt",
+//                "/1.CRS-ExperimetalData/TrainingData/PositiveSamples.txt",
+//                "/1.CRS-ExperimetalData/TrainingData/NegativeSamples.txt");
+//
+//        getTestingData();
+        HashMap<Pair,HashMap<String,Double>> model = aggregateFeatures("/Users/thucnt/NetBeansProjects/crs-framework/input",1);
         System.out.println("DONE");
     }
 }

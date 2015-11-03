@@ -1,0 +1,7 @@
+AuthorID, CoAuthorID, rssDoublePlusValue
+(5,6)	0.0
+(5,1)	0.05624894
+(7,5)	0.0
+(5,7)	0.0
+(6,4)	0.0
+(6,5)	0.0
