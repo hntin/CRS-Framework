@@ -218,7 +218,11 @@ public class CBSimComputation extends FeatureComputation {
             CBFAuthorFVComputation.computeFVForAllAuthors(authors, papers, 1, 0.5);
             test(authors, papers);
             //tinh do do cosine cho tung cap tac gia trong mau duong/am va ghi ra file
-            ArrayList<Pair> listOfPairs = this._negativeSample.getPairOfAuthor();
+            ArrayList<Pair> listOfPairs = null;
+            if (typeOfSample == 1)
+                listOfPairs = this._positiveSample.getPairOfAuthor();
+            else
+                listOfPairs = this._negativeSample.getPairOfAuthor();
             StringBuilder content = new StringBuilder();
             content.append("(idAuhtor1,idAuthor2) \t cosine\n");
             for (int i = 0; i < listOfPairs.size(); i++) {
