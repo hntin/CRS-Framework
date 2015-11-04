@@ -6,6 +6,9 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Set;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  *
@@ -14,6 +17,12 @@ import java.util.HashMap;
 public class OrganizationGraph {
 
     private static OrganizationGraph _instance;
+  
+    public HashMap<Integer, HashMap<Integer, Float>> _rssOrgGraph;
+    public HashMap<Integer, HashMap<Integer, Integer>> _collaborativeOrgGraph;
+    public HashMap<Integer, Integer> _authorID_OrgID;
+    private HashMap<Integer, ArrayList<Integer>> _paperOrganization;
+    private HashMap<Integer, ArrayList<Integer>> _organizationPaper;
 
     public static OrganizationGraph getInstance() {
         if (_instance == null) {
@@ -21,20 +30,23 @@ public class OrganizationGraph {
         }
         return _instance;
     }
-    
-    public HashMap<Integer, HashMap<Integer, Float>> _rssORGGraph;
-    public HashMap<Integer, HashMap<Integer, Integer>> _collaborativeOrgGraph;
-    public HashMap<Integer, Integer> _authorID_OrgID;
-    public HashMap<Integer, ArrayList<Integer>> _paperOrganization;
-    public HashMap<Integer, ArrayList<Integer>> _organizationPaper;
-    
+
     public OrganizationGraph() {
         _collaborativeOrgGraph = new HashMap<>();
-        _rssORGGraph = new HashMap<>();
+        _rssOrgGraph = new HashMap<>();
+    }
+
+    public OrganizationGraph(String inputFile_AuthorId_PaperID_OrgID, int firstYear, int lastYear) {
+        _collaborativeOrgGraph = new HashMap<>();
+        _rssOrgGraph = new HashMap<>();
+        load_AuthorID_PaperID_OrgID(inputFile_AuthorId_PaperID_OrgID);
+        buildCollaborativeOrgGraph();
+        buildRSSOrgGraph();
     }
 
     public void load_AuthorID_PaperID_OrgID(String file_AuthorID_PubID_OrgID) {
         try {
+            _authorID_OrgID = new HashMap<>();
             _paperOrganization = new HashMap<>();
             _organizationPaper = new HashMap<>();
             FileInputStream fis = new FileInputStream(file_AuthorID_PubID_OrgID);
@@ -78,6 +90,11 @@ public class OrganizationGraph {
                 }
                 listOrg.add(orgId);
                 _paperOrganization.put(paperId, listOrg);
+
+                if (!_authorID_OrgID.containsKey(authorId)) {
+                    _authorID_OrgID.put(authorId, orgId);
+                }
+
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -115,14 +132,15 @@ public class OrganizationGraph {
             }
         }
     }
-    
+
     /**
-     * Build RSSOrgGraph (weight is relation strength of different organizations.)
+     * Build RSSOrgGraph (weight is relation strength of different
+     * organizations.)
      */
     public HashMap<Integer, HashMap<Integer, Float>> buildRSSOrgGraph() {
         for (int orgId1 : _collaborativeOrgGraph.keySet()) {
             if (_collaborativeOrgGraph.get(orgId1).size() == 0) {
-                _rssORGGraph.put(orgId1, new HashMap<Integer, Float>());
+                _rssOrgGraph.put(orgId1, new HashMap<Integer, Float>());
             } else {
                 int totalCollaborationOfOrg1 = 0;
                 for (int orgId2 : _collaborativeOrgGraph.get(orgId1).keySet()) {
@@ -132,7 +150,7 @@ public class OrganizationGraph {
                 for (int orgId2 : _collaborativeOrgGraph.get(orgId1).keySet()) {
                     if (orgId1 != orgId2) {
                         float weight = ((float) _collaborativeOrgGraph.get(orgId1).get(orgId2)) / ((float) totalCollaborationOfOrg1);
-                        HashMap<Integer, Float> rssWeight = _rssORGGraph.get(orgId1);
+                        HashMap<Integer, Float> rssWeight = _rssOrgGraph.get(orgId1);
                         if (rssWeight == null) {
                             rssWeight = new HashMap<>();
                         }
@@ -142,13 +160,13 @@ public class OrganizationGraph {
                             _weight = weight;
                             rssWeight.put(orgId2, _weight);
                         }
-                        _rssORGGraph.put(orgId1, rssWeight);
+                        _rssOrgGraph.put(orgId1, rssWeight);
                     }
                 }
             }
         }
-        return _rssORGGraph;
-    }
+        return _rssOrgGraph;
+    }    
 
     public static void main(String args[]) {
         OrganizationGraph orgGraph = new OrganizationGraph();

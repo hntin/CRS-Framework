@@ -18,10 +18,10 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.regex.Pattern;
-import uit.tkorg.crs.method.link.RSSDoublePlus;
 import uit.tkorg.crs.model.CoAuthorGraph;
 import uit.tkorg.crs.model.Sample;
 import uit.tkorg.crs.common.Pair;
+import uit.tkorg.crs.method.link.RSS;
 import uit.tkorg.crs.utility.TextFileUtility;
 
 /**
@@ -63,13 +63,13 @@ public class CoAuthorStrengthComputation extends FeatureComputation {
             firstAuthorIDList = this._negativeSample.readAllFirstAuthorID();
             pairs = this._negativeSample.getPairOfAuthor();
         }
-            
+
         // Step 2: Calculating RSSDoublePlus values for all juniorAuthorID with all others in the CoAuthorGraph
-        RSSDoublePlus methodRSSDoublePLus = new RSSDoublePlus();
-        HashMap<Integer, HashMap<Integer, Float>> rssDoublePlus_FirstAuthorID_ToAllOthers = methodRSSDoublePLus.process(
+        RSS methodRSS = new RSS();
+        HashMap<Integer, HashMap<Integer, Float>> rssDoublePlus_FirstAuthorID_ToAllOthers = methodRSS.process(
                 _coAuthorGraph._rssDoublePlusGraph, firstAuthorIDList);
  
-        // Step 3: Extracting RSSSoublePlus Values for all pairs of PositveSamples, rssDoublePlus_PostiveSamples_HM
+        // Step 3: Extracting RSSDoublePlus Values for all pairs of PositveSamples, rssDoublePlus_PostiveSamples_HM
         HashMap<Integer, HashMap<Integer, Float>> rssDoublePlus_Samples_HM = new HashMap<>();
         for (int i = 0; i < pairs.size(); i++) {
             Pair p = pairs.get(i);
@@ -91,7 +91,7 @@ public class CoAuthorStrengthComputation extends FeatureComputation {
             rssDoublePlus_Samples_HM.put(firstAuthorID, hm);
         }
         
-        // Step 4: Storing values which describe CoAuthorStrength (RSSSoublePlus) for all of PositiveSamples/NegativeSamples to the output file
+        // Step 4: Storing values which describe CoAuthorStrength (RSSDoublePlus) for all of PositiveSamples/NegativeSamples to the output file
         PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(outputFile)));
         out.println("AuthorID, CoAuthorID, rssDoublePlusValue");
         out.flush();

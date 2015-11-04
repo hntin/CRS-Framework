@@ -21,31 +21,31 @@ public class AdamicAdar {
     private HashMap<Integer, HashMap<Integer, Float>> _adamicadarData;
     private HashMap<Integer, HashMap<Integer, Float>> _graph;
     
-    private void runAdamicAdar(int authorId1) {
-        for (int authorId2 : _graph.keySet()) {
-            if (authorId1 != authorId2) {
-                Set<Integer> neighborsOfAuthor1 = _graph.get(authorId1).keySet();
-                Set<Integer> neighborsOfAuthor2 = _graph.get(authorId2).keySet();
+    private void runAdamicAdar(int nodeId1) {
+        for (int nodeId2 : _graph.keySet()) {
+            if (nodeId1 != nodeId2) {
+                Set<Integer> neighborsOfNode1 = _graph.get(nodeId1).keySet();
+                Set<Integer> neighborsOfNode2 = _graph.get(nodeId2).keySet();
                 ArrayList<Integer> sharedNeighbors = new ArrayList<>();
-                for (int authorId : neighborsOfAuthor1) {
-                    if (neighborsOfAuthor2.contains(authorId)) {
-                        sharedNeighbors.add(authorId);
+                for (int nodeId : neighborsOfNode1) {
+                    if (neighborsOfNode2.contains(nodeId)) {
+                        sharedNeighbors.add(nodeId);
                     }
                 }
 
                 float value = 0f;
-                for (int authorId : sharedNeighbors) {
-                    Set<Integer> neighborsOfSharedAuthor = _graph.get(authorId).keySet();
-                    value += 1.0f / (float) Math.log10(neighborsOfSharedAuthor.size());
+                for (int nodeId : sharedNeighbors) {
+                    Set<Integer> neighborsOfSharedNode = _graph.get(nodeId).keySet();
+                    value += 1.0f / (float) Math.log10(neighborsOfSharedNode.size());
                 }
 
                 if (value > 0f) {
-                    HashMap<Integer, Float> listAdamicAdar = _adamicadarData.get(authorId1);
+                    HashMap<Integer, Float> listAdamicAdar = _adamicadarData.get(nodeId1);
                     if (listAdamicAdar == null) {
                         listAdamicAdar = new HashMap<>();
                     }
-                    listAdamicAdar.put(authorId2, value);
-                    _adamicadarData.put(authorId1, listAdamicAdar);
+                    listAdamicAdar.put(nodeId2, value);
+                    _adamicadarData.put(nodeId1, listAdamicAdar);
                 }
             }
         }
@@ -54,11 +54,11 @@ public class AdamicAdar {
     /**
      * 
      * @param graph
-     * @param listAuthor
+     * @param listNode
      * @return 
      */
     public HashMap<Integer, HashMap<Integer, Float>> process(HashMap<Integer, HashMap<Integer, Float>> graph,
-            HashMap<Integer, String> listAuthor) {
+            HashMap<Integer, String> listNode) {
         _adamicadarData = new HashMap<>();
         _graph = graph;
 
@@ -66,11 +66,11 @@ public class AdamicAdar {
         int numOfProcessors = runtime.availableProcessors();
 
         ExecutorService executor = Executors.newFixedThreadPool(numOfProcessors - 1);
-        for (final int authorId : listAuthor.keySet()) {
+        for (final int nodeId : listNode.keySet()) {
             executor.submit(new Runnable() {
                 @Override
                 public void run() {
-                    runAdamicAdar(authorId);
+                    runAdamicAdar(nodeId);
                 }
             });
         } 

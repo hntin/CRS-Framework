@@ -6,9 +6,7 @@ import uit.tkorg.crs.method.link.AdamicAdar;
 import uit.tkorg.crs.method.link.Cosine;
 import uit.tkorg.crs.method.link.Jaccard;
 import uit.tkorg.crs.method.link.MPRS;
-import uit.tkorg.crs.method.link.MPRSPlus;
 import uit.tkorg.crs.method.link.RSS;
-import uit.tkorg.crs.method.link.RSSPlus;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -23,7 +21,6 @@ import java.util.HashSet;
 import java.util.Random;
 import uit.tkorg.crs.common.TopNSimilarity;
 import uit.tkorg.crs.method.cbf.ParallelLDA;
-import uit.tkorg.crs.method.link.RSSDoublePlus;
 import uit.tkorg.crs.utility.TextFileUtility;
 
 /**
@@ -95,10 +92,7 @@ public class LinkMethodExperiment {
         Jaccard methodJaccard = new Jaccard();
         AdamicAdar methodAdamicAdar = new AdamicAdar();
         MPRS methodMPRS = new MPRS();
-        MPRSPlus methodMPRSPlus = new MPRSPlus();
         RSS methodRSS = new RSS();
-        RSSPlus methodRSSPlus = new RSSPlus();
-        RSSDoublePlus methodRSSDoublePLus = new RSSDoublePlus();
 
         HashMap<Integer, HashMap<Integer, Float>> topSimilarity;
         //<editor-fold defaultstate="collapsed" desc="...">
@@ -136,15 +130,15 @@ public class LinkMethodExperiment {
         }
         if (_isRSSPlusMethod) {
             System.out.println("Running RSSPlus ... ");
-            mprsPlusResult = methodRSSPlus.process(_authorGraph.rssPlusGraph, _authorGraph.listRandomAuthor);
+            mprsPlusResult = methodRSS.process(_authorGraph.rssPlusGraph, _authorGraph.listRandomAuthor);
         }
         if (_isMPRSPlusMethod) {
             System.out.println("Running MPRSPlus ... ");
-            rssPlusResult = methodMPRSPlus.process(_authorGraph.rssPlusGraph, _authorGraph.listRandomAuthor);
+            rssPlusResult = methodMPRS.process(_authorGraph.rssPlusGraph, _authorGraph.listRandomAuthor);
         }
         if (_isRSSDoublePlusMethod) {
             System.out.println("Running RSSDoublePlus ... ");
-            rssDoublePlusResult = methodRSSDoublePLus.process(_authorGraph.rssDoublePlusGraph, _authorGraph.listRandomAuthor);
+            rssDoublePlusResult = methodRSS.process(_authorGraph.rssDoublePlusGraph, _authorGraph.listRandomAuthor);
         }
         
         //</editor-fold>

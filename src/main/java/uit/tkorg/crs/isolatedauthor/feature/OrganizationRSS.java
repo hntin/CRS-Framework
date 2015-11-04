@@ -92,55 +92,10 @@ public class OrganizationRSS {
         }
     }
 
-//    private void runOrgRSS(int inputAuthorId) {
-//        int inputAuthorOrgId = _authorID_OrgID.get(inputAuthorId);
-//        HashMap<Integer, Float> listRSS = new HashMap<>();
-//        listRSS.put(inputAuthorOrgId, 1f);
-//        Set<Integer> listOrgFirstHop = _rssOrgGraph.get(inputAuthorOrgId).keySet();
-//        for (int orgId_FirstHop : listOrgFirstHop) {
-//            if (orgId_FirstHop == -1) continue;
-//            Set<Integer> listOrgSecondHop = _rssOrgGraph.get(orgId_FirstHop).keySet();
-//            for (int orgId_SecondHop : listOrgSecondHop) {
-//                if (orgId_SecondHop == -1) continue;
-//                if (inputAuthorOrgId != orgId_SecondHop) {
-//                    Float weight = _rssOrgGraph.get(inputAuthorOrgId).get(orgId_FirstHop);
-//                    Float weight2 = _rssOrgGraph.get(orgId_FirstHop).get(orgId_SecondHop);
-//                    if (weight != null && weight2 != null) {
-//                        weight *= weight2;
-//                    } else {
-//                        weight = 0f;
-//                    }
-//
-//                    if (weight > 0f) {
-//                        Float totalWeight = listRSS.get(orgId_SecondHop);
-//                        if (totalWeight == null) {
-//                            totalWeight = 0f;
-//                        }
-//                        totalWeight += weight;
-//                        listRSS.put(orgId_SecondHop, totalWeight);
-//                    }
-//                }
-//            }
-//        }
-//
-//        Set<Integer> listId = listRSS.keySet();
-//        for (int orgId : listId) {
-//            Float weight = _rssOrgGraph.get(inputAuthorOrgId).get(orgId);
-//            if (weight != null && weight > 0f) {
-//                Float totalWeight = listRSS.get(orgId);
-//                totalWeight += weight;
-//                listRSS.put(orgId, totalWeight);
-//            }
-//        }
-//
-//        for (int otherOrgId : _rssOrgGraph.get(inputAuthorOrgId).keySet()) {
-//            if (!listId.contains(otherOrgId)) {
-//                listRSS.put(otherOrgId, _rssOrgGraph.get(inputAuthorOrgId).get(otherOrgId));
-//            }
-//        }
-//        _rssOrgData.put(inputAuthorOrgId, listRSS);
-//    }
-
+    /**
+     * 
+     * @param inputAuthorId 
+     */
     private void runOrgRSS(int inputAuthorId) {
         int inputAuthorOrgId = _authorID_OrgID.get(inputAuthorId);
         HashMap<Integer, Float> listRSS = new HashMap<>();
@@ -270,7 +225,7 @@ public class OrganizationRSS {
             orgGraph.buildCollaborativeOrgGraph();
             orgGraph.buildRSSOrgGraph();
 
-            orgRSS.processOrgRSS(orgGraph._rssORGGraph, listInputAuthor);
+            orgRSS.processOrgRSS(orgGraph._rssOrgGraph, listInputAuthor);
             orgRSS.writeOrgRSSofInputAuthorToFile(
                     "C:\\CRS-Experiment\\Sampledata\\Output\\OrgRSS",
                     listInputAuthor);

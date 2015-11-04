@@ -21,21 +21,21 @@ public class MPRS {
     private HashMap<Integer, HashMap<Integer, Float>> _mprsData;
     private HashMap<Integer, HashMap<Integer, Float>> _graph;
 
-    private void runMPRS(int authorId1) {
-        Set<Integer> listAuthorFirstHop = _graph.get(authorId1).keySet();
-        HashMap<Integer, Float> listMPBVS = new HashMap<>();
-        for (int authorId_FirstHop : listAuthorFirstHop) {
-            Float weight = _graph.get(authorId1).get(authorId_FirstHop);
+    private void runMPRS(int nodeId1) {
+        Set<Integer> listNodeFirstHop = _graph.get(nodeId1).keySet();
+        HashMap<Integer, Float> listMPRS = new HashMap<>();
+        for (int nodeId_FirstHop : listNodeFirstHop) {
+            Float weight = _graph.get(nodeId1).get(nodeId_FirstHop);
             if (weight == null) {
                 weight = 0f;
             }
-            listMPBVS.put(authorId_FirstHop, weight);
-            Set<Integer> listAuthorSecondHop = _graph.get(authorId_FirstHop).keySet();
+            listMPRS.put(nodeId_FirstHop, weight);
+            Set<Integer> listNodeSecondHop = _graph.get(nodeId_FirstHop).keySet();
 
-            for (int authorId_SecondHop : listAuthorSecondHop) {
-                if (authorId1 != authorId_SecondHop) {
-                    Float weight1 = _graph.get(authorId1).get(authorId_FirstHop);
-                    Float weight2 = _graph.get(authorId_FirstHop).get(authorId_SecondHop);
+            for (int nodeId_SecondHop : listNodeSecondHop) {
+                if (nodeId1 != nodeId_SecondHop) {
+                    Float weight1 = _graph.get(nodeId1).get(nodeId_FirstHop);
+                    Float weight2 = _graph.get(nodeId_FirstHop).get(nodeId_SecondHop);
                     if (weight1 != null && weight2 != null) {
                         weight1 *= weight2;
                     } else {
@@ -43,29 +43,30 @@ public class MPRS {
                     }
 
                     if (weight1 > 0f) {
-                        Float totalWeight = listMPBVS.get(authorId_SecondHop);
+                        Float totalWeight = listMPRS.get(nodeId_SecondHop);
                         if (totalWeight == null) {
                             totalWeight = 0f;
                         }
                         if (weight1 > totalWeight) {
                             totalWeight = weight1;
                         }
-                        listMPBVS.put(authorId_SecondHop, totalWeight);
+                        listMPRS.put(nodeId_SecondHop, totalWeight);
                     }
                 }
             }
         }
-        _mprsData.put(authorId1, listMPBVS);
+
+        _mprsData.put(nodeId1, listMPRS);
     }
 
     /**
      *
      * @param graph
-     * @param listAuthor
+     * @param listNode
      * @return
      */
     public HashMap<Integer, HashMap<Integer, Float>> process(HashMap<Integer, HashMap<Integer, Float>> graph,
-            HashMap<Integer, String> listAuthor) {
+            HashMap<Integer, String> listNode) {
         _mprsData = new HashMap<>();
         _graph = graph;
 
@@ -73,11 +74,11 @@ public class MPRS {
         int numOfProcessors = runtime.availableProcessors();
         ExecutorService executor = Executors.newFixedThreadPool(numOfProcessors - 1);
 
-        for (final int authorId : listAuthor.keySet()) {
+        for (final int nodeId : listNode.keySet()) {
             executor.submit(new Runnable() {
                 @Override
                 public void run() {
-                    runMPRS(authorId);
+                    runMPRS(nodeId);
                 }
             });
         }

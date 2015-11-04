@@ -21,16 +21,16 @@ public class RSS {
     private HashMap<Integer, HashMap<Integer, Float>> _rssData;
     private HashMap<Integer, HashMap<Integer, Float>> _graph;
 
-    private void runRSS(int authorId1) {
-        Set<Integer> listAuthorFirstHop = _graph.get(authorId1).keySet();
+    private void runRSS(int nodeId1) {
+        Set<Integer> listNodeFirstHop = _graph.get(nodeId1).keySet();
         HashMap<Integer, Float> listRSS = new HashMap<>();
-        for (int authorId_FirstHop : listAuthorFirstHop) {
-            listRSS.put(authorId1, 0f);
-            Set<Integer> listAuthorSecondHop = _graph.get(authorId_FirstHop).keySet();
-            for (int authorId_SecondHop : listAuthorSecondHop) {
-                if (authorId1 != authorId_SecondHop) {
-                    Float weight = _graph.get(authorId1).get(authorId_FirstHop);
-                    Float weight2 = _graph.get(authorId_FirstHop).get(authorId_SecondHop);
+        for (int nodeId_FirstHop : listNodeFirstHop) {
+            listRSS.put(nodeId1, 0f);
+            Set<Integer> listNodeSecondHop = _graph.get(nodeId_FirstHop).keySet();
+            for (int nodeId_SecondHop : listNodeSecondHop) {
+                if (nodeId1 != nodeId_SecondHop) {
+                    Float weight = _graph.get(nodeId1).get(nodeId_FirstHop);
+                    Float weight2 = _graph.get(nodeId_FirstHop).get(nodeId_SecondHop);
                     if (weight != null && weight2 != null) {
                         weight *= weight2;
                     } else {
@@ -38,36 +38,38 @@ public class RSS {
                     }
 
                     if (weight > 0f) {
-                        Float totalWeight = listRSS.get(authorId_SecondHop);
+                        Float totalWeight = listRSS.get(nodeId_SecondHop);
                         if (totalWeight == null) {
                             totalWeight = 0f;
                         }
                         totalWeight += weight;
-                        listRSS.put(authorId_SecondHop, totalWeight);
+                        listRSS.put(nodeId_SecondHop, totalWeight);
                     }
                 }
             }
         }
+        
         Set<Integer> listId = listRSS.keySet();
-        for (int aid : listId) {
-            Float weight = _graph.get(authorId1).get(aid);
+        for (int id : listId) {
+            Float weight = _graph.get(nodeId1).get(id);
             if (weight != null && weight > 0f) {
-                Float totalWeight = listRSS.get(aid);
+                Float totalWeight = listRSS.get(id);
                 totalWeight += weight;
-                listRSS.put(aid, totalWeight);
+                listRSS.put(id, totalWeight);
             }
         }
-        _rssData.put(authorId1, listRSS);
+        
+        _rssData.put(nodeId1, listRSS);
     }
 
     /**
      *
      * @param graph
-     * @param listAuthor
+     * @param listNode
      * @return
      */
     public HashMap<Integer, HashMap<Integer, Float>> process(HashMap<Integer, HashMap<Integer, Float>> graph,
-            HashMap<Integer, String> listAuthor) {
+            HashMap<Integer, String> listNode) {
         _rssData = new HashMap<>();
         _graph = graph;
 
@@ -75,11 +77,11 @@ public class RSS {
         int numOfProcessors = runtime.availableProcessors();
 
         ExecutorService executor = Executors.newFixedThreadPool(numOfProcessors - 1);
-        for (final int authorId : listAuthor.keySet()) {
+        for (final int nodeId : listNode.keySet()) {
             executor.submit(new Runnable() {
                 @Override
                 public void run() {
-                    runRSS(authorId);
+                    runRSS(nodeId);
                 }
             });
         }
@@ -87,6 +89,7 @@ public class RSS {
         executor.shutdown();
         while (!executor.isTerminated()) {
         }
+        
         return _rssData;
     }
 }

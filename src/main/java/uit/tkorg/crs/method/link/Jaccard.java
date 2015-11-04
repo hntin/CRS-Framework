@@ -17,49 +17,52 @@ import java.util.concurrent.Executors;
  * @author daolv
  */
 public class Jaccard {
+
     private HashMap<Integer, HashMap<Integer, Float>> _jaccardData;
     private HashMap<Integer, HashMap<Integer, Float>> _graph;
-    
-    private void runJaccard(int authorId1) {
-        for (int authorId2 : _graph.keySet()) {
-            if (authorId1 != authorId2) {
-                Set<Integer> neighborsOfAuthor1 = _graph.get(authorId1).keySet();
-                Set<Integer> neighborsOfAuthor2 = _graph.get(authorId2).keySet();
+
+    private void runJaccard(int nodeId1) {
+        for (int nodeId2 : _graph.keySet()) {
+            if (nodeId1 != nodeId2) {
+                Set<Integer> neighborsOfNode1 = _graph.get(nodeId1).keySet();
+                Set<Integer> neighborsOfNode2 = _graph.get(nodeId2).keySet();
                 ArrayList<Integer> sharedNeighbors = new ArrayList<>();
-                for (int authorId : neighborsOfAuthor1) {
-                    if (neighborsOfAuthor2.contains(authorId)) {
-                        sharedNeighbors.add(authorId);
+                for (int nodeId : neighborsOfNode1) {
+                    if (neighborsOfNode2.contains(nodeId)) {
+                        sharedNeighbors.add(nodeId);
                     }
                 }
+
                 ArrayList<Integer> totalNeighbors = new ArrayList<>();
-                totalNeighbors.addAll(neighborsOfAuthor1);
-                for (int authorId : neighborsOfAuthor2) {
-                    if (!totalNeighbors.contains(authorId)) {
-                        totalNeighbors.add(authorId);
+                totalNeighbors.addAll(neighborsOfNode1);
+                for (int nodeId : neighborsOfNode2) {
+                    if (!totalNeighbors.contains(nodeId)) {
+                        totalNeighbors.add(nodeId);
                     }
                 }
 
                 float value = (float) sharedNeighbors.size() / (float) totalNeighbors.size();
                 if (value > 0f) {
-                    HashMap<Integer, Float> listJaccard = _jaccardData.get(authorId1);
+                    HashMap<Integer, Float> listJaccard = _jaccardData.get(nodeId1);
                     if (listJaccard == null) {
                         listJaccard = new HashMap<>();
                     }
-                    listJaccard.put(authorId2, value);
-                    _jaccardData.put(authorId1, listJaccard);
+                    listJaccard.put(nodeId2, value);
+                    _jaccardData.put(nodeId1, listJaccard);
                 }
             }
         }
     }
-    
+
     /**
-     * 
+     *
      * @param graph
-     * @param listAuthor
-     * @return 
+     * @param listNode
+     * @return
      */
     public HashMap<Integer, HashMap<Integer, Float>> process(HashMap<Integer, HashMap<Integer, Float>> graph,
-            HashMap<Integer, String> listAuthor) {
+            HashMap<Integer, String> listNode) {
+
         _jaccardData = new HashMap<>();
         _graph = graph;
 
@@ -67,11 +70,11 @@ public class Jaccard {
         int numOfProcessors = runtime.availableProcessors();
 
         ExecutorService executor = Executors.newFixedThreadPool(numOfProcessors - 1);
-        for (final int authorId : listAuthor.keySet()) {
+        for (final int nodeId : listNode.keySet()) {
             executor.submit(new Runnable() {
                 @Override
                 public void run() {
-                    runJaccard(authorId);
+                    runJaccard(nodeId);
                 }
             });
         }

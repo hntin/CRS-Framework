@@ -24,31 +24,31 @@ public class Cosine {
     /**
      * runCosine
      *
-     * @param authorId1
+     * @param nodeId1
      */
-    private void runCosine(int authorId1) {
-        for (int authorId2 : _graph.keySet()) {
-            if (authorId1 != authorId2) {
-                Set<Integer> neighborsOfAuthor1 = _graph.get(authorId1).keySet();
-                Set<Integer> neighborsOfAuthor2 = _graph.get(authorId2).keySet();
+    private void runCosine(int nodeId1) {
+        for (int nodeId2 : _graph.keySet()) {
+            if (nodeId1 != nodeId2) {
+                Set<Integer> neighborsOfNode1 = _graph.get(nodeId1).keySet();
+                Set<Integer> neighborsOfNode2 = _graph.get(nodeId2).keySet();
                 ArrayList<Integer> sharedNeighbors = new ArrayList<>();
-                for (int authorId : neighborsOfAuthor1) {
-                    if (neighborsOfAuthor2.contains(authorId)) {
-                        sharedNeighbors.add(authorId);
+                for (int nodeId : neighborsOfNode1) {
+                    if (neighborsOfNode2.contains(nodeId)) {
+                        sharedNeighbors.add(nodeId);
                     }
                 }
 
                 float value = 0f;
-                if (neighborsOfAuthor1.size() * neighborsOfAuthor2.size() > 0f) {
-                    value = (float) sharedNeighbors.size() / (float) Math.sqrt(neighborsOfAuthor1.size() * neighborsOfAuthor2.size());
+                if (neighborsOfNode1.size() * neighborsOfNode2.size() > 0f) {
+                    value = (float) sharedNeighbors.size() / (float) Math.sqrt(neighborsOfNode1.size() * neighborsOfNode2.size());
                 }
                 if (value > 0f) {
-                    HashMap<Integer, Float> listCosine = _cosineData.get(authorId1);
+                    HashMap<Integer, Float> listCosine = _cosineData.get(nodeId1);
                     if (listCosine == null) {
                         listCosine = new HashMap<>();
                     }
-                    listCosine.put(authorId2, value);
-                    _cosineData.put(authorId1, listCosine);
+                    listCosine.put(nodeId2, value);
+                    _cosineData.put(nodeId1, listCosine);
                 }
             }
         }
@@ -58,11 +58,11 @@ public class Cosine {
      * process
      *
      * @param graph
-     * @param listAuthor
+     * @param listNode
      * @return
      */
     public HashMap<Integer, HashMap<Integer, Float>> process(HashMap<Integer, HashMap<Integer, Float>> graph,
-            HashMap<Integer, String> listAuthor) {
+            HashMap<Integer, String> listNode) {
         _cosineData = new HashMap<>();
         _graph = graph;
 
@@ -71,11 +71,11 @@ public class Cosine {
 
         ExecutorService executor = Executors.newFixedThreadPool(numOfProcessors - 1);
         
-        for (final int authorId : listAuthor.keySet()) {
+        for (final int nodeId : listNode.keySet()) {
             executor.submit(new Runnable() {
                 @Override
                 public void run() {
-                    runCosine(authorId);
+                    runCosine(nodeId);
                 }
             });
         }

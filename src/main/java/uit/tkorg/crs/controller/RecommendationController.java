@@ -12,9 +12,7 @@ import uit.tkorg.crs.method.link.AdamicAdar;
 import uit.tkorg.crs.method.link.Cosine;
 import uit.tkorg.crs.method.link.Jaccard;
 import uit.tkorg.crs.method.link.MPRS;
-import uit.tkorg.crs.method.link.MPRSPlus;
 import uit.tkorg.crs.method.link.RSS;
-import uit.tkorg.crs.method.link.RSSPlus;
 import uit.tkorg.crs.model.AuthorGraph;
 import uit.tkorg.crs.utility.EvaluationMetric;
 
