@@ -5,24 +5,16 @@
  */
 package uit.tkorg.crs.datapreparation;
 
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.io.Reader;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashSet;
-import java.util.regex.Pattern;
 import uit.tkorg.crs.model.CoAuthorGraph;
 import uit.tkorg.crs.model.Sample;
 import uit.tkorg.crs.common.Pair;
 import uit.tkorg.crs.method.link.RSS;
-import uit.tkorg.crs.utility.TextFileUtility;
 
 /**
  * Calculating CoAuthorStrength (RSS+) for each pair<authorID, authorID> in
@@ -112,8 +104,8 @@ public class CoAuthorStrengthComputation extends FeatureComputation {
                     "/1.CRS-ExperimetalData/SampleData/NegativeSamples.txt",
                     "/1.CRS-ExperimetalData/SampleData/AuthorID_PaperID_2003_2005.txt",
                     "/1.CRS-ExperimetalData/SampleData/PaperID_Year_2003_2005.txt", 2003, 2005);
-            obj.computeFeatureValues("/1.CRS-ExperimetalData/SampleData/PositiveSampleWithCoAuthorRSS.txt", 1);
-            obj.computeFeatureValues("/1.CRS-ExperimetalData/SampleData/NegativeSampleWithCoAuthorRSS.txt", 0);
+            obj.computeFeatureValues("/1.CRS-ExperimetalData/SampleData/PositiveSampleCoAuthorRSS.txt", 1);
+            obj.computeFeatureValues("/1.CRS-ExperimetalData/SampleData/NegativeSampleCoAuthorRSS.txt", 0);
         } catch (Exception ex) {
             ex.printStackTrace();
         }

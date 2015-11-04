@@ -11,13 +11,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedHashSet;
-import java.util.Set;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import uit.tkorg.crs.common.Pair;
 import uit.tkorg.crs.method.link.RSS;
-import uit.tkorg.crs.model.CoAuthorGraph;
 import uit.tkorg.crs.model.OrganizationGraph;
 import uit.tkorg.crs.model.Sample;
 
@@ -86,6 +81,17 @@ public class CoOrgStrengthComputation extends FeatureComputation {
     }
 
     public static void main(String args[]) {
-        
+        try {
+            CoOrgStrengthComputation obj = new CoOrgStrengthComputation(
+                    "/1.CRS-ExperimetalData/SampleData/PositiveSamples.txt", 
+                    "/1.CRS-ExperimetalData/SampleData/NegativeSamples.txt", 
+                    "/1.CRS-ExperimetalData/SampleData/AuthorID_PaperID_OrgID_2003_2005.txt", 
+                    2003, 2005);
+            obj.computeFeatureValues("/1.CRS-ExperimetalData/SampleData/PositiveSampleOrgRSS.txt", 1);
+            obj.computeFeatureValues("/1.CRS-ExperimetalData/SampleData/NegativeSampleOrgRSS.txt", 0);
+        }
+        catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 }
