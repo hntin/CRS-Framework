@@ -228,10 +228,11 @@ public class MLDataExtraction {
                             if (authorIDInHub2 != authorID) {
                                 if (G2._coAuthorGraph.containsKey(authorIDInHub2) && G1._coAuthorGraph.containsKey(authorIDInHub2)
                                         && !CoAuthorGraph.isLinkExistInCoAuthorGraph(G2._coAuthorGraph, authorID, authorIDInHub2)
-                                        && !CoAuthorGraph.isLinkExistInCoAuthorGraph(G1._coAuthorGraph, authorID, authorIDInHub2)) { 
-                                    if (negativeSetForAnAuthorID == null)
+                                        && !CoAuthorGraph.isLinkExistInCoAuthorGraph(G1._coAuthorGraph, authorID, authorIDInHub2)) {
+                                    if (negativeSetForAnAuthorID == null) {
                                         negativeSetForAnAuthorID = new ArrayList<Integer>();
-                                    
+                                    }
+
                                     if (!negativeSetForAnAuthorID.contains(authorIDInHub2)) {
                                         negativeSetForAnAuthorID.add(authorIDInHub2);
                                     }
@@ -244,9 +245,10 @@ public class MLDataExtraction {
                                     if (G2._coAuthorGraph.containsKey(authorIDInHub3) && G1._coAuthorGraph.containsKey(authorIDInHub3)
                                             && !CoAuthorGraph.isLinkExistInCoAuthorGraph(G2._coAuthorGraph, authorID, authorIDInHub3)
                                             && !CoAuthorGraph.isLinkExistInCoAuthorGraph(G1._coAuthorGraph, authorID, authorIDInHub3)) {
-                                        if (negativeSetForAnAuthorID == null)
-                                        negativeSetForAnAuthorID = new ArrayList<Integer>();
-                                        
+                                        if (negativeSetForAnAuthorID == null) {
+                                            negativeSetForAnAuthorID = new ArrayList<Integer>();
+                                        }
+
                                         if (!negativeSetForAnAuthorID.contains(authorIDInHub3)) {
                                             negativeSetForAnAuthorID.add(authorIDInHub3);
                                         }
@@ -381,7 +383,7 @@ public class MLDataExtraction {
         double numOfSelectedNagativeSample = getAllNegativeSampleFromCoAuthorGraphIn3Hub(authorsInPositveSample, G1, G2, "/1.CRS-ExperimetalData/SampleData/NegativeSamples.txt");
         System.out.println("So mau (-):" + numOfSelectedNagativeSample);
         //</editor-fold>
-        
+
         //<editor-fold defaultstate="collapsed" desc="For The RealData">
         // G0 in T0
 //        CoAuthorGraph G0 = new CoAuthorGraph(authorID_paperID_T0_FileName, paperID_Year_T0_FileName);
@@ -410,18 +412,26 @@ public class MLDataExtraction {
 //        int numOfSelectedNagativeSample = getAllNegativeSampleFromCoAuthorGraphIn3Hub(authorsInPositveSample, G1, G2, outFile_NegativeSample);
 //        System.out.println("So mau (-):" + numOfSelectedNagativeSample);
         //</editor-fold>
-
     }
 
     private static void getTestingData() {
-        
+
     }
-    private static HashMap<Pair,HashMap<String,Double>> readFeatureFile(String featureFile, HashMap<Pair,HashMap<String,Double>> features){
+
+    /**
+     *
+     * @param featureFile, need to be formated as PositiveSample/NegativeSample_<FeatureName>.txt
+     * @param features
+     */
+    private static HashMap<Pair, HashMap<String, Double>> readFeatureFile(String featureFile,
+            HashMap<Pair, HashMap<String, Double>> features) {
         try {
             int start = featureFile.indexOf('_') + 1;
             if (start == 0)// skip file only contains pair of author
+            {
                 return features;
-            
+            }
+
             int end = featureFile.lastIndexOf('.');
             String featureName = featureFile.substring(start, end);
             Scanner input = new Scanner(new FileReader(featureFile));
@@ -432,19 +442,20 @@ public class MLDataExtraction {
                 String line = input.nextLine().trim();
                 String[] tokens = r1.split(line);
                 if (tokens.length != 2)//file only contain pair of author
+                {
                     continue;
+                }
                 Double featureValue = new Double(tokens[1]);
                 tokens = r2.split(tokens[0]);
                 Pair authorPair = new Pair();
                 authorPair.setFirst(new Integer(tokens[1]));
                 authorPair.setSecond(new Integer(tokens[2]));
-                
-                if (features.containsKey(authorPair)){
+
+                if (features.containsKey(authorPair)) {
                     HashMap<String, Double> values = features.get(authorPair);
                     values.put(featureName, featureValue);
                     features.replace(authorPair, values);
-                }
-                else{
+                } else {
                     HashMap<String, Double> values = new HashMap<String, Double>();
                     values.put(featureName, featureValue);
                     features.put(authorPair, values);
@@ -456,25 +467,34 @@ public class MLDataExtraction {
         }
         return features;
     }
-    private static HashMap<Pair,HashMap<String,Double>> aggregateFeatures(String featuresFolder, int typeOfSample){
+
+    /**
+     *
+     * @param featuresFolder, folder contains feature files.
+     * @param typeOfSample
+     */
+    private static HashMap<Pair, HashMap<String, Double>> aggregateFeatures(String featuresFolder, int typeOfSample) {
         HashMap<Pair, HashMap<String, Double>> result = new HashMap<>();
         String fileNamePattern;
-        if (typeOfSample == 1)
+        if (typeOfSample == 1) {
             fileNamePattern = "PositiveSample";
-        else
+        } else {
             fileNamePattern = "NegativeSample";
-        
+        }
+
         try {
-            List<String> featureFiles = TextFileUtility.getPathFile(new File (featuresFolder));
+            List<String> featureFiles = TextFileUtility.getPathFile(new File(featuresFolder));
             for (String fileName : featureFiles) {
-                if (fileName.contains(fileNamePattern))
-                    readFeatureFile(fileName,result);
+                if (fileName.contains(fileNamePattern)) {
+                    readFeatureFile(fileName, result);
+                }
             }
-        }catch (Exception ex) {
+        } catch (Exception ex) {
             Logger.getLogger(MLDataExtraction.class.getName()).log(Level.SEVERE, null, ex);
         }
         return result;
     }
+
     public static void main(String args[]) {
 //        getTrainingData("/1.CRS-ExperimetalData/TrainingData/AuthorID_PaperID_Before_2001.txt",
 //                "/1.CRS-ExperimetalData/TrainingData/PaperID_Year_Before_2001.txt",
@@ -487,7 +507,7 @@ public class MLDataExtraction {
 //                "/1.CRS-ExperimetalData/TrainingData/NegativeSamples.txt");
 //
 //        getTestingData();
-        HashMap<Pair,HashMap<String,Double>> model = aggregateFeatures("/Users/thucnt/NetBeansProjects/crs-framework/input",1);
+        HashMap<Pair, HashMap<String, Double>> model = aggregateFeatures("/Users/thucnt/NetBeansProjects/crs-framework/input", 1);
         System.out.println("DONE");
     }
 }
