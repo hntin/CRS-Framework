@@ -19,7 +19,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import uit.tkorg.crs.common.Pair;
 import uit.tkorg.crs.model.Sample;
-import uit.tkorg.crs.utility.TextFileUtility;
 
 /**
  *

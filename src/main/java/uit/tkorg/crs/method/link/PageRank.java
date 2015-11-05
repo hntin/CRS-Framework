@@ -1,4 +1,4 @@
-package uit.tkorg.crs.utility;
+package uit.tkorg.crs.method.link;
 
 import java.util.HashMap;
 import uit.tkorg.crs.model.AuthorGraph;

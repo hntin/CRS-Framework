@@ -7,7 +7,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.HashMap;
-import uit.tkorg.crs.utility.PageRank;
+import uit.tkorg.crs.method.link.PageRank;
 import uit.tkorg.crs.utility.TextFileUtility;
 
 /**

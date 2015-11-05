@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.logging.Logger;
 import uit.tkorg.crs.common.Pair;
 import uit.tkorg.crs.model.CitationGraph;
 import uit.tkorg.crs.model.Sample;
@@ -56,6 +57,16 @@ public class AuthorRankComputation extends FeatureComputation {
     }
 
     public static void main(String args[]) {
-
+        try {
+            AuthorRankComputation authorRankComputation = new AuthorRankComputation(
+                    "postiveSampleFile", "negativeSampleFile",
+                    "inputFile_AuthorID_PaperID", "inputFile_PaperID_Year_RefID");
+            
+            authorRankComputation.computeFeatureValues("/1.CRS-ExperimetalData/SampleData/PositiveSampleAuthorRank.txt", 1);
+            authorRankComputation.computeFeatureValues("/1.CRS-ExperimetalData/SampleData/NegativeSampleAuthorRank.txt", 0);
+        }
+        catch(IOException ex) {
+            ex.printStackTrace();
+        }
     }
 }
