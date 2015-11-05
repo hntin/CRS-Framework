@@ -26,7 +26,7 @@ import uit.tkorg.crs.method.link.RSS;
  */
 public class CoAuthorStrengthComputation extends FeatureComputation {
 
-    private CoAuthorGraph _coAuthorGraph;
+    private final CoAuthorGraph _coAuthorGraph;
 
     public CoAuthorStrengthComputation(String postiveSampleFile, String negativeSampleFile,
             String authorID_paperID_FileName_Ti, String paperID_Year_FileName_Ti, int firstYear, int lastYear) {
@@ -40,6 +40,7 @@ public class CoAuthorStrengthComputation extends FeatureComputation {
      * 
      * @param outputFile
      * @param typeOfSample: 1 is positive; 0 is negative
+     * @throws java.io.IOException
      */
     @Override
     public void computeFeatureValues(String outputFile, int typeOfSample) throws IOException {
@@ -63,8 +64,7 @@ public class CoAuthorStrengthComputation extends FeatureComputation {
  
         // Step 3: Extracting RSSDoublePlus Values for all pairs of PositveSamples, rssDoublePlus_PostiveSamples_HM
         HashMap<Integer, HashMap<Integer, Float>> rssDoublePlus_Samples_HM = new HashMap<>();
-        for (int i = 0; i < pairs.size(); i++) {
-            Pair p = pairs.get(i);
+        for (Pair p : pairs) {
             int firstAuthorID = p.getFirst();
             int secondAuthorID = p.getSecond();
 
@@ -84,17 +84,18 @@ public class CoAuthorStrengthComputation extends FeatureComputation {
         }
         
         // Step 4: Storing values which describe CoAuthorStrength (RSSDoublePlus) for all of PositiveSamples/NegativeSamples to the output file
-        PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(outputFile)));
-        out.println("AuthorID, CoAuthorID, rssDoublePlusValue");
-        out.flush();
-        for (int authorID : rssDoublePlus_Samples_HM.keySet()) {
-            for (int anotherAuthorID : rssDoublePlus_Samples_HM.get(authorID).keySet()) {
-                float rssDoublePlusValue = rssDoublePlus_Samples_HM.get(authorID).get(anotherAuthorID);
-                out.println("(" + authorID + "," + anotherAuthorID + ")\t" + rssDoublePlusValue );
-                out.flush();
+        try ( 
+            PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(outputFile)))) {
+            out.println("AuthorID, CoAuthorID, rssDoublePlusValue");
+            out.flush();
+            for (int authorID : rssDoublePlus_Samples_HM.keySet()) {
+                for (int anotherAuthorID : rssDoublePlus_Samples_HM.get(authorID).keySet()) {
+                    float rssDoublePlusValue = rssDoublePlus_Samples_HM.get(authorID).get(anotherAuthorID);
+                    out.println("(" + authorID + "," + anotherAuthorID + ")\t" + rssDoublePlusValue );
+                    out.flush();
+                }
             }
         }
-        out.close();
     }
 
     public static void main(String args[]) {
@@ -107,7 +108,6 @@ public class CoAuthorStrengthComputation extends FeatureComputation {
             obj.computeFeatureValues("/1.CRS-ExperimetalData/SampleData/PositiveSampleCoAuthorRSS.txt", 1);
             obj.computeFeatureValues("/1.CRS-ExperimetalData/SampleData/NegativeSampleCoAuthorRSS.txt", 0);
         } catch (Exception ex) {
-            ex.printStackTrace();
         }
     }
 

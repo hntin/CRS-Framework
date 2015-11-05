@@ -21,10 +21,10 @@ public class ActiveScore {
     private HashMap<Integer, Integer> _paperID_Year;
     private HashMap<Integer, ArrayList<Integer>> _paperID_AuthorID_List;
     private HashMap<Integer, ArrayList<Integer>> _authorID_PaperID_List;
-    private String _file_AuthorID_PaperID;
-    private String _file_PaperID_Year;
-    private int _startYear;
-    private int _currentYear;
+    private final String _file_AuthorID_PaperID;
+    private final String _file_PaperID_Year;
+    private final int _startYear;
+    private final int _currentYear;
 
     public ActiveScore(String file_AuthorID_PaperID, String file_PaperID_Year, int startYear, int currentYear) {
         _file_AuthorID_PaperID = file_AuthorID_PaperID;

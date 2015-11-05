@@ -1,10 +1,6 @@
 package uit.tkorg.crs.isolatedauthor.feature;
 
 import java.awt.BorderLayout;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
-import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -12,26 +8,18 @@ import java.util.Random;
 import javax.swing.JFrame;
 import org.dom4j.Document;
 import org.dom4j.Element;
-import org.dom4j.Node;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 import uit.tkorg.crs.utility.TextFileUtility;
 import uit.tkorg.crs.utility.XMLFileUtility;
 import weka.classifiers.Classifier;
 import weka.classifiers.Evaluation;
-import weka.classifiers.bayes.NaiveBayes;
-import weka.classifiers.evaluation.ThresholdCurve;
-import weka.classifiers.trees.J48;
 import weka.classifiers.functions.LibSVM;
-import weka.classifiers.lazy.IBk;
-import weka.classifiers.trees.RandomForest;
 import weka.core.Attribute;
 import weka.core.FastVector;
 import weka.core.Instance;
 import weka.core.Instances;
 import weka.core.SparseInstance;
-import weka.core.Utils;
-import weka.gui.visualize.Plot2D;
 import weka.gui.visualize.PlotData2D;
 import weka.gui.visualize.ThresholdVisualizePanel;
 

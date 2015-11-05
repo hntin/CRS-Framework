@@ -23,7 +23,8 @@ import uit.tkorg.crs.model.Sample;
  * @author thucnt
  */
 public class CoOrgStrengthComputation extends FeatureComputation {
-    private OrganizationGraph _orgGraph;
+    private final OrganizationGraph _orgGraph;
+    
     public CoOrgStrengthComputation(String postiveSampleFile, String negativeSampleFile,
             String inputFile_AuthorID_paperID_OrgID_Ti, int firstYear, int lastYear) {
         
@@ -62,22 +63,20 @@ public class CoOrgStrengthComputation extends FeatureComputation {
         HashMap<Integer, HashMap<Integer, Float>> OrgRSSResult = rssMethod.process(_orgGraph._rssOrgGraph, orgIDList);
         
         // Step 4: Getting RSS value between two orgs associated with pairs (+) or (-) and write to text file
-        PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(outputFile)));
-        out.println("AuthorID, Another-AuthorID, orgRSSValue");
-        out.flush();
-        for (int i = 0; i < pairs.size(); i++) {
-            Pair p = pairs.get(i);
-            int firstAuthorID = p.getFirst();
-            int secondAuthorID = p.getSecond();
-            
-            int orgID_Of_FirstAuthorID = _orgGraph._authorID_OrgID.get(firstAuthorID);
-            int orgID_Of_SecondAuthorID = _orgGraph._authorID_OrgID.get(secondAuthorID);
-            float orgRSSValue = OrgRSSResult.get(orgID_Of_FirstAuthorID).get(orgID_Of_SecondAuthorID);
-            out.println("(" + firstAuthorID + "," + secondAuthorID + ")\t" + orgRSSValue );
+        try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(outputFile)))) {
+            out.println("AuthorID, Another-AuthorID, orgRSSValue");
             out.flush();
+            for (Pair p : pairs) {
+                int firstAuthorID = p.getFirst();
+                int secondAuthorID = p.getSecond();
+                
+                int orgID_Of_FirstAuthorID = _orgGraph._authorID_OrgID.get(firstAuthorID);
+                int orgID_Of_SecondAuthorID = _orgGraph._authorID_OrgID.get(secondAuthorID);
+                float orgRSSValue = OrgRSSResult.get(orgID_Of_FirstAuthorID).get(orgID_Of_SecondAuthorID);
+                out.println("(" + firstAuthorID + "," + secondAuthorID + ")\t" + orgRSSValue );
+                out.flush();
+            }
         }
-        
-        out.close();
     }
 
     public static void main(String args[]) {
@@ -91,7 +90,6 @@ public class CoOrgStrengthComputation extends FeatureComputation {
             obj.computeFeatureValues("/1.CRS-ExperimetalData/SampleData/NegativeSampleOrgRSS.txt", 0);
         }
         catch (Exception ex) {
-            ex.printStackTrace();
         }
     }
 }

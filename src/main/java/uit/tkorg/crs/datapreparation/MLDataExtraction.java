@@ -22,10 +22,8 @@ import java.util.Scanner;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import uit.tkorg.crs.common.Pair;
-import uit.tkorg.crs.model.CoAuthorGraph;
 import uit.tkorg.crs.utility.TextFileUtility;
 import uit.tkorg.crs.model.CoAuthorGraph;
 
@@ -37,13 +35,12 @@ public class MLDataExtraction {
 
     /**
      * Loc ra cac junior researchers ton tai trong G1, nhung chua ton tai trong
-     * G0. uc moi bat dau nghien cuu va lan dau xuat hien trong cong dong. Co so
-     * bai bao trong trong G1 < n (n=3?) @p
+     * G0. Luc moi bat dau nghien cuu va lan dau xuat hien trong cong dong. Co
+     * so bai bao trong trong G1 < n (n=3?)
      *
-     *
-     * aram G0 @param G1 @param outFileNam
-     *
-     * e
+     * @param G0
+     * @param G1
+     * @param outFileName
      */
     private static void getListofJuniorFromCoAuthorGraph(CoAuthorGraph G0, CoAuthorGraph G1,
             String outFileName) {
@@ -420,7 +417,8 @@ public class MLDataExtraction {
 
     /**
      *
-     * @param featureFile, need to be formated as PositiveSample/NegativeSample_<FeatureName>.txt
+     * @param featureFile, need to be formated as
+     * PositiveSample/NegativeSample_<FeatureName>.txt
      * @param features
      */
     private static HashMap<Pair, HashMap<String, Double>> readFeatureFile(String featureFile,

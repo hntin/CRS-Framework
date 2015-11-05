@@ -2,6 +2,7 @@ package uit.tkorg.crs.model;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.ArrayList;
@@ -21,8 +22,8 @@ public class CitationGraph {
     private HashMap<Integer, ArrayList<Integer>> _paperID_CitedID_List;
     private HashMap<Integer, ArrayList<Integer>> _paperID_AuthorID_List;
     private HashMap<Integer, ArrayList<Integer>> _authorID_PaperID_List;
-    private String _file_All_AuthorID_PaperID;
-    private String _file_PaperID_RefID;
+    private final String _file_All_AuthorID_PaperID;
+    private final String _file_PaperID_RefID;
     
     public CitationGraph(String file_All_AuthorID_PaperID, String file_PaperID_RefID){
         _file_All_AuthorID_PaperID = file_All_AuthorID_PaperID;
@@ -108,6 +109,10 @@ public class CitationGraph {
         }
     }
 
+    /**
+     * buildRefGraph
+     * @throws Exception 
+     */
     private void buildRefGraph() throws Exception {
         try {
             _referenceNumberGraph = new HashMap<>();
@@ -153,6 +158,11 @@ public class CitationGraph {
         }
     }
 
+    /**
+     * 
+     * @return
+     * @throws Exception 
+     */
     private HashMap<Integer, HashMap<Integer, Float>> buildRefRSSGraph() throws Exception {
         _referenceRSSGraph = new HashMap<>();
         for (int authorID : _referenceNumberGraph.keySet()) {
@@ -174,6 +184,29 @@ public class CitationGraph {
         return _referenceRSSGraph;
     }
 
+    /**
+     * calculating ImportantRate of node the the CitationGraph and return the HashMap
+     * @return 
+     */
+    public HashMap<Integer, Float> calculateImportantRate() {
+        HashMap<Integer, Float> authorID_PageRank_HM = null;
+        try {
+            load_AuthorID_PaperID();
+            load_PaperID_RefID();
+            buildRefGraph();
+            HashMap<Integer, HashMap<Integer, Float>> refRSSGraph = buildRefRSSGraph();
+            PageRank pr = new PageRank(refRSSGraph, 2000, 0.85f);
+            authorID_PageRank_HM = pr.calculatePR();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }    
+        return authorID_PageRank_HM;
+    }
+    
+    /**
+     * calculating ImportantRate of node the the CitationGraph and write to file
+     * @param outputFile 
+     */
     public void calculateImportantRate(String outputFile) {
         try {
             load_AuthorID_PaperID();
