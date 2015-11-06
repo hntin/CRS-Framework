@@ -5,14 +5,17 @@
  */
 package uit.tkorg.crs.utility;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.PrintWriter;
+import java.io.Writer;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -25,20 +28,21 @@ public class DatabaseTool {
     private final String dbDriver = "com.mysql.jdbc.Driver";
     private String dbURL = "jdbc:mysql://localhost:3306/mas";
     private String dbUsername = "root";
-    private String dbPassword = "root";
-    private String dataDir = "/1.CRS-ExperimetalData/TrainingData/";
+    private String dbPassword = "";
+    private String dataDir = "/2.CRS-ExperimetalData/TrainingData/";
     private Connection con;
     private PreparedStatement stmt;
     ResultSet rs;
-    
-    public DatabaseTool(){
+
+    public DatabaseTool() {
     }
-    public DatabaseTool(String url, String username, String password){
+
+    public DatabaseTool(String url, String username, String password) {
         dbURL = url;
         dbUsername = username;
         dbPassword = password;
     }
-    
+
     public Connection connect() {
         try {
             con = DriverManager.getConnection(dbURL, dbUsername, dbPassword);
@@ -47,7 +51,7 @@ public class DatabaseTool {
         }
         return con;
     }
-   
+
     public void disconnect() {
         try {
             con.close();
@@ -60,7 +64,7 @@ public class DatabaseTool {
     //cau truc file
     //dong 1: idAuthor
     //dong i: idPaper#Title#Abstract#Year
-    public void getAuthorsProfiles(ArrayList list) {
+    public void get_AuthorsProfiles(ArrayList list) {
         String sql = "SELECT p.idPaper, p.title, p.abstract, p.year FROM Author_Paper ap "
                 + "INNER JOIN paper p ON ap.idPaper = p.idPaper WHERE ap.idAuthor = ?";
         PreparedStatement stmt;
@@ -88,8 +92,14 @@ public class DatabaseTool {
         }
     }
 
-    //
-    public ArrayList getAuthorByTime(int fromYear, int toYear) {
+    /**
+     * get_AuthorID_InPeriod
+     *
+     * @param fromYear
+     * @param toYear
+     * @return
+     */
+    public ArrayList get_AuthorID_InPeriod(int fromYear, int toYear) {
         String sql = "SELECT DISTINCT author_paper.idAuthor "
                 + "FROM paper,author_paper "
                 + "WHERE paper.idPaper = author_paper.idPaper and "
@@ -114,10 +124,11 @@ public class DatabaseTool {
 
     /**
      * Lay danh sach AuthorID_PaperID trong khoang fromYear den toYear
+     *
      * @param fromYear
      * @param toYear
      */
-    public void getAuthorIDPaperIDbyTime(int fromYear, int toYear, String outFileName) {
+    public void get_AuthorID_PaperID_InPeriod(int fromYear, int toYear, String outFileName) {
         String sql = "Select author_paper.idAuthor, paper.idPaper"
                 + " From author_paper, paper"
                 + " Where paper.idPaper = author_paper.idPaper and "
@@ -141,11 +152,17 @@ public class DatabaseTool {
             System.out.println(ex);
         }
     }
-    
-    public void getPaperIDYearbyTime(int fromYear, int toYear, String outFileName) {
-        String sql = " Select p.idPaper, p.year " +
-                        " From mas.paper p" +
-                        " Where p.year >= ? and p.year <= ?";
+
+    /**
+     *
+     * @param fromYear
+     * @param toYear
+     * @param outFileName
+     */
+    public void get_PaperID_Year_InPeriod(int fromYear, int toYear, String outFileName) {
+        String sql = " Select p.idPaper, p.year "
+                + " From mas.paper p"
+                + " Where p.year >= ? and p.year <= ?";
 
         PreparedStatement stmt;
         ResultSet rs;
@@ -165,27 +182,37 @@ public class DatabaseTool {
             System.out.println(ex);
         }
     }
-    
-    public ResultSet getPapersByYear(int year){
-        String sql = "SELECT paper.idPaper, paper.title, paper.abstract, paper.year " +
-                     "FROM paper " +
-                     "WHERE paper.year <= ? " +
-                     "ORDER BY paper.idPaper ASC";
+
+    /**
+     *
+     * @param year
+     * @return
+     */
+    public ResultSet get_Papers_BeforeYear(int year) {
+        String sql = "SELECT paper.idPaper, paper.title, paper.abstract, paper.year "
+                + "FROM paper "
+                + "WHERE paper.year <= ? "
+                + "ORDER BY paper.idPaper ASC";
         try {
             stmt = con.prepareStatement(sql);
-            stmt.setInt(1,year);
+            stmt.setInt(1, year);
             rs = stmt.executeQuery();
         } catch (SQLException ex) {
             System.out.println(ex);
         }
         return rs;
     }
-    
-    public ResultSet getPapersByAuthor(int authorId, int year){
-        String sql = "SELECT p.idPaper, p.title, p.year " +
-                     "FROM paper p, author_paper ap " +
-                     "WHERE p.idPaper= ap.idPaper and ap.idAuthor = ? and p.year <= ?";
-//        System.out.println(sql);
+
+    /**
+     *
+     * @param authorId
+     * @param year
+     * @return
+     */
+    public ResultSet get_Papers_BeforeYear_ByAuthorID(int authorId, int year) {
+        String sql = "SELECT p.idPaper, p.title, p.year "
+                + "FROM paper p, author_paper ap "
+                + "WHERE p.idPaper= ap.idPaper and ap.idAuthor = ? and p.year <= ?";
         ResultSet rs = null;
         try {
             stmt = con.prepareStatement(sql);
@@ -196,5 +223,76 @@ public class DatabaseTool {
             Logger.getLogger(uit.tkorg.crs.utility.DatabaseTool.class.getName()).log(Level.SEVERE, null, ex);
         }
         return rs;
+    }
+
+    /**
+     *
+     * @param fromYear
+     * @param toYear
+     */
+    public void get_AuthorID_PaperID_OrgID_InPeriod(int fromYear, int toYear, String outFileName) {
+        String sql = " SELECT author.idAuthor, author_paper.idPaper, author.idOrg "
+                + " FROM author, author_paper, paper "
+                + " WHERE author.idAuthor = author_paper.idAuthor AND author_paper.idPaper = paper.idPaper "
+                + " AND paper.year >= ? and paper.year <= ? ORDER BY author.idAuthor ";
+        try {
+            stmt = con.prepareStatement(sql);
+            stmt.setInt(1, fromYear);
+            stmt.setInt(2, toYear);
+            rs = stmt.executeQuery();
+            try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(dataDir + outFileName)))) {
+                out.println("AuthorID,  PaperID, OrgID");
+                out.flush();
+                while (rs != null && rs.next()) {
+                    out.println(rs.getInt("idAuthor") + "," + rs.getInt("idPaper") + "," + rs.getInt("idOrg"));
+                    out.flush();
+                }
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(uit.tkorg.crs.utility.DatabaseTool.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    /**
+     *
+     * @param fromYear
+     * @param toYear
+     */
+    public void get_PaperID_Year_RefID_InPeriod(int fromYear, int toYear, String outFileName) {
+        String sql = " SELECT paper.idPaper, paper.year, paper_paper.idPaperRef "
+                + " FROM paper, paper_paper "
+                + " WHERE paper.idPaper = paper_paper.idPaper AND paper.year >= ? AND paper.year <= ?"
+                + " ORDER BY paper.idPaper";
+        try {
+            stmt = con.prepareStatement(sql);
+            stmt.setInt(1, fromYear);
+            stmt.setInt(2, toYear);
+            rs = stmt.executeQuery();
+            
+            try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(dataDir + outFileName)))) {
+                out.println("PaperID, Year, RefID");
+                out.flush();
+                while (rs != null && rs.next()) {
+                    out.println(rs.getInt("idPaper") + "," + rs.getInt("year") + "," + rs.getInt("idPaperRef"));
+                    out.flush();
+                }
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(uit.tkorg.crs.utility.DatabaseTool.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public static void main(String args[]) {
+        try {
+            DatabaseTool dbTool = new DatabaseTool();
+            dbTool.connect();
+            dbTool.get_AuthorID_PaperID_OrgID_InPeriod(1995, 2005, "AuthorID_PaperID_OrgID_1995_2005.txt");
+            dbTool.get_PaperID_Year_RefID_InPeriod(1995, 2005, "PaperID_Year_RefID_1995_2005.txt");
+            dbTool.disconnect();
+            System.out.println("DONE");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
     }
 }

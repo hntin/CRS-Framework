@@ -12,7 +12,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.logging.Logger;
-import uit.tkorg.crs.common.Pair;
+import uit.tkorg.crs.model.Pair;
 import uit.tkorg.crs.model.CitationGraph;
 import uit.tkorg.crs.model.Sample;
 

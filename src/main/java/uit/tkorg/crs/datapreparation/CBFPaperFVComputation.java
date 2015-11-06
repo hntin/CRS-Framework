@@ -187,7 +187,7 @@ public class CBFPaperFVComputation {
         
         DatabaseTool db = new DatabaseTool();
         db.connect();
-        ResultSet rs = db.getPapersByYear(year);//Lay abstract cac bai bao tu database 
+        ResultSet rs = db.get_Papers_BeforeYear(year);//Lay abstract cac bai bao tu database 
         //ghi idPaper và abstract ra sequence file 
         while (rs.next()){
             int id = rs.getInt(1);

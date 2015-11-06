@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import uit.tkorg.crs.model.CoAuthorGraph;
 import uit.tkorg.crs.model.Sample;
-import uit.tkorg.crs.common.Pair;
+import uit.tkorg.crs.model.Pair;
 import uit.tkorg.crs.method.link.RSS;
 
 /**

@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
-import uit.tkorg.crs.common.Pair;
+import uit.tkorg.crs.model.Pair;
 import uit.tkorg.crs.method.link.RSS;
 import uit.tkorg.crs.model.OrganizationGraph;
 import uit.tkorg.crs.model.Sample;

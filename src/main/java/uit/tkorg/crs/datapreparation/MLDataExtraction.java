@@ -23,7 +23,7 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
-import uit.tkorg.crs.common.Pair;
+import uit.tkorg.crs.model.Pair;
 import uit.tkorg.crs.utility.TextFileUtility;
 import uit.tkorg.crs.model.CoAuthorGraph;
 

@@ -19,7 +19,7 @@ import java.sql.SQLException;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import uit.tkorg.crs.common.Pair;
+import uit.tkorg.crs.model.Pair;
 import uit.tkorg.crs.model.Author;
 import uit.tkorg.crs.model.Paper;
 import uit.tkorg.crs.model.Sample;
@@ -252,7 +252,7 @@ public class CBSimComputation extends FeatureComputation {
             System.out.println("Lay danh sach bai bao cua tac gia " + authorId);
             List<String> list = new ArrayList<String>();
             try {
-                ResultSet rs = db.getPapersByAuthor(authorId, year);
+                ResultSet rs = db.get_Papers_BeforeYear_ByAuthorID(authorId, year);
                 while (rs.next()) {
                     Paper p = new Paper();
                     String paperId = rs.getString("idPaper");
