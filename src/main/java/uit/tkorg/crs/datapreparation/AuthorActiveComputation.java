@@ -101,7 +101,7 @@ public class AuthorActiveComputation extends FeatureComputation {
             int authorId;
             int paperId;
             while ((line = bufferReader.readLine()) != null) {
-                tokens = line.split(",");
+                tokens = line.split("\t");
                 if (tokens.length == 2) {
                     authorId = Integer.parseInt(tokens[0]);
                     paperId = Integer.parseInt(tokens[1]);
@@ -226,9 +226,9 @@ public class AuthorActiveComputation extends FeatureComputation {
         }
 
         HashMap<Integer, Float> activeScoreHM = this.calculateActiveScore();
-        activeScoreHM = this.normalizeActiveScore(activeScoreHM);
+        //activeScoreHM = this.normalizeActiveScore(activeScoreHM);
         try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(outputFile)))) {
-            out.println("AuthorID, Another-AuthorID, orgRSSValue");
+            out.println("AuthorID, Another-AuthorID, ActiveScore");
             out.flush();
             for (Pair p : pairs) {
                 int firstAuthorID = p.getFirst();
@@ -243,25 +243,15 @@ public class AuthorActiveComputation extends FeatureComputation {
 
     public static void main(String args[]) {
         AuthorActiveComputation authorActiveComputation = new AuthorActiveComputation(
-                "PostiveSamples.txt", "NegativeSample.txt",
-                "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input1\\[TrainingData]AuthorID_PaperID_Before_2005.txt",
-                "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input1\\[TrainingData]PaperID_Year_2001_2005.txt",
-                2001, 2005);
+                "/2.CRS-ExperimetalData/SampleData/PositiveSamples.txt", 
+                "/2.CRS-ExperimetalData/SampleData/NegativeSamples.txt",
+                "/2.CRS-ExperimetalData/SampleData/AuthorID_PaperID_Before_2005.txt",
+                "/2.CRS-ExperimetalData/SampleData/PaperID_Year_Before_2005.txt",
+                1995, 2005);
 
         try {
-            authorActiveComputation.computeFeatureValues("/1.CRS-ExperimetalData/SampleData/PositiveSampleActiveScore.txt", 1);
-            authorActiveComputation.computeFeatureValues("/1.CRS-ExperimetalData/SampleData/NegativeSampleActiveScore.txt", 0);
-            
-//            int minYear = 2000;
-//            int _currentYear = 2005;
-//            float score = 0.f;
-//            for (int startYear = minYear; startYear <= _currentYear; startYear++) {
-//                 score +=  (float)1*(1 / Math.exp(_currentYear - startYear));
-//                 System.out.println(":" + score);
-//            }
-//            System.out.println(":" + score);
-            
-
+            authorActiveComputation.computeFeatureValues("/2.CRS-ExperimetalData/SampleData/PositiveSampleActiveScore.txt", 1);
+            authorActiveComputation.computeFeatureValues("/2.CRS-ExperimetalData/SampleData/NegativeSampleActiveScore.txt", 0);
         } catch (IOException ex) {
             Logger.getLogger(AuthorActiveComputation.class.getName()).log(Level.SEVERE, null, ex);
         }
