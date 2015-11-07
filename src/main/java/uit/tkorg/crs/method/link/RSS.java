@@ -4,10 +4,7 @@
  */
 package uit.tkorg.crs.method.link;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -21,6 +18,10 @@ public class RSS {
     private HashMap<Integer, HashMap<Integer, Float>> _rssData;
     private HashMap<Integer, HashMap<Integer, Float>> _graph;
 
+    /**
+     * calculating RSS one specified node with other nodes which HAVE NO directed link with in 3-hub
+     * @param nodeId1 
+     */
     private void runRSS(int nodeId1) {
         Set<Integer> listNodeFirstHop = _graph.get(nodeId1).keySet();
         HashMap<Integer, Float> listRSS = new HashMap<>();
@@ -63,7 +64,7 @@ public class RSS {
     }
 
     /**
-     *
+     * calculating RSS for the specified nodes (listNode) with other nodes which HAVE NO directed link with in 3-hub 
      * @param graph
      * @param listNode
      * @return

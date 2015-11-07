@@ -119,12 +119,12 @@ public class OrganizationGraph {
                                 collaboration = new HashMap<>();
                             }
 
-                            Integer numofPaper = collaboration.get(org2);
-                            if (numofPaper == null) {
-                                numofPaper = 0;
+                            Integer numOfColl = collaboration.get(org2);
+                            if (numOfColl == null) {
+                                numOfColl = 0;
                             }
-                            numofPaper++;
-                            collaboration.put(org2, numofPaper);
+                            numOfColl++;
+                            collaboration.put(org2, numOfColl);
                             _collaborativeOrgGraph.put(org1, collaboration);
                         }
                     }
