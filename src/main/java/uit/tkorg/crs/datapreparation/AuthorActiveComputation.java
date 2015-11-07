@@ -252,6 +252,7 @@ public class AuthorActiveComputation extends FeatureComputation {
         try {
             authorActiveComputation.computeFeatureValues("/2.CRS-ExperimetalData/SampleData/PositiveSampleActiveScore.txt", 1);
             authorActiveComputation.computeFeatureValues("/2.CRS-ExperimetalData/SampleData/NegativeSampleActiveScore.txt", 0);
+            System.out.println("AuthorActiveComputation .... DONE DONE DONE");
         } catch (IOException ex) {
             Logger.getLogger(AuthorActiveComputation.class.getName()).log(Level.SEVERE, null, ex);
         }

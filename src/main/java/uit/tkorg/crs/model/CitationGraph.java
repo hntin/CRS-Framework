@@ -43,7 +43,7 @@ public class CitationGraph {
             int authorId;
             int paperId;
             while ((line = bufferReader.readLine()) != null) {
-                tokens = line.split(",");
+                tokens = line.split("\t");
                 if (tokens.length == 2) {
                     authorId = Integer.parseInt(tokens[0]);
                     paperId = Integer.parseInt(tokens[1]);

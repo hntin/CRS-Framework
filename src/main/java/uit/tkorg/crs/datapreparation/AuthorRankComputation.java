@@ -59,11 +59,14 @@ public class AuthorRankComputation extends FeatureComputation {
     public static void main(String args[]) {
         try {
             AuthorRankComputation authorRankComputation = new AuthorRankComputation(
-                    "postiveSampleFile", "negativeSampleFile",
-                    "inputFile_AuthorID_PaperID", "inputFile_PaperID_Year_RefID");
+                    "/2.CRS-ExperimetalData/SampleData/PositiveSamples.txt", 
+                    "/2.CRS-ExperimetalData/SampleData/NegativeSamples.txt",
+                    "/2.CRS-ExperimetalData/SampleData/AuthorID_PaperID_Before_2005.txt", 
+                    "/2.CRS-ExperimetalData/SampleData/PaperID_Year_RefID_Before_2005");
             
-            authorRankComputation.computeFeatureValues("/1.CRS-ExperimetalData/SampleData/PositiveSampleAuthorRank.txt", 1);
-            authorRankComputation.computeFeatureValues("/1.CRS-ExperimetalData/SampleData/NegativeSampleAuthorRank.txt", 0);
+            authorRankComputation.computeFeatureValues("/2.CRS-ExperimetalData/SampleData/PositiveSampleAuthorRank.txt", 1);
+            authorRankComputation.computeFeatureValues("/2.CRS-ExperimetalData/SampleData/NegativeSampleAuthorRank.txt", 0);
+            System.out.println("AuthorRankComputation .... DONE DONE DONE");
         }
         catch(IOException ex) {
             ex.printStackTrace();
