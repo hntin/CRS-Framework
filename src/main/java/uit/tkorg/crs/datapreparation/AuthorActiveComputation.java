@@ -245,8 +245,8 @@ public class AuthorActiveComputation extends FeatureComputation {
         AuthorActiveComputation authorActiveComputation = new AuthorActiveComputation(
                 "/2.CRS-ExperimetalData/SampleData/PositiveSamples.txt", 
                 "/2.CRS-ExperimetalData/SampleData/NegativeSamples.txt",
-                "/2.CRS-ExperimetalData/SampleData/AuthorID_PaperID_Before_2005.txt",
-                "/2.CRS-ExperimetalData/SampleData/PaperID_Year_Before_2005.txt",
+                "/2.CRS-ExperimetalData/SampleData/AuthorID_PaperID_Before_Include_2005.txt",
+                "/2.CRS-ExperimetalData/SampleData/PaperID_Year_Before_Include_2005.txt",
                 1995, 2005);
 
         try {
