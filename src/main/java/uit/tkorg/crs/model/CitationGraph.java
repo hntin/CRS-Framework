@@ -83,7 +83,7 @@ public class CitationGraph {
             int year;
             int refId;
             while ((line = bufferReader.readLine()) != null) {
-                tokens = line.split(",");
+                tokens = line.split("\t");
                 if (tokens.length == 3) {
                     paperId = Integer.parseInt(tokens[0]);
                     year = Integer.parseInt(tokens[1]);
