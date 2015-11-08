@@ -17,7 +17,9 @@ import java.io.PrintWriter;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
 import java.util.logging.Level;
@@ -441,6 +443,32 @@ public class MLDataExtraction {
             Logger.getLogger(MLDataExtraction.class.getName()).log(Level.SEVERE, null, ex);
         }
         return features;
+    }
+    
+    /**
+     *
+     * @param features
+     * @param featureFile, need to be formated as
+     */
+    private static void writeFeatureFile(HashMap<Pair, HashMap<String, Double>> features,
+                                                            String featureFile) {
+        try {
+            FileWriter out = new FileWriter(featureFile);
+            String header = "(idAuthor1,idAuthor2)\tCBSim\tCoAuhtor....";
+            
+            for (Pair p : features.keySet()){
+                StringBuilder line = new StringBuilder();
+                line.append(p.toString());
+                HashMap<String,Double> f = (HashMap<String,Double>)features.get(p);
+                for (String key : f.keySet()){
+                    line.append("\t" + f.get(key));
+                }
+                line.append("\n");
+                out.append(line.toString());
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(MLDataExtraction.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**

@@ -84,4 +84,8 @@ public class Pair {
         return Objects.hash(this.first,this.second);
     }
 
+    @Override
+    public String toString(){
+        return "(" + this.first + "," + this.second + ")";
+    }
 }
