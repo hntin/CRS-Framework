@@ -101,12 +101,13 @@ public class CoAuthorStrengthComputation extends FeatureComputation {
     public static void main(String args[]) {
         try {
             CoAuthorStrengthComputation obj = new CoAuthorStrengthComputation(
-                    "/1.CRS-ExperimetalData/SampleData/PositiveSamples.txt",
-                    "/1.CRS-ExperimetalData/SampleData/NegativeSamples.txt",
-                    "/1.CRS-ExperimetalData/SampleData/AuthorID_PaperID_2003_2005.txt",
-                    "/1.CRS-ExperimetalData/SampleData/PaperID_Year_2003_2005.txt", 2003, 2005);
-            obj.computeFeatureValues("/1.CRS-ExperimetalData/SampleData/PositiveSampleCoAuthorRSS.txt", 1);
-            obj.computeFeatureValues("/1.CRS-ExperimetalData/SampleData/NegativeSampleCoAuthorRSS.txt", 0);
+                    "/2.CRS-ExperimetalData/SampleData/PositiveSamples.txt",
+                    "/2.CRS-ExperimetalData/SampleData/NegativeSamples.txt",
+                    "/2.CRS-ExperimetalData/SampleData/AuthorID_PaperID_2003_2005.txt",
+                    "/2.CRS-ExperimetalData/SampleData/PaperID_Year_2003_2005.txt", 2003, 2005);
+            obj.computeFeatureValues("/2.CRS-ExperimetalData/SampleData/PositiveSampleCoAuthorRSS.txt", 1);
+            obj.computeFeatureValues("/2.CRS-ExperimetalData/SampleData/NegativeSampleCoAuthorRSS.txt", 0);
+            System.out.println("CoAuthorStrengthComputation ... DONE DONE DONE");
         } catch (Exception ex) {
         }
     }

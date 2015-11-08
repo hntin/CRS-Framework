@@ -21,15 +21,15 @@ public class CoAuthorGraph {
     //<editor-fold defaultstate="collapsed" desc="Member Variables">
     private static CoAuthorGraph _instance;
     // weighted, non-directed graph, <AuthorID, <CoAuthorID, NumOfCollaboration>> 
-    public HashMap<Integer, HashMap<Integer, Integer>> _coAuthorGraph; 
+    public HashMap<Integer, HashMap<Integer, Integer>> _coAuthorGraph;
     // Weighted, directed graph, <AuthorID, <PotentialCoAuthorID, NormalizedWeight>>
-    public HashMap<Integer, HashMap<Integer, Float>> _rssGraph;  
+    public HashMap<Integer, HashMap<Integer, Float>> _rssGraph;
     // Weighted, directed graph, <AuthorID, <PotentialCoAuthorID, NormalizedWeight>>, delta(t)
-    public HashMap<Integer, HashMap<Integer, Float>> _rssPlusGraph; 
+    public HashMap<Integer, HashMap<Integer, Float>> _rssPlusGraph;
     //weighted, directed graph, <AuthorID, <PotentialCoAuthorID, NormalizedWeight>>, exp(delta(t))
-    public HashMap<Integer, HashMap<Integer, Float>> _rssDoublePlusGraph; 
+    public HashMap<Integer, HashMap<Integer, Float>> _rssDoublePlusGraph;
     // <AuthorID, <CoAuthorID, <Delta(t), NumOfCollaboration>>>
-    private HashMap<Integer, HashMap<Integer, HashMap<Integer, Integer>>> _expFunctBasedCoAuthorGraph; 
+    private HashMap<Integer, HashMap<Integer, HashMap<Integer, Integer>>> _expFunctBasedCoAuthorGraph;
     private HashMap<Integer, Integer> _paperId_Year;
     private HashMap<Integer, ArrayList<Integer>> _authorPaper;
     private HashMap<Integer, ArrayList<Integer>> _paperAuthor;
@@ -83,7 +83,7 @@ public class CoAuthorGraph {
         _coAuthorGraph = new HashMap<>();
         this.load_AuthorID_PaperID_File(file_AuthorID_PaperID);
         this.load_PaperID_Year_File(file_PaperID_Year);
-        this.buildCoAuthorGraph();        
+        this.buildCoAuthorGraph();
         _expFunctBasedCoAuthorGraph = new HashMap<>();
         this.buildExpFuntBasedCoAuthorGraph(firstYear, lastYear);
         this.buildRSSDoublePlusGraph();
@@ -137,14 +137,16 @@ public class CoAuthorGraph {
             int paperId;
             Integer year;
             while ((line = bufferReader.readLine()) != null) {
-                tokens = line.split(",");
-                paperId = Integer.parseInt(tokens[0]);
-                if (tokens.length <= 1) {
-                    year = 0;
-                } else {
-                    year = Integer.parseInt(tokens[1]);
+                if (!line.equalsIgnoreCase("")) {
+                    tokens = line.split(",");
+                    paperId = Integer.parseInt(tokens[0]);
+                    if (tokens.length <= 1) {
+                        year = 0;
+                    } else {
+                        year = Integer.parseInt(tokens[1]);
+                    }
+                    _paperId_Year.put(paperId, year);
                 }
-                _paperId_Year.put(paperId, year);
             }
             bufferReader.close();
         } catch (Exception e) {
@@ -221,7 +223,7 @@ public class CoAuthorGraph {
             }
         }
     }
-    
+
     /**
      *
      * @param firstYear
@@ -332,10 +334,10 @@ public class CoAuthorGraph {
         // Testing Data
         CoAuthorGraph G0 = new CoAuthorGraph("/1.CRS-ExperimetalData/SampleData/AuthorID_PaperID_Before_2003.txt",
                 "/1.CRS-ExperimetalData/SampleData/PaperID_Year_Before_2003.txt");
-        
+
         CoAuthorGraph G1 = new CoAuthorGraph("/1.CRS-ExperimetalData/SampleData/AuthorID_PaperID_2003_2005.txt",
                 "/1.CRS-ExperimetalData/SampleData/PaperID_Year_2003_2005.txt", 2003, 2005);
-        
+
         System.out.println("DONE");
 
     }

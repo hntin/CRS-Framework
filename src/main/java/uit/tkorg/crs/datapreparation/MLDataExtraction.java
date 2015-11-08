@@ -329,27 +329,11 @@ public class MLDataExtraction {
         // G0 < T1 (before 2003)
         CoAuthorGraph G0 = new CoAuthorGraph("/2.CRS-ExperimetalData/SampleData/AuthorID_PaperID_Before_2003.txt",
                 "/2.CRS-ExperimetalData/SampleData/PaperID_Year_Before_2003.txt");
-
-        boolean isExist = G0.isLinkExistInCoAuthorGraph(G0._coAuthorGraph, 4, 6);
-        System.out.println("Link (4, 6) in G1 is " + isExist);
-        isExist = G0.isLinkExistInCoAuthorGraph(G0._coAuthorGraph, 5, 6);
-        System.out.println("Link (5, 6) in G1 is " + isExist);
-        isExist = G0.isLinkExistInCoAuthorGraph(G0._coAuthorGraph, 4, 5);
-        System.out.println("Link (4, 5) in G1 is " + isExist);
-        System.out.println("Weight of (1, 2) in G0 is " + G0._coAuthorGraph.get(1).get(2));
         System.out.println("Building G0 ... DONE.");
 
         // G1 in T1
         CoAuthorGraph G1 = new CoAuthorGraph("/2.CRS-ExperimetalData/SampleData/AuthorID_PaperID_2003_2005.txt",
                 "/2.CRS-ExperimetalData/SampleData/PaperID_Year_2003_2005.txt", 2003, 2005);
-
-        isExist = G1.isLinkExistInCoAuthorGraph(G1._coAuthorGraph, 4, 6);
-        System.out.println("Link (4, 6) in G1 is " + isExist);
-        isExist = G1.isLinkExistInCoAuthorGraph(G1._coAuthorGraph, 5, 6);
-        System.out.println("Link (5, 6) in G1 is " + isExist);
-        isExist = G1.isLinkExistInCoAuthorGraph(G1._coAuthorGraph, 4, 5);
-        System.out.println("Link (4, 5) in G1 is " + isExist);
-        System.out.println("Weight of (1, 2) in G1 is " + G1._coAuthorGraph.get(1).get(2));
         System.out.println("Building G1 ... DONE.");
 
         // Loc ra cac junior researchers ton tai trong G1, nhung chua ton tai trong G0.
@@ -359,13 +343,6 @@ public class MLDataExtraction {
         // G2 in T2
         CoAuthorGraph G2 = new CoAuthorGraph("/2.CRS-ExperimetalData/SampleData/AuthorID_PaperID_2006_2008.txt",
                 "/2.CRS-ExperimetalData/SampleData/PaperID_Year_2006_2008.txt", 2006, 2008);
-        isExist = G2.isLinkExistInCoAuthorGraph(G2._coAuthorGraph, 4, 6);
-        System.out.println("Link (4, 6) in G2 is " + isExist);
-        isExist = G2.isLinkExistInCoAuthorGraph(G2._coAuthorGraph, 5, 6);
-        System.out.println("Link (5, 6) in G2 is " + isExist);
-        isExist = G2.isLinkExistInCoAuthorGraph(G2._coAuthorGraph, 4, 5);
-        System.out.println("Link (4, 5) in G2 is " + isExist);
-        System.out.println("Weight of (1, 2) in G2 is " + G2._coAuthorGraph.get(1).get(2));
         System.out.println("Building G2 ..... DONE.");
 
         // Loc ra cac link(+) xuat hien trong G2 cua cac junior (xuat hien trong G1)
@@ -494,18 +471,18 @@ public class MLDataExtraction {
     }
 
     public static void main(String args[]) {
-//        getTrainingData("/1.CRS-ExperimetalData/TrainingData/AuthorID_PaperID_Before_2001.txt",
-//                "/1.CRS-ExperimetalData/TrainingData/PaperID_Year_Before_2001.txt",
-//                "/1.CRS-ExperimetalData/TrainingData/AuthorID_PaperID_2001_2003.txt",
-//                "/1.CRS-ExperimetalData/TrainingData/PaperID_Year_2001_2003.txt",
-//                "/1.CRS-ExperimetalData/TrainingData/AuthorID_PaperID_2004_2006.txt",
-//                "/1.CRS-ExperimetalData/TrainingData/PaperID_Year_2004_2006.txt",
-//                "/1.CRS-ExperimetalData/TrainingData/JuniorIDList.txt",
-//                "/1.CRS-ExperimetalData/TrainingData/PositiveSamples.txt",
-//                "/1.CRS-ExperimetalData/TrainingData/NegativeSamples.txt");
-//
+        getTrainingData("/2.CRS-ExperimetalData/TrainingData/AuthorID_PaperID_Before_2001.txt",
+                "/2.CRS-ExperimetalData/TrainingData/PaperID_Year_Before_2001.txt",
+                "/2.CRS-ExperimetalData/TrainingData/AuthorID_PaperID_2001_2003.txt",
+                "/2.CRS-ExperimetalData/TrainingData/PaperID_Year_2001_2003.txt",
+                "/2.CRS-ExperimetalData/TrainingData/AuthorID_PaperID_2004_2006.txt",
+                "/2.CRS-ExperimetalData/TrainingData/PaperID_Year_2004_2006.txt",
+                "/2.CRS-ExperimetalData/TrainingData/JuniorIDList.txt",
+                "/2.CRS-ExperimetalData/TrainingData/PositiveSamples.txt",
+                "/2.CRS-ExperimetalData/TrainingData/NegativeSamples.txt");
+
 //        getTestingData();
-        HashMap<Pair, HashMap<String, Double>> model = aggregateFeatures("/Users/thucnt/NetBeansProjects/crs-framework/input", 1);
+//        HashMap<Pair, HashMap<String, Double>> model = aggregateFeatures("/Users/thucnt/NetBeansProjects/crs-framework/input", 1);
         System.out.println("DONE");
     }
 }
