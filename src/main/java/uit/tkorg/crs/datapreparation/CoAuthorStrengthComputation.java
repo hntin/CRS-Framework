@@ -57,43 +57,41 @@ public class CoAuthorStrengthComputation extends FeatureComputation {
             pairs = this._negativeSample.getPairOfAuthor();
         }
 
-        // Step 2: Calculating RSSDoublePlus values for all juniorAuthorID with all others in the CoAuthorGraph
+        // Step 2: Calculating RSSDoublePlus values for all juniorAuthorID with all others 
+        // WHICH HO NO LINK in 3-hub in the CoAuthorGraph
         RSS methodRSS = new RSS();
-        HashMap<Integer, HashMap<Integer, Float>> rssDoublePlus_FirstAuthorID_ToAllOthers = methodRSS.process(
+        HashMap<Integer, HashMap<Integer, Float>> rssDoublePlus_FirstAuthorID_Nodes_NoDirectedLink_In3Hub = methodRSS.process(
                 _coAuthorGraph._rssDoublePlusGraph, firstAuthorIDList);
  
-        // Step 3: Extracting RSSDoublePlus Values for all pairs of PositveSamples, rssDoublePlus_PostiveSamples_HM
-        HashMap<Integer, HashMap<Integer, Float>> rssDoublePlus_Samples_HM = new HashMap<>();
-        for (Pair p : pairs) {
-            int firstAuthorID = p.getFirst();
-            int secondAuthorID = p.getSecond();
+        // Step 3: Extracting RSSDoublePlus Values for all pairs of PositveSamples
+        //HashMap<Integer, HashMap<Integer, Float>> rssDoublePlus_Samples_HM = new HashMap<>();
 
-            float rssDoublePlusValue = 0;
-            if (rssDoublePlus_FirstAuthorID_ToAllOthers.containsKey(firstAuthorID)
-                    && rssDoublePlus_FirstAuthorID_ToAllOthers.get(firstAuthorID).containsKey(secondAuthorID)) {
-                rssDoublePlusValue = rssDoublePlus_FirstAuthorID_ToAllOthers.get(firstAuthorID).get(secondAuthorID);
-            }
-
-            HashMap<Integer, Float> hm = rssDoublePlus_Samples_HM.get(firstAuthorID);
-            if (hm == null || hm.isEmpty()) {
-                hm = new HashMap<>();
-            }
-
-            hm.put(secondAuthorID, rssDoublePlusValue);
-            rssDoublePlus_Samples_HM.put(firstAuthorID, hm);
-        }
-        
-        // Step 4: Storing values which describe CoAuthorStrength (RSSDoublePlus) for all of PositiveSamples/NegativeSamples to the output file
-        try ( 
-            PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(outputFile)))) {
+        try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(outputFile)))) {
             out.println("AuthorID, CoAuthorID, rssDoublePlusValue");
             out.flush();
-            for (int authorID : rssDoublePlus_Samples_HM.keySet()) {
-                for (int anotherAuthorID : rssDoublePlus_Samples_HM.get(authorID).keySet()) {
-                    float rssDoublePlusValue = rssDoublePlus_Samples_HM.get(authorID).get(anotherAuthorID);
-                    out.println("(" + authorID + "," + anotherAuthorID + ")\t" + rssDoublePlusValue );
-                    out.flush();
+            for (Pair p : pairs) {
+                int firstAuthorID = p.getFirst();
+                int secondAuthorID = p.getSecond();                
+                float rssDoublePlusValue = 0;
+                if (rssDoublePlus_FirstAuthorID_Nodes_NoDirectedLink_In3Hub.containsKey(firstAuthorID)
+                        && rssDoublePlus_FirstAuthorID_Nodes_NoDirectedLink_In3Hub.get(firstAuthorID).containsKey(secondAuthorID)) {
+                    rssDoublePlusValue = rssDoublePlus_FirstAuthorID_Nodes_NoDirectedLink_In3Hub.get(firstAuthorID).get(secondAuthorID);
+                } else {
+                    if (_coAuthorGraph._rssDoublePlusGraph.get(firstAuthorID).containsKey(secondAuthorID)) {
+                        rssDoublePlusValue = _coAuthorGraph._rssDoublePlusGraph.get(firstAuthorID).get(secondAuthorID);
+                    }
                 }
+                
+                out.println("(" + firstAuthorID + "," + secondAuthorID + ")\t" + rssDoublePlusValue);
+                out.flush();
+                
+//            HashMap<Integer, Float> hm = rssDoublePlus_Samples_HM.get(firstAuthorID);
+//            if (hm == null || hm.isEmpty()) {
+//                hm = new HashMap<>();
+//            }
+//
+//            hm.put(secondAuthorID, rssDoublePlusValue);
+//            rssDoublePlus_Samples_HM.put(firstAuthorID, hm);
             }
         }
     }
