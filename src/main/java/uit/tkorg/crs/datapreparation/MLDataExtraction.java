@@ -456,12 +456,13 @@ public class MLDataExtraction {
             FileWriter out = new FileWriter(featureFile);
             String header = "(idAuthor1,idAuthor2)\tCBSim\tCoAuhtor....";
             
-            for (Pair p : features.keySet()){
+            for (Map.Entry<Pair,HashMap<String,Double>> entry : features.entrySet()){
+                Pair p = entry.getKey();
                 StringBuilder line = new StringBuilder();
                 line.append(p.toString());
-                HashMap<String,Double> f = (HashMap<String,Double>)features.get(p);
-                for (String key : f.keySet()){
-                    line.append("\t" + f.get(key));
+                HashMap<String,Double> f = entry.getValue();
+                for (Double d : f.values()){
+                    line.append("\t" + d.doubleValue());
                 }
                 line.append("\n");
                 out.append(line.toString());
