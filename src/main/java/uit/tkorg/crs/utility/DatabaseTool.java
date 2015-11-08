@@ -286,8 +286,20 @@ public class DatabaseTool {
         try {
             DatabaseTool dbTool = new DatabaseTool();
             dbTool.connect();
-            dbTool.get_AuthorID_PaperID_OrgID_InPeriod(0, 2003, "AuthorID_PaperID_OrgID_Before_2003.txt");
-            dbTool.get_PaperID_Year_RefID_InPeriod(0, 2003, "PaperID_Year_RefID_Before_2003.txt");
+            dbTool.get_AuthorID_PaperID_InPeriod(0, 2000, "AuthorID_PaperID_Before_2001.txt");
+            dbTool.get_AuthorID_PaperID_InPeriod(2001, 2003, "AuthorID_PaperID_2001_2003.txt");
+            dbTool.get_AuthorID_PaperID_InPeriod(2004, 2006, "AuthorID_PaperID_2004_2006.txt");
+            dbTool.get_AuthorID_PaperID_InPeriod(2007, 2011, "AuthorID_PaperID_2007_2011.txt");
+            dbTool.get_AuthorID_PaperID_InPeriod(0, 2003, "AuthorID_PaperID_Before_Include_2003.txt");
+            
+            dbTool.get_PaperID_Year_InPeriod(0, 2000, "PaperID_Year_Before_2001.txt");
+            dbTool.get_PaperID_Year_InPeriod(2001, 2003, "PaperID_Year_2001_2003.txt");
+            dbTool.get_PaperID_Year_InPeriod(2004, 2006, "PaperID_Year_2004_2006.txt");
+            dbTool.get_PaperID_Year_InPeriod(2004, 2006, "PaperID_Year_2007_2011.txt");
+            dbTool.get_PaperID_Year_InPeriod(0, 2003, "PaperID_Year_Before_Include_2003.txt");
+            
+            dbTool.get_AuthorID_PaperID_OrgID_InPeriod(0, 2003, "AuthorID_PaperID_OrgID_Before_Include_2003.txt");
+            dbTool.get_PaperID_Year_RefID_InPeriod(0, 2003, "PaperID_Year_RefID_Before_Include_2003.txt");
             dbTool.disconnect();
             System.out.println("DONE");
         } catch (Exception ex) {

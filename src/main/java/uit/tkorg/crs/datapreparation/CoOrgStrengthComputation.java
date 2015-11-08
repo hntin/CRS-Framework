@@ -97,7 +97,7 @@ public class CoOrgStrengthComputation extends FeatureComputation {
             CoOrgStrengthComputation obj = new CoOrgStrengthComputation(
                     "/2.CRS-ExperimetalData/SampleData/PositiveSamples.txt",
                     "/2.CRS-ExperimetalData/SampleData/NegativeSamples.txt",
-                    "/2.CRS-ExperimetalData/SampleData/AuthorID_PaperID_OrgID_2003_2005.txt",
+                    "/2.CRS-ExperimetalData/SampleData/AuthorID_PaperID_OrgID_Before_Include_2005.txt",
                     2003, 2005);
             obj.computeFeatureValues("/2.CRS-ExperimetalData/SampleData/PositiveSampleOrgRSS.txt", 1);
             obj.computeFeatureValues("/2.CRS-ExperimetalData/SampleData/NegativeSampleOrgRSS.txt", 0);
