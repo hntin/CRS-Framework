@@ -45,13 +45,13 @@ public class MLDataExtraction {
     private static void getListofJuniorFromCoAuthorGraph(CoAuthorGraph G0, CoAuthorGraph G1,
             String outFileName) {
         StringBuffer listOfJunior = new StringBuffer();
-        listOfJunior.append("AuthorID \t NumOfPub \n");
+        listOfJunior.append("AuthorID, NumOfPub \n");
         for (int authorID : G1._coAuthorGraph.keySet()) {
             // authorID khong ton tai trong G0
             if (!G0.getAuthorPaper().containsKey(authorID)) {
                 // So bai bao trong G1 < 3
                 if (G1.getAuthorPaper().get(authorID).size() < 3) {
-                    listOfJunior.append(authorID + "\t" + G1.getAuthorPaper().get(authorID).size() + "\n");
+                    listOfJunior.append(authorID + "," + G1.getAuthorPaper().get(authorID).size() + "\n");
                 }
             }
         }
@@ -73,7 +73,7 @@ public class MLDataExtraction {
             String line = null;
             String[] tokens;
             while ((line = bufferReader.readLine()) != null) {
-                tokens = line.split("\t");
+                tokens = line.split(",");
                 if (tokens.length > 2) {
                     continue;
                 }
@@ -327,8 +327,8 @@ public class MLDataExtraction {
 
         //<editor-fold defaultstate="collapsed" desc="For SampleData">
         // G0 < T1 (before 2003)
-        CoAuthorGraph G0 = new CoAuthorGraph("/1.CRS-ExperimetalData/SampleData/AuthorID_PaperID_Before_2003.txt",
-                "/1.CRS-ExperimetalData/SampleData/PaperID_Year_Before_2003.txt");
+        CoAuthorGraph G0 = new CoAuthorGraph("/2.CRS-ExperimetalData/SampleData/AuthorID_PaperID_Before_2003.txt",
+                "/2.CRS-ExperimetalData/SampleData/PaperID_Year_Before_2003.txt");
 
         boolean isExist = G0.isLinkExistInCoAuthorGraph(G0._coAuthorGraph, 4, 6);
         System.out.println("Link (4, 6) in G1 is " + isExist);
@@ -340,8 +340,8 @@ public class MLDataExtraction {
         System.out.println("Building G0 ... DONE.");
 
         // G1 in T1
-        CoAuthorGraph G1 = new CoAuthorGraph("/1.CRS-ExperimetalData/SampleData/AuthorID_PaperID_2003_2005.txt",
-                "/1.CRS-ExperimetalData/SampleData/PaperID_Year_2003_2005.txt", 2003, 2005);
+        CoAuthorGraph G1 = new CoAuthorGraph("/2.CRS-ExperimetalData/SampleData/AuthorID_PaperID_2003_2005.txt",
+                "/2.CRS-ExperimetalData/SampleData/PaperID_Year_2003_2005.txt", 2003, 2005);
 
         isExist = G1.isLinkExistInCoAuthorGraph(G1._coAuthorGraph, 4, 6);
         System.out.println("Link (4, 6) in G1 is " + isExist);
@@ -354,11 +354,11 @@ public class MLDataExtraction {
 
         // Loc ra cac junior researchers ton tai trong G1, nhung chua ton tai trong G0.
         // Tuc moi bat dau nghien cuu va lan dau xuat hien trong cong dong. So bai bao trong trong G1 < 3
-        getListofJuniorFromCoAuthorGraph(G0, G1, "/1.CRS-ExperimetalData/SampleData/JuniorIDList.txt");
+        getListofJuniorFromCoAuthorGraph(G0, G1, "/2.CRS-ExperimetalData/SampleData/JuniorIDList.txt");
 
         // G2 in T2
-        CoAuthorGraph G2 = new CoAuthorGraph("/1.CRS-ExperimetalData/SampleData/AuthorID_PaperID_2006_2008.txt",
-                "/1.CRS-ExperimetalData/SampleData/PaperID_Year_2006_2008.txt", 2006, 2008);
+        CoAuthorGraph G2 = new CoAuthorGraph("/2.CRS-ExperimetalData/SampleData/AuthorID_PaperID_2006_2008.txt",
+                "/2.CRS-ExperimetalData/SampleData/PaperID_Year_2006_2008.txt", 2006, 2008);
         isExist = G2.isLinkExistInCoAuthorGraph(G2._coAuthorGraph, 4, 6);
         System.out.println("Link (4, 6) in G2 is " + isExist);
         isExist = G2.isLinkExistInCoAuthorGraph(G2._coAuthorGraph, 5, 6);
@@ -369,15 +369,15 @@ public class MLDataExtraction {
         System.out.println("Building G2 ..... DONE.");
 
         // Loc ra cac link(+) xuat hien trong G2 cua cac junior (xuat hien trong G1)
-        HashMap<Integer, Integer> juniorAuthorIDHM = loadAuthorIDFromTextFile("/1.CRS-ExperimetalData/SampleData/JuniorIDList.txt");
-        int numOfPositiveSample = getPositiveSampleFromCoAuthorGraph(juniorAuthorIDHM, G1, G2, "/1.CRS-ExperimetalData/SampleData/PositiveSamples.txt");
+        HashMap<Integer, Integer> juniorAuthorIDHM = loadAuthorIDFromTextFile("/2.CRS-ExperimetalData/SampleData/JuniorIDList.txt");
+        int numOfPositiveSample = getPositiveSampleFromCoAuthorGraph(juniorAuthorIDHM, G1, G2, "/2.CRS-ExperimetalData/SampleData/PositiveSamples.txt");
         System.out.println("So mau (+):" + numOfPositiveSample);
 
         // Chon ngau nhien cac cap author khong link trong G2 va G1 cho cac junior (xuat hien trong G1)
         // So luong mau (-) muon chon = Tat ca mau am trong G2 cua nhung junior co mau (+)
         // Chi chon mau am (-) trong G2 cho nhung junior ma co xuat hien mau (+) trong G2. Khong can xet nhung junior ma khong co mau (+)???
-        HashMap<Integer, Integer> authorsInPositveSample = loadAuthorIDFromPositiveSample("/1.CRS-ExperimetalData/SampleData/PositiveSamples.txt");
-        double numOfSelectedNagativeSample = getAllNegativeSampleFromCoAuthorGraphIn3Hub(authorsInPositveSample, G1, G2, "/1.CRS-ExperimetalData/SampleData/NegativeSamples.txt");
+        HashMap<Integer, Integer> authorsInPositveSample = loadAuthorIDFromPositiveSample("/2.CRS-ExperimetalData/SampleData/PositiveSamples.txt");
+        double numOfSelectedNagativeSample = getAllNegativeSampleFromCoAuthorGraphIn3Hub(authorsInPositveSample, G1, G2, "/2.CRS-ExperimetalData/SampleData/NegativeSamples.txt");
         System.out.println("So mau (-):" + numOfSelectedNagativeSample);
         //</editor-fold>
 

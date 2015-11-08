@@ -142,9 +142,9 @@ public class DatabaseTool {
             stmt.setInt(2, toYear);
             rs = stmt.executeQuery();
             StringBuffer strBuff = new StringBuffer();
-            strBuff.append("AuthorID \t PaperID \n");
+            strBuff.append("AuthorID, PaperID \n");
             while (rs != null && rs.next()) {
-                strBuff.append(rs.getString("idAuthor") + "\t");
+                strBuff.append(rs.getString("idAuthor") + ",");
                 strBuff.append(rs.getString("idPaper") + "\n");
             }
             TextFileUtility.writeTextFile(dataDir + outFileName, strBuff.toString());
@@ -172,9 +172,9 @@ public class DatabaseTool {
             stmt.setInt(2, toYear);
             rs = stmt.executeQuery();
             StringBuffer strBuff = new StringBuffer();
-            strBuff.append("PaperID \t Year \n");
+            strBuff.append("PaperID, Year \n");
             while (rs != null && rs.next()) {
-                strBuff.append(rs.getString("idPaper") + "\t");
+                strBuff.append(rs.getString("idPaper") + ",");
                 strBuff.append(rs.getString("year") + "\n");
             }
             TextFileUtility.writeTextFile(dataDir + outFileName, strBuff.toString());
@@ -286,8 +286,8 @@ public class DatabaseTool {
         try {
             DatabaseTool dbTool = new DatabaseTool();
             dbTool.connect();
-            dbTool.get_AuthorID_PaperID_OrgID_InPeriod(1995, 2005, "AuthorID_PaperID_OrgID_1995_2005.txt");
-            dbTool.get_PaperID_Year_RefID_InPeriod(1995, 2005, "PaperID_Year_RefID_1995_2005.txt");
+            dbTool.get_AuthorID_PaperID_OrgID_InPeriod(0, 2003, "AuthorID_PaperID_OrgID_Before_2003.txt");
+            dbTool.get_PaperID_Year_RefID_InPeriod(0, 2003, "PaperID_Year_RefID_Before_2003.txt");
             dbTool.disconnect();
             System.out.println("DONE");
         } catch (Exception ex) {

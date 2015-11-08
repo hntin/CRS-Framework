@@ -70,7 +70,7 @@ public class AuthorActiveComputation extends FeatureComputation {
             int paperId;
             Integer year;
             while ((line = bufferReader.readLine()) != null) {
-                tokens = line.split("\t");
+                tokens = line.split(",");
                 paperId = Integer.parseInt(tokens[0]);
                 if (tokens.length <= 1) {
                     year = 0;
@@ -101,7 +101,7 @@ public class AuthorActiveComputation extends FeatureComputation {
             int authorId;
             int paperId;
             while ((line = bufferReader.readLine()) != null) {
-                tokens = line.split("\t");
+                tokens = line.split(",");
                 if (tokens.length == 2) {
                     authorId = Integer.parseInt(tokens[0]);
                     paperId = Integer.parseInt(tokens[1]);

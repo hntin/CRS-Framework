@@ -43,7 +43,7 @@ public class CitationGraph {
             int authorId;
             int paperId;
             while ((line = bufferReader.readLine()) != null) {
-                tokens = line.split("\t");
+                tokens = line.split(",");
                 if (tokens.length == 2) {
                     authorId = Integer.parseInt(tokens[0]);
                     paperId = Integer.parseInt(tokens[1]);
@@ -83,7 +83,7 @@ public class CitationGraph {
             int year;
             int refId;
             while ((line = bufferReader.readLine()) != null) {
-                tokens = line.split("\t");
+                tokens = line.split(",");
                 if (tokens.length == 3) {
                     paperId = Integer.parseInt(tokens[0]);
                     year = Integer.parseInt(tokens[1]);
