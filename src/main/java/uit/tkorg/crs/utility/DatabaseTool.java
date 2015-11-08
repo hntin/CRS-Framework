@@ -27,8 +27,8 @@ public class DatabaseTool {
     private final String dbDriver = "com.mysql.jdbc.Driver";
     private String dbURL = "jdbc:mysql://localhost:3306/mas";
     private String dbUsername = "root";
-    private String dbPassword = "";
-    private String dataDir = "/2.CRS-ExperimetalData/TrainingData/";
+    private String dbPassword = "root";
+    private String dataDir = "D:\\1.CRS-Experiment\\MLData\\TrainingData\\";
     private Connection con;
     private PreparedStatement stmt;
     ResultSet rs;

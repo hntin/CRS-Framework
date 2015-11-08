@@ -59,13 +59,13 @@ public class AuthorRankComputation extends FeatureComputation {
     public static void main(String args[]) {
         try {
             AuthorRankComputation authorRankComputation = new AuthorRankComputation(
-                    "/2.CRS-ExperimetalData/SampleData/PositiveSamples.txt", 
-                    "/2.CRS-ExperimetalData/SampleData/NegativeSamples.txt",
-                    "/2.CRS-ExperimetalData/SampleData/AuthorID_PaperID_Before_Include_2005.txt", 
-                    "/2.CRS-ExperimetalData/SampleData/PaperID_Year_RefID_Before_Include_2005.txt");
+                    "D:\\1.CRS-Experiment\\MLData\\TrainingData\\PositiveSamples.txt", 
+                    "D:\\1.CRS-Experiment\\MLData\\TrainingData\\NegativeSamples.txt",
+                    "D:\\1.CRS-Experiment\\MLData\\TrainingData\\AuthorID_PaperID_Before_Include_2003.txt", 
+                    "D:\\1.CRS-Experiment\\MLData\\TrainingData\\PaperID_Year_RefID_Before_Include_2003.txt");
             
-            authorRankComputation.computeFeatureValues("/2.CRS-ExperimetalData/SampleData/PositiveSampleAuthorRank.txt", 1);
-            authorRankComputation.computeFeatureValues("/2.CRS-ExperimetalData/SampleData/NegativeSampleAuthorRank.txt", 0);
+            authorRankComputation.computeFeatureValues("D:\\1.CRS-Experiment\\MLData\\TrainingData\\PositiveSampleAuthorRank.txt", 1);
+            authorRankComputation.computeFeatureValues("D:\\1.CRS-Experiment\\MLData\\TrainingData\\NegativeSampleAuthorRank.txt", 0);
             System.out.println("AuthorRankComputation .... DONE DONE DONE");
         }
         catch(IOException ex) {

@@ -243,15 +243,15 @@ public class AuthorActiveComputation extends FeatureComputation {
 
     public static void main(String args[]) {
         AuthorActiveComputation authorActiveComputation = new AuthorActiveComputation(
-                "/2.CRS-ExperimetalData/SampleData/PositiveSamples.txt", 
-                "/2.CRS-ExperimetalData/SampleData/NegativeSamples.txt",
-                "/2.CRS-ExperimetalData/SampleData/AuthorID_PaperID_Before_Include_2005.txt",
-                "/2.CRS-ExperimetalData/SampleData/PaperID_Year_Before_Include_2005.txt",
-                1995, 2005);
+                "D:\\1.CRS-Experiment\\MLData\\TrainingData\\PositiveSamples.txt", 
+                "D:\\1.CRS-Experiment\\MLData\\TrainingData\\NegativeSamples.txt",
+                "D:\\1.CRS-Experiment\\MLData\\TrainingData\\AuthorID_PaperID_Before_Include_2003.txt",
+                "D:\\1.CRS-Experiment\\MLData\\TrainingData\\PaperID_Year_Before_Include_2003.txt",
+                0, 2003);
 
         try {
-            authorActiveComputation.computeFeatureValues("/2.CRS-ExperimetalData/SampleData/PositiveSampleActiveScore.txt", 1);
-            authorActiveComputation.computeFeatureValues("/2.CRS-ExperimetalData/SampleData/NegativeSampleActiveScore.txt", 0);
+            authorActiveComputation.computeFeatureValues("D:\\1.CRS-Experiment\\MLData\\TrainingData\\PositiveSampleActiveScore.txt", 1);
+            authorActiveComputation.computeFeatureValues("D:\\1.CRS-Experiment\\MLData\\TrainingData\\NegativeSampleActiveScore.txt", 0);
             System.out.println("AuthorActiveComputation .... DONE DONE DONE");
         } catch (IOException ex) {
             Logger.getLogger(AuthorActiveComputation.class.getName()).log(Level.SEVERE, null, ex);

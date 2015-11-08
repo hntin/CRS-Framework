@@ -101,12 +101,12 @@ public class CoAuthorStrengthComputation extends FeatureComputation {
     public static void main(String args[]) {
         try {
             CoAuthorStrengthComputation obj = new CoAuthorStrengthComputation(
-                    "/2.CRS-ExperimetalData/SampleData/PositiveSamples.txt",
-                    "/2.CRS-ExperimetalData/SampleData/NegativeSamples.txt",
-                    "/2.CRS-ExperimetalData/SampleData/AuthorID_PaperID_2003_2005.txt",
-                    "/2.CRS-ExperimetalData/SampleData/PaperID_Year_2003_2005.txt", 2003, 2005);
-            obj.computeFeatureValues("/2.CRS-ExperimetalData/SampleData/PositiveSampleCoAuthorRSS.txt", 1);
-            obj.computeFeatureValues("/2.CRS-ExperimetalData/SampleData/NegativeSampleCoAuthorRSS.txt", 0);
+                    "D:\\1.CRS-Experiment\\MLData\\TrainingData\\PositiveSamples.txt",
+                    "D:\\1.CRS-Experiment\\MLData\\TrainingData\\NegativeSamples.txt",
+                    "D:\\1.CRS-Experiment\\MLData\\TrainingData\\AuthorID_PaperID_2001_2003.txt",
+                    "D:\\1.CRS-Experiment\\MLData\\TrainingData\\PaperID_Year_2001_2003.txt", 2001, 2003);
+            obj.computeFeatureValues("D:\\1.CRS-Experiment\\MLData\\TrainingData\\PositiveSampleCoAuthorRSS.txt", 1);
+            obj.computeFeatureValues("D:\\1.CRS-Experiment\\MLData\\TrainingData\\NegativeSampleCoAuthorRSS.txt", 0);
             System.out.println("CoAuthorStrengthComputation ... DONE DONE DONE");
         } catch (Exception ex) {
         }

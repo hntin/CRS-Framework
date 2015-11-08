@@ -95,14 +95,15 @@ public class CoOrgStrengthComputation extends FeatureComputation {
     public static void main(String args[]) {
         try {
             CoOrgStrengthComputation obj = new CoOrgStrengthComputation(
-                    "/2.CRS-ExperimetalData/SampleData/PositiveSamples.txt",
-                    "/2.CRS-ExperimetalData/SampleData/NegativeSamples.txt",
-                    "/2.CRS-ExperimetalData/SampleData/AuthorID_PaperID_OrgID_Before_Include_2005.txt",
-                    2003, 2005);
-            obj.computeFeatureValues("/2.CRS-ExperimetalData/SampleData/PositiveSampleOrgRSS.txt", 1);
-            obj.computeFeatureValues("/2.CRS-ExperimetalData/SampleData/NegativeSampleOrgRSS.txt", 0);
+                    "D:\\1.CRS-Experiment\\MLData\\TrainingData\\PositiveSamples.txt",
+                    "D:\\1.CRS-Experiment\\MLData\\TrainingData\\NegativeSamples.txt",
+                    "D:\\1.CRS-Experiment\\MLData\\TrainingData\\AuthorID_PaperID_OrgID_Before_Include_2003.txt",
+                    0, 2003);
+            obj.computeFeatureValues("D:\\1.CRS-Experiment\\MLData\\TrainingData\\PositiveSampleOrgRSS.txt", 1);
+            obj.computeFeatureValues("D:\\1.CRS-Experiment\\MLData\\TrainingData\\NegativeSampleOrgRSS.txt", 0);
             System.out.println("DONE DONE DONE");
         } catch (Exception ex) {
+            System.out.println(ex.toString());
         }
     }
 }
