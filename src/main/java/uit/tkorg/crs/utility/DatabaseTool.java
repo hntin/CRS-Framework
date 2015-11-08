@@ -301,7 +301,7 @@ public class DatabaseTool {
             dbTool.get_AuthorID_PaperID_OrgID_InPeriod(0, 2003, "AuthorID_PaperID_OrgID_Before_Include_2003.txt");
             dbTool.get_PaperID_Year_RefID_InPeriod(0, 2003, "PaperID_Year_RefID_Before_Include_2003.txt");
             dbTool.disconnect();
-            System.out.println("DONE");
+            System.out.println("DatabaseTool ... DONE DONE DONE");
         } catch (Exception ex) {
             ex.printStackTrace();
         }
