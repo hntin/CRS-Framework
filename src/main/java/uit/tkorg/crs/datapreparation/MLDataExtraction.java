@@ -418,9 +418,9 @@ public class MLDataExtraction {
             while (input.hasNext()) {
                 String line = input.nextLine().trim();
                 String[] tokens = r1.split(line);
-                if (tokens.length != 2)//file only contain pair of author
+                if (tokens.length != 2)//content is wrong format
                 {
-                    continue;
+                    break;
                 }
                 Double featureValue = new Double(tokens[1]);
                 tokens = r2.split(tokens[0]);
@@ -436,9 +436,10 @@ public class MLDataExtraction {
                     HashMap<String, Double> values = new HashMap<String, Double>();
                     values.put(featureName, featureValue);
                     features.put(authorPair, values);
-                    Logger.getLogger(MLDataExtraction.class.getName()).log(Level.INFO, "Create new author pair");
+//                    Logger.getLogger(MLDataExtraction.class.getName()).log(Level.INFO, "Create new author pair");
                 }
             }
+            input.close();
         } catch (FileNotFoundException ex) {
             Logger.getLogger(MLDataExtraction.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -454,19 +455,23 @@ public class MLDataExtraction {
                                                             String featureFile) {
         try {
             FileWriter out = new FileWriter(featureFile);
-            String header = "(idAuthor1,idAuthor2)\tCBSim\tCoAuhtor....";
-            
+            String header = "(idAuthor1,idAuthor2)\tCBSim\tCoAuhtor....\n";
+            out.write(header);
+            int lines = 0;
             for (Map.Entry<Pair,HashMap<String,Double>> entry : features.entrySet()){
+                lines++;
                 Pair p = entry.getKey();
                 StringBuilder line = new StringBuilder();
                 line.append(p.toString());
                 HashMap<String,Double> f = entry.getValue();
                 for (Double d : f.values()){
-                    line.append("\t" + d.doubleValue());
+                    line.append("," + d.doubleValue());
                 }
                 line.append("\n");
                 out.append(line.toString());
             }
+            out.close();
+            System.out.println("So dong cua tap tin: " + lines);
         } catch (Exception ex) {
             Logger.getLogger(MLDataExtraction.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -500,15 +505,15 @@ public class MLDataExtraction {
     }
 
     public static void main(String args[]) {
-        getTrainingData("/2.CRS-ExperimetalData/TrainingData/AuthorID_PaperID_Before_2001.txt",
-                "/2.CRS-ExperimetalData/TrainingData/PaperID_Year_Before_2001.txt",
-                "/2.CRS-ExperimetalData/TrainingData/AuthorID_PaperID_2001_2003.txt",
-                "/2.CRS-ExperimetalData/TrainingData/PaperID_Year_2001_2003.txt",
-                "/2.CRS-ExperimetalData/TrainingData/AuthorID_PaperID_2004_2006.txt",
-                "/2.CRS-ExperimetalData/TrainingData/PaperID_Year_2004_2006.txt",
-                "/2.CRS-ExperimetalData/TrainingData/JuniorIDList.txt",
-                "/2.CRS-ExperimetalData/TrainingData/PositiveSamples.txt",
-                "/2.CRS-ExperimetalData/TrainingData/NegativeSamples.txt");
+//        getTrainingData("/2.CRS-ExperimetalData/TrainingData/AuthorID_PaperID_Before_2001.txt",
+//                "/2.CRS-ExperimetalData/TrainingData/PaperID_Year_Before_2001.txt",
+//                "/2.CRS-ExperimetalData/TrainingData/AuthorID_PaperID_2001_2003.txt",
+//                "/2.CRS-ExperimetalData/TrainingData/PaperID_Year_2001_2003.txt",
+//                "/2.CRS-ExperimetalData/TrainingData/AuthorID_PaperID_2004_2006.txt",
+//                "/2.CRS-ExperimetalData/TrainingData/PaperID_Year_2004_2006.txt",
+//                "/2.CRS-ExperimetalData/TrainingData/JuniorIDList.txt",
+//                "/2.CRS-ExperimetalData/TrainingData/PositiveSamples.txt",
+//                "/2.CRS-ExperimetalData/TrainingData/NegativeSamples.txt");
         
 //        getTrainingData("D:\\1.CRS-Experiment\\MLData\\TrainingData\\AuthorID_PaperID_Before_2001.txt",
 //                "D:\\1.CRS-Experiment\\MLData\\TrainingData\\PaperID_Year_Before_2001.txt",
@@ -521,7 +526,8 @@ public class MLDataExtraction {
 //                "D:\\1.CRS-Experiment\\MLData\\TrainingData\\NegativeSamples.txt");
 
 //        getTestingData();
-//        HashMap<Pair, HashMap<String, Double>> model = aggregateFeatures("/Users/thucnt/NetBeansProjects/crs-framework/input", 1);
+        HashMap<Pair, HashMap<String, Double>> model = aggregateFeatures("D:\\1.CRS-Experiment\\MLData\\TrainingData", 1);
+        writeFeatureFile(model,"D:\\1.CRS-Experiment\\MLData\\TrainingData\\PositiveSample_AllFeatures.txt");
         System.out.println("DONE");
     }
 }

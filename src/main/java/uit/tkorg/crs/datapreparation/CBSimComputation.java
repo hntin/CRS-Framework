@@ -92,109 +92,16 @@ public class CBSimComputation extends FeatureComputation {
         System.out.println("So tac gia da co bai bao: " + authorPaperId.size());
         return authorPaperId;
     }
-
-//    private static void createTestDatabase() {
-//        String filePath = "input/4.txt";
-//        String sql = "INSERT INTO paper (idPaper, title, abstract, year) values (?, ?, ?, ?)";
-//        try {
-//            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/test", "root", "thuc1980");
-//            PreparedStatement statement = conn.prepareStatement(sql);
-//            statement.setInt(1, 4);
-//            statement.setString(2, "Paper 4");
-//            InputStream inputStream = new FileInputStream(new File(filePath));
-//            statement.setBlob(3, inputStream);
-//            statement.setInt(4, 2015);
-//            int row = statement.executeUpdate();
-//            if (row > 0) {
-//                System.out.println("A paper was inserted");
-//            }
-//            conn.close();
-//        } catch (SQLException ex) {
-//            ex.printStackTrace();
-//        } catch (IOException ex) {
-//            ex.printStackTrace();
-//        }
-//    }
-//    private static void buildAuthorProfile(int authorId,int year) {
-//        HashMap<String, Paper> papers = null;
-//        HashMapVector fv = null;
-//        try {
-//            papers = readPaperList(authorId,year);
-//        } catch (Exception ex) {
-//            Logger.getLogger(CBSimComputation.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//        List<String> paperList = new ArrayList<String>(papers.keySet());
-//        Author author = new Author();
-//        author.setAuthorId("1");
-//        author.setPaperList(paperList);
-//        try {
-//            fv = CBFAuthorFVComputation.computeAuthorFV(author, papers, 1, 0.5);
-//        } catch (Exception ex) {
-//            Logger.getLogger(CBSimComputation.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//        author.setFeatureVector(fv);
-//    }
-    /**
-     * ghi vao sampleFile do giong nhau giua 2 tac gia dua tren do do cosine
-     *
-     * @param sampleFile chua mau am/duong
-     */
-//    public static void computeCosine(int year, String sampleFile, String outputFile){
-//        //doc danh sach tac gia tu mau am/duong
-//        LinkedHashSet<Integer> authorList = readAuthorList(sampleFile);
-//        //Lay danh sach bai bao cua cac tac gia trong mau am/duong
-//        HashMap<Integer,List<String>> authorPaperList = new HashMap<Integer,List<String>>();
-//        HashMap<String,Paper> papers = new HashMap<String,Paper>();
-//        readAuthorPaperList(authorList,2003,authorPaperList,papers);//tra ket qua thong qua 2 tham so cuoi
-//        try {
-////            HashMap<String,Integer> paperIdYear = readPaperIdByYear(2003);
-////            Collection c = authorPaperList.values();
-////            Iterator itr = c.iterator();
-//            
-//            //Tinh FV cho tat ca cac tac gia
-//            HashMap<String, Author> authors = new HashMap<String, Author>();
-//            Iterator<Integer> ir = authorList.iterator();
-//            while (ir.hasNext()){
-//                Integer idAuthor = ir.next();
-//                Author author = new Author();
-//                author.setAuthorId(idAuthor.toString());
-//                List<String> paperList = authorPaperList.get(idAuthor);
-//                author.setPaperList(paperList);
-////                HashMapVector fv = CBFAuthorFVComputation.computeAuthorFV(author, papers, 1, 0.5);
-////                author.setFeatureVector(fv);
-//                authors.put(author.getAuthorId(), author);
-//            }
-//            CBFPaperFVComputation.readTFIDFFromMahoutFile(papers,"D:\\1.CRS-Experiment\\TFIDF\\2003\\");
-//            CBFAuthorFVComputation.computeFVForAllAuthors(authors, papers, 1, 0.5);
-//            test(authors, papers);
-//            //tinh do do cosine cho tung cap tac gia trong mau duong/am va ghi ra file
-//            ArrayList<Pair<Integer,Integer>> listOfPairs = readSample(sampleFile);
-//            StringBuilder content = new StringBuilder();
-//            content.append("(idAuhtor1,idAuthor2) \t cosine\n");
-//            for (int i = 0; i < listOfPairs.size(); i++){
-//                Pair<Integer,Integer> pair = listOfPairs.get(i);
-//                Author author1 = authors.get(pair.getFirst().toString());
-//                Author author2 = authors.get(pair.getSecond().toString());
-//                HashMapVector fv1 = author1.getFeatureVector();
-//                HashMapVector fv2 = author2.getFeatureVector();
-//                double cosine = fv1.cosineTo(fv2);
-//                String line = "("+ pair.getFirst() + "," + pair.getSecond() + ")" + "\t" + cosine;
-//                content.append(line + "\n");
-//            }
-//            TextFileUtility.writeTextFile(outputFile, content.toString());
-//        } catch (Exception ex) {
-//            Logger.getLogger(CBSimComputation.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//    }
+    
     @Override
     public void computeFeatureValues(String outputFile, int typeOfSample) {
 
         //doc danh sach tac gia tu mau am/duong
         LinkedHashSet<Integer> authorList = null;
         if (typeOfSample == 1)
-            authorList = this._negativeSample.readAllAuthorIDList();
-        else
             authorList = this._positiveSample.readAllAuthorIDList();
+        else
+            authorList = this._negativeSample.readAllAuthorIDList();
 
         //Lay danh sach bai bao cua cac tac gia trong mau am/duong
         HashMap<Integer, List<String>> authorPaperList = new HashMap<Integer, List<String>>();
@@ -210,19 +117,18 @@ public class CBSimComputation extends FeatureComputation {
                 author.setAuthorId(idAuthor.toString());
                 List<String> paperList = authorPaperList.get(idAuthor);
                 author.setPaperList(paperList);
-//                HashMapVector fv = CBFAuthorFVComputation.computeAuthorFV(author, papers, 1, 0.5);
-//                author.setFeatureVector(fv);
                 authors.put(author.getAuthorId(), author);
             }
             CBFPaperFVComputation.readTFIDFFromMahoutFile(papers, this.tfIdfDir);
             CBFAuthorFVComputation.computeFVForAllAuthors(authors, papers, 1, 0.5);
-            test(authors, papers);
+            
             //tinh do do cosine cho tung cap tac gia trong mau duong/am va ghi ra file
             ArrayList<Pair> listOfPairs = null;
             if (typeOfSample == 1)
                 listOfPairs = this._positiveSample.getPairOfAuthor();
             else
                 listOfPairs = this._negativeSample.getPairOfAuthor();
+            
             StringBuilder content = new StringBuilder();
             content.append("(idAuhtor1,idAuthor2) \t cosine\n");
             for (int i = 0; i < listOfPairs.size(); i++) {
@@ -296,12 +202,13 @@ public class CBSimComputation extends FeatureComputation {
     public static void main(String[] args) throws Exception {
 //        createTestDatabase();
 //        CBFPaperFVComputation.vectorzie("/Users/thucnt/temp/input/papers", "/Users/thucnt/temp/output/TFIDF/");
-//        CBFPaperFVComputation.vectorzie(2003, "D:\\1.CRS-Experiment\\TFIDF\\2003\\");
+//        CBFPaperFVComputation.vectorzie(2011, "D:\\1.CRS-Experiment\\TFIDF\\2011\\");
 //        read 'PaperIdByAuthor("/Users/thucnt/temp/input/AuthorID_PaperID_2001_2003.txt");
         CBSimComputation cbSim = new CBSimComputation(
                 "D:\\1.CRS-Experiment\\MLData\\TrainingData\\PositiveSamples.txt",
                 "D:\\1.CRS-Experiment\\MLData\\TrainingData\\NegativeSamples.txt",
                 "D:\\1.CRS-Experiment\\TFIDF\\2003\\", 2003);
-        cbSim.computeFeatureValues("D:\\1.CRS-Experiment\\MLData\\TrainingData\\NegativeSamplesCosine.txt",1);
+        cbSim.computeFeatureValues("D:\\1.CRS-Experiment\\MLData\\TrainingData\\PositiveSample_Cosine.txt",1);
+        cbSim.computeFeatureValues("D:\\1.CRS-Experiment\\MLData\\TrainingData\\NegativeSample_Cosine.txt",0);
     }
 }
