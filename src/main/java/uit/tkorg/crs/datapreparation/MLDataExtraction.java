@@ -500,15 +500,25 @@ public class MLDataExtraction {
     }
 
     public static void main(String args[]) {
-        getTrainingData("D:\\1.CRS-Experiment\\MLData\\TrainingData\\AuthorID_PaperID_Before_2001.txt",
-                "D:\\1.CRS-Experiment\\MLData\\TrainingData\\PaperID_Year_Before_2001.txt",
-                "D:\\1.CRS-Experiment\\MLData\\TrainingData\\AuthorID_PaperID_2001_2003.txt",
-                "D:\\1.CRS-Experiment\\MLData\\TrainingData\\PaperID_Year_2001_2003.txt",
-                "D:\\1.CRS-Experiment\\MLData\\TrainingData\\AuthorID_PaperID_2004_2006.txt",
-                "D:\\1.CRS-Experiment\\MLData\\TrainingData\\PaperID_Year_2004_2006.txt",
-                "D:\\1.CRS-Experiment\\MLData\\TrainingData\\JuniorIDList.txt",
-                "D:\\1.CRS-Experiment\\MLData\\TrainingData\\PositiveSamples.txt",
-                "D:\\1.CRS-Experiment\\MLData\\TrainingData\\NegativeSamples.txt");
+        getTrainingData("/2.CRS-ExperimetalData/TrainingData/AuthorID_PaperID_Before_2001.txt",
+                "/2.CRS-ExperimetalData/TrainingData/PaperID_Year_Before_2001.txt",
+                "/2.CRS-ExperimetalData/TrainingData/AuthorID_PaperID_2001_2003.txt",
+                "/2.CRS-ExperimetalData/TrainingData/PaperID_Year_2001_2003.txt",
+                "/2.CRS-ExperimetalData/TrainingData/AuthorID_PaperID_2004_2006.txt",
+                "/2.CRS-ExperimetalData/TrainingData/PaperID_Year_2004_2006.txt",
+                "/2.CRS-ExperimetalData/TrainingData/JuniorIDList.txt",
+                "/2.CRS-ExperimetalData/TrainingData/PositiveSamples.txt",
+                "/2.CRS-ExperimetalData/TrainingData/NegativeSamples.txt");
+        
+//        getTrainingData("D:\\1.CRS-Experiment\\MLData\\TrainingData\\AuthorID_PaperID_Before_2001.txt",
+//                "D:\\1.CRS-Experiment\\MLData\\TrainingData\\PaperID_Year_Before_2001.txt",
+//                "D:\\1.CRS-Experiment\\MLData\\TrainingData\\AuthorID_PaperID_2001_2003.txt",
+//                "D:\\1.CRS-Experiment\\MLData\\TrainingData\\PaperID_Year_2001_2003.txt",
+//                "D:\\1.CRS-Experiment\\MLData\\TrainingData\\AuthorID_PaperID_2004_2006.txt",
+//                "D:\\1.CRS-Experiment\\MLData\\TrainingData\\PaperID_Year_2004_2006.txt",
+//                "D:\\1.CRS-Experiment\\MLData\\TrainingData\\JuniorIDList.txt",
+//                "D:\\1.CRS-Experiment\\MLData\\TrainingData\\PositiveSamples.txt",
+//                "D:\\1.CRS-Experiment\\MLData\\TrainingData\\NegativeSamples.txt");
 
 //        getTestingData();
 //        HashMap<Pair, HashMap<String, Double>> model = aggregateFeatures("/Users/thucnt/NetBeansProjects/crs-framework/input", 1);

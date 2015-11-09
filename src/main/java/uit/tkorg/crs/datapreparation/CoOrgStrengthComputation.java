@@ -58,7 +58,7 @@ public class CoOrgStrengthComputation extends FeatureComputation {
             }
         }
 
-        // Step 3: Calculating OrgRSS values for input OrgIDList for others OrgID in the OrganizationGraph by using RSS
+        // Step 3: Calculating OrgRSS values for input OrgIDList to other OrgID in 3-hub in the OrganizationGraph by using RSS
         RSS rssMethod = new RSS();
         HashMap<Integer, HashMap<Integer, Float>> OrgRSSResult = rssMethod.process(_orgGraph._rssOrgGraph, orgIDList);
 
@@ -70,16 +70,24 @@ public class CoOrgStrengthComputation extends FeatureComputation {
                 int firstAuthorID = p.getFirst();
                 int secondAuthorID = p.getSecond();
 
-                int orgID_Of_FirstAuthorID = _orgGraph._authorID_OrgID.get(firstAuthorID);
-                int orgID_Of_SecondAuthorID = _orgGraph._authorID_OrgID.get(secondAuthorID);
+                int orgID_Of_FirstAuthorID = 0;
+                int orgID_Of_SecondAuthorID = 0;
+                if (_orgGraph._authorID_OrgID.containsKey(firstAuthorID))
+                    orgID_Of_FirstAuthorID = _orgGraph._authorID_OrgID.get(firstAuthorID);               
+                if (_orgGraph._authorID_OrgID.containsKey(secondAuthorID))
+                    orgID_Of_SecondAuthorID = _orgGraph._authorID_OrgID.get(secondAuthorID) ;
+                
                 float orgRSSValue = 0;
-                if (orgID_Of_FirstAuthorID == orgID_Of_SecondAuthorID) {
+                if ((orgID_Of_FirstAuthorID != 0) && (orgID_Of_SecondAuthorID != 0) 
+                        && (orgID_Of_FirstAuthorID == orgID_Of_SecondAuthorID)) {
                     orgRSSValue = 1;
                 } else {
-                    if (OrgRSSResult.get(orgID_Of_FirstAuthorID).get(orgID_Of_SecondAuthorID) != null) {
+                    if (OrgRSSResult.containsKey(orgID_Of_FirstAuthorID) && 
+                            OrgRSSResult.get(orgID_Of_FirstAuthorID).containsKey(orgID_Of_SecondAuthorID)) {
                         orgRSSValue = OrgRSSResult.get(orgID_Of_FirstAuthorID).get(orgID_Of_SecondAuthorID);
                     } else {
-                        if (_orgGraph._rssOrgGraph.get(orgID_Of_FirstAuthorID).get(orgID_Of_SecondAuthorID) != null) {
+                        if (_orgGraph._rssOrgGraph.containsKey(orgID_Of_FirstAuthorID) && 
+                                _orgGraph._rssOrgGraph.get(orgID_Of_FirstAuthorID).containsKey(orgID_Of_SecondAuthorID)) {
                             orgRSSValue = _orgGraph._rssOrgGraph.get(orgID_Of_FirstAuthorID).get(orgID_Of_SecondAuthorID);
                         } else {
                             orgRSSValue = 0;
@@ -92,18 +100,25 @@ public class CoOrgStrengthComputation extends FeatureComputation {
         }
     }
 
-    public static void main(String args[]) {
-        try {
+    public static void main(String args[]) throws Exception {
+        
+//            CoOrgStrengthComputation obj = new CoOrgStrengthComputation(
+//                    "D:\\1.CRS-Experiment\\MLData\\TrainingData\\PositiveSamples.txt",
+//                    "D:\\1.CRS-Experiment\\MLData\\TrainingData\\NegativeSamples.txt",
+//                    "D:\\1.CRS-Experiment\\MLData\\TrainingData\\AuthorID_PaperID_OrgID_Before_Include_2003.txt",
+//                    0, 2003);
+//            obj.computeFeatureValues("D:\\1.CRS-Experiment\\MLData\\TrainingData\\PositiveSampleOrgRSS.txt", 1);
+//            obj.computeFeatureValues("D:\\1.CRS-Experiment\\MLData\\TrainingData\\NegativeSampleOrgRSS.txt", 0);
+            
             CoOrgStrengthComputation obj = new CoOrgStrengthComputation(
-                    "D:\\1.CRS-Experiment\\MLData\\TrainingData\\PositiveSamples.txt",
-                    "D:\\1.CRS-Experiment\\MLData\\TrainingData\\NegativeSamples.txt",
-                    "D:\\1.CRS-Experiment\\MLData\\TrainingData\\AuthorID_PaperID_OrgID_Before_Include_2003.txt",
+                    "/2.CRS-ExperimetalData/TrainingData/PositiveSamples.txt",
+                    "/2.CRS-ExperimetalData/TrainingData/NegativeSamples.txt",
+                    "/2.CRS-ExperimetalData/TrainingData/AuthorID_PaperID_OrgID_Before_Include_2003.txt",
                     0, 2003);
-            obj.computeFeatureValues("D:\\1.CRS-Experiment\\MLData\\TrainingData\\PositiveSampleOrgRSS.txt", 1);
-            obj.computeFeatureValues("D:\\1.CRS-Experiment\\MLData\\TrainingData\\NegativeSampleOrgRSS.txt", 0);
+            obj.computeFeatureValues("/2.CRS-ExperimetalData/TrainingData/PositiveSampleOrgRSS.txt", 1);
+            obj.computeFeatureValues("/2.CRS-ExperimetalData/TrainingData/NegativeSampleOrgRSS.txt", 0);
+            
             System.out.println("DONE DONE DONE");
-        } catch (Exception ex) {
-            System.out.println(ex.toString());
-        }
+        
     }
 }
