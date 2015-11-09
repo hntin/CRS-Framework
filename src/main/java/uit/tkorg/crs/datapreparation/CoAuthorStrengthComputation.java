@@ -76,11 +76,13 @@ public class CoAuthorStrengthComputation extends FeatureComputation {
                 if (rssDoublePlus_FirstAuthorID_Nodes_NoDirectedLink_In3Hub.containsKey(firstAuthorID)
                         && rssDoublePlus_FirstAuthorID_Nodes_NoDirectedLink_In3Hub.get(firstAuthorID).containsKey(secondAuthorID)) {
                     rssDoublePlusValue = rssDoublePlus_FirstAuthorID_Nodes_NoDirectedLink_In3Hub.get(firstAuthorID).get(secondAuthorID);
-                } else {
-                    if (_coAuthorGraph._rssDoublePlusGraph.get(firstAuthorID).containsKey(secondAuthorID)) {
-                        rssDoublePlusValue = _coAuthorGraph._rssDoublePlusGraph.get(firstAuthorID).get(secondAuthorID);
-                    }
-                }
+                } 
+//                else {
+//                    if (_coAuthorGraph._rssDoublePlusGraph.get(firstAuthorID).containsKey(secondAuthorID)) {
+//                        rssDoublePlusValue = _coAuthorGraph._rssDoublePlusGraph.get(firstAuthorID).get(secondAuthorID);
+//                    }
+//                    System.out.println("NO DAY NE.." + rssDoublePlusValue);
+//                }
                 
                 out.println("(" + firstAuthorID + "," + secondAuthorID + ")\t" + rssDoublePlusValue);
                 out.flush();
