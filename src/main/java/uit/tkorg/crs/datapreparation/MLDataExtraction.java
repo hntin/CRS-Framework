@@ -455,8 +455,12 @@ public class MLDataExtraction {
                                                             String featureFile) {
         try {
             FileWriter out = new FileWriter(featureFile);
-            String header = "(idAuthor1,idAuthor2)\tCBSim\tCoAuhtor....\n";
-            out.write(header);
+            Map.Entry<Pair,HashMap<String,Double>> aEntry = features.entrySet().iterator().next();
+            Set<String> featureSet = aEntry.getValue().keySet();
+            String header = "(idAuthor1,idAuthor2)";
+            for (String name : featureSet)
+                header += ("," + name);
+            out.write(header + "\n");
             int lines = 0;
             for (Map.Entry<Pair,HashMap<String,Double>> entry : features.entrySet()){
                 lines++;
@@ -526,8 +530,8 @@ public class MLDataExtraction {
 //                "D:\\1.CRS-Experiment\\MLData\\TrainingData\\NegativeSamples.txt");
 
 //        getTestingData();
-        HashMap<Pair, HashMap<String, Double>> model = aggregateFeatures("D:\\1.CRS-Experiment\\MLData\\TrainingData", 1);
-        writeFeatureFile(model,"D:\\1.CRS-Experiment\\MLData\\TrainingData\\PositiveSample_AllFeatures.txt");
+        HashMap<Pair, HashMap<String, Double>> model = aggregateFeatures("D:\\1.CRS-Experiment\\MLData\\TrainingData", 0);
+        writeFeatureFile(model,"D:\\1.CRS-Experiment\\MLData\\TrainingData\\NegativeSample_AllFeatures.txt");
         System.out.println("DONE");
     }
 }
