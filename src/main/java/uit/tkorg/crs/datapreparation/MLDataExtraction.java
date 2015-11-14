@@ -325,73 +325,60 @@ public class MLDataExtraction {
     private static void getTrainingData(String authorID_paperID_T0_FileName, String paperID_Year_T0_FileName,
             String authorID_paperID_T1_FileName, String paperID_Year_T1_FileName,
             String authorID_paperID_T2_FileName, String paperID_Year_T2_FileName,
-            String outFile_JuniorIDList, String outFile_PositiveSample, String outFile_NegativeSample) {
-
-        //<editor-fold defaultstate="collapsed" desc="For SampleData">
-        // G0 < T1 (before 2003)
-//        CoAuthorGraph G0 = new CoAuthorGraph("/2.CRS-ExperimetalData/SampleData/AuthorID_PaperID_Before_2003.txt",
-//                "/2.CRS-ExperimetalData/SampleData/PaperID_Year_Before_2003.txt");
-//        System.out.println("Building G0 ... DONE.");
-//
-//        // G1 in T1
-//        CoAuthorGraph G1 = new CoAuthorGraph("/2.CRS-ExperimetalData/SampleData/AuthorID_PaperID_2003_2005.txt",
-//                "/2.CRS-ExperimetalData/SampleData/PaperID_Year_2003_2005.txt", 2003, 2005);
-//        System.out.println("Building G1 ... DONE.");
-//
-//        // Loc ra cac junior researchers ton tai trong G1, nhung chua ton tai trong G0.
-//        // Tuc moi bat dau nghien cuu va lan dau xuat hien trong cong dong. So bai bao trong trong G1 < 3
-//        getListofJuniorFromCoAuthorGraph(G0, G1, "/2.CRS-ExperimetalData/SampleData/JuniorIDList.txt");
-//
-//        // G2 in T2
-//        CoAuthorGraph G2 = new CoAuthorGraph("/2.CRS-ExperimetalData/SampleData/AuthorID_PaperID_2006_2008.txt",
-//                "/2.CRS-ExperimetalData/SampleData/PaperID_Year_2006_2008.txt", 2006, 2008);
-//        System.out.println("Building G2 ..... DONE.");
-//
-//        // Loc ra cac link(+) xuat hien trong G2 cua cac junior (xuat hien trong G1)
-//        HashMap<Integer, Integer> juniorAuthorIDHM = loadAuthorIDFromTextFile("/2.CRS-ExperimetalData/SampleData/JuniorIDList.txt");
-//        int numOfPositiveSample = getPositiveSampleFromCoAuthorGraph(juniorAuthorIDHM, G1, G2, "/2.CRS-ExperimetalData/SampleData/PositiveSamples.txt");
-//        System.out.println("So mau (+):" + numOfPositiveSample);
-//
-//        // Chon ngau nhien cac cap author khong link trong G2 va G1 cho cac junior (xuat hien trong G1)
-//        // So luong mau (-) muon chon = Tat ca mau am trong G2 cua nhung junior co mau (+)
-//        // Chi chon mau am (-) trong G2 cho nhung junior ma co xuat hien mau (+) trong G2. Khong can xet nhung junior ma khong co mau (+)???
-//        HashMap<Integer, Integer> authorsInPositveSample = loadAuthorIDFromPositiveSample("/2.CRS-ExperimetalData/SampleData/PositiveSamples.txt");
-//        double numOfSelectedNagativeSample = getAllNegativeSampleFromCoAuthorGraphIn3Hub(authorsInPositveSample, G1, G2, "/2.CRS-ExperimetalData/SampleData/NegativeSamples.txt");
-//        System.out.println("So mau (-):" + numOfSelectedNagativeSample);
-        //</editor-fold>
+            String authorID_paperID_T3_FileName, String paperID_Year_T3_FileName,
+            String outFile_JuniorIDList, String outFile_PositiveSample, String outFile_NegativeSample, int forTrainingOrTesting) {
 
         //<editor-fold defaultstate="collapsed" desc="For The RealData">
         // G0 in T0
         CoAuthorGraph G0 = new CoAuthorGraph(authorID_paperID_T0_FileName, paperID_Year_T0_FileName);
         // G1 in T1
         CoAuthorGraph G1 = new CoAuthorGraph(authorID_paperID_T1_FileName, paperID_Year_T1_FileName, 2001, 2003);
-        // Loc ra cac junior researchers ton tai trong G1, nhung chua ton tai trong G0.
-        // Tuc moi bat dau nghien cuu va lan dau xuat hien trong cong dong. So bai bao trong trong G1 < 3
-        getListofJuniorFromCoAuthorGraph(G0, G1, outFile_JuniorIDList);
 
         // G2 in T2
         CoAuthorGraph G2 = new CoAuthorGraph(authorID_paperID_T2_FileName, paperID_Year_T2_FileName, 2004, 2006);
 
-        // Loc ra cac link(+) xuat hien trong G2 cua cac junior (xuat hien trong G1)
-        HashMap<Integer, Integer> juniorAuthorIDHM = loadAuthorIDFromTextFile(outFile_JuniorIDList);
+        // G3 in T3
+        CoAuthorGraph G3 = new CoAuthorGraph(authorID_paperID_T3_FileName, paperID_Year_T3_FileName, 2007, 2009);
 
-        double numOfPositiveSample = getPositiveSampleFromCoAuthorGraph(juniorAuthorIDHM, G1, G2, outFile_PositiveSample);
+        // Extracting juniors for Training for Testing
+        int numOfPositiveSample = 0;
+        int numOfSelectedNagativeSample = 0;
+        if (forTrainingOrTesting == 1) { // For Training
+            // Loc ra cac junior researchers ton tai trong G1, nhung chua ton tai trong G0.
+            // Tuc moi bat dau nghien cuu va lan dau xuat hien trong cong dong trong G1. So bai bao trong trong G1 < 3
+            getListofJuniorFromCoAuthorGraph(G0, G1, outFile_JuniorIDList);
+
+            // Loc ra cac link(+) xuat hien trong G2 cua cac junior (xuat hien trong G1)
+            HashMap<Integer, Integer> juniorAuthorIDHM = loadAuthorIDFromTextFile(outFile_JuniorIDList);
+            numOfPositiveSample = getPositiveSampleFromCoAuthorGraph(juniorAuthorIDHM, G1, G2, outFile_PositiveSample);
+
+            // Chi chon mau am (-) trong G2 cho nhung junior ma co xuat hien mau (+) trong G2. Khong can xet nhung junior ma khong co mau (+)
+            // Chon cac cap author khong link trong G2 va G1 cho cac junior (xuat hien trong G1), quet mang CoAuthor ban kinh la 3 (3-Hub)
+            HashMap<Integer, Integer> authorsInPositveSample = loadAuthorIDFromPositiveSample(outFile_PositiveSample);
+            System.out.println("So Junior Researchers lien quan mau (+):" + authorsInPositveSample.size());
+            System.out.println("Tong so Researchers trong G2:" + G2._coAuthorGraph.size());
+            numOfSelectedNagativeSample = getAllNegativeSampleFromCoAuthorGraphIn3Hub(authorsInPositveSample, G1, G2, outFile_NegativeSample);
+        }
+        if (forTrainingOrTesting == 2) { // For Testing
+            // Loc ra cac junior researchers ton tai trong G2, nhung chua ton tai trong G1.
+            // Tuc moi bat dau nghien cuu va lan dau xuat hien trong cong dong trong G2. So bai bao trong trong G2 < 3
+            getListofJuniorFromCoAuthorGraph(G1, G2, outFile_JuniorIDList);
+
+            // Loc ra cac link(+) xuat hien trong G3 cua cac junior (xuat hien trong G2)
+            HashMap<Integer, Integer> juniorAuthorIDHM = loadAuthorIDFromTextFile(outFile_JuniorIDList);
+            numOfPositiveSample = getPositiveSampleFromCoAuthorGraph(juniorAuthorIDHM, G2, G3, outFile_PositiveSample);
+
+            // Chi chon mau am (-) trong G3 cho nhung junior ma co xuat hien mau (+) trong G3. Khong can xet nhung junior ma khong co mau (+)
+            // Chon cac cap author khong link trong G3 va G2 cho cac junior (xuat hien trong G2), quet mang CoAuthor ban kinh la 3 (3-Hub)
+            HashMap<Integer, Integer> authorsInPositveSample = loadAuthorIDFromPositiveSample(outFile_PositiveSample);
+            System.out.println("So Junior Researchers lien quan mau (+):" + authorsInPositveSample.size());
+            System.out.println("Tong so Researchers trong G3:" + G3._coAuthorGraph.size());
+            numOfSelectedNagativeSample = getAllNegativeSampleFromCoAuthorGraphIn3Hub(authorsInPositveSample, G2, G3, outFile_NegativeSample);
+        }
+
         System.out.println("So mau (+):" + numOfPositiveSample);
-
-        // Chon ngau nhien cac cap author khong link trong G2 va G1 cho cac junior (xuat hien trong G1)
-        // So luong mau (-) muon chon = Tat ca mau am trong G2 cua nhung junior co mau (+)
-        // Chi chon mau am (-) trong G2 cho nhung junior ma co xuat hien mau (+) trong G2. Khong can xet nhung junior ma khong co mau (+)???
-        HashMap<Integer, Integer> authorsInPositveSample = loadAuthorIDFromPositiveSample(outFile_PositiveSample);
-        System.out.println("So Junior Researchers lien quan mau (+):" + authorsInPositveSample.size());
-        System.out.println("Tong so Researchers trong G2:" + G2._coAuthorGraph.size());
-
-        int numOfSelectedNagativeSample = getAllNegativeSampleFromCoAuthorGraphIn3Hub(authorsInPositveSample, G1, G2, outFile_NegativeSample);
         System.out.println("So mau (-):" + numOfSelectedNagativeSample);
         //</editor-fold>
-    }
-
-    private static void getTestingData() {
-
     }
 
     /**
@@ -445,30 +432,31 @@ public class MLDataExtraction {
         }
         return features;
     }
-    
+
     /**
      *
      * @param features
      * @param featureFile, need to be formated as
      */
     private static void writeFeatureFile(HashMap<Pair, HashMap<String, Double>> features,
-                                                            String featureFile) {
+            String featureFile) {
         try {
             FileWriter out = new FileWriter(featureFile);
-            Map.Entry<Pair,HashMap<String,Double>> aEntry = features.entrySet().iterator().next();
+            Map.Entry<Pair, HashMap<String, Double>> aEntry = features.entrySet().iterator().next();
             Set<String> featureSet = aEntry.getValue().keySet();
             String header = "(idAuthor1,idAuthor2)";
-            for (String name : featureSet)
+            for (String name : featureSet) {
                 header += ("," + name);
+            }
             out.write(header + "\n");
             int lines = 0;
-            for (Map.Entry<Pair,HashMap<String,Double>> entry : features.entrySet()){
+            for (Map.Entry<Pair, HashMap<String, Double>> entry : features.entrySet()) {
                 lines++;
                 Pair p = entry.getKey();
                 StringBuilder line = new StringBuilder();
                 line.append(p.toString());
-                HashMap<String,Double> f = entry.getValue();
-                for (Double d : f.values()){
+                HashMap<String, Double> f = entry.getValue();
+                for (Double d : f.values()) {
                     line.append("," + d.doubleValue());
                 }
                 line.append("\n");
@@ -509,29 +497,60 @@ public class MLDataExtraction {
     }
 
     public static void main(String args[]) {
+
+        // Da test OK
+        getTrainingData("/2.CRS-ExperimetalData/SampleData/AuthorID_PaperID_Before_2003.txt",
+                "/2.CRS-ExperimetalData/SampleData/PaperID_Year_Before_2003.txt",
+                "/2.CRS-ExperimetalData/SampleData/AuthorID_PaperID_2003_2005.txt",
+                "/2.CRS-ExperimetalData/SampleData/PaperID_Year_2003_2005.txt",
+                "/2.CRS-ExperimetalData/SampleData/AuthorID_PaperID_2006_2008.txt",
+                "/2.CRS-ExperimetalData/SampleData/PaperID_Year_2006_2008.txt",
+                "/2.CRS-ExperimetalData/SampleData/AuthorID_PaperID_2009_2011.txt",
+                "/2.CRS-ExperimetalData/SampleData/PaperID_Year_2009_2011.txt",
+                "/2.CRS-ExperimetalData/SampleData/Training_JuniorIDList.txt",
+                "/2.CRS-ExperimetalData/SampleData/Training_PositiveSamples.txt",
+                "/2.CRS-ExperimetalData/SampleData/Training_NegativeSamples.txt",
+                1);
+        getTrainingData("/2.CRS-ExperimetalData/SampleData/AuthorID_PaperID_Before_2003.txt",
+                "/2.CRS-ExperimetalData/SampleData/PaperID_Year_Before_2003.txt",
+                "/2.CRS-ExperimetalData/SampleData/AuthorID_PaperID_2003_2005.txt",
+                "/2.CRS-ExperimetalData/SampleData/PaperID_Year_2003_2005.txt",
+                "/2.CRS-ExperimetalData/SampleData/AuthorID_PaperID_2006_2008.txt",
+                "/2.CRS-ExperimetalData/SampleData/PaperID_Year_2006_2008.txt",
+                "/2.CRS-ExperimetalData/SampleData/AuthorID_PaperID_2009_2011.txt",
+                "/2.CRS-ExperimetalData/SampleData/PaperID_Year_2009_2011.txt",
+                "/2.CRS-ExperimetalData/SampleData/Testing_JuniorIDList.txt",
+                "/2.CRS-ExperimetalData/SampleData/Testing_PositiveSamples.txt",
+                "/2.CRS-ExperimetalData/SampleData/Testing_NegativeSamples.txt",
+                2);
+
 //        getTrainingData("/2.CRS-ExperimetalData/TrainingData/AuthorID_PaperID_Before_2001.txt",
 //                "/2.CRS-ExperimetalData/TrainingData/PaperID_Year_Before_2001.txt",
 //                "/2.CRS-ExperimetalData/TrainingData/AuthorID_PaperID_2001_2003.txt",
 //                "/2.CRS-ExperimetalData/TrainingData/PaperID_Year_2001_2003.txt",
 //                "/2.CRS-ExperimetalData/TrainingData/AuthorID_PaperID_2004_2006.txt",
 //                "/2.CRS-ExperimetalData/TrainingData/PaperID_Year_2004_2006.txt",
-//                "/2.CRS-ExperimetalData/TrainingData/JuniorIDList.txt",
-//                "/2.CRS-ExperimetalData/TrainingData/PositiveSamples.txt",
-//                "/2.CRS-ExperimetalData/TrainingData/NegativeSamples.txt");
+//                "/2.CRS-ExperimetalData/TrainingData/AuthorID_PaperID_2007_2009.txt",
+//                "/2.CRS-ExperimetalData/TrainingData/PaperID_Year_2007_2009.txt",
+//                "/2.CRS-ExperimetalData/TrainingData/Training_JuniorIDList.txt",
+//                "/2.CRS-ExperimetalData/TrainingData/Training_PositiveSamples.txt",
+//                "/2.CRS-ExperimetalData/TrainingData/Training_NegativeSamples.txt",
+//                1);
+//        getTrainingData("/2.CRS-ExperimetalData/TrainingData/AuthorID_PaperID_Before_2001.txt",
+//                "/2.CRS-ExperimetalData/TrainingData/PaperID_Year_Before_2001.txt",
+//                "/2.CRS-ExperimetalData/TrainingData/AuthorID_PaperID_2001_2003.txt",
+//                "/2.CRS-ExperimetalData/TrainingData/PaperID_Year_2001_2003.txt",
+//                "/2.CRS-ExperimetalData/TrainingData/AuthorID_PaperID_2004_2006.txt",
+//                "/2.CRS-ExperimetalData/TrainingData/PaperID_Year_2004_2006.txt",
+//                "/2.CRS-ExperimetalData/TrainingData/AuthorID_PaperID_2007_2009.txt",
+//                "/2.CRS-ExperimetalData/TrainingData/PaperID_Year_2007_2009.txt",
+//                "/2.CRS-ExperimetalData/TrainingData/Testing_JuniorIDList.txt",
+//                "/2.CRS-ExperimetalData/TrainingData/Testing_PositiveSamples.txt",
+//                "/2.CRS-ExperimetalData/TrainingData/Testing_NegativeSamples.txt",
+//                2);
         
-//        getTrainingData("D:\\1.CRS-Experiment\\MLData\\TrainingData\\AuthorID_PaperID_Before_2001.txt",
-//                "D:\\1.CRS-Experiment\\MLData\\TrainingData\\PaperID_Year_Before_2001.txt",
-//                "D:\\1.CRS-Experiment\\MLData\\TrainingData\\AuthorID_PaperID_2001_2003.txt",
-//                "D:\\1.CRS-Experiment\\MLData\\TrainingData\\PaperID_Year_2001_2003.txt",
-//                "D:\\1.CRS-Experiment\\MLData\\TrainingData\\AuthorID_PaperID_2004_2006.txt",
-//                "D:\\1.CRS-Experiment\\MLData\\TrainingData\\PaperID_Year_2004_2006.txt",
-//                "D:\\1.CRS-Experiment\\MLData\\TrainingData\\JuniorIDList.txt",
-//                "D:\\1.CRS-Experiment\\MLData\\TrainingData\\PositiveSamples.txt",
-//                "D:\\1.CRS-Experiment\\MLData\\TrainingData\\NegativeSamples.txt");
-
-//        getTestingData();
-        HashMap<Pair, HashMap<String, Double>> model = aggregateFeatures("D:\\1.CRS-Experiment\\MLData\\TrainingData", 0);
-        writeFeatureFile(model,"D:\\1.CRS-Experiment\\MLData\\TrainingData\\NegativeSample_AllFeatures.txt");
+//        HashMap<Pair, HashMap<String, Double>> model = aggregateFeatures("D:\\1.CRS-Experiment\\MLData\\TrainingData", 0);
+//        writeFeatureFile(model,"D:\\1.CRS-Experiment\\MLData\\TrainingData\\NegativeSample_AllFeatures.txt");
         System.out.println("DONE");
     }
 }

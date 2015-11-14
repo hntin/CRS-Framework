@@ -27,8 +27,9 @@ public class DatabaseTool {
     private final String dbDriver = "com.mysql.jdbc.Driver";
     private String dbURL = "jdbc:mysql://localhost:3306/mas";
     private String dbUsername = "root";
-    private String dbPassword = "root";
-    private String dataDir = "D:\\1.CRS-Experiment\\MLData\\TrainingData\\";
+    private String dbPassword = "";
+    //private String dataDir = "D:\\1.CRS-Experiment\\MLData\\TrainingData\\";    
+    private String dataDir = "/2.CRS-ExperimetalData/TrainingData/";
     private Connection con;
     private PreparedStatement stmt;
     ResultSet rs;
@@ -285,20 +286,20 @@ public class DatabaseTool {
         try {
             DatabaseTool dbTool = new DatabaseTool();
             dbTool.connect();
-            dbTool.get_AuthorID_PaperID_InPeriod(0, 2000, "AuthorID_PaperID_Before_2001.txt");
-            dbTool.get_AuthorID_PaperID_InPeriod(2001, 2003, "AuthorID_PaperID_2001_2003.txt");
-            dbTool.get_AuthorID_PaperID_InPeriod(2004, 2006, "AuthorID_PaperID_2004_2006.txt");
-            dbTool.get_AuthorID_PaperID_InPeriod(2007, 2011, "AuthorID_PaperID_2007_2011.txt");
-            dbTool.get_AuthorID_PaperID_InPeriod(0, 2003, "AuthorID_PaperID_Before_Include_2003.txt");
+//            dbTool.get_AuthorID_PaperID_InPeriod(0, 2000, "AuthorID_PaperID_Before_2001.txt");
+//            dbTool.get_AuthorID_PaperID_InPeriod(2001, 2003, "AuthorID_PaperID_2001_2003.txt");
+//            dbTool.get_AuthorID_PaperID_InPeriod(2004, 2006, "AuthorID_PaperID_2004_2006.txt");
+            dbTool.get_AuthorID_PaperID_InPeriod(2007, 2009, "AuthorID_PaperID_2007_2009.txt");
+//            dbTool.get_AuthorID_PaperID_InPeriod(0, 2003, "AuthorID_PaperID_Before_Include_2003.txt");
             
-            dbTool.get_PaperID_Year_InPeriod(0, 2000, "PaperID_Year_Before_2001.txt");
-            dbTool.get_PaperID_Year_InPeriod(2001, 2003, "PaperID_Year_2001_2003.txt");
-            dbTool.get_PaperID_Year_InPeriod(2004, 2006, "PaperID_Year_2004_2006.txt");
-            dbTool.get_PaperID_Year_InPeriod(2004, 2006, "PaperID_Year_2007_2011.txt");
-            dbTool.get_PaperID_Year_InPeriod(0, 2003, "PaperID_Year_Before_Include_2003.txt");
+//            dbTool.get_PaperID_Year_InPeriod(0, 2000, "PaperID_Year_Before_2001.txt");
+//            dbTool.get_PaperID_Year_InPeriod(2001, 2003, "PaperID_Year_2001_2003.txt");
+//            dbTool.get_PaperID_Year_InPeriod(2004, 2006, "PaperID_Year_2004_2006.txt");
+            dbTool.get_PaperID_Year_InPeriod(2007, 2009, "PaperID_Year_2007_2009.txt");
+//            dbTool.get_PaperID_Year_InPeriod(0, 2003, "PaperID_Year_Before_Include_2003.txt");
             
-            dbTool.get_AuthorID_PaperID_OrgID_InPeriod(0, 2003, "AuthorID_PaperID_OrgID_Before_Include_2003.txt");
-            dbTool.get_PaperID_Year_RefID_InPeriod(0, 2003, "PaperID_Year_RefID_Before_Include_2003.txt");
+//            dbTool.get_AuthorID_PaperID_OrgID_InPeriod(0, 2003, "AuthorID_PaperID_OrgID_Before_Include_2003.txt");
+//            dbTool.get_PaperID_Year_RefID_InPeriod(0, 2003, "PaperID_Year_RefID_Before_Include_2003.txt");
             dbTool.disconnect();
             System.out.println("DatabaseTool ... DONE DONE DONE");
         } catch (Exception ex) {

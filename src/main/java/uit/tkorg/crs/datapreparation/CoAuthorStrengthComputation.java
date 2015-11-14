@@ -37,7 +37,7 @@ public class CoAuthorStrengthComputation extends FeatureComputation {
     }
 
     /**
-     * 
+     *
      * @param outputFile
      * @param typeOfSample: 1 is positive; 0 is negative
      * @throws java.io.IOException
@@ -51,8 +51,7 @@ public class CoAuthorStrengthComputation extends FeatureComputation {
         if (typeOfSample == 1) {
             firstAuthorIDList = this._positiveSample.readAllFirstAuthorID();
             pairs = this._positiveSample.getPairOfAuthor();
-        }
-        else {
+        } else {
             firstAuthorIDList = this._negativeSample.readAllFirstAuthorID();
             pairs = this._negativeSample.getPairOfAuthor();
         }
@@ -62,31 +61,30 @@ public class CoAuthorStrengthComputation extends FeatureComputation {
         RSS methodRSS = new RSS();
         HashMap<Integer, HashMap<Integer, Float>> rssDoublePlus_FirstAuthorID_Nodes_NoDirectedLink_In3Hub = methodRSS.process(
                 _coAuthorGraph._rssDoublePlusGraph, firstAuthorIDList);
- 
+
         // Step 3: Extracting RSSDoublePlus Values for all pairs of PositveSamples
         //HashMap<Integer, HashMap<Integer, Float>> rssDoublePlus_Samples_HM = new HashMap<>();
-
         try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(outputFile)))) {
             out.println("AuthorID, CoAuthorID, rssDoublePlusValue");
             out.flush();
             for (Pair p : pairs) {
                 int firstAuthorID = p.getFirst();
-                int secondAuthorID = p.getSecond();                
+                int secondAuthorID = p.getSecond();
                 float rssDoublePlusValue = 0;
                 if (rssDoublePlus_FirstAuthorID_Nodes_NoDirectedLink_In3Hub.containsKey(firstAuthorID)
                         && rssDoublePlus_FirstAuthorID_Nodes_NoDirectedLink_In3Hub.get(firstAuthorID).containsKey(secondAuthorID)) {
                     rssDoublePlusValue = rssDoublePlus_FirstAuthorID_Nodes_NoDirectedLink_In3Hub.get(firstAuthorID).get(secondAuthorID);
-                } 
+                }
 //                else {
 //                    if (_coAuthorGraph._rssDoublePlusGraph.get(firstAuthorID).containsKey(secondAuthorID)) {
 //                        rssDoublePlusValue = _coAuthorGraph._rssDoublePlusGraph.get(firstAuthorID).get(secondAuthorID);
 //                    }
 //                    System.out.println("NO DAY NE.." + rssDoublePlusValue);
 //                }
-                
+
                 out.println("(" + firstAuthorID + "," + secondAuthorID + ")\t" + rssDoublePlusValue);
                 out.flush();
-                
+
 //            HashMap<Integer, Float> hm = rssDoublePlus_Samples_HM.get(firstAuthorID);
 //            if (hm == null || hm.isEmpty()) {
 //                hm = new HashMap<>();
@@ -100,25 +98,44 @@ public class CoAuthorStrengthComputation extends FeatureComputation {
 
     public static void main(String args[]) {
         try {
-//            CoAuthorStrengthComputation obj = new CoAuthorStrengthComputation(
-//                    "D:\\1.CRS-Experiment\\MLData\\TrainingData\\PositiveSamples.txt",
-//                    "D:\\1.CRS-Experiment\\MLData\\TrainingData\\NegativeSamples.txt",
-//                    "D:\\1.CRS-Experiment\\MLData\\TrainingData\\AuthorID_PaperID_2001_2003.txt",
-//                    "D:\\1.CRS-Experiment\\MLData\\TrainingData\\PaperID_Year_2001_2003.txt", 2001, 2003);
-//            obj.computeFeatureValues("D:\\1.CRS-Experiment\\MLData\\TrainingData\\PositiveSampleCoAuthorRSS.txt", 1);
-//            obj.computeFeatureValues("D:\\1.CRS-Experiment\\MLData\\TrainingData\\NegativeSampleCoAuthorRSS.txt", 0);
-
-            CoAuthorStrengthComputation obj = new CoAuthorStrengthComputation(
-                    "/2.CRS-ExperimetalData/SampleData/PositiveSamples.txt",
-                    "/2.CRS-ExperimetalData/SampleData/NegativeSamples.txt",
+            CoAuthorStrengthComputation obj;
+            // For Training
+            obj = new CoAuthorStrengthComputation(
+                    "/2.CRS-ExperimetalData/SampleData/Training_PositiveSamples.txt",
+                    "/2.CRS-ExperimetalData/SampleData/Training_NegativeSamples.txt",
                     "/2.CRS-ExperimetalData/SampleData/AuthorID_PaperID_2003_2005.txt",
                     "/2.CRS-ExperimetalData/SampleData/PaperID_Year_2003_2005.txt", 2003, 2005);
-            obj.computeFeatureValues("/2.CRS-ExperimetalData/SampleData/PositiveSampleCoAuthorRSS.txt", 1);
-            obj.computeFeatureValues("/2.CRS-ExperimetalData/SampleData/NegativeSampleCoAuthorRSS.txt", 0);
+            obj.computeFeatureValues("/2.CRS-ExperimetalData/SampleData/Training_PositiveSampleCoAuthorRSS.txt", 1);
+            obj.computeFeatureValues("/2.CRS-ExperimetalData/SampleData/Training_NegativeSampleCoAuthorRSS.txt", 0);
+
+            // For Testing
+            obj = new CoAuthorStrengthComputation(
+                    "/2.CRS-ExperimetalData/SampleData/Testing_PositiveSamples.txt",
+                    "/2.CRS-ExperimetalData/SampleData/Testing_NegativeSamples.txt",
+                    "/2.CRS-ExperimetalData/SampleData/AuthorID_PaperID_2006_2008.txt",
+                    "/2.CRS-ExperimetalData/SampleData/PaperID_Year_2006_2008.txt", 2006, 2008);
+            obj.computeFeatureValues("/2.CRS-ExperimetalData/SampleData/Testing_PositiveSampleCoAuthorRSS.txt", 1);
+            obj.computeFeatureValues("/2.CRS-ExperimetalData/SampleData/Testing_NegativeSampleCoAuthorRSS.txt", 0);
+
+//            obj = new CoAuthorStrengthComputation(
+//                    "D:\\1.CRS-Experiment\\MLData\\TrainingData\\Training_PositiveSamples.txt",
+//                    "D:\\1.CRS-Experiment\\MLData\\TrainingData\\Training_NegativeSamples.txt",
+//                    "D:\\1.CRS-Experiment\\MLData\\TrainingData\\AuthorID_PaperID_2001_2003.txt",
+//                    "D:\\1.CRS-Experiment\\MLData\\TrainingData\\PaperID_Year_2001_2003.txt", 2001, 2003);
+//            obj.computeFeatureValues("D:\\1.CRS-Experiment\\MLData\\TrainingData\\Training_PositiveSampleCoAuthorRSS.txt", 1);
+//            obj.computeFeatureValues("D:\\1.CRS-Experiment\\MLData\\TrainingData\\Training_NegativeSampleCoAuthorRSS.txt", 0);
+//
+//            obj = new CoAuthorStrengthComputation(
+//                    "D:\\1.CRS-Experiment\\MLData\\TrainingData\\Testing_PositiveSamples.txt",
+//                    "D:\\1.CRS-Experiment\\MLData\\TrainingData\\Testing_NegativeSamples.txt",
+//                    "D:\\1.CRS-Experiment\\MLData\\TrainingData\\AuthorID_PaperID_2004_2006.txt",
+//                    "D:\\1.CRS-Experiment\\MLData\\TrainingData\\PaperID_Year_2004_2006.txt", 2004, 2006);
+//            obj.computeFeatureValues("D:\\1.CRS-Experiment\\MLData\\TrainingData\\Testing_PositiveSampleCoAuthorRSS.txt", 1);
+//            obj.computeFeatureValues("D:\\1.CRS-Experiment\\MLData\\TrainingData\\Testing_NegativeSampleCoAuthorRSS.txt", 0);
+
             System.out.println("CoAuthorStrengthComputation ... DONE DONE DONE");
         } catch (Exception ex) {
         }
     }
 
-    
 }
