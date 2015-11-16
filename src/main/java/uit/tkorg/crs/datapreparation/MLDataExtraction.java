@@ -510,24 +510,27 @@ public class MLDataExtraction {
             String featureFile) {
         try {
             FileWriter out = new FileWriter(featureFile);
-            Map.Entry<Pair, HashMap<String, Double>> aEntry = features.entrySet().iterator().next();
+            Map.Entry<Pair,HashMap<String,Double>> aEntry = features.entrySet().iterator().next();
             Set<String> featureSet = aEntry.getValue().keySet();
-            String header = "(idAuthor1,idAuthor2)";
-            for (String name : featureSet) {
-                header += ("," + name);
-            }
+            String header = "";
+            for (String name : featureSet)
+                header += (name + ",");
+            header += "TypeOfSample";
             out.write(header + "\n");
             int lines = 0;
-            for (Map.Entry<Pair, HashMap<String, Double>> entry : features.entrySet()) {
+            for (Map.Entry<Pair,HashMap<String,Double>> entry : features.entrySet()){
                 lines++;
                 Pair p = entry.getKey();
                 StringBuilder line = new StringBuilder();
-                line.append(p.toString());
-                HashMap<String, Double> f = entry.getValue();
-                for (Double d : f.values()) {
-                    line.append("," + d.doubleValue());
+//                line.append(p.toString());
+                HashMap<String,Double> f = entry.getValue();
+                for (Double d : f.values()){
+                    line.append(d.doubleValue() + ",");
                 }
-                line.append("\n");
+                if (featureFile.contains("Positive"))
+                    line.append("Positive\n");
+                else    
+                    line.append("Negative\n");
                 out.append(line.toString());
             }
             out.close();
