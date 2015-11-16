@@ -205,10 +205,10 @@ public class CBSimComputation extends FeatureComputation {
 //        CBFPaperFVComputation.vectorzie(2011, "D:\\1.CRS-Experiment\\TFIDF\\2011\\");
 //        read 'PaperIdByAuthor("/Users/thucnt/temp/input/AuthorID_PaperID_2001_2003.txt");
         CBSimComputation cbSim = new CBSimComputation(
-                "D:\\1.CRS-Experiment\\MLData\\TrainingData\\PositiveSamples.txt",
-                "D:\\1.CRS-Experiment\\MLData\\TrainingData\\NegativeSamples.txt",
-                "D:\\1.CRS-Experiment\\TFIDF\\2003\\", 2003);
-        cbSim.computeFeatureValues("D:\\1.CRS-Experiment\\MLData\\TrainingData\\PositiveSample_Cosine.txt",1);
-        cbSim.computeFeatureValues("D:\\1.CRS-Experiment\\MLData\\TrainingData\\NegativeSample_Cosine.txt",0);
+                "D:\\1.CRS-Experiment\\MLData\\TestingData\\Testing_PositiveSamples.txt",
+                "D:\\1.CRS-Experiment\\MLData\\TestingData\\Testing_NegativeSamples.txt",
+                "D:\\1.CRS-Experiment\\TFIDF\\2006\\", 2006);
+        cbSim.computeFeatureValues("D:\\1.CRS-Experiment\\MLData\\TestingData\\Testing_PositiveSample_Cosine.txt",1);
+        cbSim.computeFeatureValues("D:\\1.CRS-Experiment\\MLData\\TestingData\\Testing_NegativeSample_Cosine.txt",0);
     }
 }
