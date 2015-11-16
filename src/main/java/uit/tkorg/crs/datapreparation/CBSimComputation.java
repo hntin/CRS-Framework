@@ -40,6 +40,15 @@ public class CBSimComputation extends FeatureComputation {
         this.tfIdfDir = tfIdf;
         this.year = year;
     }
+    
+    public CBSimComputation(String sample, int type, String tfIdf, int year) {
+        if (type == 1)
+            this._positiveSample = Sample.readSampleFile(sample);
+        else
+            this._negativeSample = Sample.readSampleFile(sample);
+        this.tfIdfDir = tfIdf;
+        this.year = year;
+    }
 
     public void setDbUrl(String url) {
         this.dbUrl = url;
@@ -204,11 +213,14 @@ public class CBSimComputation extends FeatureComputation {
 //        CBFPaperFVComputation.vectorzie("/Users/thucnt/temp/input/papers", "/Users/thucnt/temp/output/TFIDF/");
 //        CBFPaperFVComputation.vectorzie(2011, "D:\\1.CRS-Experiment\\TFIDF\\2011\\");
 //        read 'PaperIdByAuthor("/Users/thucnt/temp/input/AuthorID_PaperID_2001_2003.txt");
+//        CBSimComputation cbSim = new CBSimComputation(
+//                "D:\\1.CRS-Experiment\\MLData\\TestingData\\Testing_PositiveSamples.txt",
+//                "D:\\1.CRS-Experiment\\MLData\\TestingData\\Testing_NegativeSamples.txt",
+//                "D:\\1.CRS-Experiment\\TFIDF\\2006\\", 2006);
         CBSimComputation cbSim = new CBSimComputation(
-                "D:\\1.CRS-Experiment\\MLData\\TestingData\\Testing_PositiveSamples.txt",
-                "D:\\1.CRS-Experiment\\MLData\\TestingData\\Testing_NegativeSamples.txt",
+                "D:\\1.CRS-Experiment\\MLData\\TestingData\\Testing_NegativeSamples.txt", 0,
                 "D:\\1.CRS-Experiment\\TFIDF\\2006\\", 2006);
-        cbSim.computeFeatureValues("D:\\1.CRS-Experiment\\MLData\\TestingData\\Testing_PositiveSample_Cosine.txt",1);
+//        cbSim.computeFeatureValues("D:\\1.CRS-Experiment\\MLData\\TestingData\\Testing_PositiveSample_Cosine.txt",1);
         cbSim.computeFeatureValues("D:\\1.CRS-Experiment\\MLData\\TestingData\\Testing_NegativeSample_Cosine.txt",0);
     }
 }
