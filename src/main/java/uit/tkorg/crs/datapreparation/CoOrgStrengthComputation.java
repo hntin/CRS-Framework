@@ -103,22 +103,22 @@ public class CoOrgStrengthComputation extends FeatureComputation {
     public static void main(String args[]) throws Exception {
             CoOrgStrengthComputation obj;
             // For Training samples
-            obj = new CoOrgStrengthComputation(
-                    "/2.CRS-ExperimetalData/SampleData/Training_PositiveSamples.txt",
-                    "/2.CRS-ExperimetalData/SampleData/Training_NegativeSamples.txt",
-                    "/2.CRS-ExperimetalData/SampleData/AuthorID_PaperID_OrgID_Before_Include_2005.txt",
-                    0, 2005);
-            obj.computeFeatureValues("/2.CRS-ExperimetalData/SampleData/Training_PositiveSampleOrgRSS.txt", 1);
-            obj.computeFeatureValues("/2.CRS-ExperimetalData/SampleData/Training_NegativeSampleOrgRSS.txt", 0);
-            
-            // For testing samples
-            obj = new CoOrgStrengthComputation(
-                    "/2.CRS-ExperimetalData/SampleData/Testing_PositiveSamples.txt",
-                    "/2.CRS-ExperimetalData/SampleData/Testing_NegativeSamples.txt",
-                    "/2.CRS-ExperimetalData/SampleData/AuthorID_PaperID_OrgID_Before_Include_2008.txt",
-                    0, 2008);
-            obj.computeFeatureValues("/2.CRS-ExperimetalData/SampleData/Testing_PositiveSampleOrgRSS.txt", 1);
-            obj.computeFeatureValues("/2.CRS-ExperimetalData/SampleData/Testing_NegativeSampleOrgRSS.txt", 0);
+//            obj = new CoOrgStrengthComputation(
+//                    "/2.CRS-ExperimetalData/SampleData/Training_PositiveSamples.txt",
+//                    "/2.CRS-ExperimetalData/SampleData/Training_NegativeSamples.txt",
+//                    "/2.CRS-ExperimetalData/SampleData/AuthorID_PaperID_OrgID_Before_Include_2005.txt",
+//                    0, 2005);
+//            obj.computeFeatureValues("/2.CRS-ExperimetalData/SampleData/Training_PositiveSampleOrgRSS.txt", 1);
+//            obj.computeFeatureValues("/2.CRS-ExperimetalData/SampleData/Training_NegativeSampleOrgRSS.txt", 0);
+//            
+//            // For testing samples
+//            obj = new CoOrgStrengthComputation(
+//                    "/2.CRS-ExperimetalData/SampleData/Testing_PositiveSamples.txt",
+//                    "/2.CRS-ExperimetalData/SampleData/Testing_NegativeSamples.txt",
+//                    "/2.CRS-ExperimetalData/SampleData/AuthorID_PaperID_OrgID_Before_Include_2008.txt",
+//                    0, 2008);
+//            obj.computeFeatureValues("/2.CRS-ExperimetalData/SampleData/Testing_PositiveSampleOrgRSS.txt", 1);
+//            obj.computeFeatureValues("/2.CRS-ExperimetalData/SampleData/Testing_NegativeSampleOrgRSS.txt", 0);
         
         
 //            CoOrgStrengthComputation obj;
@@ -140,22 +140,22 @@ public class CoOrgStrengthComputation extends FeatureComputation {
 //            obj.computeFeatureValues("/2.CRS-ExperimetalData/TrainingData/Testing_PositiveSampleOrgRSS.txt", 1);
 //            obj.computeFeatureValues("/2.CRS-ExperimetalData/TrainingData/Testing_NegativeSampleOrgRSS.txt", 0);
         
-//            CoOrgStrengthComputation obj;
-//            obj = new CoOrgStrengthComputation(
-//                    "D:\\1.CRS-Experiment\\MLData\\TrainingData\\Training_PositiveSamples.txt",
-//                    "D:\\1.CRS-Experiment\\MLData\\TrainingData\\Training_NegativeSamples.txt",
-//                    "D:\\1.CRS-Experiment\\MLData\\TrainingData\\AuthorID_PaperID_OrgID_Before_Include_2003.txt",
-//                    0, 2003);
-//            obj.computeFeatureValues("D:\\1.CRS-Experiment\\MLData\\TrainingData\\Training_PositiveSampleOrgRSS.txt", 1);
-//            obj.computeFeatureValues("D:\\1.CRS-Experiment\\MLData\\TrainingData\\Training_NegativeSampleOrgRSS.txt", 0);
-//            
-//            obj = new CoOrgStrengthComputation(
-//                    "D:\\1.CRS-Experiment\\MLData\\TrainingData\\Testing_PositiveSamples.txt",
-//                    "D:\\1.CRS-Experiment\\MLData\\TrainingData\\Testing_NegativeSamples.txt",
-//                    "D:\\1.CRS-Experiment\\MLData\\TrainingData\\AuthorID_PaperID_OrgID_Before_Include_2006.txt",
-//                    0, 2006);
-//            obj.computeFeatureValues("D:\\1.CRS-Experiment\\MLData\\TrainingData\\Testing_PositiveSampleOrgRSS.txt", 1);
-//            obj.computeFeatureValues("D:\\1.CRS-Experiment\\MLData\\TrainingData\\Testing_NegativeSampleOrgRSS.txt", 0);
+            //CoOrgStrengthComputation obj;
+            obj = new CoOrgStrengthComputation(
+                    "D:\\1.CRS-Experiment\\MLData\\TrainingData\\Training_PositiveSamples.txt",
+                    "D:\\1.CRS-Experiment\\MLData\\TrainingData\\Training_NegativeSamples.txt",
+                    "D:\\1.CRS-Experiment\\MLData\\TrainingData\\AuthorID_PaperID_OrgID_Before_Include_2003.txt",
+                    0, 2003);
+            obj.computeFeatureValues("D:\\1.CRS-Experiment\\MLData\\TrainingData\\Training_PositiveSampleOrgRSS.txt", 1);
+            obj.computeFeatureValues("D:\\1.CRS-Experiment\\MLData\\TrainingData\\Training_NegativeSampleOrgRSS.txt", 0);
+            
+            obj = new CoOrgStrengthComputation(
+                    "D:\\1.CRS-Experiment\\MLData\\TrainingData\\Testing_PositiveSamples.txt",
+                    "D:\\1.CRS-Experiment\\MLData\\TrainingData\\Testing_NegativeSamples.txt",
+                    "D:\\1.CRS-Experiment\\MLData\\TrainingData\\AuthorID_PaperID_OrgID_Before_Include_2006.txt",
+                    0, 2006);
+            obj.computeFeatureValues("D:\\1.CRS-Experiment\\MLData\\TrainingData\\Testing_PositiveSampleOrgRSS.txt", 1);
+            obj.computeFeatureValues("D:\\1.CRS-Experiment\\MLData\\TrainingData\\Testing_NegativeSampleOrgRSS.txt", 0);
             
             System.out.println("DONE DONE DONE");
         
