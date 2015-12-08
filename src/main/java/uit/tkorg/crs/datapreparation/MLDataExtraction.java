@@ -595,33 +595,42 @@ public class MLDataExtraction {
 //                "/2.CRS-ExperimetalData/SampleData/Testing_NegativeSamples.txt",
 //                2);
 
-        getTrainingData("D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\AuthorID_PaperID_Before_2001.txt",
-                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\PaperID_Year_Before_2001.txt",
-                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\AuthorID_PaperID_2001_2003.txt",
-                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\PaperID_Year_2001_2003.txt",
-                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\AuthorID_PaperID_2004_2006.txt",
-                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\PaperID_Year_2004_2006.txt",
-                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\AuthorID_PaperID_2007_2009.txt",
-                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\PaperID_Year_2007_2009.txt",
-                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\Training_JuniorIDList.txt",
-                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\Training_PositiveSamples.txt",
-                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\Training_NegativeSamples.txt",
-                1);
-        getTrainingData("D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\AuthorID_PaperID_Before_2001.txt",
-                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\PaperID_Year_Before_2001.txt",
-                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\AuthorID_PaperID_2001_2003.txt",
-                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\PaperID_Year_2001_2003.txt",
-                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\AuthorID_PaperID_2004_2006.txt",
-                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\PaperID_Year_2004_2006.txt",
-                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\AuthorID_PaperID_2007_2009.txt",
-                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\PaperID_Year_2007_2009.txt",
-                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\Testing_JuniorIDList.txt",
-                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\Testing_PositiveSamples.txt",
-                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\Testing_NegativeSamples.txt",
-                2);
+//        getTrainingData("D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\AuthorID_PaperID_Before_2001.txt",
+//                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\PaperID_Year_Before_2001.txt",
+//                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\AuthorID_PaperID_2001_2003.txt",
+//                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\PaperID_Year_2001_2003.txt",
+//                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\AuthorID_PaperID_2004_2006.txt",
+//                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\PaperID_Year_2004_2006.txt",
+//                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\AuthorID_PaperID_2007_2009.txt",
+//                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\PaperID_Year_2007_2009.txt",
+//                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\Training_JuniorIDList.txt",
+//                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\Training_PositiveSamples.txt",
+//                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\Training_NegativeSamples.txt",
+//                1);
+//        getTrainingData("D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\AuthorID_PaperID_Before_2001.txt",
+//                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\PaperID_Year_Before_2001.txt",
+//                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\AuthorID_PaperID_2001_2003.txt",
+//                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\PaperID_Year_2001_2003.txt",
+//                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\AuthorID_PaperID_2004_2006.txt",
+//                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\PaperID_Year_2004_2006.txt",
+//                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\AuthorID_PaperID_2007_2009.txt",
+//                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\PaperID_Year_2007_2009.txt",
+//                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\Testing_JuniorIDList.txt",
+//                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\Testing_PositiveSamples.txt",
+//                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\Testing_NegativeSamples.txt",
+//                2);
         
- //       HashMap<Pair, HashMap<String, Double>> model = aggregateFeatures("D:\\1.CRS-Experiment\\MLData\\TrainingData", 1);
- //       writeFeatureFile(model,"D:\\1.CRS-Experiment\\MLData\\TrainingData\\Training_PositiveSample_AllFeatures.txt");
+       HashMap<Pair, HashMap<String, Double>> model = aggregateFeatures("D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\", 1);
+       writeFeatureFile(model,"D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\Training_PositiveSample_AllFeatures.txt");
+       
+       model = aggregateFeatures("D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\", 0);
+       writeFeatureFile(model,"D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\Training_NegativeSample_AllFeatures.txt");
+       
+       model = aggregateFeatures("D:\\1.CRS-Experiment\\MLData\\3-Hub\\TestingData\\", 1);
+       writeFeatureFile(model,"D:\\1.CRS-Experiment\\MLData\\3-Hub\\TestingData\\Testing_PositiveSample_AllFeatures.txt");
+       
+       model = aggregateFeatures("D:\\1.CRS-Experiment\\MLData\\3-Hub\\TestingData\\", 0);
+       writeFeatureFile(model,"D:\\1.CRS-Experiment\\MLData\\3-Hub\\TestingData\\Testing_NegativeSample_AllFeatures.txt");
         System.out.println("DONE");
     }
 }
