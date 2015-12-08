@@ -28,7 +28,7 @@ public class DatabaseTool {
     private String dbURL = "jdbc:mysql://localhost:3306/mas";
     private String dbUsername = "root";
     private String dbPassword = "root";
-    private String dataDir = "D:\\1.CRS-Experiment\\MLData\\TrainingData\\";    
+    private String dataDir = "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\";    
     //private String dataDir = "/2.CRS-ExperimetalData/TrainingData/";
     private Connection con;
     private PreparedStatement stmt;

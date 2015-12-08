@@ -118,20 +118,20 @@ public class CoAuthorStrengthComputation extends FeatureComputation {
 //            obj.computeFeatureValues("/2.CRS-ExperimetalData/SampleData/Testing_NegativeSampleCoAuthorRSS.txt", 0);
 
             obj = new CoAuthorStrengthComputation(
-                    "D:\\1.CRS-Experiment\\MLData\\TrainingData\\Training_PositiveSamples.txt",
-                    "D:\\1.CRS-Experiment\\MLData\\TrainingData\\Training_NegativeSamples.txt",
-                    "D:\\1.CRS-Experiment\\MLData\\TrainingData\\AuthorID_PaperID_2001_2003.txt",
-                    "D:\\1.CRS-Experiment\\MLData\\TrainingData\\PaperID_Year_2001_2003.txt", 2001, 2003);
-            obj.computeFeatureValues("D:\\1.CRS-Experiment\\MLData\\TrainingData\\Training_PositiveSampleCoAuthorRSS.txt", 1);
-            obj.computeFeatureValues("D:\\1.CRS-Experiment\\MLData\\TrainingData\\Training_NegativeSampleCoAuthorRSS.txt", 0);
+                    "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\Training_PositiveSamples.txt",
+                    "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\Training_NegativeSamples.txt",
+                    "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\AuthorID_PaperID_2001_2003.txt",
+                    "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\PaperID_Year_2001_2003.txt", 2001, 2003);
+            obj.computeFeatureValues("D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\Training_PositiveSampleCoAuthorRSS.txt", 1);
+            obj.computeFeatureValues("D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\Training_NegativeSampleCoAuthorRSS.txt", 0);
 
             obj = new CoAuthorStrengthComputation(
-                    "D:\\1.CRS-Experiment\\MLData\\TrainingData\\Testing_PositiveSamples.txt",
-                    "D:\\1.CRS-Experiment\\MLData\\TrainingData\\Testing_NegativeSamples.txt",
-                    "D:\\1.CRS-Experiment\\MLData\\TrainingData\\AuthorID_PaperID_2004_2006.txt",
-                    "D:\\1.CRS-Experiment\\MLData\\TrainingData\\PaperID_Year_2004_2006.txt", 2004, 2006);
-            obj.computeFeatureValues("D:\\1.CRS-Experiment\\MLData\\TrainingData\\Testing_PositiveSampleCoAuthorRSS.txt", 1);
-            obj.computeFeatureValues("D:\\1.CRS-Experiment\\MLData\\TrainingData\\Testing_NegativeSampleCoAuthorRSS.txt", 0);
+                    "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TestingData\\Testing_PositiveSamples.txt",
+                    "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TestingData\\Testing_NegativeSamples.txt",
+                    "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\AuthorID_PaperID_2004_2006.txt",
+                    "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\PaperID_Year_2004_2006.txt", 2004, 2006);
+            obj.computeFeatureValues("D:\\1.CRS-Experiment\\MLData\\3-Hub\\TestingData\\Testing_PositiveSampleCoAuthorRSS.txt", 1);
+            obj.computeFeatureValues("D:\\1.CRS-Experiment\\MLData\\3-Hub\\TestingData\\Testing_NegativeSampleCoAuthorRSS.txt", 0);
 
             System.out.println("CoAuthorStrengthComputation ... DONE DONE DONE");
         } catch (Exception ex) {

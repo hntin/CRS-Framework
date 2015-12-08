@@ -142,20 +142,20 @@ public class CoOrgStrengthComputation extends FeatureComputation {
         
             //CoOrgStrengthComputation obj;
             obj = new CoOrgStrengthComputation(
-                    "D:\\1.CRS-Experiment\\MLData\\TrainingData\\Training_PositiveSamples.txt",
-                    "D:\\1.CRS-Experiment\\MLData\\TrainingData\\Training_NegativeSamples.txt",
-                    "D:\\1.CRS-Experiment\\MLData\\TrainingData\\AuthorID_PaperID_OrgID_Before_Include_2003.txt",
+                    "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\Training_PositiveSamples.txt",
+                    "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\Training_NegativeSamples.txt",
+                    "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\AuthorID_PaperID_OrgID_Before_Include_2003.txt",
                     0, 2003);
-            obj.computeFeatureValues("D:\\1.CRS-Experiment\\MLData\\TrainingData\\Training_PositiveSampleOrgRSS.txt", 1);
-            obj.computeFeatureValues("D:\\1.CRS-Experiment\\MLData\\TrainingData\\Training_NegativeSampleOrgRSS.txt", 0);
+            obj.computeFeatureValues("D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\Training_PositiveSampleOrgRSS.txt", 1);
+            obj.computeFeatureValues("D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\Training_NegativeSampleOrgRSS.txt", 0);
             
             obj = new CoOrgStrengthComputation(
-                    "D:\\1.CRS-Experiment\\MLData\\TrainingData\\Testing_PositiveSamples.txt",
-                    "D:\\1.CRS-Experiment\\MLData\\TrainingData\\Testing_NegativeSamples.txt",
-                    "D:\\1.CRS-Experiment\\MLData\\TrainingData\\AuthorID_PaperID_OrgID_Before_Include_2006.txt",
+                    "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TestingData\\Testing_PositiveSamples.txt",
+                    "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TestingData\\Testing_NegativeSamples.txt",
+                    "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\AuthorID_PaperID_OrgID_Before_Include_2006.txt",
                     0, 2006);
-            obj.computeFeatureValues("D:\\1.CRS-Experiment\\MLData\\TrainingData\\Testing_PositiveSampleOrgRSS.txt", 1);
-            obj.computeFeatureValues("D:\\1.CRS-Experiment\\MLData\\TrainingData\\Testing_NegativeSampleOrgRSS.txt", 0);
+            obj.computeFeatureValues("D:\\1.CRS-Experiment\\MLData\\3-Hub\\TestingData\\Testing_PositiveSampleOrgRSS.txt", 1);
+            obj.computeFeatureValues("D:\\1.CRS-Experiment\\MLData\\3-Hub\\TestingData\\Testing_NegativeSampleOrgRSS.txt", 0);
             
             System.out.println("DONE DONE DONE");
         

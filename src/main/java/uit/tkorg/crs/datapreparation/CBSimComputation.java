@@ -217,10 +217,24 @@ public class CBSimComputation extends FeatureComputation {
 //                "D:\\1.CRS-Experiment\\MLData\\TestingData\\Testing_PositiveSamples.txt",
 //                "D:\\1.CRS-Experiment\\MLData\\TestingData\\Testing_NegativeSamples.txt",
 //                "D:\\1.CRS-Experiment\\TFIDF\\2006\\", 2006);
+//        CBSimComputation cbSim = new CBSimComputation(
+//                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\Training_NegativeSamples.txt", 0,
+//                "D:\\1.CRS-Experiment\\TFIDF\\2003\\", 2003);
+//        cbSim.computeFeatureValues("D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\Training_NegativeSample_Cosine.txt",0);
+//        
+//        cbSim = new CBSimComputation(
+//                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\Training_PositiveSamples.txt", 1,
+//                "D:\\1.CRS-Experiment\\TFIDF\\2003\\", 2003);
+//        cbSim.computeFeatureValues("D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\Training_PositiveSample_Cosine.txt",1);
+        
         CBSimComputation cbSim = new CBSimComputation(
-                "D:\\1.CRS-Experiment\\MLData\\TestingData\\Testing_NegativeSamples.txt", 0,
+                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TestingData\\Testing_NegativeSamples.txt", 0,
                 "D:\\1.CRS-Experiment\\TFIDF\\2006\\", 2006);
-//        cbSim.computeFeatureValues("D:\\1.CRS-Experiment\\MLData\\TestingData\\Testing_PositiveSample_Cosine.txt",1);
-        cbSim.computeFeatureValues("D:\\1.CRS-Experiment\\MLData\\TestingData\\Testing_NegativeSample_Cosine.txt",0);
+        cbSim.computeFeatureValues("D:\\1.CRS-Experiment\\MLData\\3-Hub\\TestingData\\Testing_NegativeSample_Cosine.txt",0);
+        
+        cbSim = new CBSimComputation(
+                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TestingData\\Testing_PositiveSamples.txt", 1,
+                "D:\\1.CRS-Experiment\\TFIDF\\2006\\", 2006);
+        cbSim.computeFeatureValues("D:\\1.CRS-Experiment\\MLData\\3-Hub\\TestingData\\Testing_PositiveSample_Cosine.txt",1);
     }
 }

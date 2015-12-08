@@ -271,25 +271,25 @@ public class AuthorActiveComputation extends FeatureComputation {
 //            // For Training Data
             AuthorActiveComputation authorActiveComputation;
             authorActiveComputation = new AuthorActiveComputation(
-                "D:\\1.CRS-Experiment\\MLData\\TrainingData\\Training_PositiveSamples.txt",
-                "D:\\1.CRS-Experiment\\MLData\\TrainingData\\Training_NegativeSamples.txt",
-                "D:\\1.CRS-Experiment\\MLData\\TrainingData\\AuthorID_PaperID_Before_Include_2003.txt",
-                "D:\\1.CRS-Experiment\\MLData\\TrainingData\\PaperID_Year_Before_Include_2003.txt",
+                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\Training_PositiveSamples.txt",
+                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\Training_NegativeSamples.txt",
+                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\AuthorID_PaperID_Before_Include_2003.txt",
+                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\PaperID_Year_Before_Include_2003.txt",
                 0, 2003);
 
-            authorActiveComputation.computeFeatureValues("D:\\1.CRS-Experiment\\MLData\\TrainingData\\Training_PositiveSampleActiveScore.txt", 1);
-            authorActiveComputation.computeFeatureValues("D:\\1.CRS-Experiment\\MLData\\TrainingData\\Training_NegativeSampleActiveScore.txt", 0);
+            authorActiveComputation.computeFeatureValues("D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\Training_PositiveSampleActiveScore.txt", 1);
+            authorActiveComputation.computeFeatureValues("D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\Training_NegativeSampleActiveScore.txt", 0);
 
             // For Testing Data
             authorActiveComputation = new AuthorActiveComputation(
-                "D:\\1.CRS-Experiment\\MLData\\TrainingData\\Testing_PositiveSamples.txt",
-                "D:\\1.CRS-Experiment\\MLData\\TrainingData\\Testing_NegativeSamples.txt",
-                "D:\\1.CRS-Experiment\\MLData\\TrainingData\\AuthorID_PaperID_Before_Include_2006.txt",
-                "D:\\1.CRS-Experiment\\MLData\\TrainingData\\PaperID_Year_Before_Include_2006.txt",
+                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TestingData\\Testing_PositiveSamples.txt",
+                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TestingData\\Testing_NegativeSamples.txt",
+                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\AuthorID_PaperID_Before_Include_2006.txt",
+                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\PaperID_Year_Before_Include_2006.txt",
                 0, 2006);
 
-            authorActiveComputation.computeFeatureValues("D:\\1.CRS-Experiment\\MLData\\TrainingData\\Testing_PositiveSampleActiveScore.txt", 1);
-            authorActiveComputation.computeFeatureValues("D:\\1.CRS-Experiment\\MLData\\TrainingData\\Testing_NegativeSampleActiveScore.txt", 0);
+            authorActiveComputation.computeFeatureValues("D:\\1.CRS-Experiment\\MLData\\3-Hub\\TestingData\\Testing_PositiveSampleActiveScore.txt", 1);
+            authorActiveComputation.computeFeatureValues("D:\\1.CRS-Experiment\\MLData\\3-Hub\\TestingData\\Testing_NegativeSampleActiveScore.txt", 0);
         //</editor-fold>
         System.out.println("AuthorActiveComputation .... DONE DONE DONE");
     }
