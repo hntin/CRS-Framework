@@ -44,9 +44,6 @@ public class VisualizeMultipleROC {
       boolean[] cp = new boolean[result.numInstances()];
       for (int n = 1; n < cp.length; n++){
           Instance instance = result.instance(n);
-          instance.
-          if ((numInstances > 1000) && (result.))
-              
           cp[n] = true;
       }
       tempd.setConnectPoints(cp);
