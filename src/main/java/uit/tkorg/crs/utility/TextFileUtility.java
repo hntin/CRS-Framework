@@ -9,10 +9,12 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.io.Reader;
 import java.io.Writer;
 import java.sql.Blob;
@@ -30,11 +32,12 @@ import java.util.logging.Logger;
  * @author tin
  */
 public class TextFileUtility {
-    
+
     /**
      *
      * @param dir: directory containing txt and dat files.
-     * @return list of full path of txt and dat files in the directory including subdirectory.
+     * @return list of full path of txt and dat files in the directory including
+     * subdirectory.
      */
     public static List<String> getPathFile(File dir) throws Exception {
         File[] files = dir.listFiles();
@@ -188,8 +191,9 @@ public class TextFileUtility {
 
     /**
      * writeTextFileFromHM
+     *
      * @param textFilePath
-     * @param hashMap 
+     * @param hashMap
      */
     public static void writeTextFileFromHM(String textFilePath, HashMap<Integer, HashMap<Integer, Float>> hashMap) {
         try {
@@ -245,7 +249,7 @@ public class TextFileUtility {
             BufferedReader bufferReader = new BufferedReader(reader);
             bufferReader.readLine(); // skip the first line
             String line = null;
-           
+
             while ((line = bufferReader.readLine()) != null) {
                 strBuffer.append(line + " ");
             }
@@ -293,5 +297,55 @@ public class TextFileUtility {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public static void appendTwoFiles(String inFile1, String inFile2, String outFile) throws IOException {
+        try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(outFile)))) {
+
+            try {
+                FileInputStream fis = new FileInputStream(inFile1);
+                Reader reader = new InputStreamReader(fis, "UTF8");
+                BufferedReader bufferReader = new BufferedReader(reader);
+                //bufferReader.readLine(); // skip the first line
+                String line = null;
+                while ((line = bufferReader.readLine()) != null) {
+                    out.print(line);
+                    out.flush();
+                }
+                bufferReader.close();
+                fis.close();
+                
+                
+                fis = new FileInputStream(inFile2);
+                reader = new InputStreamReader(fis, "UTF8");
+                bufferReader = new BufferedReader(reader);
+                bufferReader.readLine(); // skip the first line
+                line = null;
+                while ((line = bufferReader.readLine()) != null) {
+                    out.print(line);
+                    out.flush();
+                }
+                bufferReader.close();
+                fis.close();
+                
+            } catch (IOException e) {
+                System.out.println(e);
+            }
+
+        }
+    }
+    
+    public static void main(String args[]) {
+        try {
+            TextFileUtility.appendTwoFiles(
+                    "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TestingData\\Testing_NegativeSample_AllFeatures.txt", 
+                    "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TestingData\\Testing_PositiveSample_AllFeatures.txt", 
+                    "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TestingData\\Weka_Testing_AllFeatures.txt");
+            System.out.println("DONE");
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+        }
+        
     }
 }
