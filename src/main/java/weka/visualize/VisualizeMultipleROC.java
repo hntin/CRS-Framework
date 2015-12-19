@@ -23,9 +23,7 @@ public class VisualizeMultipleROC {
    * previously saved ROC curve data (ARFF file)
    */
   public static void main(String[] args) throws Exception {
-    String[] files = {"/Users/thucnt/Desktop/ROC/j48.arff",
-                        "/Users/thucnt/Desktop/ROC/RandomForest.arff",
-                        "/Users/thucnt/Desktop/ROC/libSVM.arff",
+    String[] files = {"/Users/thucnt/Desktop/ROC/NaiveBayesian.arff"
                         };
     boolean first = true;
     ThresholdVisualizePanel vmc = new ThresholdVisualizePanel();
@@ -34,18 +32,26 @@ public class VisualizeMultipleROC {
                             new BufferedReader(
                               new FileReader(files[i])));
       result.setClassIndex(result.numAttributes() - 1);
+      int numInstances = result.numInstances();
+      if (numInstances > 1000){
+          for (int j = 0; j < numInstances; j++){
+              double[] values = result.instance(i).toDoubleArray();
+              if (values[values.length - 1] < 0.7){
+                  result.delete(i);
+              }
+          }
+      }
       // method visualize
       PlotData2D tempd = new PlotData2D(result);
       tempd.setPlotName(result.relationName());
 //      tempd.addInstanceNumberAttribute();
     
       // specify which points are connected
-      int numInstances = result.numInstances();
+      
       boolean[] cp = new boolean[result.numInstances()];
-      for (int n = 1; n < cp.length; n++){
-          Instance instance = result.instance(n);
-          cp[n] = true;
-      }
+        for (int n = 1; n < cp.length; n++){
+            cp[n] = true;
+          }
       tempd.setConnectPoints(cp);
       // add plot
       if (first)
