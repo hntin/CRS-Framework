@@ -23,8 +23,20 @@ public class VisualizeMultipleROC {
    * previously saved ROC curve data (ARFF file)
    */
   public static void main(String[] args) throws Exception {
-    String[] files = {"/Users/thucnt/Desktop/ROC/NaiveBayesian.arff"
-                        };
+    String[] files = {
+        "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainedModel\\AllFeatures\\DownSampling_Random\\3.Bayes_ROC.arff",
+        //"D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainedModel\\AllFeatures\\DownSampling_Random\\5.Logistic_ROC.arff",
+        "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainedModel\\AllFeatures\\DownSampling_Random\\1.RandomForest_ROC.arff",
+        "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainedModel\\AllFeatures\\DownSampling_Random\\2.J48_ROC.arff",
+        "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainedModel\\AllFeatures\\DownSampling_Random\\4.MultiLayerPerceptron_ROC.arff",
+        "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainedModel\\AllFeatures\\DownSampling_Random\\6.LibSVM_ROC.arff"
+        //"D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainedModel\\EachFeatures\\MultiLayerPerceptron_CBSim_ROC.arff",
+        //"D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainedModel\\EachFeatures\\MultiLayerPerceptron_CBSim_OrgRSS_ROC.arff",
+        //"D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainedModel\\EachFeatures\\MultiLayerPerceptron_CBSim_CoAuthorRSS_OrgRSS_ROC.arff",
+        //"D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainedModel\\EachFeatures\\MultiLayerPerceptron_CBSim_CoAuthorRSS_OrgRSS_AuthorRank_ROC.arff",
+        //"D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainedModel\\EachFeatures\\MultiLayerPerceptron_AllFeatures_ROC.arff"
+    };
+    
     boolean first = true;
     ThresholdVisualizePanel vmc = new ThresholdVisualizePanel();
     for (int i = 0; i < files.length; i++) {
