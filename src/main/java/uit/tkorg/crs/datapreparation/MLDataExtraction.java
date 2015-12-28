@@ -428,7 +428,9 @@ public class MLDataExtraction {
         // Extracting juniors/seniors for Training for Testing
         int numOfPositiveSample = 0;
         int numOfSelectedNagativeSample = 0;
+        
         if (forTrainingOrTesting == 1) { // For Training
+             System.out.println("----------TRAINING DATA------------");
             // Loc ra cac junior researchers ton tai trong G1, nhung chua ton tai trong G0.
             // Tuc moi bat dau nghien cuu va lan dau xuat hien trong cong dong trong G1. So bai bao trong trong G1 < 3, citation = 0?
             if (isForJunior == true) {
@@ -446,12 +448,21 @@ public class MLDataExtraction {
             // Khong can xet nhung junior/senior ma khong co mau (+)
             // Chon cac cap author khong link trong G2 va G1 cho cac junior/senior (xuat hien trong G1), quet mang CoAuthor ban kinh la 3 (3-Hops)
             HashMap<Integer, Integer> authorsInPositveSample = loadAuthorIDFromPositiveSample(outFile_PositiveSample);
-            System.out.println("So Junior/Senior Researchers lien quan mau (+):" + authorsInPositveSample.size());
             System.out.println("Tong so Researchers trong G2:" + G2._coAuthorGraph.size());
+            if (isForJunior == true) {
+                System.out.println("So Juniors lien quan mau (+):" + authorsInPositveSample.size());
+            }
+            else {
+                System.out.println("So Seniors lien quan mau (+):" + authorsInPositveSample.size());
+            }
+            
             //numOfSelectedNagativeSample = getAllNegativeSampleFromCoAuthorGraphIn2Hub(authorsInPositveSample, G1, G2, outFile_NegativeSample);
             numOfSelectedNagativeSample = getAllNegativeSampleFromCoAuthorGraphIn3Hub(authorsInPositveSample, G1, G2, outFile_NegativeSample);
         }
+        
+        
         if (forTrainingOrTesting == 2) { // For Testing
+            System.out.println("----------TESTING DATA------------");
             // Loc ra cac juniors ton tai trong G2, nhung chua ton tai trong G1.
             // Tuc moi bat dau nghien cuu va lan dau xuat hien trong cong dong trong G2. So bai bao trong trong G2 < 3
             if (isForJunior == true) { 
@@ -470,8 +481,13 @@ public class MLDataExtraction {
             // Khong can xet nhung junior/senior ma khong co mau (+)
             // Chon cac cap author khong link trong G3 va G2 cho cac junior/senior (xuat hien trong G2), quet mang CoAuthor ban kinh la 3 (3-Hub)
             HashMap<Integer, Integer> authorsInPositveSample = loadAuthorIDFromPositiveSample(outFile_PositiveSample);
-            System.out.println("So Junior/Senior lien quan mau (+):" + authorsInPositveSample.size());
             System.out.println("Tong so Researchers trong G3:" + G3._coAuthorGraph.size());
+            if (isForJunior == true) { 
+                System.out.println("So Juniors lien quan mau (+):" + authorsInPositveSample.size());
+            } else {
+                System.out.println("So seniors lien quan mau (+):" + authorsInPositveSample.size());
+            }
+
             //numOfSelectedNagativeSample = getAllNegativeSampleFromCoAuthorGraphIn2Hub(authorsInPositveSample, G2, G3, outFile_NegativeSample);
             numOfSelectedNagativeSample = getAllNegativeSampleFromCoAuthorGraphIn3Hub(authorsInPositveSample, G2, G3, outFile_NegativeSample);
         }
@@ -605,6 +621,7 @@ public class MLDataExtraction {
         
         //<editor-fold defaultstate="collapsed" desc="sample data">
         // For Juniors
+        System.out.println("----------JUNIORS DATA------------");
         getTrainingData("/2.CRS-ExperimetalData/SampleData/AuthorID_PaperID_Before_2003.txt",
                 "/2.CRS-ExperimetalData/SampleData/PaperID_Year_Before_2003.txt",
                 "/2.CRS-ExperimetalData/SampleData/AuthorID_PaperID_2003_2005.txt",
@@ -632,6 +649,7 @@ public class MLDataExtraction {
                 2, true);
         
         // For Seniors
+        System.out.println("----------SENIORS DATA------------");
         getTrainingData("/2.CRS-ExperimetalData/SampleData/AuthorID_PaperID_Before_2003.txt",
                 "/2.CRS-ExperimetalData/SampleData/PaperID_Year_Before_2003.txt",
                 "/2.CRS-ExperimetalData/SampleData/AuthorID_PaperID_2003_2005.txt",
