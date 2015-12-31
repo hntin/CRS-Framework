@@ -5,10 +5,12 @@
 package uit.tkorg.crs.datapreparation;
 
 import ir.vsr.HashMapVector;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
@@ -139,9 +141,11 @@ public class CBSimComputation extends FeatureComputation {
                 listOfPairs = this._positiveSample.getPairOfAuthor();
             else
                 listOfPairs = this._negativeSample.getPairOfAuthor();
-            
-            StringBuilder content = new StringBuilder();
-            content.append("(idAuhtor1,idAuthor2) \t cosine\n");
+            // Create file
+            FileWriter fstream = new FileWriter(outputFile, true);
+            BufferedWriter out = new BufferedWriter(fstream);
+            String header = "(idAuhtor1,idAuthor2) \t cosine\n";
+            out.write(header);
             for (int i = 0; i < listOfPairs.size(); i++) {
                 Pair pair = listOfPairs.get(i);
                 Author author1 = authors.get(pair.getFirst().toString());
@@ -149,11 +153,15 @@ public class CBSimComputation extends FeatureComputation {
                 HashMapVector fv1 = author1.getFeatureVector();
                 HashMapVector fv2 = author2.getFeatureVector();
                 double cosine = fv1.cosineTo(fv2);
-                String line = "(" + pair.getFirst() + "," + pair.getSecond() + ")" + "\t" + cosine;
-                content.append(line + "\n");
+                String line = "(" + pair.getFirst() + "," + pair.getSecond() + ")" + "\t" + cosine + "\n";
+                out.write(line);
             }
-            TextFileUtility.writeTextFile(outputFile, content.toString());
-        } catch (Exception ex) {
+            out.flush();
+            //Close the output stream
+            out.close();
+        } catch (IOException e) {//Catch exception if any
+                System.err.println("Error: " + e.getMessage());
+        }catch (Exception ex) {
             Logger.getLogger(CBSimComputation.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -234,9 +242,9 @@ public class CBSimComputation extends FeatureComputation {
                 "D:\\1.CRS-Experiment\\TFIDF\\2006\\", 2006);
         cbSim.computeFeatureValues("D:\\1.CRS-Experiment\\MLData\\3-Hub\\Senior\\TestingData\\Testing_NegativeSamples_Senior_Cosine.txt",0);
         
-//        cbSim = new CBSimComputation(
-//                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\Senior\\TestingData\\Testing_PositiveSamples_Senior.txt", 1,
-//                "D:\\1.CRS-Experiment\\TFIDF\\2006\\", 2006);
-//        cbSim.computeFeatureValues("D:\\1.CRS-Experiment\\MLData\\3-Hub\\Senior\\TestingData\\Testing_PositiveSamples_Senior_Cosine.txt",1);
+        cbSim = new CBSimComputation(
+                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\Senior\\TestingData\\Testing_PositiveSamples_Senior.txt", 1,
+                "D:\\1.CRS-Experiment\\TFIDF\\2006\\", 2006);
+        cbSim.computeFeatureValues("D:\\1.CRS-Experiment\\MLData\\3-Hub\\Senior\\TestingData\\Testing_PositiveSamples_Senior_Cosine.txt",1);
     }
 }
