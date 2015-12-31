@@ -133,6 +133,7 @@ public class CBSimComputation extends FeatureComputation {
             CBFAuthorFVComputation.computeFVForAllAuthors(authors, papers, 1, 0.5);
             
             //tinh do do cosine cho tung cap tac gia trong mau duong/am va ghi ra file
+            System.out.println("Begining to write feature file.");
             ArrayList<Pair> listOfPairs = null;
             if (typeOfSample == 1)
                 listOfPairs = this._positiveSample.getPairOfAuthor();

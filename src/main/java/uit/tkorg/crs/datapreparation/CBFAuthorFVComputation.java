@@ -108,7 +108,7 @@ public class CBFAuthorFVComputation {
             int timeAwareScheme, double gamma) throws Exception {
 
         for (String authorId : authors.keySet()) {
-            
+            System.out.println("Computing FV vector for " + authorId);
             authors.get(authorId).setFeatureVector(computeAuthorFV(authors, authorId, papers, timeAwareScheme, gamma));
         }
     }
@@ -116,7 +116,7 @@ public class CBFAuthorFVComputation {
     public static HashMapVector computeAuthorFV(Author author, HashMap<String,Paper> papers,int timeAwareScheme, double gamma) throws Exception{
         HashMapVector featureVector = new HashMapVector();
 //        CBFPaperFVComputation.readTFIDFFromMahoutFile(papers,Constant.TFIDFDIR);
-        System.out.println("Computing FV vector for " + author.getAuthorId());
+        
         List<String> paperIds = author.getPaperList();
         HashMapVector fv = null;
         if (timeAwareScheme == 0) {
