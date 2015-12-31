@@ -621,114 +621,114 @@ public class MLDataExtraction {
         
         //<editor-fold defaultstate="collapsed" desc="sample data">
         // For Juniors
-        System.out.println("----------JUNIORS DATA------------");
-        getTrainingData("/2.CRS-ExperimetalData/SampleData/AuthorID_PaperID_Before_2003.txt",
-                "/2.CRS-ExperimetalData/SampleData/PaperID_Year_Before_2003.txt",
-                "/2.CRS-ExperimetalData/SampleData/AuthorID_PaperID_2003_2005.txt",
-                "/2.CRS-ExperimetalData/SampleData/PaperID_Year_2003_2005.txt",
-                "/2.CRS-ExperimetalData/SampleData/AuthorID_PaperID_2006_2008.txt",
-                "/2.CRS-ExperimetalData/SampleData/PaperID_Year_2006_2008.txt",
-                "/2.CRS-ExperimetalData/SampleData/AuthorID_PaperID_2009_2011.txt",
-                "/2.CRS-ExperimetalData/SampleData/PaperID_Year_2009_2011.txt",
-                "/2.CRS-ExperimetalData/SampleData/Training_JuniorIDList.txt",
-                "/2.CRS-ExperimetalData/SampleData/Training_PositiveSamples_Junior.txt",
-                "/2.CRS-ExperimetalData/SampleData/Training_NegativeSamples_Junior.txt",
-                1, true);
-        
-        getTrainingData("/2.CRS-ExperimetalData/SampleData/AuthorID_PaperID_Before_2003.txt",
-                "/2.CRS-ExperimetalData/SampleData/PaperID_Year_Before_2003.txt",
-                "/2.CRS-ExperimetalData/SampleData/AuthorID_PaperID_2003_2005.txt",
-                "/2.CRS-ExperimetalData/SampleData/PaperID_Year_2003_2005.txt",
-                "/2.CRS-ExperimetalData/SampleData/AuthorID_PaperID_2006_2008.txt",
-                "/2.CRS-ExperimetalData/SampleData/PaperID_Year_2006_2008.txt",
-                "/2.CRS-ExperimetalData/SampleData/AuthorID_PaperID_2009_2011.txt",
-                "/2.CRS-ExperimetalData/SampleData/PaperID_Year_2009_2011.txt",
-                "/2.CRS-ExperimetalData/SampleData/Testing_JuniorIDList.txt",
-                "/2.CRS-ExperimetalData/SampleData/Testing_PositiveSamples_Junior.txt",
-                "/2.CRS-ExperimetalData/SampleData/Testing_NegativeSamples_Junior.txt",
-                2, true);
-        
-        // For Seniors
-        System.out.println("----------SENIORS DATA------------");
-        getTrainingData("/2.CRS-ExperimetalData/SampleData/AuthorID_PaperID_Before_2003.txt",
-                "/2.CRS-ExperimetalData/SampleData/PaperID_Year_Before_2003.txt",
-                "/2.CRS-ExperimetalData/SampleData/AuthorID_PaperID_2003_2005.txt",
-                "/2.CRS-ExperimetalData/SampleData/PaperID_Year_2003_2005.txt",
-                "/2.CRS-ExperimetalData/SampleData/AuthorID_PaperID_2006_2008.txt",
-                "/2.CRS-ExperimetalData/SampleData/PaperID_Year_2006_2008.txt",
-                "/2.CRS-ExperimetalData/SampleData/AuthorID_PaperID_2009_2011.txt",
-                "/2.CRS-ExperimetalData/SampleData/PaperID_Year_2009_2011.txt",
-                "/2.CRS-ExperimetalData/SampleData/Training_SeniorIDList.txt",
-                "/2.CRS-ExperimetalData/SampleData/Training_PositiveSamples_Senior.txt",
-                "/2.CRS-ExperimetalData/SampleData/Training_NegativeSamples_Senior.txt",
-                1, false);
-        
-        getTrainingData("/2.CRS-ExperimetalData/SampleData/AuthorID_PaperID_Before_2003.txt",
-                "/2.CRS-ExperimetalData/SampleData/PaperID_Year_Before_2003.txt",
-                "/2.CRS-ExperimetalData/SampleData/AuthorID_PaperID_2003_2005.txt",
-                "/2.CRS-ExperimetalData/SampleData/PaperID_Year_2003_2005.txt",
-                "/2.CRS-ExperimetalData/SampleData/AuthorID_PaperID_2006_2008.txt",
-                "/2.CRS-ExperimetalData/SampleData/PaperID_Year_2006_2008.txt",
-                "/2.CRS-ExperimetalData/SampleData/AuthorID_PaperID_2009_2011.txt",
-                "/2.CRS-ExperimetalData/SampleData/PaperID_Year_2009_2011.txt",
-                "/2.CRS-ExperimetalData/SampleData/Testing_SeniorIDList.txt",
-                "/2.CRS-ExperimetalData/SampleData/Testing_PositiveSamples_Senior.txt",
-                "/2.CRS-ExperimetalData/SampleData/Testing_NegativeSamples_Senior.txt",
-                2, false);
-        //</editor-fold>
+//        System.out.println("----------JUNIORS DATA------------");
+//        getTrainingData("/2.CRS-ExperimetalData/SampleData/AuthorID_PaperID_Before_2003.txt",
+//                "/2.CRS-ExperimetalData/SampleData/PaperID_Year_Before_2003.txt",
+//                "/2.CRS-ExperimetalData/SampleData/AuthorID_PaperID_2003_2005.txt",
+//                "/2.CRS-ExperimetalData/SampleData/PaperID_Year_2003_2005.txt",
+//                "/2.CRS-ExperimetalData/SampleData/AuthorID_PaperID_2006_2008.txt",
+//                "/2.CRS-ExperimetalData/SampleData/PaperID_Year_2006_2008.txt",
+//                "/2.CRS-ExperimetalData/SampleData/AuthorID_PaperID_2009_2011.txt",
+//                "/2.CRS-ExperimetalData/SampleData/PaperID_Year_2009_2011.txt",
+//                "/2.CRS-ExperimetalData/SampleData/Training_JuniorIDList.txt",
+//                "/2.CRS-ExperimetalData/SampleData/Training_PositiveSamples_Junior.txt",
+//                "/2.CRS-ExperimetalData/SampleData/Training_NegativeSamples_Junior.txt",
+//                1, true);
+//        
+//        getTrainingData("/2.CRS-ExperimetalData/SampleData/AuthorID_PaperID_Before_2003.txt",
+//                "/2.CRS-ExperimetalData/SampleData/PaperID_Year_Before_2003.txt",
+//                "/2.CRS-ExperimetalData/SampleData/AuthorID_PaperID_2003_2005.txt",
+//                "/2.CRS-ExperimetalData/SampleData/PaperID_Year_2003_2005.txt",
+//                "/2.CRS-ExperimetalData/SampleData/AuthorID_PaperID_2006_2008.txt",
+//                "/2.CRS-ExperimetalData/SampleData/PaperID_Year_2006_2008.txt",
+//                "/2.CRS-ExperimetalData/SampleData/AuthorID_PaperID_2009_2011.txt",
+//                "/2.CRS-ExperimetalData/SampleData/PaperID_Year_2009_2011.txt",
+//                "/2.CRS-ExperimetalData/SampleData/Testing_JuniorIDList.txt",
+//                "/2.CRS-ExperimetalData/SampleData/Testing_PositiveSamples_Junior.txt",
+//                "/2.CRS-ExperimetalData/SampleData/Testing_NegativeSamples_Junior.txt",
+//                2, true);
+//        
+//        // For Seniors
+//        System.out.println("----------SENIORS DATA------------");
+//        getTrainingData("/2.CRS-ExperimetalData/SampleData/AuthorID_PaperID_Before_2003.txt",
+//                "/2.CRS-ExperimetalData/SampleData/PaperID_Year_Before_2003.txt",
+//                "/2.CRS-ExperimetalData/SampleData/AuthorID_PaperID_2003_2005.txt",
+//                "/2.CRS-ExperimetalData/SampleData/PaperID_Year_2003_2005.txt",
+//                "/2.CRS-ExperimetalData/SampleData/AuthorID_PaperID_2006_2008.txt",
+//                "/2.CRS-ExperimetalData/SampleData/PaperID_Year_2006_2008.txt",
+//                "/2.CRS-ExperimetalData/SampleData/AuthorID_PaperID_2009_2011.txt",
+//                "/2.CRS-ExperimetalData/SampleData/PaperID_Year_2009_2011.txt",
+//                "/2.CRS-ExperimetalData/SampleData/Training_SeniorIDList.txt",
+//                "/2.CRS-ExperimetalData/SampleData/Training_PositiveSamples_Senior.txt",
+//                "/2.CRS-ExperimetalData/SampleData/Training_NegativeSamples_Senior.txt",
+//                1, false);
+//        
+//        getTrainingData("/2.CRS-ExperimetalData/SampleData/AuthorID_PaperID_Before_2003.txt",
+//                "/2.CRS-ExperimetalData/SampleData/PaperID_Year_Before_2003.txt",
+//                "/2.CRS-ExperimetalData/SampleData/AuthorID_PaperID_2003_2005.txt",
+//                "/2.CRS-ExperimetalData/SampleData/PaperID_Year_2003_2005.txt",
+//                "/2.CRS-ExperimetalData/SampleData/AuthorID_PaperID_2006_2008.txt",
+//                "/2.CRS-ExperimetalData/SampleData/PaperID_Year_2006_2008.txt",
+//                "/2.CRS-ExperimetalData/SampleData/AuthorID_PaperID_2009_2011.txt",
+//                "/2.CRS-ExperimetalData/SampleData/PaperID_Year_2009_2011.txt",
+//                "/2.CRS-ExperimetalData/SampleData/Testing_SeniorIDList.txt",
+//                "/2.CRS-ExperimetalData/SampleData/Testing_PositiveSamples_Senior.txt",
+//                "/2.CRS-ExperimetalData/SampleData/Testing_NegativeSamples_Senior.txt",
+//                2, false);
+//        //</editor-fold>
         
         //<editor-fold defaultstate="collapsed" desc="Real data">
         // For juniors
-//        getTrainingData("D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\AuthorID_PaperID_Before_2001.txt",
-//                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\PaperID_Year_Before_2001.txt",
-//                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\AuthorID_PaperID_2001_2003.txt",
-//                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\PaperID_Year_2001_2003.txt",
-//                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\AuthorID_PaperID_2004_2006.txt",
-//                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\PaperID_Year_2004_2006.txt",
-//                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\AuthorID_PaperID_2007_2009.txt",
-//                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\PaperID_Year_2007_2009.txt",
-//                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\Training_JuniorIDList.txt",
-//                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\Training_PositiveSamples_Junior.txt",
-//                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\Training_NegativeSamples_Junior.txt",
-//                1, true);
-//        getTrainingData("D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\AuthorID_PaperID_Before_2001.txt",
-//                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\PaperID_Year_Before_2001.txt",
-//                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\AuthorID_PaperID_2001_2003.txt",
-//                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\PaperID_Year_2001_2003.txt",
-//                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\AuthorID_PaperID_2004_2006.txt",
-//                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\PaperID_Year_2004_2006.txt",
-//                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\AuthorID_PaperID_2007_2009.txt",
-//                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\PaperID_Year_2007_2009.txt",
-//                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\Testing_JuniorIDList.txt",
-//                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\Testing_PositiveSamples_Junior.txt",
-//                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\Testing_NegativeSamples_Junior.txt",
-//                2, true);
-//        
-//        // For seniors
-//        getTrainingData("D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\AuthorID_PaperID_Before_2001.txt",
-//                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\PaperID_Year_Before_2001.txt",
-//                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\AuthorID_PaperID_2001_2003.txt",
-//                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\PaperID_Year_2001_2003.txt",
-//                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\AuthorID_PaperID_2004_2006.txt",
-//                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\PaperID_Year_2004_2006.txt",
-//                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\AuthorID_PaperID_2007_2009.txt",
-//                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\PaperID_Year_2007_2009.txt",
-//                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\Training_SeniorIDList.txt",
-//                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\Training_PositiveSamples_Senior.txt",
-//                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\Training_NegativeSamples_Senior.txt",
-//                1, false);
-//        getTrainingData("D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\AuthorID_PaperID_Before_2001.txt",
-//                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\PaperID_Year_Before_2001.txt",
-//                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\AuthorID_PaperID_2001_2003.txt",
-//                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\PaperID_Year_2001_2003.txt",
-//                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\AuthorID_PaperID_2004_2006.txt",
-//                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\PaperID_Year_2004_2006.txt",
-//                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\AuthorID_PaperID_2007_2009.txt",
-//                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\PaperID_Year_2007_2009.txt",
-//                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\Testing_SeniorIDList.txt",
-//                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\Testing_PositiveSamples_Senior.txt",
-//                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\Testing_NegativeSamples_Senior.txt",
-//                2, false);
+        getTrainingData("D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\AuthorID_PaperID_Before_2001.txt",
+                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\PaperID_Year_Before_2001.txt",
+                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\AuthorID_PaperID_2001_2003.txt",
+                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\PaperID_Year_2001_2003.txt",
+                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\AuthorID_PaperID_2004_2006.txt",
+                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\PaperID_Year_2004_2006.txt",
+                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\AuthorID_PaperID_2007_2009.txt",
+                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\PaperID_Year_2007_2009.txt",
+                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\Training_JuniorIDList.txt",
+                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\Training_PositiveSamples_Junior.txt",
+                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\Training_NegativeSamples_Junior.txt",
+                1, true);
+        getTrainingData("D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\AuthorID_PaperID_Before_2001.txt",
+                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\PaperID_Year_Before_2001.txt",
+                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\AuthorID_PaperID_2001_2003.txt",
+                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\PaperID_Year_2001_2003.txt",
+                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\AuthorID_PaperID_2004_2006.txt",
+                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\PaperID_Year_2004_2006.txt",
+                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\AuthorID_PaperID_2007_2009.txt",
+                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\PaperID_Year_2007_2009.txt",
+                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\Testing_JuniorIDList.txt",
+                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\Testing_PositiveSamples_Junior.txt",
+                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\Testing_NegativeSamples_Junior.txt",
+                2, true);
+        
+        // For seniors
+        getTrainingData("D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\AuthorID_PaperID_Before_2001.txt",
+                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\PaperID_Year_Before_2001.txt",
+                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\AuthorID_PaperID_2001_2003.txt",
+                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\PaperID_Year_2001_2003.txt",
+                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\AuthorID_PaperID_2004_2006.txt",
+                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\PaperID_Year_2004_2006.txt",
+                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\AuthorID_PaperID_2007_2009.txt",
+                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\PaperID_Year_2007_2009.txt",
+                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\Training_SeniorIDList.txt",
+                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\Training_PositiveSamples_Senior.txt",
+                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\Training_NegativeSamples_Senior.txt",
+                1, false);
+        getTrainingData("D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\AuthorID_PaperID_Before_2001.txt",
+                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\PaperID_Year_Before_2001.txt",
+                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\AuthorID_PaperID_2001_2003.txt",
+                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\PaperID_Year_2001_2003.txt",
+                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\AuthorID_PaperID_2004_2006.txt",
+                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\PaperID_Year_2004_2006.txt",
+                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\AuthorID_PaperID_2007_2009.txt",
+                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\PaperID_Year_2007_2009.txt",
+                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\Testing_SeniorIDList.txt",
+                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\Testing_PositiveSamples_Senior.txt",
+                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\Testing_NegativeSamples_Senior.txt",
+                2, false);
         //</editor-fold>
         
 //        HashMap<Pair, HashMap<String, Double>> model = aggregateFeatures("D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\", 1);

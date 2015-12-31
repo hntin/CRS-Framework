@@ -82,22 +82,22 @@ public class AuthorRankComputation extends FeatureComputation {
 
             //<editor-fold defaultstate="collapsed" desc="Real Data">
             authorRankComputation = new AuthorRankComputation(
-                    "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\Training_PositiveSamples.txt",
-                    "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\Training_NegativeSamples.txt",
-                    "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\AuthorID_PaperID_Before_Include_2003.txt",
-                    "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\PaperID_Year_RefID_Before_Include_2003.txt");
+                    "D:\\1.CRS-Experiment\\MLData\\3-Hub\\Senior\\TrainingData\\Training_PositiveSamples_Senior.txt",
+                    "D:\\1.CRS-Experiment\\MLData\\3-Hub\\Senior\\TrainingData\\Training_NegativeSamples_Senior.txt",
+                    "D:\\1.CRS-Experiment\\MLData\\AuthorID_PaperID_Before_Include_2003.txt",
+                    "D:\\1.CRS-Experiment\\MLData\\PaperID_Year_RefID_Before_Include_2003.txt");
             
-            authorRankComputation.computeFeatureValues("D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\Training_PositiveSampleAuthorRank.txt", 1);
-            authorRankComputation.computeFeatureValues("D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\Training_NegativeSampleAuthorRank.txt", 0);
+            authorRankComputation.computeFeatureValues("D:\\1.CRS-Experiment\\MLData\\3-Hub\\Senior\\TrainingData\\Training_PositiveSampleAuthorRank_Senior.txt", 1);
+            authorRankComputation.computeFeatureValues("D:\\1.CRS-Experiment\\MLData\\3-Hub\\Senior\\TrainingData\\Training_NegativeSampleAuthorRank_Senior.txt", 0);
             
             authorRankComputation = new AuthorRankComputation(
-                    "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TestingData\\Testing_PositiveSamples.txt",
-                    "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TestingData\\Testing_NegativeSamples.txt",
-                    "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\AuthorID_PaperID_Before_Include_2006.txt",
-                    "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\PaperID_Year_RefID_Before_Include_2006.txt");
+                    "D:\\1.CRS-Experiment\\MLData\\3-Hub\\Senior\\TestingData\\Testing_PositiveSamples_Senior.txt",
+                    "D:\\1.CRS-Experiment\\MLData\\3-Hub\\Senior\\TestingData\\Testing_NegativeSamples_Senior.txt",
+                    "D:\\1.CRS-Experiment\\MLData\\AuthorID_PaperID_Before_Include_2006.txt",
+                    "D:\\1.CRS-Experiment\\MLData\\PaperID_Year_RefID_Before_Include_2006.txt");
             
-            authorRankComputation.computeFeatureValues("D:\\1.CRS-Experiment\\MLData\\3-Hub\\TestingData\\Testing_PositiveSampleAuthorRank.txt", 1);
-            authorRankComputation.computeFeatureValues("D:\\1.CRS-Experiment\\MLData\\3-Hub\\TestingData\\Testing_NegativeSampleAuthorRank.txt", 0);
+            authorRankComputation.computeFeatureValues("D:\\1.CRS-Experiment\\MLData\\3-Hub\\Senior\\TestingData\\Testing_PositiveSampleAuthorRank_Senior.txt", 1);
+            authorRankComputation.computeFeatureValues("D:\\1.CRS-Experiment\\MLData\\3-Hub\\Senior\\TestingData\\Testing_NegativeSampleAuthorRank_Senior.txt", 0);
             //</editor-fold>
 
             System.out.println("AuthorRankComputation .... DONE DONE DONE");
