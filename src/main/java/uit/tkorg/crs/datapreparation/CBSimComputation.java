@@ -129,6 +129,7 @@ public class CBSimComputation extends FeatureComputation {
                 authors.put(author.getAuthorId(), author);
             }
             CBFPaperFVComputation.readTFIDFFromMahoutFile(papers, this.tfIdfDir);
+            System.out.println("Finished readding TFIDF from mahout file");
             CBFAuthorFVComputation.computeFVForAllAuthors(authors, papers, 1, 0.5);
             
             //tinh do do cosine cho tung cap tac gia trong mau duong/am va ghi ra file
