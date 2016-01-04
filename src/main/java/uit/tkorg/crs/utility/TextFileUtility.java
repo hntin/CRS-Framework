@@ -309,7 +309,7 @@ public class TextFileUtility {
                 //bufferReader.readLine(); // skip the first line
                 String line = null;
                 while ((line = bufferReader.readLine()) != null) {
-                    out.print(line);
+                    out.println(line);
                     out.flush();
                 }
                 bufferReader.close();
@@ -322,7 +322,7 @@ public class TextFileUtility {
                 bufferReader.readLine(); // skip the first line
                 line = null;
                 while ((line = bufferReader.readLine()) != null) {
-                    out.print(line);
+                    out.println(line);
                     out.flush();
                 }
                 bufferReader.close();
@@ -338,9 +338,9 @@ public class TextFileUtility {
     public static void main(String args[]) {
         try {
             TextFileUtility.appendTwoFiles(
-                    "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TestingData\\Testing_NegativeSample_AllFeatures.txt", 
-                    "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TestingData\\Testing_PositiveSample_AllFeatures.txt", 
-                    "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TestingData\\Weka_Testing_AllFeatures.txt");
+                    "/Users/thucnt/Downloads/3Hobs/positive.txt", 
+                    "/Users/thucnt/Downloads/3Hobs/positive.txt", 
+                    "/Users/thucnt/Downloads/3Hobs/merged.txt");
             System.out.println("DONE");
         }
         catch(Exception e) {
