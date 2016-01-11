@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
+import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -261,6 +262,54 @@ public class TextFileUtility {
 
         return strBuffer.toString();
     }
+    public static void writeWekaResultBuffer(String fileInput, String fileOutput){
+        try{
+            FileInputStream fis = new FileInputStream(fileInput);
+            Reader reader = new InputStreamReader(fis, "UTF8");
+            BufferedReader bufferReader = new BufferedReader(reader);
+            
+            FileOutputStream fos = new FileOutputStream(fileOutput);
+            Writer out = new OutputStreamWriter(fos, "UTF8");
+            
+            String line = null;
+
+            while ((line = bufferReader.readLine()) != null) {
+                if (line.startsWith("inst#"))
+                    break;
+            }
+            out.write("inst#,predicted,probability,error\n");
+            while ((line = bufferReader.readLine()) != null) {
+                String delim = " "; //insert here all delimitators
+                StringTokenizer st = new StringTokenizer(line,delim);
+                
+                boolean error = false;
+                int count = 0;
+                while (st.hasMoreTokens()) {
+                    String token = st.nextToken();
+                    count++;
+                    if ((count == 1) || (count == 3))
+                        out.write(token + ",");
+                    else if (token.startsWith("*"))
+                        out.write(token.substring(1) + ",");
+                    else if ("+".equals(token))
+                        error = true;       
+                }
+                if (error == true){
+                    out.write("true");
+                    error = false;
+                }
+                out.write("\n");
+            }
+            out.close();
+            fos.close();
+
+            bufferReader.close();
+            fis.close();
+        }
+        catch(IOException e){
+            System.out.println(e);
+        }
+    }
 
     /**
      * Splitting a text file for many piece with 5.000 rows/file
@@ -336,16 +385,16 @@ public class TextFileUtility {
     }
     
     public static void main(String args[]) {
-        try {
-            TextFileUtility.appendTwoFiles(
-                    "/Users/thucnt/Downloads/3Hobs/positive.txt", 
-                    "/Users/thucnt/Downloads/3Hobs/positive.txt", 
-                    "/Users/thucnt/Downloads/3Hobs/merged.txt");
-            System.out.println("DONE");
-        }
-        catch(Exception e) {
-            e.printStackTrace();
-        }
-        
+//        try {
+//            TextFileUtility.appendTwoFiles(
+//                    "/Users/thucnt/Downloads/3Hobs/positive.txt", 
+//                    "/Users/thucnt/Downloads/3Hobs/positive.txt", 
+//                    "/Users/thucnt/Downloads/3Hobs/merged.txt");
+//            System.out.println("DONE");
+//        }
+//        catch(Exception e) {
+//            e.printStackTrace();
+//        }
+        writeWekaResultBuffer("/Users/thucnt/Downloads/3Hobs/Result_Buffer/CBSim","/Users/thucnt/Downloads/3Hobs/Result_Buffer/CBSim.csv");
     }
 }
