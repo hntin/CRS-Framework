@@ -262,6 +262,32 @@ public class TextFileUtility {
 
         return strBuffer.toString();
     }
+    
+    public static void readFeaturesFile(String featureFile){
+        StringBuffer strBuffer = new StringBuffer();
+        try {
+            FileInputStream fis = new FileInputStream(featureFile);
+            Reader reader = new InputStreamReader(fis, "UTF8");
+            BufferedReader bufferReader = new BufferedReader(reader);
+            bufferReader.readLine(); // skip the first line
+            String line = null;
+
+            while ((line = bufferReader.readLine()) != null) {
+                String delim = ","; //insert here all delimitators
+                StringTokenizer st = new StringTokenizer(line,delim);
+             
+                while (st.hasMoreTokens()) {
+                    double d = Double.parseDouble(st.nextToken());
+                    System.out.print(d + ",");
+                    System.out.println();
+                }
+            }
+            bufferReader.close();
+            fis.close();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
     public static void writeWekaResultBuffer(String fileInput, String fileOutput){
         try{
             FileInputStream fis = new FileInputStream(fileInput);
@@ -395,6 +421,7 @@ public class TextFileUtility {
 //        catch(Exception e) {
 //            e.printStackTrace();
 //        }
-        writeWekaResultBuffer("/Users/thucnt/Downloads/3Hobs/Result_Buffer/CBSim","/Users/thucnt/Downloads/3Hobs/Result_Buffer/CBSim.csv");
+//        writeWekaResultBuffer("/Users/thucnt/Downloads/3Hobs/Result_Buffer/CBSim","/Users/thucnt/Downloads/3Hobs/Result_Buffer/CBSim.csv");
+    readFeaturesFile("/Users/thucnt/Downloads/3Hobs/TestingData/Testing_PositiveSample_AllFeatures.txt");
     }
 }
