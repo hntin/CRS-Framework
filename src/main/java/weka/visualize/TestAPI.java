@@ -61,7 +61,7 @@ public class TestAPI {
             // Create a naïve bayes classifier
             System.out.println("Building model");
             String[] options = {"-L", "0.3", "-N", "2000", "-H", "20"};
-            Classifier cModel = (Classifier)new MultilayerPerceptron();
+            Classifier cModel = (Classifier)new MultilayerPerceptron(); 
             cModel.setOptions(options);
             cModel.buildClassifier(isTrainingSet);
             objOut.writeObject(cModel);
