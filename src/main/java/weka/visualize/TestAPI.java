@@ -5,8 +5,12 @@
  */
 package weka.visualize;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import weka.classifiers.Classifier;
@@ -38,46 +42,63 @@ public class TestAPI {
     }
     public static void main(String[] args){
         try {
+            File f = new File("D:\\1.CRS-Experiment\\MLData\\3-Hub\\Senior\\TestingData\\Evaluation.txt");
+            FileWriter fstream = new FileWriter(f, true);
+            BufferedWriter out = new BufferedWriter(fstream);
+            ObjectOutputStream objOut = new ObjectOutputStream(new FileOutputStream("D:\\1.CRS-Experiment\\MLData\\3-Hub\\Senior\\TrainedModel\\MLP_4F.bin"));
             // Create an empty training set
             
             ArffLoader arffLoader = new ArffLoader();
             
-            File datasetFile = new File("/Users/thucnt/Desktop/TrainingData/weka_balancing_downsampling.arff");
+            File datasetFile = new File("D:\\1.CRS-Experiment\\MLData\\3-Hub\\Senior\\TrainingData\\Weka_Training_AllFeatures_DownSampling.arff");
             arffLoader.setFile(datasetFile);
             
             Instances isTrainingSet = arffLoader.getDataSet();
+            isTrainingSet.deleteAttributeAt(0);
             // Set class index
-            isTrainingSet.setClassIndex(5);
+            isTrainingSet.setClassIndex(4);
             
             // Create a naïve bayes classifier
+            System.out.println("Building model");
+            String[] options = {"-L", "0.3", "-N", "2000", "-H", "20"};
             Classifier cModel = (Classifier)new MultilayerPerceptron();
+            cModel.setOptions(options);
             cModel.buildClassifier(isTrainingSet);
+            objOut.writeObject(cModel);
             
-            // Test the model
-//            Evaluation eTest = new Evaluation(isTrainingSet);
-            datasetFile = new File("/Users/thucnt/Downloads/3Hobs/TestingData/Testing_FullData.arff");
+            System.out.println("Loadding test data");
+            datasetFile = new File("D:\\1.CRS-Experiment\\MLData\\3-Hub\\Senior\\TestingData\\Testing_FullData.arff");
             arffLoader.setFile(datasetFile);
             Instances isTestingSet = arffLoader.getDataSet();
             // Set class index
             //isTestingSet.setClassIndex(5);
 
-            int[] delAttr = {0,1,1,1,1,1,1};
+            int[] delAttr = {0,0,1,1,1,1,1};
                 
             for (int i = 0; i < isTestingSet.numInstances(); i++){
                 Instance instance = isTestingSet.instance(i);
                 Instance t = new Instance(instance);
 //                System.out.println(t);
                 t = createInstance(instance,delAttr);
-                System.out.println(t);
-               instance.setDataset(isTrainingSet);
+                t.setDataset(isTrainingSet);
                 double[] fDistribution = cModel.distributionForInstance(t);
-                for (int j = 0; j < fDistribution.length; j++){
-                    System.out.print(fDistribution[j] + "\t");
-                    System.out.println();
+                double max = fDistribution[0];
+                String sample = "Positive";
+                if (fDistribution[1] > max){
+                    max = fDistribution[1];
+                    sample = "Negative";
                 }
+//                for (int j = 0; j < fDistribution.length; j++){
+//                    System.out.print(fDistribution[j] + "\t");
+//                    System.out.println();
+//                }
+                String output = instance.stringValue(0) + "," + max + "," + sample;
+                System.out.println(output);
+                out.append(output);
+                out.newLine();
             }
-            
-            
+            objOut.close();
+            out.close();
             //eTest.evaluateModel(cModel, isTestingSet);
         } catch (IOException ex) {
             Logger.getLogger(TestAPI.class.getName()).log(Level.SEVERE, null, ex);

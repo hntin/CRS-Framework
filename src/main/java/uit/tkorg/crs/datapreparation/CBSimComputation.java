@@ -238,13 +238,13 @@ public class CBSimComputation extends FeatureComputation {
 //        cbSim.computeFeatureValues("D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\Training_PositiveSample_Cosine.txt",1);
         
         CBSimComputation cbSim = new CBSimComputation(
-                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\Senior\\TestingData\\Testing_NegativeSamples_Senior.txt", 0,
+                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\Senior\\TestingData\\Testing_NegativeSamples.txt", 0,
                 "D:\\1.CRS-Experiment\\TFIDF\\2006\\", 2006);
-        cbSim.computeFeatureValues("D:\\1.CRS-Experiment\\MLData\\3-Hub\\Senior\\TestingData\\Testing_NegativeSamples_Senior_Cosine.txt",0);
+        cbSim.computeFeatureValues("D:\\1.CRS-Experiment\\MLData\\3-Hub\\Senior\\TestingData\\Testing_NegativeSamples_Cosine.txt",0);
         
         cbSim = new CBSimComputation(
-                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\Senior\\TestingData\\Testing_PositiveSamples_Senior.txt", 1,
+                "D:\\1.CRS-Experiment\\MLData\\3-Hub\\Senior\\TestingData\\Testing_PositiveSamples.txt", 1,
                 "D:\\1.CRS-Experiment\\TFIDF\\2006\\", 2006);
-        cbSim.computeFeatureValues("D:\\1.CRS-Experiment\\MLData\\3-Hub\\Senior\\TestingData\\Testing_PositiveSamples_Senior_Cosine.txt",1);
+        cbSim.computeFeatureValues("D:\\1.CRS-Experiment\\MLData\\3-Hub\\Senior\\TestingData\\Testing_PositiveSamples_Cosine.txt",1);
     }
 }

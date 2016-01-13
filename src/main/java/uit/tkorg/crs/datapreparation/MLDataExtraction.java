@@ -505,6 +505,8 @@ public class MLDataExtraction {
      */
     private static HashMap<Pair, HashMap<String, Double>> readFeatureFile(String featureFile,
             HashMap<Pair, HashMap<String, Double>> features) {
+        System.out.println("reading " + featureFile);
+        int lines = 0;
         try {
             int start = featureFile.lastIndexOf('_') + 1;
             if (start <= 8)// skip file only contains pair of author
@@ -530,11 +532,14 @@ public class MLDataExtraction {
                 Pair authorPair = new Pair();
                 authorPair.setFirst(new Integer(tokens[1]));
                 authorPair.setSecond(new Integer(tokens[2]));
-
+                lines++;
+                if ((lines % 100000) == 0)
+                    System.out.println("Line: " + lines);
                 if (features.containsKey(authorPair)) {
                     HashMap<String, Double> values = features.get(authorPair);
                     values.put(featureName, featureValue);
                     features.replace(authorPair, values);
+//                    System.out.println("Loading features for " + authorPair.toString());
                 } else {
                     HashMap<String, Double> values = new HashMap<String, Double>();
                     values.put(featureName, featureValue);
@@ -546,6 +551,7 @@ public class MLDataExtraction {
         } catch (FileNotFoundException ex) {
             Logger.getLogger(MLDataExtraction.class.getName()).log(Level.SEVERE, null, ex);
         }
+        System.out.println("Finished " + featureFile);
         return features;
     }
 
@@ -592,7 +598,44 @@ public class MLDataExtraction {
             Logger.getLogger(MLDataExtraction.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    private static void writeFullTestFile(HashMap<Pair, HashMap<String, Double>> features,
+            String featureFile) {
+        try {
+            FileWriter out = new FileWriter(featureFile);
+            Map.Entry<Pair, HashMap<String, Double>> aEntry = features.entrySet().iterator().next();
+            Set<String> featureSet = aEntry.getValue().keySet();
+            String header = "id1_id2,";
+            for (String name : featureSet) {
+                header += (name + ",");
+            }
+            header += "TypeOfSample";
+            out.write(header + "\n");
+            int lines = 0;
+            System.out.println("Features set size: " + features.size());
+            for (Map.Entry<Pair, HashMap<String, Double>> entry : features.entrySet()) {
+                lines++;
+                if ((lines %10000) == 0)
+                    System.out.println("Writing line " + lines);
+                Pair p = entry.getKey();
+                StringBuilder line = new StringBuilder();
+                line.append(p.getFirst() + "_" + p.getSecond() + ",");
+                HashMap<String, Double> f = entry.getValue();
+                for (Double d : f.values()) {
+                    line.append(d.doubleValue() + ",");
+                }
+                if (featureFile.contains("Positive")) {
+                    line.append("Positive\n");
+                } else {
+                    line.append("Negative\n");
+                }
+                out.append(line.toString());
+            }
+            out.close();
+            System.out.println("So dong cua tap tin: " + lines);
+        } catch (Exception ex) {
+            Logger.getLogger(MLDataExtraction.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     /**
      *
      * @param featuresFolder, folder contains feature files.
@@ -740,11 +783,13 @@ public class MLDataExtraction {
 //        model = aggregateFeatures("D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\", 0);
 //        writeFeatureFile(model, "D:\\1.CRS-Experiment\\MLData\\3-Hub\\TrainingData\\Training_NegativeSample_AllFeatures.txt");
 
-        HashMap<Pair, HashMap<String, Double>>model = aggregateFeatures("D:\\1.CRS-Experiment\\MLData\\3-Hub\\Senior\\TestingData\\", 1);
-        writeFeatureFile(model, "D:\\1.CRS-Experiment\\MLData\\3-Hub\\Senior\\TestingData\\Testing_PositiveSample_AllFeatures.txt");
+        HashMap<Pair, HashMap<String, Double>> model = null;
+        
+//        model = aggregateFeatures("D:\\1.CRS-Experiment\\MLData\\3-Hub\\Senior\\TestingData\\", 1);
+//        writeFullTestFile(model, "D:\\1.CRS-Experiment\\MLData\\3-Hub\\Senior\\TestingData\\Testing_PositiveSample_Test.txt");
 
         model = aggregateFeatures("D:\\1.CRS-Experiment\\MLData\\3-Hub\\Senior\\TestingData\\", 0);
-        writeFeatureFile(model, "D:\\1.CRS-Experiment\\MLData\\3-Hub\\Senior\\TestingData\\Testing_NegativeSample_AllFeatures.txt");
+        writeFullTestFile(model, "D:\\1.CRS-Experiment\\MLData\\3-Hub\\Senior\\TestingData\\Testing_NegativeSample_Test.txt");
         
         System.out.println("DONE");
     }
