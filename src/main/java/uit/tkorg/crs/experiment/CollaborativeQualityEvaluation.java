@@ -314,13 +314,15 @@ public class CollaborativeQualityEvaluation {
         else{
             ret = new HashMap();
             Set<Integer> key = h.keySet();
-            for (int i = 0; i < n ; i++){
-                for (Integer k : key){
-                    ret.put(k, h.get(k));
-                }
+            int count = 0;
+            for (Integer k : key){
+                ret.put(k, h.get(k));
+                count++;
+                if (count == n)
+                    break;
             }
         }
-        return h;
+        return ret;
     }
             
     public static void main(String args[]) {
