@@ -11,6 +11,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Set;
+import java.util.StringTokenizer;
 import uit.tkorg.crs.isolatedauthor.IsolatedAuthorDataset;
 import uit.tkorg.crs.model.CoAuthorGraph;
 import uit.tkorg.crs.utility.HashMapUtility;
@@ -242,6 +243,37 @@ public class CollaborativeQualityEvaluation {
         return listNewCoAuthorID;
     }
 
+    /**
+     * 
+     * @param fileName: Testing_PositiveSamples.txt
+     * @return 
+     */
+    public ArrayList<Integer> getDistinctAuthorIDFromPositiveSamples(String fileName) {
+        ArrayList<Integer> authorIDFromPositiveSample = new ArrayList<>();
+
+        try {
+            FileInputStream fis = new FileInputStream(fileName);
+            Reader reader = new InputStreamReader(fis, "UTF8");
+            BufferedReader bufferReader = new BufferedReader(reader);
+            bufferReader.readLine(); // skip the first line
+            String line = null;
+            while ((line = bufferReader.readLine()) != null) {
+                String delim = "(,)"; //insert here all delimitators
+                StringTokenizer st = new StringTokenizer(line, delim);
+                Integer authorID = new Integer(st.nextToken());
+                if (!authorIDFromPositiveSample.contains(authorID)) {
+                    authorIDFromPositiveSample.add(authorID);
+                }
+            }
+            bufferReader.close();
+            fis.close();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        
+        return authorIDFromPositiveSample;
+    }
+            
     public static void main(String args[]) {
 
         System.out.println("START");
@@ -289,7 +321,12 @@ public class CollaborativeQualityEvaluation {
         System.out.println("For 8 ... Quality Value:" + qualityValue);
         qualityValue = 0;
         qualityValue = qualityEvaluation.collaborativeQualityTopN_Metric2(6, potentialList, pastGraph, currentGraph);
+        
+        HashMap<Integer, Float> hm = new HashMap<>();
+
         System.out.println("For 6 ... Quality Value:" + qualityValue);
+        
+        qualityEvaluation.getDistinctAuthorIDFromPositiveSamples("/2.CRS-ExperimetalData/SampleData/Seniors/Testing_PositiveSamples_Senior.txt");
         System.out.println("END");
     }
 }
