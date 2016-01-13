@@ -3,6 +3,7 @@ package uit.tkorg.crs.experiment;
 //<editor-fold defaultstate="collapsed" desc="Import Lib">
 import java.io.BufferedReader;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.ArrayList;
@@ -10,8 +11,11 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Scanner;
 import java.util.Set;
 import java.util.StringTokenizer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import uit.tkorg.crs.isolatedauthor.IsolatedAuthorDataset;
 import uit.tkorg.crs.model.CoAuthorGraph;
 import uit.tkorg.crs.utility.HashMapUtility;
@@ -272,6 +276,39 @@ public class CollaborativeQualityEvaluation {
         }
         
         return authorIDFromPositiveSample;
+    }
+    
+    public static HashMap<Integer,HashMap<Integer,Double>> readEvaluationFile(String dataFile, String type){
+        HashMap<Integer,HashMap<Integer,Double>> list = new HashMap();
+        try {
+            Scanner input = new Scanner(new FileInputStream(dataFile));
+            while (input.hasNext()){
+                String line = input.nextLine();
+                String[] temp = line.split(",");
+                if (type.equals(temp[2])){
+                    String[] ids = temp[0].split("_");
+                    Integer key = Integer.parseInt(ids[0]);
+                    if (list.containsKey(key)) {
+                        HashMap<Integer,Double> h = list.get(key);
+                        h.put(new Integer(ids[1]), new Double(temp[1]));
+                        list.replace(key, h);
+                    } else {
+                        HashMap<Integer,Double> h = new HashMap();
+                        h.put(new Integer(ids[1]), new Double(temp[1]));
+                        list.put(key, h);
+                    }
+                }
+            }   
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(CollaborativeQualityEvaluation.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return list;
+    }
+    
+    public static HashMap<Integer,Double> getTop(int idAuthor, HashMap<Integer,HashMap<Integer,Double>> hash){
+        HashMap<Integer,Double> h = hash.get(new Integer(idAuthor));
+        h = HashMapUtility.getSortedMapDescending(h);
+        return h;
     }
             
     public static void main(String args[]) {
