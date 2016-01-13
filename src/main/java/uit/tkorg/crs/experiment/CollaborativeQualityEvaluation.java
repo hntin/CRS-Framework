@@ -305,9 +305,21 @@ public class CollaborativeQualityEvaluation {
         return list;
     }
     
-    public static HashMap<Integer,Double> getTop(int idAuthor, HashMap<Integer,HashMap<Integer,Double>> hash){
+    public static HashMap<Integer,Double> getTopN(int idAuthor, int n, HashMap<Integer,HashMap<Integer,Double>> hash){
         HashMap<Integer,Double> h = hash.get(new Integer(idAuthor));
         h = HashMapUtility.getSortedMapDescending(h);
+        HashMap<Integer,Double> ret = null;
+        if (n > h.size())
+            ret = h;
+        else{
+            ret = new HashMap();
+            Set<Integer> key = h.keySet();
+            for (int i = 0; i < n ; i++){
+                for (Integer k : key){
+                    ret.put(k, h.get(k));
+                }
+            }
+        }
         return h;
     }
             
