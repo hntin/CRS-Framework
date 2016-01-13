@@ -352,30 +352,36 @@ public class CollaborativeQualityEvaluation {
 //        System.out.println("Goodness Value for top" + topN + " is: " + goodnessValueMetric1);
         //</editor-fold>
 
-        CollaborativeQualityEvaluation qualityEvaluation = new CollaborativeQualityEvaluation();
-        CoAuthorGraph currentGraph = new CoAuthorGraph(
-                "/2.CRS-ExperimetalData/SampleData/AuthorID_PaperID_2009_2011.txt",
-                "/2.CRS-ExperimetalData/SampleData/PaperID_Year_2009_2011.txt");
-        CoAuthorGraph pastGraph = new CoAuthorGraph("/2.CRS-ExperimetalData/SampleData/AuthorID_PaperID_2006_2008.txt",
-                "/2.CRS-ExperimetalData/SampleData/PaperID_Year_2006_2008.txt");
-
-        ArrayList<Integer> potentialList = new ArrayList<Integer>();
-        potentialList.add(1);
-        potentialList.add(2);
-        potentialList.add(3);
-        potentialList.add(4);
-        potentialList.add(5);
-
-        double qualityValue = qualityEvaluation.collaborativeQualityTopN_Metric2(8, potentialList, pastGraph, currentGraph);
-        System.out.println("For 8 ... Quality Value:" + qualityValue);
-        qualityValue = 0;
-        qualityValue = qualityEvaluation.collaborativeQualityTopN_Metric2(6, potentialList, pastGraph, currentGraph);
-        
-        HashMap<Integer, Float> hm = new HashMap<>();
-
-        System.out.println("For 6 ... Quality Value:" + qualityValue);
-        
-        qualityEvaluation.getDistinctAuthorIDFromPositiveSamples("/2.CRS-ExperimetalData/SampleData/Seniors/Testing_PositiveSamples_Senior.txt");
+//        CollaborativeQualityEvaluation qualityEvaluation = new CollaborativeQualityEvaluation();
+//        CoAuthorGraph currentGraph = new CoAuthorGraph(
+//                "/2.CRS-ExperimetalData/SampleData/AuthorID_PaperID_2009_2011.txt",
+//                "/2.CRS-ExperimetalData/SampleData/PaperID_Year_2009_2011.txt");
+//        CoAuthorGraph pastGraph = new CoAuthorGraph("/2.CRS-ExperimetalData/SampleData/AuthorID_PaperID_2006_2008.txt",
+//                "/2.CRS-ExperimetalData/SampleData/PaperID_Year_2006_2008.txt");
+//
+//        ArrayList<Integer> potentialList = new ArrayList<Integer>();
+//        potentialList.add(1);
+//        potentialList.add(2);
+//        potentialList.add(3);
+//        potentialList.add(4);
+//        potentialList.add(5);
+//
+//        double qualityValue = qualityEvaluation.collaborativeQualityTopN_Metric2(8, potentialList, pastGraph, currentGraph);
+//        System.out.println("For 8 ... Quality Value:" + qualityValue);
+//        qualityValue = 0;
+//        qualityValue = qualityEvaluation.collaborativeQualityTopN_Metric2(6, potentialList, pastGraph, currentGraph);
+//        
+//        HashMap<Integer, Float> hm = new HashMap<>();
+//
+//        System.out.println("For 6 ... Quality Value:" + qualityValue);
+//        
+//        qualityEvaluation.getDistinctAuthorIDFromPositiveSamples("/2.CRS-ExperimetalData/SampleData/Seniors/Testing_PositiveSamples_Senior.txt");
+        HashMap<Integer,HashMap<Integer,Double>> hash = readEvaluationFile("D:\\1.CRS-Experiment\\MLData\\3-Hub\\Senior\\TestingData\\test.txt","Positive");
+        HashMap<Integer,Double> top = getTopN(198037,2,hash);
+        Set<Integer> set = top.keySet();
+        for (Integer i : set){
+            System.out.println(i);
+        }
         System.out.println("END");
     }
 }
