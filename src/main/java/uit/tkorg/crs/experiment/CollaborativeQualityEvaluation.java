@@ -176,7 +176,9 @@ public class CollaborativeQualityEvaluation {
     }
 
     /**
-     * double collaborativeQualityTopN_Metric1(Integer authorID, List<Integer> potentialCoAuthorList_TopN)
+     * double collaborativeQualityTopN_Metric1(Integer authorID, List<Integer>
+     * potentialCoAuthorList_TopN)
+     *
      * @param authorID
      * @param potentialCoAuthorList
      * @param file_AuthorID_PaperID
@@ -208,53 +210,98 @@ public class CollaborativeQualityEvaluation {
         collaborativeQualityTopN = collaborativeQualityTopN / potentialCoAuthorList_TopN.size();
         return collaborativeQualityTopN;
     }
-    
+
     /**
-     * collaborativeQualityTopN_Metric1(List<Integer> inputAuthorList, List<Integer> potentialCoAuthorList_TopN)
+     * collaborativeQualityTopN_Metric1(List<Integer> inputAuthorList,
+     * List<Integer> potentialCoAuthorList_TopN)
+     *
      * @param inputAuthorList
      * @param potentialCoAuthorList_TopN
-     * @return 
+     * @return
      */
     public double collaborativeQualityTopN_Metric1(List<Integer> inputAuthorList, List<Integer> potentialCoAuthorList_TopN) {
         double collaborativeQualityTopN = 0;
-        for (int i=0; i<inputAuthorList.size(); i++) {
+        for (int i = 0; i < inputAuthorList.size(); i++) {
             int inputAuthorID = inputAuthorList.get(i);
             collaborativeQualityTopN += collaborativeQualityTopN_Metric1(inputAuthorID, potentialCoAuthorList_TopN);
         }
 
-        collaborativeQualityTopN = collaborativeQualityTopN/inputAuthorList.size();
+        collaborativeQualityTopN = collaborativeQualityTopN / inputAuthorList.size();
         return collaborativeQualityTopN;
     }
 
     /**
-     * Dem so bai bao ma (authorID,potentialCoAuthorID) viet chung voi 1 tac gia
-     * moi (newAuthor)trong giai doan T3 (G3), voi dieu kien (authorID, newAuthor) 
-     * G2 chua viet chung truoc do trong .
+     * collaborativeQualityTopN_Metric2
      * @param authorID
      * @param potentialCoAuthorList_TopN
+     * @param pastGraph
+     * @param currentGraph
      * @return 
      */
-    public double collaborativeQualityTopN_Metric2(Integer authorID, List<Integer> potentialCoAuthorList_TopN) {
+    public double collaborativeQualityTopN_Metric2(int authorID, List<Integer> potentialCoAuthorList_TopN, CoAuthorGraph pastGraph, CoAuthorGraph currentGraph) {
         double collaborativeQualityTopN = 0;
-
-        return collaborativeQualityTopN;
-    }
-    
-    /**
-     * double collaborativeQualityTopN_Metric2(List<Integer> inputAuthorList, List<Integer> potentialCoAuthorList_TopN)
-     * @param inputAuthorList
-     * @param potentialCoAuthorList_TopN
-     * @return 
-     */
-    public double collaborativeQualityTopN_Metric2(List<Integer> inputAuthorList, List<Integer> potentialCoAuthorList_TopN) {
-        double collaborativeQualityTopN = 0;
-        for (int i=0; i<inputAuthorList.size(); i++) {
-            int inputAuthorID = inputAuthorList.get(i);
-            collaborativeQualityTopN += collaborativeQualityTopN_Metric2(inputAuthorID, potentialCoAuthorList_TopN);
+        ArrayList<Integer> groupAuthorID = new ArrayList<>();
+        groupAuthorID.add(authorID);
+        for (int i = 0; i < potentialCoAuthorList_TopN.size(); i++) {
+            int potentialAuthorID = potentialCoAuthorList_TopN.get(i);
+            ArrayList<Integer> newCollaborators = getNewCollaborations(authorID, potentialAuthorID, pastGraph, currentGraph);
+            if (newCollaborators != null && newCollaborators.size() > 0) {
+                collaborativeQualityTopN += newCollaborators.size() * 1 / Math.exp(i);
+            }
         }
 
-        collaborativeQualityTopN = collaborativeQualityTopN/inputAuthorList.size();
+        collaborativeQualityTopN = collaborativeQualityTopN / potentialCoAuthorList_TopN.size();
         return collaborativeQualityTopN;
+    }
+
+    /**
+     * collaborativeQualityTopN_Metric2
+     *
+     * @param inputAuthorList
+     * @param potentialCoAuthorList_TopN
+     * @return
+     */
+    public double collaborativeQualityTopN_Metric2(List<Integer> inputAuthorList, List<Integer> potentialCoAuthorList_TopN,
+            CoAuthorGraph pastGraph, CoAuthorGraph currentGraph) {
+        double collaborativeQualityTopN = 0;
+        for (int i = 0; i < inputAuthorList.size(); i++) {
+            int inputAuthorID = inputAuthorList.get(i);
+            collaborativeQualityTopN += collaborativeQualityTopN_Metric2(inputAuthorID, potentialCoAuthorList_TopN, pastGraph, currentGraph);
+        }
+
+        collaborativeQualityTopN = collaborativeQualityTopN / inputAuthorList.size();
+        return collaborativeQualityTopN;
+    }
+
+    /**
+     * getNewCollaborations
+     *
+     * @param authorID
+     * @param potentialCoAuthorID
+     * @param pastGraph: T2?
+     * @param currentGraph: T3?
+     * @return
+     */
+    public ArrayList<Integer> getNewCollaborations(int authorID, int potentialCoAuthorID, CoAuthorGraph pastGraph, CoAuthorGraph currentGraph) {
+        ArrayList<Integer> listNewCoAuthorID = new ArrayList<>();
+        for (int paperID : currentGraph._paperAuthor.keySet()) {
+            ArrayList<Integer> authorListOfPaper = currentGraph._paperAuthor.get(paperID);
+            if (authorListOfPaper.contains(authorID) && authorListOfPaper.contains(potentialCoAuthorID) && authorListOfPaper.size() > 2) {
+                for (int j = 0; j < authorListOfPaper.size(); j++) {
+                    int newCoAuthorID = authorListOfPaper.get(j);
+                    if (newCoAuthorID != authorID && newCoAuthorID != potentialCoAuthorID) {
+                        // Kiem tra xem neu (authorID, newCoAuthorID) chua co dong tac gia trong pastGraph thi them vao danh sach listNewCoAuthorID
+                        if (!(pastGraph._coAuthorGraph.get(authorID).containsKey(newCoAuthorID))) {
+                            if (!listNewCoAuthorID.contains(newCoAuthorID)) {
+                                listNewCoAuthorID.add(newCoAuthorID);
+                            }
+                        }
+
+                    }
+                }
+            }
+        }
+        return listNewCoAuthorID;
     }
 
     public static void main(String args[]) {
@@ -294,8 +341,10 @@ public class CollaborativeQualityEvaluation {
         //</editor-fold>
 
         ArrayList<Integer> inputList = new ArrayList<Integer>();
-        inputList.add(8); inputList.add(9); inputList.add(6);
-        
+        inputList.add(8);
+        inputList.add(9);
+        inputList.add(6);
+
         ArrayList<Integer> potentialList = new ArrayList<Integer>();
         potentialList.add(1);
         potentialList.add(2);

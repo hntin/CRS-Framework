@@ -11,6 +11,8 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  *
@@ -29,10 +31,10 @@ public class CoAuthorGraph {
     //weighted, directed graph, <AuthorID, <PotentialCoAuthorID, NormalizedWeight>>, exp(delta(t))
     public HashMap<Integer, HashMap<Integer, Float>> _rssDoublePlusGraph;
     // <AuthorID, <CoAuthorID, <Delta(t), NumOfCollaboration>>>
-    private HashMap<Integer, HashMap<Integer, HashMap<Integer, Integer>>> _expFunctBasedCoAuthorGraph;
-    private HashMap<Integer, Integer> _paperId_Year;
-    private HashMap<Integer, ArrayList<Integer>> _authorPaper;
-    private HashMap<Integer, ArrayList<Integer>> _paperAuthor;
+    public HashMap<Integer, HashMap<Integer, HashMap<Integer, Integer>>> _expFunctBasedCoAuthorGraph;
+    public HashMap<Integer, Integer> _paperId_Year;
+    public HashMap<Integer, ArrayList<Integer>> _authorPaper;
+    public HashMap<Integer, ArrayList<Integer>> _paperAuthor;
     // </editor-fold>
 
     public HashMap<Integer, Integer> getPaperId_Year() {
@@ -328,7 +330,7 @@ public class CoAuthorGraph {
 
         return found;
     }
-
+    
     // For tesing mathods in CoAuthorGraph
     public static void main(String args[]) {
         // Testing Data
