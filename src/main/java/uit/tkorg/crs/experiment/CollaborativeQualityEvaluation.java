@@ -306,7 +306,7 @@ public class CollaborativeQualityEvaluation {
         return list;
     }
 
-    public static HashMap<Integer, Double> getTopN(int idAuthor, int n, HashMap<Integer, HashMap<Integer, Double>> hash) {
+    public static List<Integer> getTopN(int idAuthor, int n, HashMap<Integer, HashMap<Integer, Double>> hash) {
         HashMap<Integer, Double> h = hash.get(new Integer(idAuthor));
         h = HashMapUtility.getSortedMapDescending(h);
         HashMap<Integer, Double> ret = null;
@@ -324,7 +324,12 @@ public class CollaborativeQualityEvaluation {
                 }
             }
         }
-        return ret;
+        //convert HashtMap to ArrayList
+        Set<Integer> key = ret.keySet();
+        List<Integer> list = new ArrayList<Integer>();
+        for (Integer k : key)
+            list.add(k);
+        return list;
     }
 
     public static double runCollaborativeQualityEvaluation(CoAuthorGraph pastGraph, CoAuthorGraph currentGraph,
@@ -336,7 +341,7 @@ public class CollaborativeQualityEvaluation {
         ArrayList<Integer> authorIDListFromPositiveSamples = getDistinctAuthorIDFromPositiveSamples(positiveSampleFileName);
         for (int i = 0; i < authorIDListFromPositiveSamples.size(); i++) {
             int inputAuthorID = authorIDListFromPositiveSamples.get(i);
-            HashMap<Integer, Double> topN_HM = getTopN(inputAuthorID, topN, hash);
+            List<Integer> topN_HM = getTopN(inputAuthorID, topN, hash);
             if (metric == 1) {
                 //collaborativeQualityValue += collaborativeQualityTopN_Metric1(inputAuthorID, topN_HM.keySet());
             } 
@@ -352,43 +357,42 @@ public class CollaborativeQualityEvaluation {
     public static void main(String args[]) {
 
         System.out.println("START");
-        int topN = 50;
-
-        //<editor-fold defaultstate="collapsed" desc="For Isolated Researchers">
-//        IsolatedAuthorDataset isolatedDataset = new IsolatedAuthorDataset(
-//                "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input1\\[TrainingData]AuthorID_PaperID_2001_2005.txt",
-//                "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input1\\[TestingData]AuthorID_PaperID_2006_2008.txt",
-//                "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input1\\[TestingData]AuthorID_PaperID_2009_2011.txt");
-//        
-//        System.out.println("Loading & Building Networks");
-//        isolatedDataset.load_Training_NetworkData();
-//        isolatedDataset.load_NF_FF_NetworkData();
-//        isolatedDataset.build_NF_FF_Graph();
-//        isolatedDataset.build_CoAuthorGraph();
-//        
-//        CollaborativeQualityEvaluation goodnessEvaluation = new CollaborativeQualityEvaluation();
-//        goodnessEvaluation.load_Decsion_Value("C:\\CRS-Experiment\\MAS\\ColdStart\\Output\\TestDataset_2Features_OrgRS_ActiveScore_results.txt");
-//        
-//        goodnessEvaluation.load_InstanceID_Pair("C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input1\\TestDatasetMapping.txt");
-//        HashMap<Integer, Float> topN_HM = goodnessEvaluation.getTopNOfDecisionValue(topN);
-//        topN_HM = HashMapUtility.getSortedMapDescending(topN_HM);
-//        double goodnessValueMetric1 = goodnessEvaluation.getCoAuthorshipGoodness_Metric1(
-//                topN_HM, "C:\\CRS-Experiment\\MAS\\ColdStart\\Output\\GoodnessResult_2Features_OrgRS_ActiveScore_Top50.txt");
-//        
-//        System.out.println("Goodness Value for top" + topN + " is: " + goodnessValueMetric1);
-        //</editor-fold>
-        CoAuthorGraph currentGraph = new CoAuthorGraph(
-                "/2.CRS-ExperimetalData/SampleData/AuthorID_PaperID_2009_2011.txt",
-                "/2.CRS-ExperimetalData/SampleData/PaperID_Year_2009_2011.txt");
-        CoAuthorGraph pastGraph = new CoAuthorGraph("/2.CRS-ExperimetalData/SampleData/AuthorID_PaperID_2006_2008.txt",
-                "/2.CRS-ExperimetalData/SampleData/PaperID_Year_2006_2008.txt");
-
-        getDistinctAuthorIDFromPositiveSamples("/2.CRS-ExperimetalData/SampleData/Seniors/Testing_PositiveSamples_Senior.txt");
+//        int topN = 50;
+//
+//        //<editor-fold defaultstate="collapsed" desc="For Isolated Researchers">
+////        IsolatedAuthorDataset isolatedDataset = new IsolatedAuthorDataset(
+////                "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input1\\[TrainingData]AuthorID_PaperID_2001_2005.txt",
+////                "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input1\\[TestingData]AuthorID_PaperID_2006_2008.txt",
+////                "C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input1\\[TestingData]AuthorID_PaperID_2009_2011.txt");
+////        
+////        System.out.println("Loading & Building Networks");
+////        isolatedDataset.load_Training_NetworkData();
+////        isolatedDataset.load_NF_FF_NetworkData();
+////        isolatedDataset.build_NF_FF_Graph();
+////        isolatedDataset.build_CoAuthorGraph();
+////        
+////        CollaborativeQualityEvaluation goodnessEvaluation = new CollaborativeQualityEvaluation();
+////        goodnessEvaluation.load_Decsion_Value("C:\\CRS-Experiment\\MAS\\ColdStart\\Output\\TestDataset_2Features_OrgRS_ActiveScore_results.txt");
+////        
+////        goodnessEvaluation.load_InstanceID_Pair("C:\\CRS-Experiment\\MAS\\ColdStart\\Input\\Input1\\TestDatasetMapping.txt");
+////        HashMap<Integer, Float> topN_HM = goodnessEvaluation.getTopNOfDecisionValue(topN);
+////        topN_HM = HashMapUtility.getSortedMapDescending(topN_HM);
+////        double goodnessValueMetric1 = goodnessEvaluation.getCoAuthorshipGoodness_Metric1(
+////                topN_HM, "C:\\CRS-Experiment\\MAS\\ColdStart\\Output\\GoodnessResult_2Features_OrgRS_ActiveScore_Top50.txt");
+////        
+////        System.out.println("Goodness Value for top" + topN + " is: " + goodnessValueMetric1);
+//        //</editor-fold>
+//        CoAuthorGraph currentGraph = new CoAuthorGraph(
+//                "/2.CRS-ExperimetalData/SampleData/AuthorID_PaperID_2009_2011.txt",
+//                "/2.CRS-ExperimetalData/SampleData/PaperID_Year_2009_2011.txt");
+//        CoAuthorGraph pastGraph = new CoAuthorGraph("/2.CRS-ExperimetalData/SampleData/AuthorID_PaperID_2006_2008.txt",
+//                "/2.CRS-ExperimetalData/SampleData/PaperID_Year_2006_2008.txt");
+//
+//        getDistinctAuthorIDFromPositiveSamples("/2.CRS-ExperimetalData/SampleData/Seniors/Testing_PositiveSamples_Senior.txt");
         HashMap<Integer, HashMap<Integer, Double>> hash = readEvaluationFile("D:\\1.CRS-Experiment\\MLData\\3-Hub\\Senior\\TestingData\\test.txt", "Positive");
-        HashMap<Integer, Double> top = getTopN(198037, 2, hash);
-        Set<Integer> set = top.keySet();
-        for (Integer i : set) {
-            System.out.println(i);
+        List<Integer> top = getTopN(198037, 2, hash);
+        for (int i = 0; i < top.size(); i++) {
+            System.out.println(top.get(i));
         }
         System.out.println("END");
     }

@@ -55,6 +55,7 @@ public class TestAPI {
             
             Instances isTrainingSet = arffLoader.getDataSet();
             isTrainingSet.deleteAttributeAt(0);
+            isTrainingSet.deleteAttributeAt(0);
             // Set class index
             isTrainingSet.setClassIndex(3);
             
