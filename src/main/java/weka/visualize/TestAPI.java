@@ -45,7 +45,7 @@ public class TestAPI {
             File f = new File("D:\\1.CRS-Experiment\\MLData\\3-Hub\\Senior\\TestingData\\Evaluation.txt");
             FileWriter fstream = new FileWriter(f, true);
             BufferedWriter out = new BufferedWriter(fstream);
-            ObjectOutputStream objOut = new ObjectOutputStream(new FileOutputStream("D:\\1.CRS-Experiment\\MLData\\3-Hub\\Senior\\TrainedModel\\MLP_2F.bin"));
+            ObjectOutputStream objOut = new ObjectOutputStream(new FileOutputStream("D:\\1.CRS-Experiment\\MLData\\3-Hub\\Senior\\TrainedModel\\MLP_3F.bin"));
             // Create an empty training set
             
             ArffLoader arffLoader = new ArffLoader();
@@ -56,6 +56,8 @@ public class TestAPI {
             Instances isTrainingSet = arffLoader.getDataSet();
             isTrainingSet.deleteAttributeAt(0);
             isTrainingSet.deleteAttributeAt(0);
+//            isTrainingSet.deleteAttributeAt(0);
+//            isTrainingSet.deleteAttributeAt(0);
             // Set class index
             isTrainingSet.setClassIndex(3);
             
@@ -74,7 +76,7 @@ public class TestAPI {
             // Set class index
             //isTestingSet.setClassIndex(5);
 
-            int[] delAttr = {0,0,0,0,1,1,1};
+            int[] delAttr = {0,0,0,1,1,1,1};
                 
             for (int i = 0; i < isTestingSet.numInstances(); i++){
                 Instance instance = isTestingSet.instance(i);
