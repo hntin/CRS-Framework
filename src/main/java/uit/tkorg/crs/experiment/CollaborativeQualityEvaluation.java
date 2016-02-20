@@ -163,9 +163,12 @@ public class CollaborativeQualityEvaluation {
         TextFileUtility.writeTextFile(outFileName, strBuff.toString());
         return goodnessVal;
     }
-    
+
     /**
-     * collaborativeQualityTopN_Metric1
+     * collaborativeQualityTopN_Metric1: Tinh chat luong cong tac cua topN
+     * khuyen nghi dua tren TONG SO BAI BAO dong tac gia cua (authorID,
+     * potentialCoAuthorID) Metric1 = Sum(1/e^rank(i)*Coll_Num(authorID,
+     * potentialCoAuthorID))
      *
      * @param authorID
      * @param potentialCoAuthorList_TopN
@@ -185,7 +188,7 @@ public class CollaborativeQualityEvaluation {
             if (graph._coAuthorGraph.containsKey(authorID)) {
                 if ((graph._coAuthorGraph.get(authorID)).containsKey(potentialCoAuthorID)) {
                     int numOfCollaboration = graph._coAuthorGraph.get(authorID).get(potentialCoAuthorID);
-                    collaborativeQualityTopN += numOfCollaboration * 1 / (i+1);
+                    collaborativeQualityTopN += numOfCollaboration * 1 / (i + 1);
                 }
             }
         }
@@ -194,7 +197,10 @@ public class CollaborativeQualityEvaluation {
     }
 
     /**
-     * collaborativeQualityTopN_Metric2
+     * collaborativeQualityTopN_Metric2 Tinh chat luong cong tac cua topN khuyen
+     * nghi dua tren TONG SO NGUOI CONG TAC MOI co the mo rong cua (authorID,
+     * potentialCoAuthorID) Metric2 = Sum(1/e^rank(i)*Num_NewCoAuthor(authorID,
+     * potentialCoAuthorID))
      *
      * @param authorID
      * @param potentialCoAuthorList_TopN
@@ -208,11 +214,66 @@ public class CollaborativeQualityEvaluation {
             int potentialAuthorID = potentialCoAuthorList_TopN.get(i);
             ArrayList<Integer> newCollaborators = getNewCollaborations(authorID, potentialAuthorID, pastGraph, currentGraph);
             if (newCollaborators != null && newCollaborators.size() > 0) {
-                collaborativeQualityTopN += newCollaborators.size() * 1 / (i+1);
+                collaborativeQualityTopN += newCollaborators.size() * 1 / (i + 1);
             }
         }
 
         //collaborativeQualityTopN = collaborativeQualityTopN / potentialCoAuthorList_TopN.size();
+        return collaborativeQualityTopN;
+    }
+
+    /**
+     * collaborativeQualityTopN_Metric3. Khong quan tam thu tu trong RankList
+     * Tinh chat luong cong tac cua topN khuyen nghi dua tren TONG SO BAI BAO
+     * dong tac gia cua (authorID, potentialCoAuthorID) Metric3 =
+     * Sum(Coll_Num(authorID, potentialCoAuthorID))
+     *
+     * @param authorID
+     * @param potentialCoAuthorList_TopN
+     * @param graph
+     * @return
+     */
+    public static int collaborativeQualityTopN_Metric3(int authorID, List<Integer> potentialCoAuthorList_TopN, CoAuthorGraph graph) {
+        int numOFGeneratedCollaboration = 0;
+        // i la vi tri xep hang cua potentialCoAuthorID trong danh sach?
+        for (int i = 0; i < potentialCoAuthorList_TopN.size(); i++) {
+            Integer potentialCoAuthorID = potentialCoAuthorList_TopN.get(i);
+            // Kiem tra su ton tai cua authorID va potentialCoAuthorID trong T3
+            // Dem so bai dong tac gia cua (authorID, potentialCoAuthorID) trong T3. 
+            // Tinh chat luong cong tac dua tren so bai dong tac gia cua (authorID, potentialCoAuthorID)
+            if (graph._coAuthorGraph.containsKey(authorID)) {
+                if ((graph._coAuthorGraph.get(authorID)).containsKey(potentialCoAuthorID)) {
+                    int numOfCollaboration = graph._coAuthorGraph.get(authorID).get(potentialCoAuthorID);
+                    numOFGeneratedCollaboration += numOfCollaboration;
+                }
+            }
+        }
+
+        return numOFGeneratedCollaboration;
+    }
+
+    /**
+     * collaborativeQualityTopN_Metric4 Tinh chat luong cong tac cua topN khuyen
+     * nghi dua tren TONG SO NGUOI CONG TAC MOI co the mo rong cua (authorID,
+     * potentialCoAuthorID) KHONG QUAN TAM THU TU trong RANK LIST Metric4 =
+     * Sum(Num_NewCoAuthor(authorID, potentialCoAuthorID))
+     *
+     * @param authorID
+     * @param potentialCoAuthorList_TopN
+     * @param pastGraph
+     * @param currentGraph
+     * @return
+     */
+    public static double collaborativeQualityTopN_Metric4(int authorID, List<Integer> potentialCoAuthorList_TopN, CoAuthorGraph pastGraph, CoAuthorGraph currentGraph) {
+        double collaborativeQualityTopN = 0;
+        for (int i = 0; i < potentialCoAuthorList_TopN.size(); i++) {
+            int potentialAuthorID = potentialCoAuthorList_TopN.get(i);
+            ArrayList<Integer> newCollaborators = getNewCollaborations(authorID, potentialAuthorID, pastGraph, currentGraph);
+            if (newCollaborators != null && newCollaborators.size() > 0) {
+                collaborativeQualityTopN += newCollaborators.size();
+            }
+        }
+
         return collaborativeQualityTopN;
     }
 
@@ -245,35 +306,6 @@ public class CollaborativeQualityEvaluation {
             }
         }
         return listNewCoAuthorID;
-    }
-    
-    /**
-     * collaborativeQualityTopN_Metric3
-     *
-     * @param authorID
-     * @param potentialCoAuthorList_TopN
-     * @param graph
-     * @return
-     */
-    public static int collaborativeQualityTopN_Metric3(int authorID, List<Integer> potentialCoAuthorList_TopN, CoAuthorGraph graph) {
-
-        int numOFGeneratedCollaboration = 0;
-        // i la vi tri xep hang cua potentialCoAuthorID trong danh sach?
-        for (int i = 0; i < potentialCoAuthorList_TopN.size(); i++) {
-            Integer potentialCoAuthorID = potentialCoAuthorList_TopN.get(i);
-            // Kiem tra su ton tai cua authorID va potentialCoAuthorID trong T3
-            // Dem so bai dong tac gia cua (authorID, potentialCoAuthorID) trong T3. 
-            // Tinh chat luong cong tac dua tren so bai dong tac gia cua (authorID, potentialCoAuthorID)
-            if (graph._coAuthorGraph.containsKey(authorID)) {
-                if ((graph._coAuthorGraph.get(authorID)).containsKey(potentialCoAuthorID)) {
-                    int numOfCollaboration = graph._coAuthorGraph.get(authorID).get(potentialCoAuthorID);
-                    numOFGeneratedCollaboration += numOfCollaboration;
-                }
-
-            }
-        }
-
-        return numOFGeneratedCollaboration;
     }
 
     /**
@@ -375,7 +407,7 @@ public class CollaborativeQualityEvaluation {
         System.out.println("Num of Input Author ..." + authorIDListFromPositiveSamples.size());
         for (int i = 0; i < authorIDListFromPositiveSamples.size(); i++) {
             int inputAuthorID = authorIDListFromPositiveSamples.get(i);
-            
+
             List<Integer> topN_List = getTopN(inputAuthorID, topN, hash);
             if (metric == 1) {
                 collaborativeQualityValue += collaborativeQualityTopN_Metric1(inputAuthorID, topN_List, currentGraph);
@@ -383,21 +415,23 @@ public class CollaborativeQualityEvaluation {
             if (metric == 2) {
                 collaborativeQualityValue += collaborativeQualityTopN_Metric2(inputAuthorID, topN_List, pastGraph, currentGraph);
             }
-            
             if (metric == 3) {
                 collaborativeQualityValue += collaborativeQualityTopN_Metric3(inputAuthorID, topN_List, currentGraph);
             }
-            
+            if (metric == 4) {
+                collaborativeQualityValue += collaborativeQualityTopN_Metric4(inputAuthorID, topN_List, pastGraph, currentGraph);
+            }
+
             System.out.println("Doing " + i);
         }
 
-        if (metric == 1 || metric == 2)
+        if (metric == 1 || metric == 2) {
             collaborativeQualityValue = collaborativeQualityValue / authorIDListFromPositiveSamples.size();
+        }
         return collaborativeQualityValue;
     }
 
     public static void main(String args[]) {
-
         System.out.println("START");
 //        int topN = 50;
 //
@@ -437,7 +471,6 @@ public class CollaborativeQualityEvaluation {
 //            System.out.println(top.get(i));
 //        }
 
-        int topN = 15;
         CoAuthorGraph currentGraph = new CoAuthorGraph(
                 "D:\\1.CRS-Experiment\\MLData\\AuthorID_PaperID_2007_2009.txt",
                 "D:\\1.CRS-Experiment\\MLData\\PaperID_Year_2007_2009.txt");
@@ -445,21 +478,36 @@ public class CollaborativeQualityEvaluation {
                 "D:\\1.CRS-Experiment\\MLData\\AuthorID_PaperID_2004_2006.txt",
                 "D:\\1.CRS-Experiment\\MLData\\PaperID_Year_2004_2006.txt");
 
-        double qualityValue
-                = runCollaborativeQualityEvaluation(pastGraph, currentGraph,
-                        "D:\\1.CRS-Experiment\\MLData\\3-Hub\\Senior\\TestingData\\Testing_PositiveSamples.txt",
-                        "D:\\1.CRS-Experiment\\MLData\\3-Hub\\Senior\\TestingData\\Evaluation_CBSim_OrgRSS_CoAuthorRSS_IF.txt",
-                        topN, "Positive", 2);
-        
-//        double numOfGeneratedPub
-//                = runCollaborativeQualityEvaluation(pastGraph, currentGraph,
-//                        "D:\\1.CRS-Experiment\\MLData\\3-Hub\\Senior\\TestingData\\Testing_PositiveSamples.txt",
-//                        "D:\\1.CRS-Experiment\\MLData\\3-Hub\\Senior\\TestingData\\Evaluation_CBSim.txt",
-//                        topN, "Positive", 3);
-        
-        System.out.println("Metric 2 ... CollaborativeQualityValue:" + qualityValue);
-//        System.out.println("Metric 3 ... NumOfGeneratedPub:" + numOfGeneratedPub);
-        System.out.println("END ... Top15 ... Evaluation_CBSim_OrgRSS_CoAuthorRSS_IF");
-        
+        String featuresFileName
+                = "D:\\1.CRS-Experiment\\MLData\\3-Hub\\Senior\\TestingData\\Evaluation_CBSim_OrgRSS_CoAuthorRSS_IF.txt";
+        System.out.println("Processing ..." + featuresFileName);
+        for (int metric = 1; metric <= 4; metric++) {
+            int topN = 5;
+            double qualityValue
+                    = runCollaborativeQualityEvaluation(pastGraph, currentGraph,
+                            "D:\\1.CRS-Experiment\\MLData\\3-Hub\\Senior\\TestingData\\Testing_PositiveSamples.txt",
+                            featuresFileName,
+                            topN, "Positive", metric);
+            System.out.println("END, TOP" + topN);
+            System.out.println("Metric " + metric + ", CollaborativeQualityValue:" + qualityValue);
+
+            topN = 10;
+            qualityValue
+                    = runCollaborativeQualityEvaluation(pastGraph, currentGraph,
+                            "D:\\1.CRS-Experiment\\MLData\\3-Hub\\Senior\\TestingData\\Testing_PositiveSamples.txt",
+                            featuresFileName,
+                            topN, "Positive", metric);
+            System.out.println("END, TOP" + topN);
+            System.out.println("Metric " + metric + ", CollaborativeQualityValue:" + qualityValue);
+
+            topN = 15;
+            qualityValue
+                    = runCollaborativeQualityEvaluation(pastGraph, currentGraph,
+                            "D:\\1.CRS-Experiment\\MLData\\3-Hub\\Senior\\TestingData\\Testing_PositiveSamples.txt",
+                            featuresFileName,
+                            topN, "Positive", metric);
+            System.out.println("END, TOP" + topN);
+            System.out.println("Metric " + metric + ", CollaborativeQualityValue:" + qualityValue);
+        }
     }
 }
