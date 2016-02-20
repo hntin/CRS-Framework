@@ -163,7 +163,7 @@ public class CollaborativeQualityEvaluation {
         TextFileUtility.writeTextFile(outFileName, strBuff.toString());
         return goodnessVal;
     }
-
+    
     /**
      * collaborativeQualityTopN_Metric1
      *
@@ -185,9 +185,8 @@ public class CollaborativeQualityEvaluation {
             if (graph._coAuthorGraph.containsKey(authorID)) {
                 if ((graph._coAuthorGraph.get(authorID)).containsKey(potentialCoAuthorID)) {
                     int numOfCollaboration = graph._coAuthorGraph.get(authorID).get(potentialCoAuthorID);
-                    collaborativeQualityTopN += numOfCollaboration * 1 / (Math.exp(i));
+                    collaborativeQualityTopN += numOfCollaboration * 1 / (i+1);
                 }
-
             }
         }
 
@@ -209,7 +208,7 @@ public class CollaborativeQualityEvaluation {
             int potentialAuthorID = potentialCoAuthorList_TopN.get(i);
             ArrayList<Integer> newCollaborators = getNewCollaborations(authorID, potentialAuthorID, pastGraph, currentGraph);
             if (newCollaborators != null && newCollaborators.size() > 0) {
-                collaborativeQualityTopN += newCollaborators.size() * 1 / Math.exp(i);
+                collaborativeQualityTopN += newCollaborators.size() * 1 / (i+1);
             }
         }
 
@@ -246,6 +245,35 @@ public class CollaborativeQualityEvaluation {
             }
         }
         return listNewCoAuthorID;
+    }
+    
+    /**
+     * collaborativeQualityTopN_Metric3
+     *
+     * @param authorID
+     * @param potentialCoAuthorList_TopN
+     * @param graph
+     * @return
+     */
+    public static int collaborativeQualityTopN_Metric3(int authorID, List<Integer> potentialCoAuthorList_TopN, CoAuthorGraph graph) {
+
+        int numOFGeneratedCollaboration = 0;
+        // i la vi tri xep hang cua potentialCoAuthorID trong danh sach?
+        for (int i = 0; i < potentialCoAuthorList_TopN.size(); i++) {
+            Integer potentialCoAuthorID = potentialCoAuthorList_TopN.get(i);
+            // Kiem tra su ton tai cua authorID va potentialCoAuthorID trong T3
+            // Dem so bai dong tac gia cua (authorID, potentialCoAuthorID) trong T3. 
+            // Tinh chat luong cong tac dua tren so bai dong tac gia cua (authorID, potentialCoAuthorID)
+            if (graph._coAuthorGraph.containsKey(authorID)) {
+                if ((graph._coAuthorGraph.get(authorID)).containsKey(potentialCoAuthorID)) {
+                    int numOfCollaboration = graph._coAuthorGraph.get(authorID).get(potentialCoAuthorID);
+                    numOFGeneratedCollaboration += numOfCollaboration;
+                }
+
+            }
+        }
+
+        return numOFGeneratedCollaboration;
     }
 
     /**
@@ -307,28 +335,33 @@ public class CollaborativeQualityEvaluation {
     }
 
     public static List<Integer> getTopN(int idAuthor, int n, HashMap<Integer, HashMap<Integer, Double>> hash) {
+        List<Integer> list = new ArrayList<Integer>();
         HashMap<Integer, Double> h = hash.get(new Integer(idAuthor));
-        h = HashMapUtility.getSortedMapDescending(h);
-        HashMap<Integer, Double> ret = null;
-        if (n > h.size()) {
-            ret = h;
+        if ((h == null) || (h.size() == 0)) {
+            return list;
         } else {
-            ret = new HashMap();
-            Set<Integer> key = h.keySet();
-            int count = 0;
-            for (Integer k : key) {
-                ret.put(k, h.get(k));
-                count++;
-                if (count == n) {
-                    break;
+            h = HashMapUtility.getSortedMapDescending(h);
+            HashMap<Integer, Double> ret = null;
+            if (n > h.size()) {
+                ret = h;
+            } else {
+                ret = new HashMap();
+                Set<Integer> key = h.keySet();
+                int count = 0;
+                for (Integer k : key) {
+                    ret.put(k, h.get(k));
+                    count++;
+                    if (count == n) {
+                        break;
+                    }
                 }
             }
+            //convert HashtMap to ArrayList
+            Set<Integer> key = ret.keySet();
+            for (Integer k : key) {
+                list.add(k);
+            }
         }
-        //convert HashtMap to ArrayList
-        Set<Integer> key = ret.keySet();
-        List<Integer> list = new ArrayList<Integer>();
-        for (Integer k : key)
-            list.add(k);
         return list;
     }
 
@@ -339,18 +372,27 @@ public class CollaborativeQualityEvaluation {
         double collaborativeQualityValue = 0;
         HashMap<Integer, HashMap<Integer, Double>> hash = readEvaluationFile(predictedResultFileName, "Positive");
         ArrayList<Integer> authorIDListFromPositiveSamples = getDistinctAuthorIDFromPositiveSamples(positiveSampleFileName);
+        System.out.println("Num of Input Author ..." + authorIDListFromPositiveSamples.size());
         for (int i = 0; i < authorIDListFromPositiveSamples.size(); i++) {
             int inputAuthorID = authorIDListFromPositiveSamples.get(i);
-            List<Integer> topN_HM = getTopN(inputAuthorID, topN, hash);
+            
+            List<Integer> topN_List = getTopN(inputAuthorID, topN, hash);
             if (metric == 1) {
-                //collaborativeQualityValue += collaborativeQualityTopN_Metric1(inputAuthorID, topN_HM.keySet());
-            } 
+                collaborativeQualityValue += collaborativeQualityTopN_Metric1(inputAuthorID, topN_List, currentGraph);
+            }
             if (metric == 2) {
-                //collaborativeQualityValue += collaborativeQualityTopN_Metric2(inputAuthorID, topN_HM.keySet(), pastGraph, currentGraph);
-            }           
+                collaborativeQualityValue += collaborativeQualityTopN_Metric2(inputAuthorID, topN_List, pastGraph, currentGraph);
+            }
+            
+            if (metric == 3) {
+                collaborativeQualityValue += collaborativeQualityTopN_Metric3(inputAuthorID, topN_List, currentGraph);
+            }
+            
+            System.out.println("Doing " + i);
         }
 
-        collaborativeQualityValue = collaborativeQualityValue / authorIDListFromPositiveSamples.size();
+        if (metric == 1 || metric == 2)
+            collaborativeQualityValue = collaborativeQualityValue / authorIDListFromPositiveSamples.size();
         return collaborativeQualityValue;
     }
 
@@ -389,11 +431,35 @@ public class CollaborativeQualityEvaluation {
 //                "/2.CRS-ExperimetalData/SampleData/PaperID_Year_2006_2008.txt");
 //
 //        getDistinctAuthorIDFromPositiveSamples("/2.CRS-ExperimetalData/SampleData/Seniors/Testing_PositiveSamples_Senior.txt");
-        HashMap<Integer, HashMap<Integer, Double>> hash = readEvaluationFile("D:\\1.CRS-Experiment\\MLData\\3-Hub\\Senior\\TestingData\\test.txt", "Positive");
-        List<Integer> top = getTopN(198037, 2, hash);
-        for (int i = 0; i < top.size(); i++) {
-            System.out.println(top.get(i));
-        }
-        System.out.println("END");
+//        HashMap<Integer, HashMap<Integer, Double>> hash = readEvaluationFile("D:\\1.CRS-Experiment\\MLData\\3-Hub\\Senior\\TestingData\\test.txt", "Positive");
+//        List<Integer> top = getTopN(198037, 2, hash);
+//        for (int i = 0; i < top.size(); i++) {
+//            System.out.println(top.get(i));
+//        }
+
+        int topN = 15;
+        CoAuthorGraph currentGraph = new CoAuthorGraph(
+                "D:\\1.CRS-Experiment\\MLData\\AuthorID_PaperID_2007_2009.txt",
+                "D:\\1.CRS-Experiment\\MLData\\PaperID_Year_2007_2009.txt");
+        CoAuthorGraph pastGraph = new CoAuthorGraph(
+                "D:\\1.CRS-Experiment\\MLData\\AuthorID_PaperID_2004_2006.txt",
+                "D:\\1.CRS-Experiment\\MLData\\PaperID_Year_2004_2006.txt");
+
+        double qualityValue
+                = runCollaborativeQualityEvaluation(pastGraph, currentGraph,
+                        "D:\\1.CRS-Experiment\\MLData\\3-Hub\\Senior\\TestingData\\Testing_PositiveSamples.txt",
+                        "D:\\1.CRS-Experiment\\MLData\\3-Hub\\Senior\\TestingData\\Evaluation_CBSim_OrgRSS_CoAuthorRSS_IF.txt",
+                        topN, "Positive", 2);
+        
+//        double numOfGeneratedPub
+//                = runCollaborativeQualityEvaluation(pastGraph, currentGraph,
+//                        "D:\\1.CRS-Experiment\\MLData\\3-Hub\\Senior\\TestingData\\Testing_PositiveSamples.txt",
+//                        "D:\\1.CRS-Experiment\\MLData\\3-Hub\\Senior\\TestingData\\Evaluation_CBSim.txt",
+//                        topN, "Positive", 3);
+        
+        System.out.println("Metric 2 ... CollaborativeQualityValue:" + qualityValue);
+//        System.out.println("Metric 3 ... NumOfGeneratedPub:" + numOfGeneratedPub);
+        System.out.println("END ... Top15 ... Evaluation_CBSim_OrgRSS_CoAuthorRSS_IF");
+        
     }
 }
