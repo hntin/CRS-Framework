@@ -278,6 +278,79 @@ public class CollaborativeQualityEvaluation {
     }
 
     /**
+     *
+     * @param authorID
+     * @param potentialCoAuthorList_TopN
+     * @param pastGraph
+     * @param currentGraph
+     * @return
+     */
+    public static double collaborativeQualityTopN_NewCollaborator_NDCG(
+            int authorID,
+            List<Integer> potentialCoAuthorList_TopN,
+            CoAuthorGraph pastGraph,
+            CoAuthorGraph currentGraph) {
+
+        double DCGValue = 0;
+        HashMap<Integer, Integer> ideal_DCG_HM = new HashMap();
+        double iDCGValue = 0;
+        for (int i = 0; i < potentialCoAuthorList_TopN.size(); i++) {
+            int potentialAuthorID = potentialCoAuthorList_TopN.get(i);
+            ArrayList<Integer> newCollaborators = getNewCollaborations(authorID, potentialAuthorID, pastGraph, currentGraph);
+            if (newCollaborators != null && newCollaborators.size() > 0) {
+                ideal_DCG_HM.put(potentialAuthorID, newCollaborators.size());
+                DCGValue += (Math.pow(2, newCollaborators.size()) - 1) / (Math.log(i + 2) / Math.log(2));
+            }
+        }
+
+        ideal_DCG_HM = HashMapUtility.getSortedMapDescending(ideal_DCG_HM);
+        for (int i = 0; i < ideal_DCG_HM.size(); i++) {
+            int numOfNewCollaborators = ideal_DCG_HM.get(i);
+            iDCGValue += (Math.pow(2, numOfNewCollaborators) - 1) / (Math.log(i + 2) / Math.log(2));
+        }
+
+        double nDCGValue = DCGValue / iDCGValue;
+        return nDCGValue;
+    }
+
+    /**
+     * 
+     * @param authorID
+     * @param potentialCoAuthorList_TopN
+     * @param graph
+     * @return 
+     */
+    public static double collaborativeQualityTopN_NewPublication_NDCG(
+            int authorID,
+            List<Integer> potentialCoAuthorList_TopN,
+            CoAuthorGraph graph) {
+
+        double DCGValue = 0;
+        HashMap<Integer, Integer> ideal_DCG_HM = new HashMap();
+        double iDCGValue = 0;
+        for (int i = 0; i < potentialCoAuthorList_TopN.size(); i++) {
+            int potentialAuthorID = potentialCoAuthorList_TopN.get(i);
+
+            if (graph._coAuthorGraph.containsKey(authorID)) {
+                if ((graph._coAuthorGraph.get(authorID)).containsKey(potentialAuthorID)) {
+                    int numOfPublication = graph._coAuthorGraph.get(authorID).get(potentialAuthorID);
+                    ideal_DCG_HM.put(potentialAuthorID, numOfPublication);
+                    DCGValue += (Math.pow(2, numOfPublication) - 1) / (Math.log(i + 2) / Math.log(2));
+                }
+            }
+        }
+
+        ideal_DCG_HM = HashMapUtility.getSortedMapDescending(ideal_DCG_HM);
+        for (int i = 0; i < ideal_DCG_HM.size(); i++) {
+            int numOfPublication = ideal_DCG_HM.get(i);
+            iDCGValue += (Math.pow(2, numOfPublication) - 1) / (Math.log(i + 2) / Math.log(2));
+        }
+
+        double nDCGValue = DCGValue / iDCGValue;
+        return nDCGValue;
+    }
+
+    /**
      * getNewCollaborations
      *
      * @param authorID
@@ -420,6 +493,12 @@ public class CollaborativeQualityEvaluation {
             }
             if (metric == 4) {
                 collaborativeQualityValue += collaborativeQualityTopN_Metric4(inputAuthorID, topN_List, pastGraph, currentGraph);
+            }
+            if (metric == 5) { // NDCG in case of number of possible NewPublications
+                collaborativeQualityValue += collaborativeQualityTopN_NewPublication_NDCG(inputAuthorID, topN_List, currentGraph);
+            }
+            if (metric == 6) { // NDCG in case of number of possible NewCollaborators
+                collaborativeQualityValue += collaborativeQualityTopN_NewCollaborator_NDCG(inputAuthorID, topN_List, pastGraph, currentGraph);
             }
 
             System.out.println("Doing " + i);
