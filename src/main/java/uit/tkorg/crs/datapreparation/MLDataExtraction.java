@@ -446,7 +446,8 @@ public class MLDataExtraction {
 
             // Chi chon mau am (-) trong G2 cho nhung junior/senior ma co xuat hien mau (+) trong G2. 
             // Khong can xet nhung junior/senior ma khong co mau (+)
-            // Chon cac cap author khong link trong G2 va G1 cho cac junior/senior (xuat hien trong G1), quet mang CoAuthor ban kinh la 3 (3-Hops)
+            // Chon cac cap author khong link trong G2 va G1 cho cac junior/senior (xuat hien trong G1), 
+            // quet mang CoAuthor ban kinh la 3 (3-Hops)
             HashMap<Integer, Integer> authorsInPositveSample = loadAuthorIDFromPositiveSample(outFile_PositiveSample);
             System.out.println("Tong so Researchers trong G2:" + G2._coAuthorGraph.size());
             if (isForJunior == true) {

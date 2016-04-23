@@ -560,7 +560,7 @@ public class CollaborativeQualityEvaluation {
         String featuresFileName
                 = "D:\\1.CRS-Experiment\\MLData\\3-Hub\\Junior\\TestingData\\Evaluation_FullFeatures.txt";
         System.out.println("Processing ..." + featuresFileName);
-        for (int metric = 1; metric <= 4; metric++) {
+        for (int metric = 5; metric <= 6; metric++) {
             int topN = 5;
             double qualityValue
                     = runCollaborativeQualityEvaluation(pastGraph, currentGraph,
