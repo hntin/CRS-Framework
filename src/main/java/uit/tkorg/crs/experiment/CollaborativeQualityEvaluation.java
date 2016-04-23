@@ -305,8 +305,11 @@ public class CollaborativeQualityEvaluation {
         }
 
         ideal_DCG_HM = HashMapUtility.getSortedMapDescending(ideal_DCG_HM);
-        for (int i = 0; i < ideal_DCG_HM.size(); i++) {
-            int numOfNewCollaborators = ideal_DCG_HM.get(i);
+        int i = 1;
+        for (Entry<Integer, Integer> entry : ideal_DCG_HM.entrySet()) {
+            i++;
+            Integer key = entry.getKey();
+            int numOfNewCollaborators = ideal_DCG_HM.get(key);
             iDCGValue += (Math.pow(2, numOfNewCollaborators) - 1) / (Math.log(i + 2) / Math.log(2));
         }
 
