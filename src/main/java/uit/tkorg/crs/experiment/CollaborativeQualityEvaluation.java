@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Scanner;
 import java.util.Set;
 import java.util.StringTokenizer;
@@ -324,7 +325,7 @@ public class CollaborativeQualityEvaluation {
             int authorID,
             List<Integer> potentialCoAuthorList_TopN,
             CoAuthorGraph graph) {
-
+        
         double DCGValue = 0;
         HashMap<Integer, Integer> ideal_DCG_HM = new HashMap();
         double iDCGValue = 0;
@@ -341,13 +342,48 @@ public class CollaborativeQualityEvaluation {
         }
 
         ideal_DCG_HM = HashMapUtility.getSortedMapDescending(ideal_DCG_HM);
-        for (int i = 0; i < ideal_DCG_HM.size(); i++) {
-            int numOfPublication = ideal_DCG_HM.get(i);
-            iDCGValue += (Math.pow(2, numOfPublication) - 1) / (Math.log(i + 2) / Math.log(2));
+        int i = 1;
+        for (Entry<Integer, Integer> entry : ideal_DCG_HM.entrySet()) {
+            i++;
+            Integer key = entry.getKey();
+            int numOfPublication = ideal_DCG_HM.get(key);
+            iDCGValue += (Math.pow(2, numOfPublication) - 1) / (Math.log(i + 1) / Math.log(2));
         }
 
         double nDCGValue = DCGValue / iDCGValue;
         return nDCGValue;
+    }
+    public static void test_NDCG() {
+        //test 6 tac gia {1,2,3,4,5,6} voi voi so luong bai bao viet chung lan luot la {3,2,3,0,1,2} du lieu dau vao luu trong thu muc input
+        List<Integer> potentialCoAuthorList_TopN = new ArrayList<Integer>();
+        CoAuthorGraph graph = new CoAuthorGraph("input/testNDCG1.txt","input/testNDCG2.txt");
+        
+        for (int i = 1; i <= 6; i++){
+            potentialCoAuthorList_TopN.add(i);
+        }
+        
+        double result = collaborativeQualityTopN_NewPublication_NDCG(6,potentialCoAuthorList_TopN,graph);
+        System.out.println("NDCG = " + result);
+        
+//        double DCGValue = 0;
+//        HashMap<Integer, Integer> ideal_DCG_HM = new HashMap();
+//        double iDCGValue = 0;
+//        
+//        for (int i = 0; i < potentialCoAuthorList_TopN.size(); i++) {
+//            int potentialAuthorID = potentialCoAuthorList_TopN.get(i);
+//            int numOfPublication = rel[i];
+//            ideal_DCG_HM.put(potentialAuthorID, numOfPublication);
+//            DCGValue += (Math.pow(2, numOfPublication) - 1) / (Math.log(i + 2) / Math.log(2));
+//        }
+//
+//        ideal_DCG_HM = HashMapUtility.getSortedMapDescending(ideal_DCG_HM);
+//        for (int i = 0; i < ideal_DCG_HM.size(); i++) {
+//            int numOfPublication = ideal_DCG_HM.get(i);
+//            iDCGValue += (Math.pow(2, numOfPublication) - 1) / (Math.log(i + 2) / Math.log(2));
+//        }
+//
+//        double nDCGValue = DCGValue / iDCGValue;
+//        return nDCGValue;
     }
 
     /**
@@ -512,6 +548,7 @@ public class CollaborativeQualityEvaluation {
 
     public static void main(String args[]) {
         System.out.println("START");
+        test_NDCG();
 //        int topN = 50;
 //
 //        //<editor-fold defaultstate="collapsed" desc="For Isolated Researchers">
@@ -550,43 +587,43 @@ public class CollaborativeQualityEvaluation {
 //            System.out.println(top.get(i));
 //        }
 
-        CoAuthorGraph currentGraph = new CoAuthorGraph(
-                "D:\\1.CRS-Experiment\\MLData\\AuthorID_PaperID_2007_2009.txt",
-                "D:\\1.CRS-Experiment\\MLData\\PaperID_Year_2007_2009.txt");
-        CoAuthorGraph pastGraph = new CoAuthorGraph(
-                "D:\\1.CRS-Experiment\\MLData\\AuthorID_PaperID_2004_2006.txt",
-                "D:\\1.CRS-Experiment\\MLData\\PaperID_Year_2004_2006.txt");
-
-        String featuresFileName
-                = "D:\\1.CRS-Experiment\\MLData\\3-Hub\\Junior\\TestingData\\Evaluation_FullFeatures.txt";
-        System.out.println("Processing ..." + featuresFileName);
-        for (int metric = 1; metric <= 4; metric++) {
-            int topN = 5;
-            double qualityValue
-                    = runCollaborativeQualityEvaluation(pastGraph, currentGraph,
-                            "D:\\1.CRS-Experiment\\MLData\\3-Hub\\Junior\\TestingData\\Testing_PositiveSamples.txt",
-                            featuresFileName,
-                            topN, "Positive", metric);
-            System.out.println("END, TOP" + topN);
-            System.out.println("Metric " + metric + ", CollaborativeQualityValue:" + qualityValue);
-
-            topN = 10;
-            qualityValue
-                    = runCollaborativeQualityEvaluation(pastGraph, currentGraph,
-                            "D:\\1.CRS-Experiment\\MLData\\3-Hub\\Junior\\TestingData\\Testing_PositiveSamples.txt",
-                            featuresFileName,
-                            topN, "Positive", metric);
-            System.out.println("END, TOP" + topN);
-            System.out.println("Metric " + metric + ", CollaborativeQualityValue:" + qualityValue);
-
-            topN = 15;
-            qualityValue
-                    = runCollaborativeQualityEvaluation(pastGraph, currentGraph,
-                            "D:\\1.CRS-Experiment\\MLData\\3-Hub\\Junior\\TestingData\\Testing_PositiveSamples.txt",
-                            featuresFileName,
-                            topN, "Positive", metric);
-            System.out.println("END, TOP" + topN);
-            System.out.println("Metric " + metric + ", CollaborativeQualityValue:" + qualityValue);
-        }
+//        CoAuthorGraph currentGraph = new CoAuthorGraph(
+//                "D:\\1.CRS-Experiment\\MLData\\AuthorID_PaperID_2007_2009.txt",
+//                "D:\\1.CRS-Experiment\\MLData\\PaperID_Year_2007_2009.txt");
+//        CoAuthorGraph pastGraph = new CoAuthorGraph(
+//                "D:\\1.CRS-Experiment\\MLData\\AuthorID_PaperID_2004_2006.txt",
+//                "D:\\1.CRS-Experiment\\MLData\\PaperID_Year_2004_2006.txt");
+//
+//        String featuresFileName
+//                = "D:\\1.CRS-Experiment\\MLData\\3-Hub\\Junior\\TestingData\\Evaluation_FullFeatures.txt";
+//        System.out.println("Processing ..." + featuresFileName);
+//        for (int metric = 1; metric <= 4; metric++) {
+//            int topN = 5;
+//            double qualityValue
+//                    = runCollaborativeQualityEvaluation(pastGraph, currentGraph,
+//                            "D:\\1.CRS-Experiment\\MLData\\3-Hub\\Junior\\TestingData\\Testing_PositiveSamples.txt",
+//                            featuresFileName,
+//                            topN, "Positive", metric);
+//            System.out.println("END, TOP" + topN);
+//            System.out.println("Metric " + metric + ", CollaborativeQualityValue:" + qualityValue);
+//
+//            topN = 10;
+//            qualityValue
+//                    = runCollaborativeQualityEvaluation(pastGraph, currentGraph,
+//                            "D:\\1.CRS-Experiment\\MLData\\3-Hub\\Junior\\TestingData\\Testing_PositiveSamples.txt",
+//                            featuresFileName,
+//                            topN, "Positive", metric);
+//            System.out.println("END, TOP" + topN);
+//            System.out.println("Metric " + metric + ", CollaborativeQualityValue:" + qualityValue);
+//
+//            topN = 15;
+//            qualityValue
+//                    = runCollaborativeQualityEvaluation(pastGraph, currentGraph,
+//                            "D:\\1.CRS-Experiment\\MLData\\3-Hub\\Junior\\TestingData\\Testing_PositiveSamples.txt",
+//                            featuresFileName,
+//                            topN, "Positive", metric);
+//            System.out.println("END, TOP" + topN);
+//            System.out.println("Metric " + metric + ", CollaborativeQualityValue:" + qualityValue);
+//        }
     }
 }
