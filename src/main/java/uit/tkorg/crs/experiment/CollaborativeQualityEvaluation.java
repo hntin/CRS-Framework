@@ -504,7 +504,7 @@ public class CollaborativeQualityEvaluation {
             System.out.println("Doing " + i);
         }
 
-        if (metric == 1 || metric == 2) {
+        if (metric == 1 || metric == 2 || metric == 5 || metric == 6 ) {
             collaborativeQualityValue = collaborativeQualityValue / authorIDListFromPositiveSamples.size();
         }
         return collaborativeQualityValue;
