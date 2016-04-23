@@ -479,13 +479,13 @@ public class CollaborativeQualityEvaluation {
                 "D:\\1.CRS-Experiment\\MLData\\PaperID_Year_2004_2006.txt");
 
         String featuresFileName
-                = "D:\\1.CRS-Experiment\\MLData\\3-Hub\\Senior\\TestingData\\Evaluation_CBSim_OrgRSS_CoAuthorRSS_IF.txt";
+                = "D:\\1.CRS-Experiment\\MLData\\3-Hub\\Junior\\TestingData\\Evaluation_FullFeatures.txt";
         System.out.println("Processing ..." + featuresFileName);
         for (int metric = 1; metric <= 4; metric++) {
             int topN = 5;
             double qualityValue
                     = runCollaborativeQualityEvaluation(pastGraph, currentGraph,
-                            "D:\\1.CRS-Experiment\\MLData\\3-Hub\\Senior\\TestingData\\Testing_PositiveSamples.txt",
+                            "D:\\1.CRS-Experiment\\MLData\\3-Hub\\Junior\\TestingData\\Testing_PositiveSamples.txt",
                             featuresFileName,
                             topN, "Positive", metric);
             System.out.println("END, TOP" + topN);
@@ -494,7 +494,7 @@ public class CollaborativeQualityEvaluation {
             topN = 10;
             qualityValue
                     = runCollaborativeQualityEvaluation(pastGraph, currentGraph,
-                            "D:\\1.CRS-Experiment\\MLData\\3-Hub\\Senior\\TestingData\\Testing_PositiveSamples.txt",
+                            "D:\\1.CRS-Experiment\\MLData\\3-Hub\\Junior\\TestingData\\Testing_PositiveSamples.txt",
                             featuresFileName,
                             topN, "Positive", metric);
             System.out.println("END, TOP" + topN);
@@ -503,7 +503,7 @@ public class CollaborativeQualityEvaluation {
             topN = 15;
             qualityValue
                     = runCollaborativeQualityEvaluation(pastGraph, currentGraph,
-                            "D:\\1.CRS-Experiment\\MLData\\3-Hub\\Senior\\TestingData\\Testing_PositiveSamples.txt",
+                            "D:\\1.CRS-Experiment\\MLData\\3-Hub\\Junior\\TestingData\\Testing_PositiveSamples.txt",
                             featuresFileName,
                             topN, "Positive", metric);
             System.out.println("END, TOP" + topN);

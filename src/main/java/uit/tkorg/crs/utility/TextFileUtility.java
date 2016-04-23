@@ -263,6 +263,27 @@ public class TextFileUtility {
         return strBuffer.toString();
     }
     
+    public static int readNumLinesOfFile(String filePath) {
+        int count = 0;
+        try {
+            FileInputStream fis = new FileInputStream(filePath);
+            Reader reader = new InputStreamReader(fis, "UTF8");
+            BufferedReader bufferReader = new BufferedReader(reader);
+            bufferReader.readLine(); // skip the first line
+            String line = null;
+
+            while ((line = bufferReader.readLine()) != null && !line.equalsIgnoreCase("")) {
+                count++;
+            }
+            bufferReader.close();
+            fis.close();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+        return count;
+    }
+    
     public static void readFeaturesFile(String featureFile){
         StringBuffer strBuffer = new StringBuffer();
         try {
@@ -422,6 +443,9 @@ public class TextFileUtility {
 //            e.printStackTrace();
 //        }
 //        writeWekaResultBuffer("/Users/thucnt/Downloads/3Hobs/Result_Buffer/CBSim","/Users/thucnt/Downloads/3Hobs/Result_Buffer/CBSim.csv");
-    readFeaturesFile("/Users/thucnt/Downloads/3Hobs/TestingData/Testing_PositiveSample_AllFeatures.txt");
+//    readFeaturesFile("/Users/thucnt/Downloads/3Hobs/TestingData/Testing_PositiveSample_AllFeatures.txt");
+        
+        int lines = readNumLinesOfFile("D:\\1.CRS-Experiment\\MLData\\3-Hub\\Senior\\TestingData\\Testing_NegativeSamples_Full.txt");
+        System.out.println("LINES:" + lines);
     }
 }
