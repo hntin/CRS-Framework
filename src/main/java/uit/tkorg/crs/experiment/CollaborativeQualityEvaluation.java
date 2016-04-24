@@ -295,12 +295,12 @@ public class CollaborativeQualityEvaluation {
         double DCGValue = 0;
         HashMap<Integer, Integer> ideal_DCG_HM = new HashMap();
         double iDCGValue = 0;
-        for (int i = 0; i < potentialCoAuthorList_TopN.size(); i++) {
-            int potentialAuthorID = potentialCoAuthorList_TopN.get(i);
+        for (int i = 1; i <= potentialCoAuthorList_TopN.size(); i++) {
+            int potentialAuthorID = potentialCoAuthorList_TopN.get(i-1);
             ArrayList<Integer> newCollaborators = getNewCollaborations(authorID, potentialAuthorID, pastGraph, currentGraph);
             if (newCollaborators != null && newCollaborators.size() > 0) {
                 ideal_DCG_HM.put(potentialAuthorID, newCollaborators.size());
-                DCGValue += (Math.pow(2, newCollaborators.size()) - 1) / (Math.log(i + 2) / Math.log(2));
+                DCGValue += (Math.pow(2, newCollaborators.size()) - 1) / (Math.log(i + 1) / Math.log(2));
             }
         }
 
@@ -332,14 +332,14 @@ public class CollaborativeQualityEvaluation {
         double DCGValue = 0;
         HashMap<Integer, Integer> ideal_DCG_HM = new HashMap();
         double iDCGValue = 0;
-        for (int i = 0; i < potentialCoAuthorList_TopN.size(); i++) {
-            int potentialAuthorID = potentialCoAuthorList_TopN.get(i);
+        for (int i = 1; i <= potentialCoAuthorList_TopN.size(); i++) {
+            int potentialAuthorID = potentialCoAuthorList_TopN.get(i-1);
 
             if (graph._coAuthorGraph.containsKey(authorID)) {
                 if ((graph._coAuthorGraph.get(authorID)).containsKey(potentialAuthorID)) {
                     int numOfPublication = graph._coAuthorGraph.get(authorID).get(potentialAuthorID);
                     ideal_DCG_HM.put(potentialAuthorID, numOfPublication);
-                    DCGValue += (Math.pow(2, numOfPublication) - 1) / (Math.log(i + 2) / Math.log(2));
+                    DCGValue += (Math.pow(2, numOfPublication) - 1) / (Math.log(i + 1) / Math.log(2));
                 }
             }
         }
