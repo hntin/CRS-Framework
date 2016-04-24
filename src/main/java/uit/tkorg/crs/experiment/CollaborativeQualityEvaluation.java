@@ -556,6 +556,7 @@ public class CollaborativeQualityEvaluation {
 ////        
 ////        System.out.println("Goodness Value for top" + topN + " is: " + goodnessValueMetric1);
 //        //</editor-fold>
+
 //        CoAuthorGraph currentGraph = new CoAuthorGraph(
 //                "/2.CRS-ExperimetalData/SampleData/AuthorID_PaperID_2009_2011.txt",
 //                "/2.CRS-ExperimetalData/SampleData/PaperID_Year_2009_2011.txt");
@@ -569,43 +570,43 @@ public class CollaborativeQualityEvaluation {
 //            System.out.println(top.get(i));
 //        }
 
-//        CoAuthorGraph currentGraph = new CoAuthorGraph(
-//                "D:\\1.CRS-Experiment\\MLData\\AuthorID_PaperID_2007_2009.txt",
-//                "D:\\1.CRS-Experiment\\MLData\\PaperID_Year_2007_2009.txt");
-//        CoAuthorGraph pastGraph = new CoAuthorGraph(
-//                "D:\\1.CRS-Experiment\\MLData\\AuthorID_PaperID_2004_2006.txt",
-//                "D:\\1.CRS-Experiment\\MLData\\PaperID_Year_2004_2006.txt");
-//
-//        String featuresFileName
-//                = "D:\\1.CRS-Experiment\\MLData\\3-Hub\\Junior\\TestingData\\Evaluation_FullFeatures.txt";
-//        System.out.println("Processing ..." + featuresFileName);
-//        for (int metric = 5; metric <= 6; metric++) {
-//            int topN = 5;
-//            double qualityValue
-//                    = runCollaborativeQualityEvaluation(pastGraph, currentGraph,
-//                            "D:\\1.CRS-Experiment\\MLData\\3-Hub\\Junior\\TestingData\\Testing_PositiveSamples.txt",
-//                            featuresFileName,
-//                            topN, "Positive", metric);
-//            System.out.println("END, TOP" + topN);
-//            System.out.println("Metric " + metric + ", CollaborativeQualityValue:" + qualityValue);
-//
-//            topN = 10;
-//            qualityValue
-//                    = runCollaborativeQualityEvaluation(pastGraph, currentGraph,
-//                            "D:\\1.CRS-Experiment\\MLData\\3-Hub\\Junior\\TestingData\\Testing_PositiveSamples.txt",
-//                            featuresFileName,
-//                            topN, "Positive", metric);
-//            System.out.println("END, TOP" + topN);
-//            System.out.println("Metric " + metric + ", CollaborativeQualityValue:" + qualityValue);
-//
-//            topN = 15;
-//            qualityValue
-//                    = runCollaborativeQualityEvaluation(pastGraph, currentGraph,
-//                            "D:\\1.CRS-Experiment\\MLData\\3-Hub\\Junior\\TestingData\\Testing_PositiveSamples.txt",
-//                            featuresFileName,
-//                            topN, "Positive", metric);
-//            System.out.println("END, TOP" + topN);
-//            System.out.println("Metric " + metric + ", CollaborativeQualityValue:" + qualityValue);
-//        }
-    }
+        CoAuthorGraph currentGraph = new CoAuthorGraph(
+                "D:\\1.CRS-Experiment\\MLData\\AuthorID_PaperID_2007_2009.txt",
+                "D:\\1.CRS-Experiment\\MLData\\PaperID_Year_2007_2009.txt");
+        CoAuthorGraph pastGraph = new CoAuthorGraph(
+                "D:\\1.CRS-Experiment\\MLData\\AuthorID_PaperID_2004_2006.txt",
+                "D:\\1.CRS-Experiment\\MLData\\PaperID_Year_2004_2006.txt");
+
+        String featuresFileName
+                = "D:\\1.CRS-Experiment\\MLData\\3-Hub\\Junior\\TestingData\\Evaluation_FullFeatures.txt";
+        System.out.println("Processing ..." + featuresFileName);
+        for (int metric = 5; metric <= 6; metric++) {
+            int topN = 5;
+            double qualityValue
+                    = runCollaborativeQualityEvaluation(pastGraph, currentGraph,
+                            "D:\\1.CRS-Experiment\\MLData\\3-Hub\\Junior\\TestingData\\Testing_PositiveSamples.txt",
+                            featuresFileName,
+                            topN, "Positive", metric);
+            System.out.println("END, TOP" + topN);
+            System.out.println("Metric " + metric + ", CollaborativeQualityValue:" + qualityValue);
+
+            topN = 10;
+            qualityValue
+                    = runCollaborativeQualityEvaluation(pastGraph, currentGraph,
+                            "D:\\1.CRS-Experiment\\MLData\\3-Hub\\Junior\\TestingData\\Testing_PositiveSamples.txt",
+                            featuresFileName,
+                            topN, "Positive", metric);
+            System.out.println("END, TOP" + topN);
+            System.out.println("Metric " + metric + ", CollaborativeQualityValue:" + qualityValue);
+
+            topN = 15;
+            qualityValue
+                    = runCollaborativeQualityEvaluation(pastGraph, currentGraph,
+                            "D:\\1.CRS-Experiment\\MLData\\3-Hub\\Junior\\TestingData\\Testing_PositiveSamples.txt",
+                            featuresFileName,
+                            topN, "Positive", metric);
+            System.out.println("END, TOP" + topN);
+            System.out.println("Metric " + metric + ", CollaborativeQualityValue:" + qualityValue);
+        } 
+   }
 }
