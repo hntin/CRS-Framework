@@ -305,12 +305,12 @@ public class CollaborativeQualityEvaluation {
         }
 
         ideal_DCG_HM = HashMapUtility.getSortedMapDescending(ideal_DCG_HM);
-        int i = 1;
+        int i = 0;
         for (Entry<Integer, Integer> entry : ideal_DCG_HM.entrySet()) {
             i++;
             Integer key = entry.getKey();
             int numOfNewCollaborators = ideal_DCG_HM.get(key);
-            iDCGValue += (Math.pow(2, numOfNewCollaborators) - 1) / (Math.log(i + 2) / Math.log(2));
+            iDCGValue += (Math.pow(2, numOfNewCollaborators) - 1) / (Math.log(i + 1) / Math.log(2));
         }
 
         double nDCGValue = DCGValue / iDCGValue;
@@ -345,7 +345,7 @@ public class CollaborativeQualityEvaluation {
         }
 
         ideal_DCG_HM = HashMapUtility.getSortedMapDescending(ideal_DCG_HM);
-        int i = 1;
+        int i = 0;
         for (Entry<Integer, Integer> entry : ideal_DCG_HM.entrySet()) {
             i++;
             Integer key = entry.getKey();
@@ -364,10 +364,8 @@ public class CollaborativeQualityEvaluation {
         for (int i = 1; i <= 6; i++){
             potentialCoAuthorList_TopN.add(i);
         }
-        for (int i = 1; i <= 6; i++){
-            double result = collaborativeQualityTopN_NewPublication_NDCG(i,potentialCoAuthorList_TopN,graph);
-            System.out.println("NDCG = " + result);
-        }
+        double result = collaborativeQualityTopN_NewPublication_NDCG(7,potentialCoAuthorList_TopN,graph);
+        System.out.println("NDCG = " + result);
     }
 
     /**
