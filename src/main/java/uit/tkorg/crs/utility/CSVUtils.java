@@ -31,7 +31,8 @@ public class CSVUtils {
                     line[line.length-1] = "1";
                 if (line[line.length-1].equals("Negative"))
                     line[line.length-1] = "0";
-                writer.writeNext(line);
+                //writer.writeNext(line);
+                writer.writeNext(line, false);
             }
         } catch (IOException e) {
             e.printStackTrace();
