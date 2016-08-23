@@ -30,12 +30,15 @@ import org.nd4j.linalg.api.ndarray.INDArray;
 import org.nd4j.linalg.dataset.DataSet;
 import org.nd4j.linalg.dataset.api.iterator.DataSetIterator;
 import org.nd4j.linalg.lossfunctions.LossFunctions.LossFunction;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author thucnt
  */
 public class MLPClassifier {
+    private static Logger log = LoggerFactory.getLogger(MLPClassifier.class);
     public static void main(String[] args) throws IOException, InterruptedException{
         final int numRows = 28;
         final int numColumns = 28;
@@ -55,31 +58,33 @@ public class MLPClassifier {
 
 //
 //        //Load the test/evaluation data:
-        RecordReader rrTest = new CSVRecordReader();
-        rrTest.initialize(new FileSplit(new File("input/linear_data_eval.csv")));
-        DataSetIterator testIter = new RecordReaderDataSetIterator(rrTest,batchSize,0,2);
+//        RecordReader rrTest = new CSVRecordReader();
+//        rrTest.initialize(new FileSplit(new File("input/testing.csv")));
+//        DataSetIterator testIter = new RecordReaderDataSetIterator(rrTest,batchSize,5,2);
         
+        log.info("Build model....");
         MultiLayerConfiguration conf = new NeuralNetConfiguration.Builder()
-            .seed(seed)
-            .gradientNormalization(GradientNormalization.ClipElementWiseAbsoluteValue)
-            .gradientNormalizationThreshold(1.0)
-            .iterations(iterations)
-            .momentum(0.05)
-            .momentumAfter(Collections.singletonMap(3, 0.9))
-            .optimizationAlgo(OptimizationAlgorithm.CONJUGATE_GRADIENT)
-            .list()
-                 .layer(0, new AutoEncoder.Builder().nIn(5).nOut(3)
-                    .weightInit(WeightInit.XAVIER).lossFunction(LossFunction.RMSE_XENT)
-                    .corruptionLevel(0.5)
-                    .build())
-                .layer(1, new AutoEncoder.Builder().nIn(3).nOut(2)
-                    .weightInit(WeightInit.XAVIER).lossFunction(LossFunction.RMSE_XENT)
-                    .corruptionLevel(0.5)
-                    .build())
-                 .layer(1, new OutputLayer.Builder(LossFunction.NEGATIVELOGLIKELIHOOD).activation("softmax")
-                         .nIn(2).nOut(1).build())
-            .pretrain(true).backprop(false)
-            .build();
+           .seed(seed)
+           .gradientNormalization(GradientNormalization.ClipElementWiseAbsoluteValue)
+           .gradientNormalizationThreshold(1.0)
+           .iterations(iterations)
+           .momentum(0.5)
+           .momentumAfter(Collections.singletonMap(3, 0.9))
+           .optimizationAlgo(OptimizationAlgorithm.CONJUGATE_GRADIENT)
+           .list(3)
+           .layer(0, new AutoEncoder.Builder().nIn(5).nOut(4)
+                   .weightInit(WeightInit.XAVIER).lossFunction(LossFunction.RMSE_XENT)
+                   .corruptionLevel(0.3)
+                   .build())
+                .layer(1, new AutoEncoder.Builder().nIn(4).nOut(2)
+                        .weightInit(WeightInit.XAVIER).lossFunction(LossFunction.RMSE_XENT)
+                        .corruptionLevel(0.3)
+                        .build())
+          
+                .layer(2, new OutputLayer.Builder(LossFunction.NEGATIVELOGLIKELIHOOD).activation("softmax")
+                        .nIn(2).nOut(2).build())
+           .pretrain(true).backprop(false)
+                .build();
         
         MultiLayerNetwork model = new MultiLayerNetwork(conf);
         model.init();
@@ -102,18 +107,18 @@ public class MLPClassifier {
 //        }
 
         System.out.println("Evaluate model....");
-        Evaluation eval = new Evaluation(1);
-        while(testIter.hasNext()){
-            DataSet t = testIter.next();
-            INDArray features = t.getFeatureMatrix();
-            INDArray lables = t.getLabels();
-            INDArray predicted = model.output(features,false);
-
-            eval.eval(lables, predicted);
-
-        }
-
-        //Print the evaluation statistics
-        System.out.println(eval.stats());
+//        Evaluation eval = new Evaluation(1);
+//        while(testIter.hasNext()){
+//            DataSet t = testIter.next();
+//            INDArray features = t.getFeatureMatrix();
+//            INDArray lables = t.getLabels();
+//            INDArray predicted = model.output(features,false);
+//
+//            eval.eval(lables, predicted);
+//
+//        }
+//
+//        //Print the evaluation statistics
+//        System.out.println(eval.stats());
     }
 }
