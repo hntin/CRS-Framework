@@ -115,7 +115,7 @@ public class MLPClassifier {
             INDArray predicted = model.output(features,false);
 
             eval.eval(lables, predicted);
-
+            //System.out.println(eval.stats());
         }
 
         //Print the evaluation statistics
