@@ -56,11 +56,11 @@ public class MLPClassifier {
 
         DataSetIterator iter = new MnistDataSetIterator(batchSize,numSamples,true);
 
-//
-//        //Load the test/evaluation data:
-//        RecordReader rrTest = new CSVRecordReader();
-//        rrTest.initialize(new FileSplit(new File("input/testing.csv")));
-//        DataSetIterator testIter = new RecordReaderDataSetIterator(rrTest,batchSize,5,2);
+
+        //Load the test/evaluation data:
+        RecordReader rrTest = new CSVRecordReader();
+        rrTest.initialize(new FileSplit(new File("input/testingData.csv")));
+        DataSetIterator testIter = new RecordReaderDataSetIterator(rrTest,batchSize,5,2);
         
         log.info("Build model....");
         MultiLayerConfiguration conf = new NeuralNetConfiguration.Builder()
@@ -72,11 +72,11 @@ public class MLPClassifier {
            .momentumAfter(Collections.singletonMap(3, 0.9))
            .optimizationAlgo(OptimizationAlgorithm.CONJUGATE_GRADIENT)
            .list(3)
-           .layer(0, new AutoEncoder.Builder().nIn(5).nOut(4)
+           .layer(0, new AutoEncoder.Builder().nIn(5).nOut(3)
                    .weightInit(WeightInit.XAVIER).lossFunction(LossFunction.RMSE_XENT)
                    .corruptionLevel(0.3)
                    .build())
-                .layer(1, new AutoEncoder.Builder().nIn(4).nOut(2)
+                .layer(1, new AutoEncoder.Builder().nIn(3).nOut(2)
                         .weightInit(WeightInit.XAVIER).lossFunction(LossFunction.RMSE_XENT)
                         .corruptionLevel(0.3)
                         .build())
@@ -88,18 +88,18 @@ public class MLPClassifier {
         
         MultiLayerNetwork model = new MultiLayerNetwork(conf);
         model.init();
-//        ParallelWrapper wrapper = new ParallelWrapper.Builder(model)
-//            .prefetchBuffer(24)
-//            .workers(20)
-//            .averagingFrequency(1)
-//            .reportScoreAfterAveraging(true)
-//            .useLegacyAveraging(false)
-//            .build();
+        ParallelWrapper wrapper = new ParallelWrapper.Builder(model)
+            .prefetchBuffer(50)
+            .workers(20)
+            .averagingFrequency(1)
+            .reportScoreAfterAveraging(true)
+            .useLegacyAveraging(false)
+            .build();
         model.setListeners(new ScoreIterationListener(100));  //Print score every 10 parameter updates
 
         for ( int n = 0; n < nEpochs; n++) {
-//            wrapper.fit( trainIter );
-            model.fit(trainIter);
+            wrapper.fit( trainIter );
+//            model.fit(trainIter);
         }
 //        while(iter.hasNext()) {
 //            DataSet next = iter.next();
@@ -107,18 +107,18 @@ public class MLPClassifier {
 //        }
 
         System.out.println("Evaluate model....");
-//        Evaluation eval = new Evaluation(1);
-//        while(testIter.hasNext()){
-//            DataSet t = testIter.next();
-//            INDArray features = t.getFeatureMatrix();
-//            INDArray lables = t.getLabels();
-//            INDArray predicted = model.output(features,false);
-//
-//            eval.eval(lables, predicted);
-//
-//        }
-//
-//        //Print the evaluation statistics
-//        System.out.println(eval.stats());
+        Evaluation eval = new Evaluation(2);
+        while(testIter.hasNext()){
+            DataSet t = testIter.next();
+            INDArray features = t.getFeatureMatrix();
+            INDArray lables = t.getLabels();
+            INDArray predicted = model.output(features,false);
+
+            eval.eval(lables, predicted);
+
+        }
+
+        //Print the evaluation statistics
+        System.out.println(eval.stats());
     }
 }

@@ -91,6 +91,11 @@
             <artifactId>datavec-api</artifactId>
             <version>0.5.0</version>
         </dependency>
+        <dependency>
+            <groupId>com.opencsv</groupId>
+            <artifactId>opencsv</artifactId>
+            <version>3.8</version>
+        </dependency>
     </dependencies>
     
     <properties>
