@@ -45,13 +45,13 @@ public class MLPClassifier {
         int seed = 123;
         int numSamples = MnistDataFetcher.NUM_EXAMPLES;
         int batchSize = 10;
-        int iterations = 1;
+        int iterations = 50;
         int listenerFreq = iterations/5;
-        int nEpochs = 50;
+        int nEpochs = 100;
         
         //Load the training data:
         RecordReader rr = new CSVRecordReader();
-        rr.initialize(new FileSplit(new File("input/train1.csv")));
+        rr.initialize(new FileSplit(new File("input/training.csv")));
         DataSetIterator trainIter = new RecordReaderDataSetIterator(rr,batchSize,5,2);
 
         DataSetIterator iter = new MnistDataSetIterator(batchSize,numSamples,true);
@@ -88,18 +88,18 @@ public class MLPClassifier {
         
         MultiLayerNetwork model = new MultiLayerNetwork(conf);
         model.init();
-        ParallelWrapper wrapper = new ParallelWrapper.Builder(model)
-            .prefetchBuffer(50)
-            .workers(20)
-            .averagingFrequency(1)
-            .reportScoreAfterAveraging(true)
-            .useLegacyAveraging(false)
-            .build();
+//        ParallelWrapper wrapper = new ParallelWrapper.Builder(model)
+//            .prefetchBuffer(50)
+//            .workers(20)
+//            .averagingFrequency(1)
+//            .reportScoreAfterAveraging(true)
+//            .useLegacyAveraging(false)
+//            .build();
         model.setListeners(new ScoreIterationListener(100));  //Print score every 10 parameter updates
 
         for ( int n = 0; n < nEpochs; n++) {
-            wrapper.fit( trainIter );
-//            model.fit(trainIter);
+//            wrapper.fit( trainIter );
+            model.fit(trainIter);
         }
 //        while(iter.hasNext()) {
 //            DataSet next = iter.next();
