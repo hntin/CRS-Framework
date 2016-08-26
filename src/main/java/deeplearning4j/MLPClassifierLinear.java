@@ -44,22 +44,23 @@ public class MLPClassifierLinear {
         int seed = 123;
         double learningRate = 0.01;
         int batchSize = 500;
-        int nEpochs = 50;
+        int nEpochs = 100;
 
-        int numInputs = 2;
+        int numInputs = 5;
         int numOutputs = 2;
         int numHiddenNodes = 3;
 
         //Load the training data:
         RecordReader rr = new CSVRecordReader();
-//        rr.initialize(new FileSplit(new File("src/main/resources/classification/linear_data_train.csv")));
-        rr.initialize(new FileSplit(new File("input/linear_data_train.csv")));
-        DataSetIterator trainIter = new RecordReaderDataSetIterator(rr,batchSize,0,2);
+        rr.initialize(new FileSplit(new File("input/train1.csv")));
+        batchSize = 3309;
+        DataSetIterator trainIter = new RecordReaderDataSetIterator(rr,batchSize,5,2);
 
         //Load the test/evaluation data:
         RecordReader rrTest = new CSVRecordReader();
-        rrTest.initialize(new FileSplit(new File("input/linear_data_eval.csv")));
-        DataSetIterator testIter = new RecordReaderDataSetIterator(rrTest,batchSize,0,2);
+        rrTest.initialize(new FileSplit(new File("input/testingData.csv")));
+        batchSize = 222616;
+        DataSetIterator testIter = new RecordReaderDataSetIterator(rrTest,batchSize,5,2);
 
         MultiLayerConfiguration conf = new NeuralNetConfiguration.Builder()
                 .seed(seed)
@@ -70,7 +71,7 @@ public class MLPClassifierLinear {
                 .list()
                 .layer(0, new DenseLayer.Builder().nIn(numInputs).nOut(numHiddenNodes)
                         .weightInit(WeightInit.XAVIER)
-                        .activation("relu")
+                        .activation("leakyrelu")
                         .build())
                 .layer(1, new OutputLayer.Builder(LossFunction.NEGATIVELOGLIKELIHOOD)
                         .weightInit(WeightInit.XAVIER)
@@ -81,7 +82,7 @@ public class MLPClassifierLinear {
        
         MultiLayerNetwork model = new MultiLayerNetwork(conf);
         model.init();
-        model.setListeners(new ScoreIterationListener(10));  //Print score every 10 parameter updates
+        model.setListeners(new ScoreIterationListener(500));  //Print score every 500 parameter updates
 
 
         for ( int n = 0; n < nEpochs; n++) {
