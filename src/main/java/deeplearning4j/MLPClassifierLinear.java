@@ -44,7 +44,7 @@ public class MLPClassifierLinear {
         int seed = 123;
         double learningRate = 0.01;
         int batchSize = 500;
-        int nEpochs = 100;
+        int nEpochs = 1000;
 
         int numInputs = 5;
         int numOutputs = 2;
@@ -53,7 +53,7 @@ public class MLPClassifierLinear {
         //Load the training data:
         RecordReader rr = new CSVRecordReader();
         rr.initialize(new FileSplit(new File("input/training.csv")));
-        batchSize = 3309;
+        batchSize = 129942;
         DataSetIterator trainIter = new RecordReaderDataSetIterator(rr,batchSize,5,2);
 
         //Load the test/evaluation data:
