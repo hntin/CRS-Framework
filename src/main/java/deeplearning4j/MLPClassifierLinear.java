@@ -52,7 +52,7 @@ public class MLPClassifierLinear {
 
         //Load the training data:
         RecordReader rr = new CSVRecordReader();
-        rr.initialize(new FileSplit(new File("input/train1.csv")));
+        rr.initialize(new FileSplit(new File("input/training.csv")));
         batchSize = 3309;
         DataSetIterator trainIter = new RecordReaderDataSetIterator(rr,batchSize,5,2);
 
