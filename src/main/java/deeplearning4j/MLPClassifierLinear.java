@@ -43,23 +43,23 @@ public class MLPClassifierLinear {
     public static void main(String[] args) throws Exception {
         int seed = 123;
         double learningRate = 0.01;
-        int batchSize = 50;
-        int nEpochs = 30;
+        int batchSize = 500;
+        int nEpochs = 50;
 
-        int numInputs = 5;
+        int numInputs = 2;
         int numOutputs = 2;
         int numHiddenNodes = 3;
 
         //Load the training data:
         RecordReader rr = new CSVRecordReader();
 //        rr.initialize(new FileSplit(new File("src/main/resources/classification/linear_data_train.csv")));
-        rr.initialize(new FileSplit(new File("input/training.csv")));
-        DataSetIterator trainIter = new RecordReaderDataSetIterator(rr,batchSize,5,2);
+        rr.initialize(new FileSplit(new File("input/linear_data_train.csv")));
+        DataSetIterator trainIter = new RecordReaderDataSetIterator(rr,batchSize,0,2);
 
         //Load the test/evaluation data:
         RecordReader rrTest = new CSVRecordReader();
-        rrTest.initialize(new FileSplit(new File("input/testingData.csv")));
-        DataSetIterator testIter = new RecordReaderDataSetIterator(rrTest,batchSize,5,2);
+        rrTest.initialize(new FileSplit(new File("input/linear_data_eval.csv")));
+        DataSetIterator testIter = new RecordReaderDataSetIterator(rrTest,batchSize,0,2);
 
         MultiLayerConfiguration conf = new NeuralNetConfiguration.Builder()
                 .seed(seed)
