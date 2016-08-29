@@ -42,7 +42,8 @@ public class MLPClassifierLinear {
 
     public static void main(String[] args) throws Exception {
         int seed = 123;
-        double learningRate = 0.01;
+        double learningRate = 0.3;
+        double momentum = 0.2;
         int batchSize = 500;
         int nEpochs = 1000;
 
@@ -53,30 +54,36 @@ public class MLPClassifierLinear {
         //Load the training data:
         RecordReader rr = new CSVRecordReader();
         rr.initialize(new FileSplit(new File("input/training.csv")));
+        //rr.initialize(new FileSplit(new File("input/linear_data_train.csv")));
         batchSize = 129942;
         DataSetIterator trainIter = new RecordReaderDataSetIterator(rr,batchSize,5,2);
 
         //Load the test/evaluation data:
         RecordReader rrTest = new CSVRecordReader();
         rrTest.initialize(new FileSplit(new File("input/testingData.csv")));
-        batchSize = 222616;
+        //rrTest.initialize(new FileSplit(new File("input/linear_data_eval.csv")));        
+        //batchSize = 222616;
         DataSetIterator testIter = new RecordReaderDataSetIterator(rrTest,batchSize,5,2);
 
         MultiLayerConfiguration conf = new NeuralNetConfiguration.Builder()
                 .seed(seed)
-                .iterations(100)
+                .iterations(1000)
                 .optimizationAlgo(OptimizationAlgorithm.STOCHASTIC_GRADIENT_DESCENT)
                 .learningRate(learningRate)
-                .updater(Updater.NESTEROVS).momentum(0.9)
+                .updater(Updater.NESTEROVS).momentum(momentum)
                 .list()
-                .layer(0, new DenseLayer.Builder().nIn(numInputs).nOut(numHiddenNodes)
+                .layer(0, new DenseLayer.Builder().nIn(5).nOut(3)
                         .weightInit(WeightInit.XAVIER)
                         .activation("leakyrelu")
                         .build())
-                .layer(1, new OutputLayer.Builder(LossFunction.NEGATIVELOGLIKELIHOOD)
+                .layer(1, new DenseLayer.Builder().nIn(3).nOut(2)
+                        .weightInit(WeightInit.XAVIER)
+                        .activation("leakyrelu")
+                        .build())
+                .layer(2, new OutputLayer.Builder(LossFunction.NEGATIVELOGLIKELIHOOD)
                         .weightInit(WeightInit.XAVIER)
                         .activation("softmax").weightInit(WeightInit.XAVIER)
-                        .nIn(numHiddenNodes).nOut(numOutputs).build())
+                        .nIn(2).nOut(2).build())
                 .pretrain(false).backprop(true).build();
 
        
