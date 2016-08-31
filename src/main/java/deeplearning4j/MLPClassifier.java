@@ -20,6 +20,7 @@ import org.deeplearning4j.nn.api.OptimizationAlgorithm;
 import org.deeplearning4j.nn.conf.GradientNormalization;
 import org.deeplearning4j.nn.conf.MultiLayerConfiguration;
 import org.deeplearning4j.nn.conf.NeuralNetConfiguration;
+import org.deeplearning4j.nn.conf.Updater;
 import org.deeplearning4j.nn.conf.layers.AutoEncoder;
 import org.deeplearning4j.nn.conf.layers.OutputLayer;
 import org.deeplearning4j.nn.multilayer.MultiLayerNetwork;
@@ -40,22 +41,21 @@ import org.slf4j.LoggerFactory;
 public class MLPClassifier {
     private static Logger log = LoggerFactory.getLogger(MLPClassifier.class);
     public static void main(String[] args) throws IOException, InterruptedException{
-        final int numRows = 28;
-        final int numColumns = 28;
         int seed = 123;
-        int numSamples = MnistDataFetcher.NUM_EXAMPLES;
-        int batchSize = 10;
-        int iterations = 50;
-        int listenerFreq = iterations/5;
-        int nEpochs = 100;
+        double learningRate = 0.3;
+        double momentum = 0.2;
+        int batchSize = 5000;
+        int nEpochs = 1000;
+
+        int numInputs = 5;
+        int numOutputs = 2;
+        int numHiddenNodes = 3;
         
         //Load the training data:
         RecordReader rr = new CSVRecordReader();
         rr.initialize(new FileSplit(new File("input/training.csv")));
+        batchSize = 129942;
         DataSetIterator trainIter = new RecordReaderDataSetIterator(rr,batchSize,5,2);
-
-        DataSetIterator iter = new MnistDataSetIterator(batchSize,numSamples,true);
-
 
         //Load the test/evaluation data:
         RecordReader rrTest = new CSVRecordReader();
@@ -64,14 +64,14 @@ public class MLPClassifier {
         
         log.info("Build model....");
         MultiLayerConfiguration conf = new NeuralNetConfiguration.Builder()
+           .updater(Updater.NESTEROVS).momentum(momentum)
            .seed(seed)
            .gradientNormalization(GradientNormalization.ClipElementWiseAbsoluteValue)
            .gradientNormalizationThreshold(1.0)
-           .iterations(iterations)
-           .momentum(0.5)
+           .iterations(100)
            .momentumAfter(Collections.singletonMap(3, 0.9))
            .optimizationAlgo(OptimizationAlgorithm.CONJUGATE_GRADIENT)
-           .list(3)
+           .list()
            .layer(0, new AutoEncoder.Builder().nIn(5).nOut(3)
                    .weightInit(WeightInit.XAVIER).lossFunction(LossFunction.RMSE_XENT)
                    .corruptionLevel(0.3)
@@ -95,7 +95,7 @@ public class MLPClassifier {
 //            .reportScoreAfterAveraging(true)
 //            .useLegacyAveraging(false)
 //            .build();
-        model.setListeners(new ScoreIterationListener(100));  //Print score every 10 parameter updates
+        model.setListeners(new ScoreIterationListener(10));  //Print score every 10 parameter updates
 
         for ( int n = 0; n < nEpochs; n++) {
 //            wrapper.fit( trainIter );
