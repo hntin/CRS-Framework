@@ -26,6 +26,7 @@ import org.nd4j.linalg.lossfunctions.LossFunctions.LossFunction;
 import org.nd4j.linalg.dataset.api.iterator.DataSetIterator;
 
 import java.io.File;
+import org.deeplearning4j.nn.conf.layers.AutoEncoder;
 
 /**
  * "Linear" Data Classification Example
@@ -44,43 +45,48 @@ public class MLPClassifierLinear {
         int seed = 123;
         double learningRate = 0.3;
         double momentum = 0.2;
-        int batchSize = 500;
+        //int batchSize = 500;
         int nEpochs = 1000;
-
-        int numInputs = 5;
+        //int numInputs = 5;
         int numOutputs = 2;
-        int numHiddenNodes = 3;
+        //int numHiddenNodes = 3;
+        
+        System.out.println(".......... 1");
 
         //Load the training data:
         RecordReader rr = new CSVRecordReader();
-        rr.initialize(new FileSplit(new File("input/training.csv")));
+        rr.initialize(new FileSplit(new File("D:\\1.CRS-Experiment\\MLData\\3-Hub\\Deep4J\\training.csv")));
         //rr.initialize(new FileSplit(new File("input/linear_data_train.csv")));
-        batchSize = 129942;
+        int batchSize = 129942;
         DataSetIterator trainIter = new RecordReaderDataSetIterator(rr,batchSize,5,2);
 
         //Load the test/evaluation data:
         RecordReader rrTest = new CSVRecordReader();
-        rrTest.initialize(new FileSplit(new File("input/testingData.csv")));
+        rrTest.initialize(new FileSplit(new File("D:\\1.CRS-Experiment\\MLData\\3-Hub\\Deep4J\\testingData.csv")));
         //rrTest.initialize(new FileSplit(new File("input/linear_data_eval.csv")));        
-        //batchSize = 222616;
+        batchSize = 222616;
         DataSetIterator testIter = new RecordReaderDataSetIterator(rrTest,batchSize,5,2);
 
         MultiLayerConfiguration conf = new NeuralNetConfiguration.Builder()
                 .seed(seed)
-                .iterations(1000)
+                .iterations(1)
                 .optimizationAlgo(OptimizationAlgorithm.STOCHASTIC_GRADIENT_DESCENT)
                 .learningRate(learningRate)
                 .updater(Updater.NESTEROVS).momentum(momentum)
                 .list()
-                .layer(0, new DenseLayer.Builder().nIn(5).nOut(3)
+                .layer(0, new AutoEncoder.Builder().nIn(5).nOut(5)
+                   .weightInit(WeightInit.XAVIER).lossFunction(LossFunction.RMSE_XENT)
+                   .corruptionLevel(0.3)
+                   .build())                
+                .layer(1, new DenseLayer.Builder().nIn(5).nOut(3)
                         .weightInit(WeightInit.XAVIER)
                         .activation("leakyrelu")
                         .build())
-                .layer(1, new DenseLayer.Builder().nIn(3).nOut(2)
+                .layer(2, new DenseLayer.Builder().nIn(3).nOut(2)
                         .weightInit(WeightInit.XAVIER)
                         .activation("leakyrelu")
                         .build())
-                .layer(2, new OutputLayer.Builder(LossFunction.NEGATIVELOGLIKELIHOOD)
+                .layer(3, new OutputLayer.Builder(LossFunction.NEGATIVELOGLIKELIHOOD)
                         .weightInit(WeightInit.XAVIER)
                         .activation("softmax").weightInit(WeightInit.XAVIER)
                         .nIn(2).nOut(2).build())

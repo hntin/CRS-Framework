@@ -313,7 +313,8 @@ public class CollaborativeQualityEvaluation {
             iDCGValue += (Math.pow(2, numOfNewCollaborators) - 1) / (Math.log(i + 1) / Math.log(2));
         }
 
-        double nDCGValue = DCGValue / iDCGValue;
+        double nDCGValue = 0;
+        if (iDCGValue != 0) nDCGValue = DCGValue / iDCGValue;
         return nDCGValue;
     }
 
@@ -353,7 +354,8 @@ public class CollaborativeQualityEvaluation {
             iDCGValue += (Math.pow(2, numOfPublication) - 1) / (Math.log(i + 1) / Math.log(2));
         }
 
-        double nDCGValue = DCGValue / iDCGValue;
+        double nDCGValue = 0;
+        if (iDCGValue != 0) nDCGValue = DCGValue / iDCGValue;
         return nDCGValue;
     }
     public static void test_NDCG() {
@@ -506,10 +508,10 @@ public class CollaborativeQualityEvaluation {
             if (metric == 2) {
                 collaborativeQualityValue += collaborativeQualityTopN_Metric2(inputAuthorID, topN_List, pastGraph, currentGraph);
             }
-            if (metric == 3) {
+            if (metric == 3) { // Total QPP
                 collaborativeQualityValue += collaborativeQualityTopN_Metric3(inputAuthorID, topN_List, currentGraph);
             }
-            if (metric == 4) {
+            if (metric == 4) { // Total QEC
                 collaborativeQualityValue += collaborativeQualityTopN_Metric4(inputAuthorID, topN_List, pastGraph, currentGraph);
             }
             if (metric == 5) { // NDCG in case of number of possible NewPublications
@@ -519,7 +521,7 @@ public class CollaborativeQualityEvaluation {
                 collaborativeQualityValue += collaborativeQualityTopN_NewCollaborator_NDCG(inputAuthorID, topN_List, pastGraph, currentGraph);
             }
 
-            System.out.println("Doing " + i);
+            System.out.println("Done " + i + " ... Quality Value:" + collaborativeQualityValue);
         }
 
         if (metric == 1 || metric == 2 || metric == 5 || metric == 6 ) {
@@ -530,7 +532,7 @@ public class CollaborativeQualityEvaluation {
 
     public static void main(String args[]) {
         System.out.println("START");
-        test_NDCG();
+//        test_NDCG();
 //        int topN = 50;
 //
 //        //<editor-fold defaultstate="collapsed" desc="For Isolated Researchers">
@@ -578,9 +580,9 @@ public class CollaborativeQualityEvaluation {
                 "D:\\1.CRS-Experiment\\MLData\\PaperID_Year_2004_2006.txt");
 
         String featuresFileName
-                = "D:\\1.CRS-Experiment\\MLData\\3-Hub\\Junior\\TestingData\\Evaluation_FullFeatures.txt";
+                = "D:\\1.CRS-Experiment\\MLData\\3-Hub\\Junior\\TestingData\\Eval4F.txt";
         System.out.println("Processing ..." + featuresFileName);
-        for (int metric = 5; metric <= 6; metric++) {
+        for (int metric = 3; metric <= 6; metric++) {
             int topN = 5;
             double qualityValue
                     = runCollaborativeQualityEvaluation(pastGraph, currentGraph,
