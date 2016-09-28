@@ -459,13 +459,26 @@ public class CollaborativeQualityEvaluation {
         return list;
     }
 
-    public static List<Integer> getTopN(int idAuthor, int n, HashMap<Integer, HashMap<Integer, Double>> hash) {
+    /**
+     * 
+     * @param idAuthor
+     * @param n
+     * @param hash
+     * @param Descending: 1, 0
+     * @return 
+     */
+    public static List<Integer> getTopN(int idAuthor, int n, HashMap<Integer, HashMap<Integer, Double>> hash, int descending) {
         List<Integer> list = new ArrayList<Integer>();
         HashMap<Integer, Double> h = hash.get(new Integer(idAuthor));
         if ((h == null) || (h.size() == 0)) {
             return list;
         } else {
-            h = HashMapUtility.getSortedMapDescending(h);
+            if (descending == 1)
+                h = HashMapUtility.getSortedMapDescending(h);   
+            else {
+                h = HashMapUtility.getSortedMapAscending(h);
+            }
+
             HashMap<Integer, Double> ret = null;
             if (n > h.size()) {
                 ret = h;
@@ -494,14 +507,26 @@ public class CollaborativeQualityEvaluation {
             String positiveSampleFileName, String predictedResultFileName,
             int topN, String type, int metric) {
 
+        boolean postiveType = true;
         double collaborativeQualityValue = 0;
         HashMap<Integer, HashMap<Integer, Double>> hash = readEvaluationFile(predictedResultFileName, "Positive");
+        if (hash.size() == 0) {
+            hash = readEvaluationFile(predictedResultFileName, "Negative");
+            postiveType = false;
+        }
+        
         ArrayList<Integer> authorIDListFromPositiveSamples = getDistinctAuthorIDFromPositiveSamples(positiveSampleFileName);
         System.out.println("Num of Input Author ..." + authorIDListFromPositiveSamples.size());
         for (int i = 0; i < authorIDListFromPositiveSamples.size(); i++) {
             int inputAuthorID = authorIDListFromPositiveSamples.get(i);
 
-            List<Integer> topN_List = getTopN(inputAuthorID, topN, hash);
+            List<Integer> topN_List = null;
+            if (postiveType == false) {
+                topN_List = getTopN(inputAuthorID, topN, hash, 0);
+            }else {
+                topN_List = getTopN(inputAuthorID, topN, hash, 1);
+            }
+            
             if (metric == 1) {
                 collaborativeQualityValue += collaborativeQualityTopN_Metric1(inputAuthorID, topN_List, currentGraph);
             }
@@ -580,7 +605,7 @@ public class CollaborativeQualityEvaluation {
                 "D:\\1.CRS-Experiment\\MLData\\PaperID_Year_2004_2006.txt");
 
         String featuresFileName
-                = "D:\\1.CRS-Experiment\\MLData\\3-Hub\\Junior\\TestingData\\Eval4F.txt";
+                = "D:\\1.CRS-Experiment\\MLData\\3-Hub\\Junior\\TestingData\\Eval1F(Overfit).txt";
         System.out.println("Processing ..." + featuresFileName);
         for (int metric = 3; metric <= 6; metric++) {
             int topN = 5;
