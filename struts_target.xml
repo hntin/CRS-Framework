@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+ "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+ "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<package name="catalog_target_manger" namespace="/target-manager" extends="default">
+			<action name="init-data" method="initData" class="targetCatalogAction">
+				<result type="json" name="json">
+					<param name="root">result</param>
+				</result>
+			</action>
+<!-- 		<action name="staff/info" class="targetCatalogAction"> -->
+<!-- 			<result name="success" type="tiles">catalog.target.manage.page</result> -->
+<!-- 			<result name="error" type="tiles">index.page</result> -->
+<!-- 		</action> -->
+<!-- 		<action name="routing/info"  method="executeRouting" class="targetCatalogAction"> -->
+<!-- 			<result name="success" type="tiles">catalog.target.manage.page</result> -->
+<!-- 			<result name="error" type="tiles">index.page</result> -->
+<!-- 		</action>		 -->
+		
+		
+<!-- 		<action name="save-data" method="saveData" class="targetCatalogAction"> -->
+<!-- 			<interceptor-ref name="securityInterceptStack"></interceptor-ref> -->
+<!-- 			<result type="json" name="json"> -->
+<!-- 				<param name="root">result</param> -->
+<!-- 			</result> -->
+<!-- 		</action> -->
+		
+		
+<!-- 		<action name="export"  class="targetCatalogAction" method="exportTarget" > -->
+<!-- 			<result type="json" name="json"> -->
+<!-- 				<param name="root">result</param> -->
+<!-- 			</result> -->
+<!-- 		</action> -->
+		
+		
+<!-- 		<action name="import"  class="targetCatalogAction" method="importTarget" > -->
+<!-- 			<result name="success" type="tiles">dms.import.excel.ajax.page</result> -->
+<!-- 		</action> -->
+
+<!-- 		<action name="target-rate/export-template" method="exportTargetRateTemplate" class="targetCatalogAction"> -->
+<!-- 			<result type="json" name="json"> -->
+<!-- 				<param name="root">result</param> -->
+<!-- 			</result> -->
+<!-- 		</action>				 -->
+		
+	</package>
+</struts>	
